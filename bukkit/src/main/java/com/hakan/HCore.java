@@ -3,6 +3,7 @@ package com.hakan;
 import com.hakan.command.HCommand;
 import com.hakan.command.HCommandExecutor;
 import com.hakan.hooks.Metrics;
+import com.hakan.packet.HPacket;
 import com.hakan.scheduler.HScheduler;
 import com.hakan.ui.inventory.HInventory;
 import com.hakan.ui.inventory.HInventoryHandler;
@@ -42,6 +43,7 @@ public class HCore extends JavaPlugin {
         HCore.instance = plugin;
 
         Metrics.initialize(plugin);
+        HPacket.initialize(plugin);
         HInventoryHandler.initialize(plugin);
         HSignHandler.initialize();
     }
