@@ -8,9 +8,11 @@
     <artifactId>hCore</artifactId>
     <packaging>pom</packaging>
     <version>0.0.1</version>
+
     <modules>
         <module>bukkit</module>
         <module>api</module>
+        <module>nms</module>
     </modules>
 
     <properties>
