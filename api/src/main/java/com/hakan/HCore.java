@@ -25,7 +25,8 @@ import java.util.UUID;
  * You can reach all APIs from this
  * class as static.
  */
-public class HCore extends JavaPlugin {
+@SuppressWarnings({"unused"})
+public class HCore {
 
     private static JavaPlugin instance;
 
@@ -123,20 +124,5 @@ public class HCore extends JavaPlugin {
 
     public static void sendPacket(Player player, Object... packets) {
         HPacketHandler.getPacketPlayerMap().get(player).send(packets);
-    }
-
-
-    /*
-    STARTER
-     */
-    @Override
-    public void onEnable() {
-        HCore.initialize(this);
-
-        HCore.registerCommand("sa").onCommand(commandData -> {
-            Player player = (Player) commandData.getSender();
-
-
-        });
     }
 }
