@@ -1,5 +1,6 @@
 package com.hakan;
 
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -15,5 +16,11 @@ public class Bootstrap extends JavaPlugin {
     @Override
     public void onEnable() {
         HCore.initialize(this);
+
+        HCore.registerCommand("sa").onCommand(commandData -> {
+            Player player = (Player) commandData.getSender();
+
+
+        });
     }
 }
