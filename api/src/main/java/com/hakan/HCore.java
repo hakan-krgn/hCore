@@ -8,7 +8,6 @@ import com.hakan.scheduler.HScheduler;
 import com.hakan.ui.inventory.HInventory;
 import com.hakan.ui.inventory.HInventoryHandler;
 import com.hakan.ui.inventory.builder.HInventoryBuilder;
-import com.hakan.ui.sign.HSignHandler;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -47,7 +46,6 @@ public class HCore {
         Metrics.initialize(plugin);
         HPacketHandler.initialize(plugin);
         HInventoryHandler.initialize(plugin);
-        HSignHandler.initialize();
     }
 
 
