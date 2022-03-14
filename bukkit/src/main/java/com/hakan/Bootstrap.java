@@ -1,6 +1,5 @@
 package com.hakan;
 
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
