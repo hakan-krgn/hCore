@@ -8,9 +8,11 @@ import com.hakan.scheduler.HScheduler;
 import com.hakan.ui.inventory.HInventory;
 import com.hakan.ui.inventory.HInventoryHandler;
 import com.hakan.ui.inventory.builder.HInventoryBuilder;
+import com.hakan.ui.sign.HSign;
 import com.hakan.ui.sign.HSignHandler;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -100,6 +102,30 @@ public class HCore {
 
     public static HInventory getInventoryByUID(UUID uid) {
         return HInventoryHandler.getByUID(uid);
+    }
+
+
+    /*
+    SIGN
+     */
+    public static HSign createSign(Material type, String... lines) {
+        return HSignHandler.create(type, lines);
+    }
+
+    public static Optional<HSign> findSignByPlayer(Player player) {
+        return HSignHandler.findByPlayer(player);
+    }
+
+    public static HSign getSignByPlayer(Player player) {
+        return HSignHandler.getByPlayer(player);
+    }
+
+    public static Optional<HSign> findSignByUID(UUID uid) {
+        return HSignHandler.findByUID(uid);
+    }
+
+    public static HSign getSignByUID(UUID uid) {
+        return HSignHandler.getByUID(uid);
     }
 
 
