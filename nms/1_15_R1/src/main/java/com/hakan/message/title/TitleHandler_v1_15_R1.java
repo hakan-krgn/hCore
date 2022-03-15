@@ -1,11 +1,11 @@
 package com.hakan.message.title;
 
 import com.hakan.HCore;
-import net.minecraft.server.v1_8_R3.IChatBaseComponent;
-import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
+import net.minecraft.server.v1_15_R1.IChatBaseComponent;
+import net.minecraft.server.v1_15_R1.PacketPlayOutTitle;
 import org.bukkit.entity.Player;
 
-public class TitleHandler_v1_8_R3 implements TitleHandler {
+public class TitleHandler_v1_15_R1 implements TitleHandler {
 
     @Override
     public void send(Player player, HTitle hTitle) {

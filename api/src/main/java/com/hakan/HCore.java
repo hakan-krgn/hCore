@@ -4,6 +4,11 @@ import com.hakan.command.HCommand;
 import com.hakan.command.HCommandExecutor;
 import com.hakan.hooks.Metrics;
 import com.hakan.message.MessageAPI;
+import com.hakan.message.bossbar.HBarColor;
+import com.hakan.message.bossbar.HBarFlag;
+import com.hakan.message.bossbar.HBarStyle;
+import com.hakan.message.bossbar.HBossBar;
+import com.hakan.message.title.HTitle;
 import com.hakan.packet.HPacketHandler;
 import com.hakan.scheduler.HScheduler;
 import com.hakan.ui.inventory.HInventory;
@@ -20,6 +25,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -152,5 +158,49 @@ public class HCore {
 
     public static void sendPacket(Player player, Object... packets) {
         HPacketHandler.getPacketPlayerMap().get(player).send(packets);
+    }
+
+
+    /*
+    MESSAGE
+     */
+    public static void sendTitle(Player player, HTitle hTitle) {
+        MessageAPI.sendTitle(player, hTitle);
+    }
+
+    public static void sendTitle(Player player, String title, String subTitle) {
+        MessageAPI.sendTitle(player, title, subTitle);
+    }
+
+    public static void sendTitle(Player player, String title, String subTitle, int stay, int fadein, int fadeout) {
+        MessageAPI.sendTitle(player, title, subTitle, stay, fadein, fadeout);
+    }
+
+    public static void sendTitle(Collection<Player> players, HTitle hTitle) {
+        MessageAPI.sendTitle(players, hTitle);
+    }
+
+    public static void sendTitle(Collection<Player> players, String title, String subTitle) {
+        MessageAPI.sendTitle(players, title, subTitle);
+    }
+
+    public static void sendTitle(Collection<Player> players, String title, String subTitle, int stay, int fadein, int fadeout) {
+        MessageAPI.sendTitle(players, title, subTitle, stay, fadein, fadeout);
+    }
+
+    public static void sendActionBar(Player player, String text) {
+        MessageAPI.sendActionBar(player, text);
+    }
+
+    public static void sendActionBar(Collection<Player> players, String text) {
+        MessageAPI.sendActionBar(players, text);
+    }
+
+    public static HBossBar createBossBar(String title, HBarColor color, HBarStyle style, HBarFlag... flags) {
+        return MessageAPI.createBossBar(title, color, style, flags);
+    }
+
+    public static HBossBar createBossBar(String title, HBarColor color, HBarStyle style) {
+        return MessageAPI.createBossBar(title, color, style);
     }
 }
