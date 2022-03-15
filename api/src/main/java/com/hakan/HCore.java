@@ -3,6 +3,7 @@ package com.hakan;
 import com.hakan.command.HCommand;
 import com.hakan.command.HCommandExecutor;
 import com.hakan.hooks.Metrics;
+import com.hakan.message.MessageAPI;
 import com.hakan.packet.HPacketHandler;
 import com.hakan.scheduler.HScheduler;
 import com.hakan.ui.inventory.HInventory;
@@ -50,6 +51,7 @@ public class HCore {
         HPacketHandler.initialize(plugin);
         HInventoryHandler.initialize(plugin);
         HSignHandler.initialize(plugin);
+        MessageAPI.initialize();
     }
 
 
