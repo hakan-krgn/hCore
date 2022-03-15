@@ -16,7 +16,6 @@ import com.hakan.core.ui.inventory.HInventoryHandler;
 import com.hakan.core.ui.inventory.builder.HInventoryBuilder;
 import com.hakan.core.ui.sign.HSign;
 import com.hakan.core.ui.sign.HSignHandler;
-import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -24,10 +23,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Main class of this core.
@@ -49,9 +45,7 @@ public class HCore {
      * @param plugin Instance of main class.
      */
     public static void initialize(@Nonnull JavaPlugin plugin) {
-        Validate.notNull(plugin, "plugin cannot be null!");
-
-        HCore.instance = plugin;
+        HCore.instance = Objects.requireNonNull(plugin, "plugin cannot be null!");
 
         Metrics.initialize(plugin);
         HPacketHandler.initialize(plugin);
