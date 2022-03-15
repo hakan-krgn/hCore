@@ -7,7 +7,7 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.craftbukkit.v1_16_R2.boss.CraftBossBar;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.List;
 
 public class HBossBar_v1_16_R2 implements HBossBar {
 
