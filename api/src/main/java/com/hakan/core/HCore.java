@@ -3,7 +3,7 @@ package com.hakan.core;
 import com.hakan.core.command.HCommand;
 import com.hakan.core.command.HCommandExecutor;
 import com.hakan.core.hooks.Metrics;
-import com.hakan.core.message.MessageAPI;
+import com.hakan.core.message.HMessageAPI;
 import com.hakan.core.message.bossbar.HBarColor;
 import com.hakan.core.message.bossbar.HBarFlag;
 import com.hakan.core.message.bossbar.HBarStyle;
@@ -58,7 +58,7 @@ public class HCore {
         HWorldBorderHandler.initialize(plugin);
         HInventoryHandler.initialize(plugin);
         HSignHandler.initialize(plugin);
-        MessageAPI.initialize();
+        HMessageAPI.initialize();
         HParticleAPI.initialize();
     }
 
@@ -211,43 +211,43 @@ public class HCore {
     MESSAGE
      */
     public static void sendTitle(Player player, HTitle hTitle) {
-        MessageAPI.sendTitle(player, hTitle);
+        HMessageAPI.sendTitle(player, hTitle);
     }
 
     public static void sendTitle(Player player, String title, String subTitle) {
-        MessageAPI.sendTitle(player, title, subTitle);
+        HMessageAPI.sendTitle(player, title, subTitle);
     }
 
     public static void sendTitle(Player player, String title, String subTitle, int stay, int fadein, int fadeout) {
-        MessageAPI.sendTitle(player, title, subTitle, stay, fadein, fadeout);
+        HMessageAPI.sendTitle(player, title, subTitle, stay, fadein, fadeout);
     }
 
     public static void sendTitle(Collection<Player> players, HTitle hTitle) {
-        MessageAPI.sendTitle(players, hTitle);
+        HMessageAPI.sendTitle(players, hTitle);
     }
 
     public static void sendTitle(Collection<Player> players, String title, String subTitle) {
-        MessageAPI.sendTitle(players, title, subTitle);
+        HMessageAPI.sendTitle(players, title, subTitle);
     }
 
     public static void sendTitle(Collection<Player> players, String title, String subTitle, int stay, int fadein, int fadeout) {
-        MessageAPI.sendTitle(players, title, subTitle, stay, fadein, fadeout);
+        HMessageAPI.sendTitle(players, title, subTitle, stay, fadein, fadeout);
     }
 
     public static void sendActionBar(Player player, String text) {
-        MessageAPI.sendActionBar(player, text);
+        HMessageAPI.sendActionBar(player, text);
     }
 
     public static void sendActionBar(Collection<Player> players, String text) {
-        MessageAPI.sendActionBar(players, text);
+        HMessageAPI.sendActionBar(players, text);
     }
 
     public static HBossBar createBossBar(String title, HBarColor color, HBarStyle style, HBarFlag... flags) {
-        return MessageAPI.createBossBar(title, color, style, flags);
+        return HMessageAPI.createBossBar(title, color, style, flags);
     }
 
     public static HBossBar createBossBar(String title, HBarColor color, HBarStyle style) {
-        return MessageAPI.createBossBar(title, color, style);
+        return HMessageAPI.createBossBar(title, color, style);
     }
 
 
