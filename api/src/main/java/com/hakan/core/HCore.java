@@ -16,7 +16,11 @@ import com.hakan.core.ui.inventory.HInventoryHandler;
 import com.hakan.core.ui.inventory.builder.HInventoryBuilder;
 import com.hakan.core.ui.sign.HSign;
 import com.hakan.core.ui.sign.HSignHandler;
+import com.hakan.core.worldborder.HWorldBorderHandler;
+import com.hakan.core.worldborder.border.HBorderColor;
+import com.hakan.core.worldborder.border.HWorldBorder;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
@@ -49,6 +53,7 @@ public class HCore {
 
         Metrics.initialize(plugin);
         HPacketHandler.initialize(plugin);
+        HWorldBorderHandler.initialize(plugin);
         HInventoryHandler.initialize(plugin);
         HSignHandler.initialize(plugin);
         MessageAPI.initialize();
@@ -82,12 +87,20 @@ public class HCore {
     /*
     INVENTORY API
      */
-    public static HInventoryBuilder buildInventory(String id) {
-        return new HInventoryBuilder(id);
+    public static Map<UUID, HInventory> getInventoryContentSafe() {
+        return HInventoryHandler.getContentSafe();
     }
 
-    public static HInventory createInventory(String id, String title, InventoryType type, int size) {
-        return new HInventoryBuilder(id).title(title).type(type).size(size).build();
+    public static Map<UUID, HInventory> getInventoryContent() {
+        return HInventoryHandler.getContent();
+    }
+
+    public static Collection<HInventory> getInventoryValuesSafe() {
+        return HInventoryHandler.getValuesSafe();
+    }
+
+    public static Collection<HInventory> getInventoryValues() {
+        return HInventoryHandler.getValues();
     }
 
     public static Optional<HInventory> findInventoryByPlayer(Player player) {
@@ -106,12 +119,32 @@ public class HCore {
         return HInventoryHandler.getByUID(uid);
     }
 
+    public static HInventoryBuilder buildInventory(String id) {
+        return new HInventoryBuilder(id);
+    }
+
+    public static HInventory createInventory(String id, String title, InventoryType type, int size) {
+        return new HInventoryBuilder(id).title(title).type(type).size(size).build();
+    }
+
 
     /*
     SIGN
      */
-    public static HSign createSign(Material type, String... lines) {
-        return HSignHandler.create(type, lines);
+    public static Map<UUID, HSign> getSignContentSafe() {
+        return HSignHandler.getContentSafe();
+    }
+
+    public static Map<UUID, HSign> getSignContent() {
+        return HSignHandler.getContent();
+    }
+
+    public static Collection<HSign> getSignValuesSafe() {
+        return HSignHandler.getValuesSafe();
+    }
+
+    public static Collection<HSign> getSignValues() {
+        return HSignHandler.getValues();
     }
 
     public static Optional<HSign> findSignByPlayer(Player player) {
@@ -128,6 +161,10 @@ public class HCore {
 
     public static HSign getSignByUID(UUID uid) {
         return HSignHandler.getByUID(uid);
+    }
+
+    public static HSign createSign(Material type, String... lines) {
+        return HSignHandler.create(type, lines);
     }
 
 
@@ -196,5 +233,29 @@ public class HCore {
 
     public static HBossBar createBossBar(String title, HBarColor color, HBarStyle style) {
         return MessageAPI.createBossBar(title, color, style);
+    }
+
+
+    /*
+    WORLD BORDER
+     */
+    public static Collection<HWorldBorder> getBorderContentSafe() {
+        return HWorldBorderHandler.getContentSafe();
+    }
+
+    public static Collection<HWorldBorder> getBorderContent() {
+        return HWorldBorderHandler.getContent();
+    }
+
+    public static Optional<HWorldBorder> findBorderByPlayer(Player player) {
+        return HWorldBorderHandler.findByPlayer(player);
+    }
+
+    public static HWorldBorder getBorderByPlayer(Player player) {
+        return HWorldBorderHandler.getByPlayer(player);
+    }
+
+    public static HWorldBorder createBorder(Location location, double size, double damageAmount, double damageBuffer, int warningDistance, int warningTime, HBorderColor color) {
+        return HWorldBorderHandler.create(location, size, damageAmount, damageBuffer, warningDistance, warningTime, color);
     }
 }
