@@ -10,6 +10,8 @@ import com.hakan.core.message.bossbar.HBarStyle;
 import com.hakan.core.message.bossbar.HBossBar;
 import com.hakan.core.message.title.HTitle;
 import com.hakan.core.packet.HPacketHandler;
+import com.hakan.core.particle.HParticle;
+import com.hakan.core.particle.HParticleAPI;
 import com.hakan.core.scheduler.HScheduler;
 import com.hakan.core.ui.inventory.HInventory;
 import com.hakan.core.ui.inventory.HInventoryHandler;
@@ -19,6 +21,7 @@ import com.hakan.core.ui.sign.HSignHandler;
 import com.hakan.core.worldborder.HWorldBorderHandler;
 import com.hakan.core.worldborder.border.HBorderColor;
 import com.hakan.core.worldborder.border.HWorldBorder;
+import net.minecraft.server.v1_8_R3.EnumParticle;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -57,6 +60,7 @@ public class HCore {
         HInventoryHandler.initialize(plugin);
         HSignHandler.initialize(plugin);
         MessageAPI.initialize();
+        HParticleAPI.initialize();
     }
 
 
@@ -189,6 +193,18 @@ public class HCore {
 
     public static void sendPacket(Player player, Object... packets) {
         HPacketHandler.getPacketPlayerMap().get(player).send(packets);
+    }
+
+
+    /*
+    PARTICLE
+     */
+    public static void playParticle(Player player, Location location, HParticle hParticle) {
+        HParticleAPI.play(player, location, hParticle);
+    }
+
+    public static void playParticle(Collection<Player> players, Location location, HParticle hParticle) {
+        HParticleAPI.play(players, location, hParticle);
     }
 
 
