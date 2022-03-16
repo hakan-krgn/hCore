@@ -41,5 +41,5 @@ public abstract class HSign {
 
     public abstract void open(Player player);
 
-    protected abstract <T> void listen(Player player, T packet);
+    public abstract <T> void listen(Player player, T packet);
 }

@@ -1,7 +1,8 @@
-package com.hakan.core.ui.sign;
+package com.hakan.core.ui.sign.listeners;
 
 import com.hakan.core.listener.HListenerAdapter;
 import com.hakan.core.packet.event.PacketEvent;
+import com.hakan.core.ui.sign.HSignHandler;
 import org.bukkit.event.EventHandler;
 import org.bukkit.plugin.java.JavaPlugin;
 
