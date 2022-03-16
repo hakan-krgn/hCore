@@ -14,7 +14,6 @@ public class HParticleWrapper_v1_16_R1 implements HParticleWrapper {
 
     @Override
     public void play(Player player, Location location, HParticle hParticle) {
-
         ParticleParam particleParam = null;
         try {
             particleParam = CraftParticle.toNMS(Particle.valueOf(hParticle.getParticleName()));
@@ -26,6 +25,7 @@ public class HParticleWrapper_v1_16_R1 implements HParticleWrapper {
                 }
             }
         }
+
         Validate.notNull(particleParam, "Particle not found!");
         HCore.sendPacket(player, new PacketPlayOutWorldParticles(particleParam, false, (float) location.getX(), (float) location.getY(), (float) location.getZ(), (float) hParticle.getOffset().getX(), (float) hParticle.getOffset().getY(), (float) hParticle.getOffset().getZ(), (float) hParticle.getSpeed(), hParticle.getAmount()));
     }
