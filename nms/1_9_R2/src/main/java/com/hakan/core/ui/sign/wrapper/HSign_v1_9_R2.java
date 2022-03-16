@@ -36,7 +36,7 @@ public class HSign_v1_9_R2 extends HSign {
     }
 
     @Override
-    protected <T> void listen(Player player, T packet) {
+    public <T> void listen(Player player, T packet) {
         PacketPlayInUpdateSign packetPlayInUpdateSign = (PacketPlayInUpdateSign) packet;
 
         BlockPosition position = packetPlayInUpdateSign.a();
