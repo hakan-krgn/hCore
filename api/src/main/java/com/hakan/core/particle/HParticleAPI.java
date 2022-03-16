@@ -12,7 +12,6 @@ public final class HParticleAPI {
     private static HParticleWrapper wrapper;
 
     public static void initialize() {
-
         try {
             HParticleAPI.wrapper = (HParticleWrapper) Class.forName("com.hakan.core.particle.wrapper.HParticleWrapper_" + HCore.getVersionString()).getConstructor().newInstance();
         } catch (Exception e) {
@@ -27,5 +26,4 @@ public final class HParticleAPI {
     public static void play(Collection<Player> player, Location location, HParticle particle) {
         player.forEach(p -> HParticleAPI.play(p, location, particle));
     }
-
 }
