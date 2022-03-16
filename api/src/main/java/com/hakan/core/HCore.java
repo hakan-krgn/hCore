@@ -16,6 +16,7 @@ import com.hakan.core.ui.inventory.HInventoryHandler;
 import com.hakan.core.ui.inventory.builder.HInventoryBuilder;
 import com.hakan.core.ui.sign.HSign;
 import com.hakan.core.ui.sign.HSignHandler;
+import com.hakan.core.worldborder.HWorldBorderHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -49,6 +50,7 @@ public class HCore {
 
         Metrics.initialize(plugin);
         HPacketHandler.initialize(plugin);
+        HWorldBorderHandler.initialize(plugin);
         HInventoryHandler.initialize(plugin);
         HSignHandler.initialize(plugin);
         MessageAPI.initialize();
