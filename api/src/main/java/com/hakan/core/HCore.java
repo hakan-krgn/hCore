@@ -199,6 +199,14 @@ public class HCore {
         HPacketHandler.getPacketPlayerMap().get(player).send(packets);
     }
 
+    public static void sendPacket(Collection<Player> players, Object packet) {
+        players.forEach(player -> HCore.sendPacket(player, packet));
+    }
+
+    public static void sendPacket(Collection<Player> players, Object... packets) {
+        players.forEach(player -> HCore.sendPacket(player, packets));
+    }
+
 
     /*
     PARTICLE
