@@ -6,6 +6,7 @@ package com.hakan.core.database;
  *
  * @param <T> Database object class.
  */
+@SuppressWarnings({"unused"})
 public abstract class Database<T extends DatabaseObject> {
 
     protected T t;

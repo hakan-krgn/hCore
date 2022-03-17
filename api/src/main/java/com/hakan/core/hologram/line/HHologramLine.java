@@ -3,39 +3,37 @@ package com.hakan.core.hologram.line;
 import com.hakan.core.hologram.HHologram;
 import com.hakan.core.hologram.line.entity.HHologramArmorStand;
 import com.hakan.core.hologram.util.HHologramUtils;
-import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * Vezor hologram line abstract class
+ * Hologram line abstract class.
  */
 @SuppressWarnings("unused")
 public final class HHologramLine {
 
     private final HHologram hHologram;
-    private HHologramArmorStand armorStand;
+    private final HHologramArmorStand armorStand;
 
     /**
-     * Gets new instance of this class
+     * Gets new instance of this class.
      *
-     * @param hHologram instance of VezorHologram
+     * @param hHologram Instance of HHologram class.
      */
     public HHologramLine(@Nonnull HHologram hHologram, @Nonnull String text) {
-        this.hHologram = Objects.requireNonNull(hHologram, "hHologram cannot be null");
-        this.armorStand = HHologramUtils.createVezorArmorStand(hHologram);
-        this.armorStand.setText(text);
+        this.hHologram = Objects.requireNonNull(hHologram, "hHologram cannot be null!");
+        this.armorStand = HHologramUtils.createHologramArmorStand(hHologram);
+        this.armorStand.setText(Objects.requireNonNull(text, "text cannot be null!"));
     }
 
     /**
-     * Get instance of VezorHologram
+     * Get instance of HHologram.
      *
-     * @return instance of VezorHologram
+     * @return instance of HHologram.
      */
     @Nonnull
     public HHologram getParent() {
@@ -43,9 +41,9 @@ public final class HHologramLine {
     }
 
     /**
-     * Gets text of line
+     * Gets text of line.
      *
-     * @return text of line
+     * @return Text from line.
      */
     @Nonnull
     public String getText() {
@@ -53,47 +51,21 @@ public final class HHologramLine {
     }
 
     /**
-     * Sets text of line
+     * Sets text of line.
      *
-     * @param text line text
-     * @return instance of this class
+     * @param text Line text.
+     * @return Instance of this class.
      */
     @Nonnull
     public HHologramLine setText(@Nonnull String text) {
-        Validate.notNull(text, "text cannot be null");
-        this.armorStand.setText(text);
+        this.armorStand.setText(Objects.requireNonNull(text, "text cannot be null!"));
         return this;
     }
 
     /**
-     * Gets VezorArmorStand class
+     * Gets location of armor stand.
      *
-     * @param clazz your wanted class to cast
-     * @return VezorArmorStand class
-     */
-    @Nullable
-    public <T extends HHologramArmorStand> T getHArmorStand(@Nonnull Class<T> clazz) {
-        Validate.notNull(clazz, "class cannot be null");
-        return clazz.isInstance(this.armorStand) ? clazz.cast(this.armorStand) : null;
-    }
-
-    /**
-     * Sets VezorArmorStand to hologram line
-     *
-     * @param hHologramArmorStand instance of VezorArmorStand class
-     * @return instance of this class
-     */
-    @Nonnull
-    public HHologramLine setVezorArmorStand(@Nonnull HHologramArmorStand hHologramArmorStand) {
-        Validate.notNull(hHologramArmorStand, "vezorArmorStand cannot be null");
-        this.armorStand = hHologramArmorStand;
-        return this;
-    }
-
-    /**
-     * Gets location of armor stand
-     *
-     * @return location of armor stand
+     * @return Location of armor stand.
      */
     @Nonnull
     public Location getLocation() {
@@ -101,41 +73,38 @@ public final class HHologramLine {
     }
 
     /**
-     * Sets location of armor stand and update hologram
+     * Sets location of armor stand and update hologram.
      *
-     * @param location location
-     * @return instance of this class
+     * @param location Location.
+     * @return Instance of this class.
      */
     @Nonnull
     public HHologramLine setLocation(@Nonnull Location location) {
-        Validate.notNull(location, "location cannot be null");
-        this.armorStand.setLocation(location);
+        this.armorStand.setLocation(Objects.requireNonNull(location, "location cannot be null!"));
         return this;
     }
 
     /**
-     * Shows hologram to players
+     * Shows hologram to players.
      *
-     * @param players player list
-     * @return instance of this class
+     * @param players Player list.
+     * @return Instance of this class.
      */
     @Nonnull
     public HHologramLine show(@Nonnull List<Player> players) {
-        Validate.notNull(players, "players cannot be null");
-        this.armorStand.show(players);
+        this.armorStand.show(Objects.requireNonNull(players, "players cannot be null!"));
         return this;
     }
 
     /**
-     * Hides hologram from players
+     * Hides hologram from players.
      *
-     * @param players player list
-     * @return instance of this class
+     * @param players Player list.
+     * @return Instance of this class.
      */
     @Nonnull
     public HHologramLine hide(@Nonnull List<Player> players) {
-        Validate.notNull(players, "players cannot be null");
-        this.armorStand.hide(players);
+        this.armorStand.hide(Objects.requireNonNull(players, "players cannot be null!"));
         return this;
     }
 }

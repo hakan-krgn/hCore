@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class HHologramHandler {
+public final class HHologramHandler {
 
     private static final Map<String, HHologram> holograms = new HashMap<>();
 
@@ -66,7 +66,7 @@ public class HHologramHandler {
      */
     @Nonnull
     public static Optional<HHologram> findByID(@Nonnull String id) {
-        return Optional.ofNullable(HHologramHandler.holograms.get(Objects.requireNonNull(id, "id cannot be null")));
+        return Optional.ofNullable(HHologramHandler.holograms.get(Objects.requireNonNull(id, "id cannot be null!")));
     }
 
     /**

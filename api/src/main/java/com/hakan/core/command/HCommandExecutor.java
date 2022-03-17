@@ -15,7 +15,7 @@ import java.util.function.Function;
  * This class should extend with
  * any command class.
  */
-@SuppressWarnings({"unchecked"})
+@SuppressWarnings({"unused", "unchecked"})
 public abstract class HCommandExecutor extends HSubCommand {
 
     private final String permission;

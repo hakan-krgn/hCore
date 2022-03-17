@@ -10,7 +10,12 @@ import org.bukkit.entity.Player;
 import javax.annotation.Nonnull;
 import java.util.*;
 
-public class HHologram {
+/**
+ * Hologram class to create and
+ * manage the created hologram.
+ */
+@SuppressWarnings({"unused", "UnusedReturnValue"})
+public final class HHologram {
 
     private final String id;
     private final HRenderer renderer;
@@ -18,16 +23,16 @@ public class HHologram {
     private double lineDistance = 0.25;
 
     /**
-     * Creates new instance of this class
+     * Creates new instance of this class.
      *
-     * @param id         hologram id that you want
+     * @param id         Hologram id that you want.
      * @param location   Hologram location.
-     * @param playerList list of player who can see hologram
+     * @param playerList List of player who can see hologram.
      */
     HHologram(@Nonnull String id, @Nonnull Location location, @Nonnull Set<UUID> playerList) {
-        Validate.notNull(id);
-        Validate.notNull(location);
-        Validate.notNull(playerList);
+        Validate.notNull(id, "id cannot be null!");
+        Validate.notNull(location, "location cannot be null!");
+        Validate.notNull(playerList, "player list cannot be null!");
 
         this.id = id;
         this.lines = new LinkedList<>();
@@ -39,9 +44,9 @@ public class HHologram {
     }
 
     /**
-     * Creates new instance of this class
+     * Creates new instance of this class.
      *
-     * @param id hologram id that you want
+     * @param id Hologram id that you want.
      */
     HHologram(@Nonnull String id, @Nonnull Location location) {
         Validate.notNull(id);
@@ -59,16 +64,16 @@ public class HHologram {
     /**
      * Is hologram deleted?
      *
-     * @return if hologram was deleted, returns true
+     * @return If hologram was deleted, returns true.
      */
     public boolean isExist() {
         return HHologramHandler.getContent().containsKey(this.id);
     }
 
     /**
-     * Gets id of hologram
+     * Gets id of hologram.
      *
-     * @return id of hologram
+     * @return ID of hologram.
      */
     @Nonnull
     public String getId() {
@@ -76,9 +81,9 @@ public class HHologram {
     }
 
     /**
-     * Gets location of hologram
+     * Gets location of hologram.
      *
-     * @return location of hologram
+     * @return Location of hologram.
      */
     @Nonnull
     public Location getLocation() {
@@ -86,19 +91,19 @@ public class HHologram {
     }
 
     /**
-     * Gets distance between two lines of hologram
+     * Gets distance between two lines of hologram.
      *
-     * @return distance between two lines of hologram
+     * @return Distance between two lines of hologram.
      */
     public double getLineDistance() {
         return this.lineDistance;
     }
 
     /**
-     * Sets distance between two lines
+     * Sets distance between two lines.
      *
-     * @param hologramDistance distance between two lines
-     * @return instance of this class
+     * @param hologramDistance Distance between two lines.
+     * @return Instance of this class.
      */
     @Nonnull
     public HHologram setLineDistance(double hologramDistance) {
@@ -119,9 +124,9 @@ public class HHologram {
 
     /**
      * If everyone can see hologram,
-     * returns true
+     * returns true.
      *
-     * @return if everyone can see hologram, returns true
+     * @return If everyone can see hologram, returns true.
      */
     public boolean canEveryoneSee() {
         return this.renderer.canShowEveryone();
@@ -129,10 +134,10 @@ public class HHologram {
 
     /**
      * If set this as true, everyone
-     * can see this hologram
+     * can see this hologram.
      *
-     * @param mode mode status
-     * @return instance of this class
+     * @param mode Mode status.
+     * @return Instance of this class.
      */
     @Nonnull
     public HHologram showEveryone(boolean mode) {
@@ -141,9 +146,9 @@ public class HHologram {
     }
 
     /**
-     * Gets hologram lines
+     * Gets hologram lines.
      *
-     * @return hologram lines
+     * @return Hologram lines.
      */
     @Nonnull
     public List<HHologramLine> getLines() {
@@ -151,10 +156,10 @@ public class HHologram {
     }
 
     /**
-     * Gets hologram line from index
+     * Gets hologram line from index.
      *
-     * @param index index
-     * @return HHologramLine class
+     * @param index Index.
+     * @return HHologramLine class.
      */
     @Nonnull
     public HHologramLine getLine(int index) {
@@ -164,10 +169,10 @@ public class HHologram {
 
     /**
      * If you want to remove the hologram
-     * when the time is up. you can use this
+     * when the time is up. you can use this.
      *
-     * @param expire time (as tick)
-     * @return instance of this class
+     * @param expire time. (as tick)
+     * @return Instance of this class.
      */
     @Nonnull
     public HHologram expire(long expire) {
@@ -176,10 +181,10 @@ public class HHologram {
     }
 
     /**
-     * Adds player to hologram to show
+     * Adds player to hologram to show.
      *
-     * @param players Player list
-     * @return instance of this class
+     * @param players Player list.
+     * @return Instance of this class.
      */
     @Nonnull
     public HHologram addPlayer(@Nonnull Collection<Player> players) {
@@ -189,10 +194,10 @@ public class HHologram {
     }
 
     /**
-     * Adds player to hologram to show
+     * Adds player to hologram to show.
      *
-     * @param players Player list
-     * @return instance of this class
+     * @param players Player list.
+     * @return Instance of this class.
      */
     @Nonnull
     public HHologram addPlayer(@Nonnull Player... players) {
@@ -202,10 +207,10 @@ public class HHologram {
     }
 
     /**
-     * Adds player to hologram to show
+     * Adds player to hologram to show.
      *
-     * @param uids UID list
-     * @return instance of this class
+     * @param uids UID list.
+     * @return Instance of this class.
      */
     @Nonnull
     public HHologram addUID(@Nonnull Collection<UUID> uids) {
@@ -215,10 +220,10 @@ public class HHologram {
     }
 
     /**
-     * Adds player to hologram to show
+     * Adds player to hologram to show.
      *
-     * @param uids UID list
-     * @return instance of this class
+     * @param uids UID list.
+     * @return Instance of this class.
      */
     @Nonnull
     public HHologram addUID(@Nonnull UUID... uids) {
@@ -228,10 +233,10 @@ public class HHologram {
     }
 
     /**
-     * Removes player to hologram to hide
+     * Removes player to hologram to hide.
      *
-     * @param players Player list
-     * @return instance of this class
+     * @param players Player list.
+     * @return Instance of this class.
      */
     @Nonnull
     public HHologram removePlayer(@Nonnull Collection<Player> players) {
@@ -241,10 +246,10 @@ public class HHologram {
     }
 
     /**
-     * Removes player to hologram to hide
+     * Removes player to hologram to hide.
      *
-     * @param players Player list
-     * @return instance of this class
+     * @param players Player list.
+     * @return Instance of this class.
      */
     @Nonnull
     public HHologram removePlayer(@Nonnull Player... players) {
@@ -254,10 +259,10 @@ public class HHologram {
     }
 
     /**
-     * Removes player to hologram to hide
+     * Removes player to hologram to hide.
      *
-     * @param uids UID list
-     * @return instance of this class
+     * @param uids UID list.
+     * @return Instance of this class.
      */
     @Nonnull
     public HHologram removeUID(@Nonnull Collection<UUID> uids) {
@@ -267,10 +272,10 @@ public class HHologram {
     }
 
     /**
-     * Removes player to hologram to hide
+     * Removes player to hologram to hide.
      *
-     * @param uids UID list
-     * @return instance of this class
+     * @param uids UID list.
+     * @return Instance of this class.
      */
     @Nonnull
     public HHologram removeUID(@Nonnull UUID... uids) {
@@ -280,10 +285,10 @@ public class HHologram {
     }
 
     /**
-     * Sets location of hologram
+     * Sets location of hologram.
      *
-     * @param location location to teleport
-     * @return instance of this class
+     * @param location Location to teleport.
+     * @return Instance of this class.
      */
     @Nonnull
     public HHologram setLocation(@Nonnull Location location) {
@@ -295,10 +300,10 @@ public class HHologram {
     }
 
     /**
-     * Adds new lines to hologram
+     * Adds new lines to hologram.
      *
-     * @param hHologramLine HHologramLine classes
-     * @return instance of this class
+     * @param hHologramLine HHologramLine classes.
+     * @return Instance of this class.
      */
     @Nonnull
     public HHologram addLines(@Nonnull HHologramLine... hHologramLine) {
@@ -308,10 +313,10 @@ public class HHologram {
     }
 
     /**
-     * Adds new lines to hologram
+     * Adds new lines to hologram.
      *
-     * @param texts text
-     * @return instance of this class
+     * @param texts Text.
+     * @return Instance of this class.
      */
     @Nonnull
     public HHologram addLines(@Nonnull Collection<String> texts) {
@@ -321,10 +326,10 @@ public class HHologram {
     }
 
     /**
-     * Adds new lines to hologram
+     * Adds new lines to hologram.
      *
-     * @param texts text
-     * @return instance of this class
+     * @param texts text.
+     * @return Instance of this class.
      */
     @Nonnull
     public HHologram addLines(@Nonnull String... texts) {
@@ -334,10 +339,10 @@ public class HHologram {
     }
 
     /**
-     * Adds new line to hologram
+     * Adds new line to hologram.
      *
-     * @param hHologramLine HHologramLine class
-     * @return instance of this class
+     * @param hHologramLine HHologramLine class.
+     * @return Instance of this class.
      */
     @Nonnull
     public HHologram addLine(@Nonnull HHologramLine hHologramLine) {
@@ -351,22 +356,21 @@ public class HHologram {
     }
 
     /**
-     * Adds new text line to hologram
+     * Adds new text line to hologram.
      *
-     * @param text text
-     * @return instance of this class
+     * @param text Text.
+     * @return Instance of this class.
      */
     @Nonnull
     public HHologram addLine(@Nonnull String text) {
-        Validate.notNull(text, "text cannot be null");
         return this.addLine(new HHologramLine(this, text));
     }
 
     /**
-     * Removes line from hologram
+     * Removes line from hologram.
      *
-     * @param indexes indexes
-     * @return instance of this class
+     * @param indexes Indexes.
+     * @return Instance of this class.
      */
     @Nonnull
     public HHologram removeLines(@Nonnull Collection<Integer> indexes) {
@@ -376,10 +380,10 @@ public class HHologram {
     }
 
     /**
-     * Removes line from hologram
+     * Removes line from hologram.
      *
-     * @param indexes indexes
-     * @return instance of this class
+     * @param indexes Indexes.
+     * @return Instance of this class.
      */
     @Nonnull
     public HHologram removeLines(int... indexes) {
@@ -389,10 +393,10 @@ public class HHologram {
     }
 
     /**
-     * Removes line from hologram
+     * Removes line from hologram.
      *
-     * @param index index
-     * @return instance of this class
+     * @param index Index.
+     * @return Instance of this class.
      */
     @Nonnull
     public HHologram removeLine(int index) {
@@ -403,9 +407,9 @@ public class HHologram {
     }
 
     /**
-     * Clear lines from hologram
+     * Clear lines from hologram.
      *
-     * @return instance of this class
+     * @return Instance of this class.
      */
     @Nonnull
     public HHologram clearLines() {
@@ -416,11 +420,11 @@ public class HHologram {
     }
 
     /**
-     * Replaces line at row with text
+     * Replaces line at row with text.
      *
-     * @param row  index of line
-     * @param text text
-     * @return instance of this class
+     * @param row  Index of line.
+     * @param text Text.
+     * @return Instance of this class.
      */
     @Nonnull
     public HHologram setLine(int row, @Nonnull String text) {
@@ -430,9 +434,9 @@ public class HHologram {
     }
 
     /**
-     * Deletes hologram
+     * Deletes hologram.
      *
-     * @return instance of this class
+     * @return Instance of this class.
      */
     @Nonnull
     public HHologram delete() {
