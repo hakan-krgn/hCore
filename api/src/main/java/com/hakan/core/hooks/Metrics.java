@@ -24,7 +24,7 @@ import java.util.logging.Level;
 import java.util.zip.GZIPOutputStream;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
-public class Metrics {
+public final class Metrics {
 
     public static void initialize(JavaPlugin plugin) {
         new Metrics(plugin, 14564);

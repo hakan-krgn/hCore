@@ -1,5 +1,8 @@
 package com.hakan.core.message.bossbar;
 
+/**
+ * Bar style class.
+ */
 public enum HBarStyle {
 
     SOLID,

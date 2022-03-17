@@ -6,10 +6,12 @@ import net.minecraft.server.v1_16_R3.IChatBaseComponent;
 import net.minecraft.server.v1_16_R3.PacketPlayOutChat;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nonnull;
+
 public class HActionBarHandler_v1_16_R3 implements HActionBarHandler {
 
     @Override
-    public void send(Player player, String text) {
+    public void send(@Nonnull Player player, @Nonnull String text) {
         IChatBaseComponent baseComponent = IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + text + "\"}");
         HCore.sendPacket(player, new PacketPlayOutChat(baseComponent, ChatMessageType.GAME_INFO, player.getUniqueId()));
     }

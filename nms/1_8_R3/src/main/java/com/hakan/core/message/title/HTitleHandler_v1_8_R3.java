@@ -5,6 +5,8 @@ import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nonnull;
+
 /**
  * {@inheritDoc}
  */
@@ -14,7 +16,7 @@ public class HTitleHandler_v1_8_R3 implements HTitleHandler {
      * {@inheritDoc}
      */
     @Override
-    public void send(Player player, HTitle hTitle) {
+    public void send(@Nonnull Player player, @Nonnull HTitle hTitle) {
         IChatBaseComponent titleString = IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + hTitle.getTitle() + "\"}");
         IChatBaseComponent subtitleString = IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + hTitle.getSubtitle() + "\"}");
 

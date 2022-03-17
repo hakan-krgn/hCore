@@ -1,5 +1,8 @@
 package com.hakan.core.message.bossbar;
 
+/**
+ * Bar color class.
+ */
 public enum HBarColor {
 
     PINK,
