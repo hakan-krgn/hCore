@@ -2,6 +2,8 @@ package com.hakan.core;
 
 import com.hakan.core.command.HCommand;
 import com.hakan.core.command.HCommandExecutor;
+import com.hakan.core.hologram.HHologram;
+import com.hakan.core.hologram.HHologramHandler;
 import com.hakan.core.hooks.Metrics;
 import com.hakan.core.message.HMessageAPI;
 import com.hakan.core.message.bossbar.HBarColor;
@@ -29,6 +31,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.*;
 
 /**
@@ -61,6 +64,7 @@ public class HCore {
         HSignHandler.initialize(plugin);
         HMessageAPI.initialize();
         HParticleAPI.initialize();
+        HHologramHandler.initialize();
     }
 
 
@@ -195,6 +199,14 @@ public class HCore {
         HPacketHandler.getPacketPlayerMap().get(player).send(packets);
     }
 
+    public static void sendPacket(Collection<Player> players, Object packet) {
+        players.forEach(player -> HCore.sendPacket(player, packet));
+    }
+
+    public static void sendPacket(Collection<Player> players, Object... packets) {
+        players.forEach(player -> HCore.sendPacket(player, packets));
+    }
+
 
     /*
     PARTICLE
@@ -273,5 +285,52 @@ public class HCore {
 
     public static HWorldBorder createBorder(Location location, double size, double damageAmount, double damageBuffer, int warningDistance, int warningTime, HBorderColor color) {
         return HWorldBorderHandler.create(location, size, damageAmount, damageBuffer, warningDistance, warningTime, color);
+    }
+
+
+    /*
+    HOLOGRAM
+     */
+    @Nonnull
+    public static Map<String, HHologram> getHologramContentSafe() {
+        return HHologramHandler.getContentSafe();
+    }
+
+    @Nonnull
+    public static Map<String, HHologram> getHologramContent() {
+        return HHologramHandler.getContent();
+    }
+
+    public static Collection<HHologram> getHologramValuesSafe() {
+        return HHologramHandler.getValuesSafe();
+    }
+
+    public static Collection<HHologram> getHologramValues() {
+        return HHologramHandler.getValues();
+    }
+
+    @Nonnull
+    public static Optional<HHologram> findHologramByID(@Nonnull String id) {
+        return HHologramHandler.findByID(id);
+    }
+
+    @Nonnull
+    public static HHologram getHologramByID(@Nonnull String id) {
+        return HHologramHandler.getByID(id);
+    }
+
+    @Nonnull
+    public static HHologram createHologram(@Nonnull String id, @Nonnull Location location, @Nonnull Set<UUID> players) {
+        return HHologramHandler.create(id, location, players);
+    }
+
+    @Nonnull
+    public static HHologram createHologram(@Nonnull String id, @Nonnull Location location) {
+        return HHologramHandler.create(id, location);
+    }
+
+    @Nullable
+    public static HHologram deleteHologram(@Nonnull String id) {
+        return HHologramHandler.delete(id);
     }
 }
