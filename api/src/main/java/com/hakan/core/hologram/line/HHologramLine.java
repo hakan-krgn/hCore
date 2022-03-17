@@ -1,6 +1,7 @@
 package com.hakan.core.hologram.line;
 
 import com.hakan.core.hologram.HHologram;
+import com.hakan.core.hologram.line.entity.HHologramArmorStand;
 import com.hakan.core.hologram.util.HHologramUtils;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;

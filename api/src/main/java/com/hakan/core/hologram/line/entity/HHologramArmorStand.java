@@ -1,4 +1,4 @@
-package com.hakan.core.hologram.line;
+package com.hakan.core.hologram.line.entity;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -12,11 +12,12 @@ import java.util.List;
 public interface HHologramArmorStand {
 
     /**
-     * Gets armor stand id
+     * Gets text from line
      *
-     * @return armor stand id
+     * @return Text of line
      */
-    int getId();
+    @Nonnull
+    String getText();
 
     /**
      * Sets text of line
@@ -26,11 +27,12 @@ public interface HHologramArmorStand {
     void setText(@Nonnull String text);
 
     /**
-     * Gets text from line
+     * Gets location of line
      *
-     * @return Text of line
+     * @return location of line
      */
-    String getText();
+    @Nonnull
+    Location getLocation();
 
     /**
      * Sets location of line
@@ -38,13 +40,6 @@ public interface HHologramArmorStand {
      * @param location location of line
      */
     void setLocation(@Nonnull Location location);
-
-    /**
-     * Gets location of line
-     *
-     * @return location of line
-     */
-    Location getLocation();
 
     /**
      * Show line to players
