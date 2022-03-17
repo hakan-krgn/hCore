@@ -7,6 +7,7 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.craftbukkit.v1_16_R1.boss.CraftBossBar;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class HBossBar_v1_16_R1 implements HBossBar {
@@ -19,48 +20,51 @@ public class HBossBar_v1_16_R1 implements HBossBar {
             this.bossBar.addFlag(BarFlag.valueOf(hBarFlag.name()));
     }
 
+    @Nonnull
     @Override
     public String getTitle() {
         return this.bossBar.getTitle();
     }
 
     @Override
-    public void setTitle(String s) {
+    public void setTitle(@Nonnull String s) {
         this.bossBar.setTitle(s);
     }
 
+    @Nonnull
     @Override
     public HBarColor getColor() {
         return HBarColor.valueOf(this.bossBar.getColor().name());
     }
 
     @Override
-    public void setColor(HBarColor barColor) {
+    public void setColor(@Nonnull HBarColor barColor) {
         this.bossBar.setColor(BarColor.valueOf(barColor.name()));
     }
 
+    @Nonnull
     @Override
     public HBarStyle getStyle() {
         return HBarStyle.valueOf(this.bossBar.getStyle().name());
     }
 
     @Override
-    public void setStyle(HBarStyle barStyle) {
+    public void setStyle(@Nonnull HBarStyle barStyle) {
         this.bossBar.setStyle(BarStyle.valueOf(barStyle.name()));
     }
 
     @Override
-    public void removeFlag(HBarFlag barFlag) {
+    public void removeFlag(@Nonnull HBarFlag barFlag) {
         this.bossBar.removeFlag(BarFlag.valueOf(barFlag.name()));
     }
 
     @Override
-    public void addFlag(HBarFlag barFlag) {
+    public void addFlag(@Nonnull HBarFlag barFlag) {
         this.bossBar.addFlag(BarFlag.valueOf(barFlag.name()));
     }
 
     @Override
-    public boolean hasFlag(HBarFlag barFlag) {
+    public boolean hasFlag(@Nonnull HBarFlag barFlag) {
         return this.bossBar.hasFlag(BarFlag.valueOf(barFlag.name()));
     }
 
@@ -75,12 +79,12 @@ public class HBossBar_v1_16_R1 implements HBossBar {
     }
 
     @Override
-    public void addPlayer(Player player) {
+    public void addPlayer(@Nonnull Player player) {
         this.bossBar.addPlayer(player);
     }
 
     @Override
-    public void removePlayer(Player player) {
+    public void removePlayer(@Nonnull Player player) {
         this.bossBar.removePlayer(player);
     }
 
@@ -89,6 +93,7 @@ public class HBossBar_v1_16_R1 implements HBossBar {
         this.bossBar.removeAll();
     }
 
+    @Nonnull
     @Override
     public List<Player> getPlayers() {
         return this.bossBar.getPlayers();

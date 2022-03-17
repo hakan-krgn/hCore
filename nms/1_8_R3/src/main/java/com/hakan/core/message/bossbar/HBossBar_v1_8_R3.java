@@ -2,6 +2,7 @@ package com.hakan.core.message.bossbar;
 
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 
 /**
@@ -28,6 +29,7 @@ public class HBossBar_v1_8_R3 implements HBossBar {
     /**
      * {@inheritDoc}
      */
+    @Nonnull
     @Override
     public String getTitle() {
         return this.title;
@@ -37,13 +39,14 @@ public class HBossBar_v1_8_R3 implements HBossBar {
      * {@inheritDoc}
      */
     @Override
-    public void setTitle(String title) {
+    public void setTitle(@Nonnull String title) {
         this.title = title;
     }
 
     /**
      * {@inheritDoc}
      */
+    @Nonnull
     @Override
     public HBarColor getColor() {
         return this.color;
@@ -53,13 +56,14 @@ public class HBossBar_v1_8_R3 implements HBossBar {
      * {@inheritDoc}
      */
     @Override
-    public void setColor(HBarColor color) {
+    public void setColor(@Nonnull HBarColor color) {
         this.color = color;
     }
 
     /**
      * {@inheritDoc}
      */
+    @Nonnull
     @Override
     public HBarStyle getStyle() {
         return this.style;
@@ -69,7 +73,7 @@ public class HBossBar_v1_8_R3 implements HBossBar {
      * {@inheritDoc}
      */
     @Override
-    public void setStyle(HBarStyle style) {
+    public void setStyle(@Nonnull HBarStyle style) {
         this.style = style;
     }
 
@@ -77,7 +81,7 @@ public class HBossBar_v1_8_R3 implements HBossBar {
      * {@inheritDoc}
      */
     @Override
-    public void removeFlag(HBarFlag flag) {
+    public void removeFlag(@Nonnull HBarFlag flag) {
         this.flags.remove(flag);
     }
 
@@ -85,7 +89,7 @@ public class HBossBar_v1_8_R3 implements HBossBar {
      * {@inheritDoc}
      */
     @Override
-    public void addFlag(HBarFlag flag) {
+    public void addFlag(@Nonnull HBarFlag flag) {
         this.flags.add(flag);
     }
 
@@ -93,7 +97,7 @@ public class HBossBar_v1_8_R3 implements HBossBar {
      * {@inheritDoc}
      */
     @Override
-    public boolean hasFlag(HBarFlag flag) {
+    public boolean hasFlag(@Nonnull HBarFlag flag) {
         return this.flags.contains(flag);
     }
 
@@ -117,14 +121,14 @@ public class HBossBar_v1_8_R3 implements HBossBar {
      * {@inheritDoc}
      */
     @Override
-    public void addPlayer(Player player) {
+    public void addPlayer(@Nonnull Player player) {
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void removePlayer(Player player) {
+    public void removePlayer(@Nonnull Player player) {
     }
 
     /**
@@ -137,6 +141,7 @@ public class HBossBar_v1_8_R3 implements HBossBar {
     /**
      * {@inheritDoc}
      */
+    @Nonnull
     @Override
     public List<Player> getPlayers() {
         return Collections.emptyList();

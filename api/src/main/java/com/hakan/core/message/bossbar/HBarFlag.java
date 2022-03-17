@@ -1,5 +1,8 @@
 package com.hakan.core.message.bossbar;
 
+/**
+ * Bar flag class.
+ */
 public enum HBarFlag {
 
     DARKEN_SKY,

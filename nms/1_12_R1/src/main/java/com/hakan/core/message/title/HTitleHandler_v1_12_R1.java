@@ -5,10 +5,12 @@ import net.minecraft.server.v1_12_R1.IChatBaseComponent;
 import net.minecraft.server.v1_12_R1.PacketPlayOutTitle;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nonnull;
+
 public class HTitleHandler_v1_12_R1 implements HTitleHandler {
 
     @Override
-    public void send(Player player, HTitle hTitle) {
+    public void send(@Nonnull Player player, @Nonnull HTitle hTitle) {
         IChatBaseComponent titleString = IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + hTitle.getTitle() + "\"}");
         IChatBaseComponent subtitleString = IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + hTitle.getSubtitle() + "\"}");
 
