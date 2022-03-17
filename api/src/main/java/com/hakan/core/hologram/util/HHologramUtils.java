@@ -15,13 +15,13 @@ import java.lang.reflect.Constructor;
 public final class HHologramUtils {
 
     /**
-     * Creates new instance of VezorArmorStand class
+     * Creates new instance of HologramArmorStand class.
      *
      * @param hHologram instance of hologram
-     * @return new instance of VezorArmorStand class
+     * @return New instance of HologramArmorStand class.
      */
     @Nonnull
-    public static HHologramArmorStand createVezorArmorStand(@Nonnull HHologram hHologram) {
+    public static HHologramArmorStand createHologramArmorStand(@Nonnull HHologram hHologram) {
         try {
             Validate.notNull(hHologram, "vezorHologram cannot be null");
 
