@@ -1,5 +1,7 @@
-package com.hakan.core.command;
+package com.hakan.core.command.listeners;
 
+import com.hakan.core.command.HCommandExecutor;
+import com.hakan.core.command.HSubCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
@@ -10,27 +12,35 @@ import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
+/**
+ * Listener class for command executor.
+ */
 public final class HCommandListener extends BukkitCommand {
 
     private final HCommandExecutor executor;
 
-    HCommandListener(HCommandExecutor executor) {
-        super(executor.getCommand());
+    /**
+     * Creates new instance of listener.
+     *
+     * @param executor Command executor.
+     */
+    public HCommandListener(@Nonnull HCommandExecutor executor) {
+        super(Objects.requireNonNull(executor).getCommand());
         super.setAliases(Arrays.asList(executor.getAliases()));
         super.setPermission(executor.getPermission());
 
         this.executor = executor;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public boolean execute(CommandSender sender, String label, String[] args) {
-        for (Function<HCommandExecutor, Boolean> function : this.executor.functions)
+    public boolean execute(@Nonnull CommandSender sender, @Nonnull String label, @Nonnull String[] args) {
+        for (Function<HCommandExecutor, Boolean> function : this.executor.getFilters())
             if (!function.apply(this.executor))
                 return false;
 
@@ -38,6 +48,9 @@ public final class HCommandListener extends BukkitCommand {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<String> tabComplete(@Nonnull CommandSender sender, @Nonnull String alias, @Nonnull String[] args) throws IllegalArgumentException {
         HSubCommand subCommand = this.executor;
@@ -56,6 +69,9 @@ public final class HCommandListener extends BukkitCommand {
         return new ArrayList<>(subCommand.getSubCommands().keySet());
     }
 
+    /**
+     * Registers to bukkit map.
+     */
     public void register() {
         try {
             Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
@@ -74,6 +90,9 @@ public final class HCommandListener extends BukkitCommand {
         }
     }
 
+    /**
+     * Unregisters from bukkit map.
+     */
     @SuppressWarnings("unchecked")
     public void unregister() {
         try {
