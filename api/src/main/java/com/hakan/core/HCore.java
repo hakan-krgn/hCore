@@ -54,6 +54,7 @@ public class HCore {
      * @param plugin Instance of main class.
      */
     public static void initialize(@Nonnull JavaPlugin plugin) {
+        if (HCore.instance != null) return;
         HCore.instance = Objects.requireNonNull(plugin, "plugin cannot be null!");
 
         Metrics.initialize(plugin);
