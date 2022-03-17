@@ -84,6 +84,15 @@ public class HRenderer {
         return new HashSet<>(this.shownViewers);
     }
 
+    public List<Player> getShownViewersAsPlayer() {
+        List<Player> players = new ArrayList<>();
+        this.shownViewers.forEach(uid -> {
+            Player player = Bukkit.getPlayer(uid);
+            if (player != null) players.add(player);
+        });
+        return players;
+    }
+
     public Set<UUID> getViewers() {
         return this.viewers;
     }
