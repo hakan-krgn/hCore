@@ -57,6 +57,15 @@ public class HHologram {
     }
 
     /**
+     * Is hologram deleted?
+     *
+     * @return if hologram was deleted, returns true
+     */
+    public boolean isExist() {
+        return HHologramHandler.getContent().containsKey(this.id);
+    }
+
+    /**
      * Gets id of hologram
      *
      * @return id of hologram
@@ -64,15 +73,6 @@ public class HHologram {
     @Nonnull
     public String getId() {
         return this.id;
-    }
-
-    /**
-     * Is hologram deleted?
-     *
-     * @return if hologram was deleted, returns true
-     */
-    public boolean isExist() {
-        return HHologramHandler.getContent().containsKey(this.id);
     }
 
     /**
@@ -182,7 +182,7 @@ public class HHologram {
      * @return instance of this class
      */
     @Nonnull
-    public HHologram addPlayer(@Nonnull List<Player> players) {
+    public HHologram addPlayer(@Nonnull Collection<Player> players) {
         Validate.notNull(players, "players cannot be null");
         players.forEach(player -> this.renderer.addViewer(player.getUniqueId()));
         return this;
@@ -208,7 +208,7 @@ public class HHologram {
      * @return instance of this class
      */
     @Nonnull
-    public HHologram addUID(@Nonnull List<UUID> uids) {
+    public HHologram addUID(@Nonnull Collection<UUID> uids) {
         Validate.notNull(uids, "uuids cannot be null");
         uids.forEach(this.renderer::addViewer);
         return this;
@@ -234,7 +234,7 @@ public class HHologram {
      * @return instance of this class
      */
     @Nonnull
-    public HHologram removePlayer(@Nonnull List<Player> players) {
+    public HHologram removePlayer(@Nonnull Collection<Player> players) {
         Validate.notNull(players, "players cannot be null");
         players.forEach(player -> this.renderer.removeViewer(player.getUniqueId()));
         return this;
@@ -260,7 +260,7 @@ public class HHologram {
      * @return instance of this class
      */
     @Nonnull
-    public HHologram removeUID(@Nonnull List<UUID> uids) {
+    public HHologram removeUID(@Nonnull Collection<UUID> uids) {
         Validate.notNull(uids, "players cannot be null");
         uids.forEach(this.renderer::removeViewer);
         return this;
@@ -314,7 +314,7 @@ public class HHologram {
      * @return instance of this class
      */
     @Nonnull
-    public HHologram addLines(@Nonnull List<String> texts) {
+    public HHologram addLines(@Nonnull Collection<String> texts) {
         Validate.notNull(texts, "texts cannot be null");
         texts.forEach(this::addLine);
         return this;
@@ -369,7 +369,7 @@ public class HHologram {
      * @return instance of this class
      */
     @Nonnull
-    public HHologram removeLines(@Nonnull List<Integer> indexes) {
+    public HHologram removeLines(@Nonnull Collection<Integer> indexes) {
         Validate.notNull(indexes, "indexes cannot be null");
         indexes.forEach(this::removeLine);
         return this;
