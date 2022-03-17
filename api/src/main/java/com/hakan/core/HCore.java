@@ -1,6 +1,6 @@
 package com.hakan.core;
 
-import com.hakan.core.command.HCommand;
+import com.hakan.core.command.functional.HCommand;
 import com.hakan.core.command.HCommandExecutor;
 import com.hakan.core.hologram.HHologram;
 import com.hakan.core.hologram.HHologramHandler;
