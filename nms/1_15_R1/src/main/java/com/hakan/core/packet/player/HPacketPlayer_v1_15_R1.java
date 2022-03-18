@@ -7,32 +7,35 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 import net.minecraft.server.v1_15_R1.Packet;
 import net.minecraft.server.v1_15_R1.PlayerConnection;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nonnull;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * {@inheritDoc}
  */
-public class HPacketPlayer_v1_15_R1 extends HPacketPlayer {
+public final class HPacketPlayer_v1_15_R1 extends HPacketPlayer {
 
     private final PlayerConnection connection;
 
     /**
      * {@inheritDoc}
      */
-    public HPacketPlayer_v1_15_R1(Player player) {
+    public HPacketPlayer_v1_15_R1(@Nonnull Player player) {
         super(player);
-        this.connection = ((CraftPlayer) this.player).getHandle().playerConnection;
+        this.connection = ((CraftPlayer) player).getHandle().playerConnection;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void send(Object... packets) {
+    public void send(@Nonnull Object... packets) {
+        Validate.notNull(packets, "packets cannot be null!");
         for (Object packet : packets) {
             this.connection.sendPacket((Packet<?>) packet);
         }

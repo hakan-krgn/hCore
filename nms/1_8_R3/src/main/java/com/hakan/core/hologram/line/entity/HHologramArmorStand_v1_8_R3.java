@@ -15,7 +15,7 @@ import java.util.Objects;
 /**
  * {@inheritDoc}
  */
-public class HHologramArmorStand_v1_8_R3 extends EntityArmorStand implements HHologramArmorStand {
+public final class HHologramArmorStand_v1_8_R3 extends EntityArmorStand implements HHologramArmorStand {
 
     private final HHologram hologram;
 
@@ -50,10 +50,7 @@ public class HHologramArmorStand_v1_8_R3 extends EntityArmorStand implements HHo
      */
     @Override
     public void setText(@Nonnull String text) {
-        Validate.notNull(text, "text cannot be null");
-
-        super.setCustomName(text);
-
+        super.setCustomName(Objects.requireNonNull(text, "text cannot be null!"));
         HCore.sendPacket(this.hologram.getRenderer().getShownViewersAsPlayer(),
                 new PacketPlayOutEntityMetadata(super.getId(), super.getDataWatcher(), true));
     }
@@ -87,9 +84,7 @@ public class HHologramArmorStand_v1_8_R3 extends EntityArmorStand implements HHo
      */
     @Override
     public void show(@Nonnull List<Player> players) {
-        Validate.notNull(players, "players cannot be null");
-
-        HCore.sendPacket(players,
+        HCore.sendPacket(Objects.requireNonNull(players, "players cannot be null"),
                 new PacketPlayOutSpawnEntityLiving(this),
                 new PacketPlayOutEntityMetadata(super.getId(), super.getDataWatcher(), true),
                 new PacketPlayOutEntityTeleport(this));
@@ -100,9 +95,7 @@ public class HHologramArmorStand_v1_8_R3 extends EntityArmorStand implements HHo
      */
     @Override
     public void hide(@Nonnull List<Player> players) {
-        Validate.notNull(players, "players cannot be null");
-
-        HCore.sendPacket(players,
+        HCore.sendPacket(Objects.requireNonNull(players, "players cannot be null"),
                 new PacketPlayOutEntityDestroy(super.getId()));
     }
 }

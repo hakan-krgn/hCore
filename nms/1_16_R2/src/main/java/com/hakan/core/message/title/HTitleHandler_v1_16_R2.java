@@ -10,7 +10,7 @@ import javax.annotation.Nonnull;
 /**
  * {@inheritDoc}
  */
-public class HTitleHandler_v1_16_R2 implements HTitleHandler {
+public final class HTitleHandler_v1_16_R2 implements HTitleHandler {
 
     /**
      * {@inheritDoc}

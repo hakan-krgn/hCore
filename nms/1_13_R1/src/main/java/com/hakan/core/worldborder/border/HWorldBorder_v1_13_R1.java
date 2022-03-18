@@ -15,7 +15,7 @@ import java.util.Set;
 /**
  * {@inheritDoc}
  */
-public class HWorldBorder_v1_13_R1 extends WorldBorder implements HWorldBorder {
+public final class HWorldBorder_v1_13_R1 extends WorldBorder implements HWorldBorder {
 
     private HBorderColor color;
     private final Set<Player> shownViewers;

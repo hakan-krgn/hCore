@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 /**
  * {@inheritDoc}
  */
-public class HParticleWrapper_v1_15_R1 implements HParticleWrapper {
+public final class HParticleWrapper_v1_15_R1 implements HParticleWrapper {
 
     /**
      * {@inheritDoc}

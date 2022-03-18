@@ -192,11 +192,11 @@ public class HCore {
     PACKET
      */
     public static void sendPacket(Player player, Object packet) {
-        HPacketHandler.getPacketPlayerMap().get(player).send(packet);
+        HPacketHandler.getContent().get(player).send(packet);
     }
 
     public static void sendPacket(Player player, Object... packets) {
-        HPacketHandler.getPacketPlayerMap().get(player).send(packets);
+        HPacketHandler.getContent().get(player).send(packets);
     }
 
     public static void sendPacket(Collection<Player> players, Object packet) {

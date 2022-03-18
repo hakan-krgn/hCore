@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * {@inheritDoc}
  */
-public class HBossBar_v1_8_R3 implements HBossBar {
+public final class HBossBar_v1_8_R3 implements HBossBar {
 
     private String title;
     private HBarColor color;

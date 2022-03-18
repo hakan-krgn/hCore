@@ -15,7 +15,7 @@ import java.util.Objects;
 /**
  * {@inheritDoc}
  */
-public class HHologramArmorStand_v1_16_R2 extends EntityArmorStand implements HHologramArmorStand {
+public final class HHologramArmorStand_v1_16_R2 extends EntityArmorStand implements HHologramArmorStand {
 
     private final HHologram hologram;
 
@@ -86,9 +86,7 @@ public class HHologramArmorStand_v1_16_R2 extends EntityArmorStand implements HH
      */
     @Override
     public void show(@Nonnull List<Player> players) {
-        Validate.notNull(players, "players cannot be null");
-
-        HCore.sendPacket(players,
+        HCore.sendPacket(Objects.requireNonNull(players, "players cannot be null"),
                 new PacketPlayOutSpawnEntityLiving(this),
                 new PacketPlayOutEntityMetadata(super.getId(), super.getDataWatcher(), true),
                 new PacketPlayOutEntityTeleport(this));
@@ -99,9 +97,7 @@ public class HHologramArmorStand_v1_16_R2 extends EntityArmorStand implements HH
      */
     @Override
     public void hide(@Nonnull List<Player> players) {
-        Validate.notNull(players, "players cannot be null");
-
-        HCore.sendPacket(players,
+        HCore.sendPacket(Objects.requireNonNull(players, "players cannot be null"),
                 new PacketPlayOutEntityDestroy(super.getId()));
     }
 }

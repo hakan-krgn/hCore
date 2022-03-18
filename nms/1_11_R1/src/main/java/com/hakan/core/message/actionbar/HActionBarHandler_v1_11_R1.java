@@ -10,7 +10,7 @@ import javax.annotation.Nonnull;
 /**
  * {@inheritDoc}
  */
-public class HActionBarHandler_v1_11_R1 implements HActionBarHandler {
+public final class HActionBarHandler_v1_11_R1 implements HActionBarHandler {
 
     /**
      * {@inheritDoc}
