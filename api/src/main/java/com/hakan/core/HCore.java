@@ -23,6 +23,7 @@ import com.hakan.core.ui.sign.HSignHandler;
 import com.hakan.core.worldborder.HWorldBorderHandler;
 import com.hakan.core.worldborder.border.HBorderColor;
 import com.hakan.core.worldborder.border.HWorldBorder;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -255,7 +256,7 @@ public class HCore {
         HMessageAPI.sendActionBar(players, text);
     }
 
-    public static HBossBar createBossBar(String title, HBarColor color, HBarStyle style, HBarFlag... flags) {
+    public static HBossBar createBossBar(@Nonnull String title, @Nonnull HBarColor color, @Nonnull HBarStyle style, @Nonnull HBarFlag... flags) {
         return HMessageAPI.createBossBar(title, color, style, flags);
     }
 

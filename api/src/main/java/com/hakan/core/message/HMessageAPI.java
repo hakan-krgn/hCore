@@ -8,6 +8,7 @@ import com.hakan.core.message.bossbar.HBarStyle;
 import com.hakan.core.message.bossbar.HBossBar;
 import com.hakan.core.message.title.HTitle;
 import com.hakan.core.message.title.HTitleHandler;
+import org.apache.commons.lang.Validate;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
@@ -147,11 +148,16 @@ public final class HMessageAPI {
      * @return New instance of HBossBar.
      */
     public static HBossBar createBossBar(@Nonnull String title, @Nonnull HBarColor color, @Nonnull HBarStyle style, @Nonnull HBarFlag... flags) {
+        Validate.notNull(title, "title cannot be null!");
+        Validate.notNull(color, "color cannot be null!");
+        Validate.notNull(style, "style cannot be null!");
+        Validate.notNull(flags, "flags cannot be null!");
+        
         try {
             String version = HCore.getVersionString();
             return (HBossBar) Class.forName("com.hakan.core.message.bossbar.HBossBar_" + version)
                     .getConstructor(String.class, HBarColor.class, HBarStyle.class, HBarFlag[].class)
-                    .newInstance(Objects.requireNonNull(title), Objects.requireNonNull(color), Objects.requireNonNull(style), Objects.requireNonNull(flags));
+                    .newInstance(title, color, style, flags);
         } catch (Exception e) {
             return null;
         }
