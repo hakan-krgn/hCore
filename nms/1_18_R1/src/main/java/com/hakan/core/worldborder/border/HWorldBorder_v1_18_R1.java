@@ -12,11 +12,17 @@ import org.bukkit.entity.Player;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * {@inheritDoc}
+ */
 public class HWorldBorder_v1_18_R1 extends WorldBorder implements HWorldBorder {
 
     private HBorderColor color;
     private final Set<Player> shownViewers;
 
+    /**
+     * {@inheritDoc}
+     */
     public HWorldBorder_v1_18_R1(Location location, double size, double damageAmount, double damageBuffer, int warningDistance, int warningTime, HBorderColor color) {
         this.color = color;
         this.shownViewers = new HashSet<>();
@@ -30,6 +36,9 @@ public class HWorldBorder_v1_18_R1 extends WorldBorder implements HWorldBorder {
         this.update();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void show(Player player) {
         this.shownViewers.add(player);
@@ -42,11 +51,17 @@ public class HWorldBorder_v1_18_R1 extends WorldBorder implements HWorldBorder {
         HCore.sendPacket(player, new ClientboundInitializeBorderPacket(this));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showAll() {
         Bukkit.getOnlinePlayers().forEach(this::show);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void hide(Player player) {
         this.shownViewers.remove(player);
@@ -57,92 +72,146 @@ public class HWorldBorder_v1_18_R1 extends WorldBorder implements HWorldBorder {
         HCore.sendPacket(player, new ClientboundInitializeBorderPacket(this));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void hideAll() {
         this.shownViewers.forEach(this::hide);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void delete() {
         this.hideAll();
         HWorldBorderHandler.getContent().remove(this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Set<Player> getShownViewers() {
         return this.shownViewers;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Location getCenter() {
         return new Location(super.world.getWorld(), super.a(), 64, super.b());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setCenter(Location location) {
         super.c(location.getX(), location.getZ());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HBorderColor getColor() {
         return this.color;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setColor(HBorderColor hBorderColor) {
         this.color = hBorderColor;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getSize() {
         return super.i();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setSize(double size) {
         super.a(size);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getDamageAmount() {
         return super.o();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setDamageAmount(double damageAmount) {
         super.c(damageAmount);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getDamageBuffer() {
         return super.n();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setDamageBuffer(double damageBuffer) {
         super.b(damageBuffer);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getWarningDistance() {
         return super.r();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setWarningDistance(int warningDistance) {
         super.c(warningDistance);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getWarningTime() {
         return super.q();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setWarningTime(int warningTime) {
         super.b(warningTime);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void update() {
         if (this.color == HBorderColor.BLUE)

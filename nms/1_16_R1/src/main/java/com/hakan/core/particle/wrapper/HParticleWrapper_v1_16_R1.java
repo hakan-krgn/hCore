@@ -10,8 +10,14 @@ import org.bukkit.Particle;
 import org.bukkit.craftbukkit.v1_16_R1.CraftParticle;
 import org.bukkit.entity.Player;
 
+/**
+ * {@inheritDoc}
+ */
 public class HParticleWrapper_v1_16_R1 implements HParticleWrapper {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void play(Player player, Location location, HParticle hParticle) {
         ParticleParam particleParam = null;

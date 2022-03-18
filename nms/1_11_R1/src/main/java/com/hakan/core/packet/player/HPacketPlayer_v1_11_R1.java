@@ -13,15 +13,24 @@ import org.bukkit.entity.Player;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * {@inheritDoc}
+ */
 public class HPacketPlayer_v1_11_R1 extends HPacketPlayer {
 
     private final PlayerConnection connection;
 
+    /**
+     * {@inheritDoc}
+     */
     public HPacketPlayer_v1_11_R1(Player player) {
         super(player);
         this.connection = ((CraftPlayer) this.player).getHandle().playerConnection;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void send(Object... packets) {
         for (Object packet : packets) {
@@ -29,6 +38,9 @@ public class HPacketPlayer_v1_11_R1 extends HPacketPlayer {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void register() {
         this.pipeline = this.connection.networkManager.channel.pipeline().addBefore("packet_handler", CHANNEL, new ChannelDuplexHandler() {
@@ -60,6 +72,9 @@ public class HPacketPlayer_v1_11_R1 extends HPacketPlayer {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void unregister() {
         if (this.pipeline != null && this.pipeline.get(CHANNEL) != null)

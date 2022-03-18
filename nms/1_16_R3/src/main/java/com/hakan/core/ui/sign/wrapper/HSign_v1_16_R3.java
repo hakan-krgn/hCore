@@ -11,12 +11,21 @@ import org.bukkit.craftbukkit.v1_16_R3.block.CraftSign;
 import org.bukkit.craftbukkit.v1_16_R3.util.CraftMagicNumbers;
 import org.bukkit.entity.Player;
 
+/**
+ * {@inheritDoc}
+ */
 public class HSign_v1_16_R3 extends HSign {
 
+    /**
+     * {@inheritDoc}
+     */
     public HSign_v1_16_R3(Material type, String... lines) {
         super(type, lines);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void open(Player player) {
         BlockPosition blockPosition = new BlockPosition(player.getLocation().getBlockX(), 1, player.getLocation().getBlockZ());
@@ -35,6 +44,9 @@ public class HSign_v1_16_R3 extends HSign {
         HSignHandler.getContent().put(player.getUniqueId(), this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> void listen(Player player, T packet) {
         PacketPlayInUpdateSign packetPlayInUpdateSign = (PacketPlayInUpdateSign) packet;

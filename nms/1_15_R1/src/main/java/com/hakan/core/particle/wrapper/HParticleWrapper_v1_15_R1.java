@@ -10,8 +10,14 @@ import org.bukkit.Particle;
 import org.bukkit.craftbukkit.v1_15_R1.CraftParticle;
 import org.bukkit.entity.Player;
 
+/**
+ * {@inheritDoc}
+ */
 public class HParticleWrapper_v1_15_R1 implements HParticleWrapper {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void play(Player player, Location location, HParticle hParticle) {
         ParticleParam particleParam = null;
@@ -25,7 +31,7 @@ public class HParticleWrapper_v1_15_R1 implements HParticleWrapper {
                 }
             }
         }
-        
+
         Validate.notNull(particleParam, "Particle not found!");
         HCore.sendPacket(player, new PacketPlayOutWorldParticles(particleParam, false, (float) location.getX(), (float) location.getY(), (float) location.getZ(), (float) hParticle.getOffset().getX(), (float) hParticle.getOffset().getY(), (float) hParticle.getOffset().getZ(), (float) hParticle.getSpeed(), hParticle.getAmount()));
     }
