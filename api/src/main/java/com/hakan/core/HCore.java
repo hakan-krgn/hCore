@@ -267,12 +267,12 @@ public class HCore {
     /*
     WORLD BORDER
      */
-    public static Collection<HWorldBorder> getBorderContentSafe() {
-        return HWorldBorderHandler.getContentSafe();
+    public static Collection<HWorldBorder> getBorderValuesSafe() {
+        return HWorldBorderHandler.getValuesSafe();
     }
 
-    public static Collection<HWorldBorder> getBorderContent() {
-        return HWorldBorderHandler.getContent();
+    public static Collection<HWorldBorder> getBorderValues() {
+        return HWorldBorderHandler.getValues();
     }
 
     public static Optional<HWorldBorder> findBorderByPlayer(Player player) {
@@ -283,7 +283,7 @@ public class HCore {
         return HWorldBorderHandler.getByPlayer(player);
     }
 
-    public static HWorldBorder createBorder(Location location, double size, double damageAmount, double damageBuffer, int warningDistance, int warningTime, HBorderColor color) {
+    public static HWorldBorder createBorder(@Nonnull Location location, double size, double damageAmount, double damageBuffer, int warningDistance, int warningTime, @Nonnull HBorderColor color) {
         return HWorldBorderHandler.create(location, size, damageAmount, damageBuffer, warningDistance, warningTime, color);
     }
 

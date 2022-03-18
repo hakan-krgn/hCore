@@ -9,14 +9,27 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
 
-public class HBorderPlayerConnectionListener extends HListenerAdapter {
+/**
+ * Player connection listener.
+ */
+public final class HBorderPlayerConnectionListener extends HListenerAdapter {
 
+    /**
+     * Creates new instance of this class.
+     *
+     * @param plugin Main class of plugin.
+     */
     public HBorderPlayerConnectionListener(@Nonnull JavaPlugin plugin) {
         super(plugin);
     }
 
+    /**
+     * Player quit event.
+     *
+     * @param event Event.
+     */
     @EventHandler
-    public void onQuit(PlayerQuitEvent event) {
+    public void onQuit(@Nonnull PlayerQuitEvent event) {
         Player player = event.getPlayer();
         HWorldBorderHandler.findByPlayer(player)
                 .ifPresent(hWorldBorder -> hWorldBorder.hide(player));
