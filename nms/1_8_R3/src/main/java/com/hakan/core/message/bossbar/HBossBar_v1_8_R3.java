@@ -1,6 +1,5 @@
 package com.hakan.core.message.bossbar;
 
-import org.apache.commons.lang.Validate;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;

@@ -3,7 +3,6 @@ package com.hakan.core.ui.inventory;
 import com.hakan.core.ui.inventory.item.ClickableItem;
 import com.hakan.core.ui.inventory.pagination.Page;
 import com.hakan.core.ui.inventory.pagination.Pagination;
-import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -29,7 +28,16 @@ public class HInventory {
     private final Set<Option> options;
     private final Map<Integer, ClickableItem> items;
 
-    public HInventory(String id, String title, int size, InventoryType type, Set<Option> options) {
+    /**
+     * Creates new instance of this class.
+     *
+     * @param id      ID of inventory.
+     * @param title   Title.
+     * @param size    Size.
+     * @param type    Inventory type.
+     * @param options Options.
+     */
+    public HInventory(@Nonnull String id, @Nonnull String title, int size, @Nonnull InventoryType type, @Nonnull Set<Option> options) {
         this.id = id;
         this.title = title;
         this.options = options;
@@ -43,7 +51,16 @@ public class HInventory {
         this.onCreate(this);
     }
 
-    public HInventory(String id, String title, int size, InventoryType type) {
+    /**
+     * Creates new instance of this class
+     * with all options.
+     *
+     * @param id    ID of inventory.
+     * @param title Title.
+     * @param size  Size.
+     * @param type  Inventory type.
+     */
+    public HInventory(@Nonnull String id, @Nonnull String title, int size, @Nonnull InventoryType type) {
         this(id, title, size, type, new HashSet<>(Arrays.asList(Option.values())));
     }
 
@@ -103,8 +120,7 @@ public class HInventory {
      * @return If UI contains option, returns true
      */
     public final boolean hasOption(@Nonnull Option option) {
-        Validate.notNull(option, "option cannot be null");
-        return this.options.contains(option);
+        return this.options.contains(Objects.requireNonNull(option, "option cannot be null!"));
     }
 
     /**
@@ -113,9 +129,9 @@ public class HInventory {
      * @param option enum HInventory.Option
      * @return instance of this class
      */
+    @Nonnull
     public final <T extends HInventory> T addOption(@Nonnull Option option) {
-        Validate.notNull(option, "option cannot be null");
-        this.options.add(option);
+        this.options.add(Objects.requireNonNull(option, "option cannot be null!"));
         return (T) this;
     }
 
@@ -125,9 +141,9 @@ public class HInventory {
      * @param option enum HInventory.Option
      * @return instance of this class
      */
+    @Nonnull
     public final <T extends HInventory> T removeOption(@Nonnull Option option) {
-        Validate.notNull(option, "option cannot be null");
-        this.options.remove(option);
+        this.options.remove(Objects.requireNonNull(option, "option cannot be null!"));
         return (T) this;
     }
 
@@ -198,7 +214,6 @@ public class HInventory {
      */
     @Nonnull
     public final <T extends HInventory> T setItem(int slot, @Nonnull ItemStack itemStack, @Nullable Consumer<InventoryClickEvent> consumer) {
-        Validate.notNull(itemStack, "itemstack cannot be null");
         return this.setItem(slot, new ClickableItem(itemStack, consumer));
     }
 
@@ -221,8 +236,8 @@ public class HInventory {
      * @return instance of this class
      */
     @Nonnull
-    public final <T extends HInventory> T fillPage(Page page) {
-        this.pagination.setCurrentPage(page.getNumber());
+    public final <T extends HInventory> T fillPage(@Nonnull Page page) {
+        this.pagination.setCurrentPage(Objects.requireNonNull(page, "page cannot be null!").getNumber());
         return (T) this;
     }
 
@@ -309,7 +324,7 @@ public class HInventory {
      */
     @Nonnull
     public final <T extends HInventory> T fillMaterial(@Nonnull Material material, boolean replaceWithItems) {
-        return this.fill(new ItemStack(material), replaceWithItems);
+        return this.fill(new ItemStack(Objects.requireNonNull(material, "material cannot be null!")), replaceWithItems);
     }
 
     /**
@@ -320,7 +335,7 @@ public class HInventory {
      */
     @Nonnull
     public final <T extends HInventory> T fillMaterial(@Nonnull Material material) {
-        return this.fill(new ItemStack(material), true);
+        return this.fill(new ItemStack(Objects.requireNonNull(material, "material cannot be null!")), true);
     }
 
     /**
@@ -371,8 +386,8 @@ public class HInventory {
      * @return instance of this class
      */
     @Nonnull
-    public <T extends HInventory> T refresh(Player player) {
-        this.onOpen(this, player);
+    public final <T extends HInventory> T refresh(@Nonnull Player player) {
+        this.onOpen(this, Objects.requireNonNull(player, "player cannot be null!"));
         return (T) this;
     }
 
@@ -383,8 +398,8 @@ public class HInventory {
      * @return instance of this class
      */
     @Nonnull
-    public final <T extends HInventory> T open(Player player) {
-        HInventory hInventory = HInventoryHandler.findByPlayer(player).orElse(null);
+    public final <T extends HInventory> T open(@Nonnull Player player) {
+        HInventory hInventory = HInventoryHandler.findByPlayer(Objects.requireNonNull(player, "player cannot be null!")).orElse(null);
 
         if (hInventory == null || !hInventory.equals(this)) {
             player.openInventory(this.inventory);
@@ -402,21 +417,46 @@ public class HInventory {
      * @return instance of this class
      */
     @Nonnull
-    public final <T extends HInventory> T close(Player player) {
-        this.addOption(Option.CLOSABLE);
-        player.closeInventory();
+    public final <T extends HInventory> T close(@Nonnull Player player) {
+        Objects.requireNonNull(player, "player cannot be null!");
+
+        if (this.hasOption(Option.CLOSABLE)) {
+            player.closeInventory();
+        } else {
+            this.addOption(Option.CLOSABLE);
+            player.closeInventory();
+            this.removeOption(Option.CLOSABLE);
+        }
+
         return (T) this;
     }
 
-    public void onCreate(HInventory hInventory) {
+    /**
+     * This method run when inventory created.
+     *
+     * @param hInventory This class.
+     */
+    public void onCreate(@Nonnull HInventory hInventory) {
 
     }
 
-    public void onOpen(HInventory hInventory, Player player) {
+    /**
+     * This method run when inventory
+     * opened to any player.
+     *
+     * @param hInventory This class.
+     */
+    public void onOpen(@Nonnull HInventory hInventory, @Nonnull Player player) {
 
     }
 
-    public void onClose(HInventory hInventory, Player player) {
+    /**
+     * This method run when inventory
+     * closed from any player.
+     *
+     * @param hInventory This class.
+     */
+    public void onClose(@Nonnull HInventory hInventory, @Nonnull Player player) {
 
     }
 

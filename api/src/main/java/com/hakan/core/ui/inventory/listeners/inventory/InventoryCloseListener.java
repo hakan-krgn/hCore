@@ -11,14 +11,28 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
 
-public class InventoryCloseListener extends HListenerAdapter {
+/**
+ * This class handles inventory
+ * close event for CLOSABLE option.
+ */
+public final class InventoryCloseListener extends HListenerAdapter {
 
+    /**
+     * Creates new instance of this class.
+     *
+     * @param plugin Main class of plugin.
+     */
     public InventoryCloseListener(@Nonnull JavaPlugin plugin) {
         super(plugin);
     }
 
+    /**
+     * Inventory close event.
+     *
+     * @param event Event.
+     */
     @EventHandler
-    public void onClose(InventoryCloseEvent event) {
+    public void onClose(@Nonnull InventoryCloseEvent event) {
         Player player = (Player) event.getPlayer();
 
         HInventoryHandler.findByPlayer(player).ifPresent(hInventory -> {

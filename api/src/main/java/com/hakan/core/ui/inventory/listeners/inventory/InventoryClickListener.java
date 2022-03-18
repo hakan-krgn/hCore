@@ -12,14 +12,28 @@ import org.bukkit.plugin.java.JavaPlugin;
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
+/**
+ * This class handles hInventory click
+ * events.
+ */
 public final class InventoryClickListener extends HListenerAdapter {
 
+    /**
+     * Creates new instance of this class.
+     *
+     * @param plugin Main class of plugin.
+     */
     public InventoryClickListener(@Nonnull JavaPlugin plugin) {
         super(plugin);
     }
 
+    /**
+     * Inventory click event.
+     *
+     * @param event Event.
+     */
     @EventHandler
-    public void onClick(InventoryClickEvent event) {
+    public void onClick(@Nonnull InventoryClickEvent event) {
         if (event.getClick() == ClickType.UNKNOWN) {
             event.setCancelled(true);
             return;
