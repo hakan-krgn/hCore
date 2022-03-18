@@ -4,32 +4,81 @@ import com.hakan.core.HCore;
 import com.hakan.core.listener.HListenerAdapter;
 import com.hakan.core.packet.listeners.PlayerConnectionListener;
 import com.hakan.core.packet.player.HPacketPlayer;
+import org.apache.commons.lang.Validate;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HPacketHandler {
+/**
+ * HPacketHandler class.
+ */
+public final class HPacketHandler {
 
     private static final Map<Player, HPacketPlayer> packetPlayers = new HashMap<>();
 
-    public static void initialize(JavaPlugin plugin) {
+    /**
+     * Initializes the packet system.
+     *
+     * @param plugin Main class of plugin.
+     */
+    public static void initialize(@Nonnull JavaPlugin plugin) {
         HListenerAdapter.register(new PlayerConnectionListener(plugin));
     }
 
 
-    public static Map<Player, HPacketPlayer> getPacketPlayerMap() {
+    /**
+     * Gets content as safe.
+     *
+     * @return Content.
+     */
+    @Nonnull
+    public static Map<Player, HPacketPlayer> getContentSafe() {
+        return new HashMap<>(HPacketHandler.packetPlayers);
+    }
+
+    /**
+     * Gets content.
+     *
+     * @return Content.
+     */
+    @Nonnull
+    public static Map<Player, HPacketPlayer> getContent() {
         return HPacketHandler.packetPlayers;
     }
 
-    public static Collection<HPacketPlayer> getPacketPlayers() {
+    /**
+     * Gets values as safe.
+     *
+     * @return Values.
+     */
+    @Nonnull
+    public static Collection<HPacketPlayer> getValuesSafe() {
+        return new ArrayList<>(HPacketHandler.packetPlayers.values());
+    }
+
+    /**
+     * Gets values.
+     *
+     * @return Values.
+     */
+    @Nonnull
+    public static Collection<HPacketPlayer> getValues() {
         return HPacketHandler.packetPlayers.values();
     }
 
-    public static void create(Player player) {
+    /**
+     * Registers the player listener.
+     *
+     * @param player Player.
+     */
+    public static void register(@Nonnull Player player) {
         try {
+            Validate.notNull(player, "player cannot be null!");
             HPacketPlayer packetPlayer = (HPacketPlayer) Class.forName("com.hakan.core.packet.player.HPacketPlayer_" + HCore.getVersionString())
                     .getConstructor(Player.class).newInstance(player);
             HPacketHandler.packetPlayers.put(player, packetPlayer);
@@ -39,7 +88,13 @@ public class HPacketHandler {
         }
     }
 
-    public static void remove(Player player) {
+    /**
+     * Unregisters the player listener.
+     *
+     * @param player Player.
+     */
+    public static void unregister(@Nonnull Player player) {
+        Validate.notNull(player, "player cannot be null!");
         HPacketPlayer packetPlayer = HPacketHandler.packetPlayers.remove(player);
         packetPlayer.unregister();
     }

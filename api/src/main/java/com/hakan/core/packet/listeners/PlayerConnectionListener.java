@@ -9,19 +9,38 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
 
-public class PlayerConnectionListener extends HListenerAdapter {
+/**
+ * Player connection listeners to
+ * handle and listen the packets.
+ */
+public final class PlayerConnectionListener extends HListenerAdapter {
 
+    /**
+     * Creates new instance of this class
+     *
+     * @param plugin Main class.
+     */
     public PlayerConnectionListener(@Nonnull JavaPlugin plugin) {
         super(plugin);
     }
 
+    /**
+     * Join listener handler.
+     *
+     * @param event Event.
+     */
     @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
-        HPacketHandler.create(event.getPlayer());
+    public void onJoin(@Nonnull PlayerJoinEvent event) {
+        HPacketHandler.register(event.getPlayer());
     }
 
+    /**
+     * Quit listener handler.
+     *
+     * @param event Event.
+     */
     @EventHandler
-    public void onQuit(PlayerQuitEvent event) {
-        HPacketHandler.create(event.getPlayer());
+    public void onQuit(@Nonnull PlayerQuitEvent event) {
+        HPacketHandler.register(event.getPlayer());
     }
 }

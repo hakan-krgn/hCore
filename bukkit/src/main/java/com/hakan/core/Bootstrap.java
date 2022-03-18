@@ -6,7 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  * Java plugin class to
  * initialize hCore.
  */
-public class Bootstrap extends JavaPlugin {
+public final class Bootstrap extends JavaPlugin {
 
     /*
     STARTER

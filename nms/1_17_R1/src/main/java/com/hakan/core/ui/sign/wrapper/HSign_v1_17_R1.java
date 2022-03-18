@@ -18,7 +18,7 @@ import org.bukkit.entity.Player;
 /**
  * {@inheritDoc}
  */
-public class HSign_v1_17_R1 extends HSign {
+public final class HSign_v1_17_R1 extends HSign {
 
     /**
      * {@inheritDoc}

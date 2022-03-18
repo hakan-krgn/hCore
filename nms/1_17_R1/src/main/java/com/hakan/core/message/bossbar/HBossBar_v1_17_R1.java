@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * {@inheritDoc}
  */
-public class HBossBar_v1_17_R1 implements HBossBar {
+public final class HBossBar_v1_17_R1 implements HBossBar {
 
     private final BossBar bossBar;
 

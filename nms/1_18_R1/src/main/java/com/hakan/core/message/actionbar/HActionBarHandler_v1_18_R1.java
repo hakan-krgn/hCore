@@ -11,7 +11,7 @@ import javax.annotation.Nonnull;
 /**
  * {@inheritDoc}
  */
-public class HActionBarHandler_v1_18_R1 implements HActionBarHandler {
+public final class HActionBarHandler_v1_18_R1 implements HActionBarHandler {
 
     /**
      * {@inheritDoc}
