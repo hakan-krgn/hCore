@@ -9,14 +9,27 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
 
-public class PlayerQuitListener extends HListenerAdapter {
+/**
+ * Player quit listener class.
+ */
+public final class PlayerQuitListener extends HListenerAdapter {
 
+    /**
+     * Creates new instance of this class.
+     *
+     * @param plugin Main class of plugin.
+     */
     public PlayerQuitListener(@Nonnull JavaPlugin plugin) {
         super(plugin);
     }
 
+    /**
+     * Quit event.
+     *
+     * @param event Event.
+     */
     @EventHandler
-    public void onQuit(PlayerQuitEvent event) {
+    public void onQuit(@Nonnull PlayerQuitEvent event) {
         Player player = event.getPlayer();
         HInventoryHandler.findByPlayer(player)
                 .ifPresent(hInventory -> hInventory.close(player));

@@ -9,14 +9,27 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
 
-public class PluginDisableListener extends HListenerAdapter {
+/**
+ * Plugin disable listener class.
+ */
+public final class PluginDisableListener extends HListenerAdapter {
 
+    /**
+     * Creates new instance of this class.
+     *
+     * @param plugin Main class of plugin.
+     */
     public PluginDisableListener(@Nonnull JavaPlugin plugin) {
         super(plugin);
     }
 
+    /**
+     * Plugin disable event.
+     *
+     * @param event Event.
+     */
     @EventHandler
-    public void onQuit(PluginDisableEvent event) {
+    public void onQuit(@Nonnull PluginDisableEvent event) {
         if (!event.getPlugin().equals(this.plugin))
             return;
 

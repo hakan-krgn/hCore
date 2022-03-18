@@ -45,6 +45,7 @@ public final class HHologramHandler {
      *
      * @return holograms.
      */
+    @Nonnull
     public static Collection<HHologram> getValuesSafe() {
         return new ArrayList<>(HHologramHandler.holograms.values());
     }
@@ -54,6 +55,7 @@ public final class HHologramHandler {
      *
      * @return holograms.
      */
+    @Nonnull
     public static Collection<HHologram> getValues() {
         return HHologramHandler.holograms.values();
     }
