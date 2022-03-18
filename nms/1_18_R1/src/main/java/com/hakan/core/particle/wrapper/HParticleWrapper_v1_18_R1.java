@@ -10,6 +10,8 @@ import org.bukkit.Particle;
 import org.bukkit.craftbukkit.v1_18_R1.CraftParticle;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nonnull;
+
 /**
  * {@inheritDoc}
  */
@@ -19,7 +21,11 @@ public final class HParticleWrapper_v1_18_R1 implements HParticleWrapper {
      * {@inheritDoc}
      */
     @Override
-    public void play(Player player, Location location, HParticle hParticle) {
+    public void play(@Nonnull Player player, @Nonnull Location location, @Nonnull HParticle hParticle) {
+        Validate.notNull(player, "player cannot be null!");
+        Validate.notNull(location, "location cannot be null!");
+        Validate.notNull(hParticle, "hParticle class cannot be null!");
+        
         ParticleParam particleParam = null;
         try {
             particleParam = CraftParticle.toNMS(Particle.valueOf(hParticle.getParticleName()));

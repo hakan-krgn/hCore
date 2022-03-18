@@ -8,6 +8,8 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nonnull;
+
 /**
  * {@inheritDoc}
  */
@@ -17,7 +19,11 @@ public final class HParticleWrapper_v1_10_R1 implements HParticleWrapper {
      * {@inheritDoc}
      */
     @Override
-    public void play(Player player, Location location, HParticle hParticle) {
+    public void play(@Nonnull Player player, @Nonnull Location location, @Nonnull HParticle hParticle) {
+        Validate.notNull(player, "player cannot be null!");
+        Validate.notNull(location, "location cannot be null!");
+        Validate.notNull(hParticle, "hParticle class cannot be null!");
+        
         EnumParticle enumParticle = null;
         try {
             enumParticle = EnumParticle.valueOf(hParticle.getParticleName());
