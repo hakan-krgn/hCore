@@ -3,43 +3,100 @@ package com.hakan.core.ui.sign;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nonnull;
+import java.util.Objects;
 import java.util.function.Consumer;
 
+/**
+ * HSign class to manage
+ * and show sign to player.
+ */
 public abstract class HSign {
 
     protected Material type;
     protected String[] lines;
     protected Consumer<String[]> consumer;
 
-    public HSign(Material type, String... lines) {
-        this.type = type;
-        this.lines = lines;
+    /**
+     * Creates new instance of this class.
+     *
+     * @param type  Type of sign.
+     * @param lines Lines of sign.
+     */
+    public HSign(@Nonnull Material type, @Nonnull String... lines) {
+        this.type = Objects.requireNonNull(type, "type cannot be null!");
+        this.lines = Objects.requireNonNull(lines, "lines cannot be null!");
     }
 
+    /**
+     * Gets type of sign.
+     *
+     * @return Type of sign.
+     */
+    @Nonnull
     public final Material getType() {
         return this.type;
     }
 
-    public final HSign setType(Material type) {
-        this.type = type;
+    /**
+     * Sets type of sign.
+     *
+     * @param type Type of sign.
+     * @return This class.
+     */
+    @Nonnull
+    public final HSign setType(@Nonnull Material type) {
+        this.type = Objects.requireNonNull(type, "type cannot be null!");
         return this;
     }
 
+    /**
+     * Gets line of sign.
+     *
+     * @return Lines of sign.
+     */
+    @Nonnull
     public final String[] getLines() {
         return this.lines;
     }
 
-    public final HSign setLines(String[] lines) {
-        this.lines = lines;
+    /**
+     * Sets lines of sign.
+     *
+     * @param lines Lines of sign.
+     * @return This class.
+     */
+    @Nonnull
+    public final HSign setLines(@Nonnull String[] lines) {
+        this.lines = Objects.requireNonNull(lines, "lines cannot be null!");
         return this;
     }
 
-    public final HSign onComplete(Consumer<String[]> consumer) {
-        this.consumer = consumer;
+    /**
+     * Runs when sign close.
+     *
+     * @param consumer Callback.
+     * @return This class.
+     */
+    @Nonnull
+    public final HSign onComplete(@Nonnull Consumer<String[]> consumer) {
+        this.consumer = Objects.requireNonNull(consumer, "complete consumer cannot be null!");
         return this;
     }
 
-    public abstract void open(Player player);
+    /**
+     * Opens the sign to player.
+     *
+     * @param player Player.
+     */
+    public abstract void open(@Nonnull Player player);
 
-    public abstract <T> void listen(Player player, T packet);
+    /**
+     * Listens player packet if
+     * packet is a sign packet.
+     *
+     * @param player Player.
+     * @param packet Packet.
+     */
+    public abstract <T> void listen(@Nonnull Player player, @Nonnull T packet);
 }

@@ -172,7 +172,7 @@ public class HCore {
         return HSignHandler.getByUID(uid);
     }
 
-    public static HSign createSign(Material type, String... lines) {
+    public static HSign createSign(@Nonnull Material type, @Nonnull String... lines) {
         return HSignHandler.create(type, lines);
     }
 
