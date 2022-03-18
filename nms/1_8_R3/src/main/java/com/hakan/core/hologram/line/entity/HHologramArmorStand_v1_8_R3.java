@@ -33,7 +33,7 @@ public final class HHologramArmorStand_v1_8_R3 extends EntityArmorStand implemen
         super.setSmall(true);
         super.setCustomNameVisible(true);
         super.setHealth(114.13f);
-        this.hologram = hHologram;
+        this.hologram = Objects.requireNonNull(hHologram, "hologram class cannot be null!");
     }
 
     /**
