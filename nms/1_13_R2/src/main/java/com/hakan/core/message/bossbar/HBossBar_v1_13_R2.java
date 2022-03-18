@@ -1,5 +1,6 @@
 package com.hakan.core.message.bossbar;
 
+import org.apache.commons.lang.Validate;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
@@ -9,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * {@inheritDoc}
@@ -20,7 +22,12 @@ public final class HBossBar_v1_13_R2 implements HBossBar {
     /**
      * {@inheritDoc}
      */
-    public HBossBar_v1_13_R2(String title, HBarColor color, HBarStyle style, HBarFlag... flags) {
+    public HBossBar_v1_13_R2(@Nonnull String title, @Nonnull HBarColor color, @Nonnull HBarStyle style, @Nonnull HBarFlag... flags) {
+        Validate.notNull(title, "title cannot be null!");
+        Validate.notNull(color, "color cannot be null!");
+        Validate.notNull(style, "style cannot be null!");
+        Validate.notNull(flags, "flags cannot be null!");
+
         this.bossBar = new CraftBossBar(title, BarColor.valueOf(color.name()), BarStyle.valueOf(style.name()));
         for (HBarFlag hBarFlag : flags)
             this.bossBar.addFlag(BarFlag.valueOf(hBarFlag.name()));
@@ -40,7 +47,7 @@ public final class HBossBar_v1_13_R2 implements HBossBar {
      */
     @Override
     public void setTitle(@Nonnull String s) {
-        this.bossBar.setTitle(s);
+        this.bossBar.setTitle(Objects.requireNonNull(s, "title cannot be null!"));
     }
 
     /**
@@ -57,7 +64,7 @@ public final class HBossBar_v1_13_R2 implements HBossBar {
      */
     @Override
     public void setColor(@Nonnull HBarColor barColor) {
-        this.bossBar.setColor(BarColor.valueOf(barColor.name()));
+        this.bossBar.setColor(BarColor.valueOf(Objects.requireNonNull(barColor, "bar color cannot be null!").name()));
     }
 
     /**
@@ -74,7 +81,7 @@ public final class HBossBar_v1_13_R2 implements HBossBar {
      */
     @Override
     public void setStyle(@Nonnull HBarStyle barStyle) {
-        this.bossBar.setStyle(BarStyle.valueOf(barStyle.name()));
+        this.bossBar.setStyle(BarStyle.valueOf(Objects.requireNonNull(barStyle, "bar style cannot be null!").name()));
     }
 
     /**
@@ -82,7 +89,7 @@ public final class HBossBar_v1_13_R2 implements HBossBar {
      */
     @Override
     public void removeFlag(@Nonnull HBarFlag barFlag) {
-        this.bossBar.removeFlag(BarFlag.valueOf(barFlag.name()));
+        this.bossBar.removeFlag(BarFlag.valueOf(Objects.requireNonNull(barFlag, "bar flag cannot be null!").name()));
     }
 
     /**
@@ -90,7 +97,7 @@ public final class HBossBar_v1_13_R2 implements HBossBar {
      */
     @Override
     public void addFlag(@Nonnull HBarFlag barFlag) {
-        this.bossBar.addFlag(BarFlag.valueOf(barFlag.name()));
+        this.bossBar.addFlag(BarFlag.valueOf(Objects.requireNonNull(barFlag, "bar flag cannot be null!").name()));
     }
 
     /**
@@ -98,7 +105,7 @@ public final class HBossBar_v1_13_R2 implements HBossBar {
      */
     @Override
     public boolean hasFlag(@Nonnull HBarFlag barFlag) {
-        return this.bossBar.hasFlag(BarFlag.valueOf(barFlag.name()));
+        return this.bossBar.hasFlag(BarFlag.valueOf(Objects.requireNonNull(barFlag, "bar flag cannot be null!").name()));
     }
 
     /**
@@ -122,7 +129,7 @@ public final class HBossBar_v1_13_R2 implements HBossBar {
      */
     @Override
     public void addPlayer(@Nonnull Player player) {
-        this.bossBar.addPlayer(player);
+        this.bossBar.addPlayer(Objects.requireNonNull(player, "player cannot be null!"));
     }
 
     /**
@@ -130,7 +137,7 @@ public final class HBossBar_v1_13_R2 implements HBossBar {
      */
     @Override
     public void removePlayer(@Nonnull Player player) {
-        this.bossBar.removePlayer(player);
+        this.bossBar.removePlayer(Objects.requireNonNull(player, "player cannot be null!"));
     }
 
     /**
