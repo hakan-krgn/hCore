@@ -23,14 +23,14 @@ public final class HHologramUtils {
     @Nonnull
     public static HHologramArmorStand createHologramArmorStand(@Nonnull HHologram hHologram) {
         try {
-            Validate.notNull(hHologram, "vezorHologram cannot be null");
+            Validate.notNull(hHologram, "hHologram cannot be null");
 
             Constructor<?> constructor = Class.forName("com.hakan.core.line.entity.HHologramArmorStand_" + HCore.getVersionString()).getDeclaredConstructor(HHologram.class, Location.class);
             constructor.setAccessible(true);
-            HHologramArmorStand vezorHologramArmorStand = (HHologramArmorStand) constructor.newInstance(hHologram, hHologram.getLocation());
+            HHologramArmorStand armorStand = (HHologramArmorStand) constructor.newInstance(hHologram, hHologram.getLocation());
             constructor.setAccessible(false);
 
-            return vezorHologramArmorStand;
+            return armorStand;
         } catch (Exception e) {
             throw new NullPointerException(e.getMessage());
         }

@@ -132,10 +132,10 @@ public class HInventory {
     }
 
     /**
-     * If you want to use pagination, you need
-     * VezorPagination instance
+     * If you want to use pagination, you
+     * need pagination instance.
      *
-     * @return VezorPagination instance
+     * @return Pagination instance
      */
     @Nonnull
     public final Pagination getPagination() {
@@ -254,7 +254,7 @@ public class HInventory {
     /**
      * Sets the slots with clickable item
      *
-     * @param clickableItem    VezorClickableItem object
+     * @param clickableItem    ClickableItem object
      * @param replaceWithItems If this param is true, it replaces all items with clickable item
      * @return instance of this class
      */
