@@ -40,7 +40,7 @@ public final class HHologramArmorStand_v1_18_R1 implements HHologramArmorStand {
         this.armorStand.e(true); //set no gravity to true
         this.armorStand.a(true); //set small to true
         this.armorStand.c(114.13f); //set health to 114.13 float
-        this.hologram = hHologram;
+        this.hologram = Objects.requireNonNull(hHologram, "hologram class cannot be null!");
     }
 
     /**
