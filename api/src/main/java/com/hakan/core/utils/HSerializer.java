@@ -10,6 +10,11 @@ import java.util.Base64;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Serializer class to
+ * serialize any object to string
+ * and deserialize any string to object.
+ */
 @SuppressWarnings({"unchecked"})
 public class HSerializer {
 
@@ -52,8 +57,8 @@ public class HSerializer {
      * Deserializes object.
      *
      * @param serializedText Text that want to deserialize.
-     * @param clazz   Object type class.
-     * @param <T>           Object type.
+     * @param clazz          Object type class.
+     * @param <T>            Object type.
      * @return Deserialized object as optional.
      */
     @Nonnull
@@ -78,8 +83,8 @@ public class HSerializer {
      * Deserializes object.
      *
      * @param serializedText Text that want to deserialize.
-     * @param clazz   Object type class.
-     * @param <T>           Object type.
+     * @param clazz          Object type class.
+     * @param <T>            Object type.
      * @return Deserialized object as optional.
      */
     @Nonnull

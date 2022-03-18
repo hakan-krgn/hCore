@@ -11,14 +11,27 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
 
-public class HBorderPlayerActionListener extends HListenerAdapter {
+/**
+ * Border action listeners class.
+ */
+public final class HBorderPlayerActionListener extends HListenerAdapter {
 
+    /**
+     * Creates new instance of this class.
+     *
+     * @param plugin Main class of plugin.
+     */
     public HBorderPlayerActionListener(@Nonnull JavaPlugin plugin) {
         super(plugin);
     }
 
+    /**
+     * Teleport event.
+     *
+     * @param event Event.
+     */
     @EventHandler
-    public void onTeleport(PlayerTeleportEvent event) {
+    public void onTeleport(@Nonnull PlayerTeleportEvent event) {
         HCore.syncScheduler().after(3).run(() -> {
             Player player = event.getPlayer();
             HWorldBorderHandler.findByPlayer(player)
@@ -26,8 +39,13 @@ public class HBorderPlayerActionListener extends HListenerAdapter {
         });
     }
 
+    /**
+     * World change event.
+     *
+     * @param event Event.
+     */
     @EventHandler
-    public void onWorldChange(PlayerChangedWorldEvent event) {
+    public void onWorldChange(@Nonnull PlayerChangedWorldEvent event) {
         HCore.syncScheduler().after(3).run(() -> {
             Player player = event.getPlayer();
             HWorldBorderHandler.findByPlayer(player)

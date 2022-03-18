@@ -4,12 +4,15 @@ import com.hakan.core.HCore;
 import com.hakan.core.worldborder.HWorldBorderHandler;
 import net.minecraft.server.v1_11_R1.PacketPlayOutWorldBorder;
 import net.minecraft.server.v1_11_R1.WorldBorder;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_11_R1.CraftWorld;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nonnull;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -23,8 +26,8 @@ public final class HWorldBorder_v1_11_R1 extends WorldBorder implements HWorldBo
     /**
      * {@inheritDoc}
      */
-    public HWorldBorder_v1_11_R1(Location location, double size, double damageAmount, double damageBuffer, int warningDistance, int warningTime, HBorderColor color) {
-        this.color = color;
+    public HWorldBorder_v1_11_R1(@Nonnull Location location, double size, double damageAmount, double damageBuffer, int warningDistance, int warningTime, @Nonnull HBorderColor color) {
+        this.color = Objects.requireNonNull(color, "border color cannot be null!");
         this.shownViewers = new HashSet<>();
         super.world = ((CraftWorld) location.getWorld()).getHandle();
         super.setCenter(location.getX(), location.getZ());
@@ -40,8 +43,8 @@ public final class HWorldBorder_v1_11_R1 extends WorldBorder implements HWorldBo
      * {@inheritDoc}
      */
     @Override
-    public void show(Player player) {
-        this.shownViewers.add(player);
+    public void show(@Nonnull Player player) {
+        this.shownViewers.add(Objects.requireNonNull(player, "player cannot be null!"));
         HCore.sendPacket(player, new PacketPlayOutWorldBorder(this, PacketPlayOutWorldBorder.EnumWorldBorderAction.INITIALIZE));
     }
 
@@ -57,8 +60,8 @@ public final class HWorldBorder_v1_11_R1 extends WorldBorder implements HWorldBo
      * {@inheritDoc}
      */
     @Override
-    public void hide(Player player) {
-        this.shownViewers.remove(player);
+    public void hide(@Nonnull Player player) {
+        this.shownViewers.remove(Objects.requireNonNull(player, "player cannot be null!"));
         super.setCenter(0, 0);
         super.setSize(59999998);
         HCore.sendPacket(player, new PacketPlayOutWorldBorder(this, PacketPlayOutWorldBorder.EnumWorldBorderAction.INITIALIZE));
@@ -78,12 +81,13 @@ public final class HWorldBorder_v1_11_R1 extends WorldBorder implements HWorldBo
     @Override
     public void delete() {
         this.hideAll();
-        HWorldBorderHandler.getContent().remove(this);
+        HWorldBorderHandler.getValues().remove(this);
     }
 
     /**
      * {@inheritDoc}
      */
+    @Nonnull
     @Override
     public Set<Player> getShownViewers() {
         return this.shownViewers;
@@ -92,6 +96,7 @@ public final class HWorldBorder_v1_11_R1 extends WorldBorder implements HWorldBo
     /**
      * {@inheritDoc}
      */
+    @Nonnull
     @Override
     public Location getCenter() {
         return new Location(super.world.getWorld(), super.getCenterX(), 64, super.getCenterZ());
@@ -101,13 +106,15 @@ public final class HWorldBorder_v1_11_R1 extends WorldBorder implements HWorldBo
      * {@inheritDoc}
      */
     @Override
-    public void setCenter(Location location) {
+    public void setCenter(@Nonnull Location location) {
+        Validate.notNull(location, "location cannot be null!");
         super.setCenter(location.getX(), location.getZ());
     }
 
     /**
      * {@inheritDoc}
      */
+    @Nonnull
     @Override
     public HBorderColor getColor() {
         return this.color;
@@ -117,8 +124,8 @@ public final class HWorldBorder_v1_11_R1 extends WorldBorder implements HWorldBo
      * {@inheritDoc}
      */
     @Override
-    public void setColor(HBorderColor hBorderColor) {
-        this.color = hBorderColor;
+    public void setColor(@Nonnull HBorderColor hBorderColor) {
+        this.color = Objects.requireNonNull(hBorderColor, "border color cannot be null!");
     }
 
     /**
