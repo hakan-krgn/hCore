@@ -8,8 +8,14 @@ import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 
+/**
+ * {@inheritDoc}
+ */
 public class HActionBarHandler_v1_15_R1 implements HActionBarHandler {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void send(@Nonnull Player player, @Nonnull String text) {
         IChatBaseComponent baseComponent = IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + text + "\"}");

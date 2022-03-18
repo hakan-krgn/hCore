@@ -22,7 +22,7 @@ public class HSign_v1_8_R3 extends HSign {
     public HSign_v1_8_R3(Material type, String... lines) {
         super(type, lines);
     }
-
+    
     /**
      * {@inheritDoc}
      */

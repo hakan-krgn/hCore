@@ -9,8 +9,14 @@ import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 
+/**
+ * {@inheritDoc}
+ */
 public class HTitleHandler_v1_18_R1 implements HTitleHandler {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void send(@Nonnull Player player, @Nonnull HTitle hTitle) {
         IChatBaseComponent titleString = IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + hTitle.getTitle() + "\"}");

@@ -8,8 +8,14 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+/**
+ * {@inheritDoc}
+ */
 public class HParticleWrapper_v1_9_R2 implements HParticleWrapper {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void play(Player player, Location location, HParticle hParticle) {
         EnumParticle enumParticle = null;
