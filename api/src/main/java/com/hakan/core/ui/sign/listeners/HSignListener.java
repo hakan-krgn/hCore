@@ -8,14 +8,27 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
 
-public class HSignListener extends HListenerAdapter {
+/**
+ * HSignListener class.
+ */
+public final class HSignListener extends HListenerAdapter {
 
+    /**
+     * Creates new instance of this class.
+     *
+     * @param plugin Main class of plugin.
+     */
     public HSignListener(@Nonnull JavaPlugin plugin) {
         super(plugin);
     }
 
+    /**
+     * Packet event.
+     *
+     * @param event Event.
+     */
     @EventHandler
-    public void onPacketEvent(PacketEvent event) {
+    public void onPacketEvent(@Nonnull PacketEvent event) {
         if (event.getPacket().toString().contains("PacketPlayInUpdateSign")) {
             HSignHandler.findByPlayer(event.getPlayer())
                     .ifPresent(hSign -> hSign.listen(event.getPlayer(), event.getPacket()));
