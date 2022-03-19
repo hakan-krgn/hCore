@@ -44,6 +44,11 @@ public class HCore {
 
     private static JavaPlugin instance;
 
+    /**
+     * Gets instance.
+     *
+     * @return Instance.
+     */
     @Nonnull
     public static JavaPlugin getInstance() {
         return HCore.instance;
