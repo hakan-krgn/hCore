@@ -16,30 +16,29 @@ It supports all versions from 1.8.x to 1.18.2.
 [![](https://jitpack.io/v/hakan-krgn/hCore.svg)](https://jitpack.io/#hakan-krgn/hCore)
 
 Maven
-```xml
-  <repository>
-      <id>jitpack.io</id>
-      <url>https://jitpack.io</url>
-  </repository>
+``` xml
+<repository>
+    <id>jitpack.io</id>
+    <url>https://jitpack.io</url>
+</repository>
 
-  <dependency>
-      <groupId>com.github.hakan-krgn.hCore</groupId>
-      <artifactId>bukkit</artifactId>
-      <version>0.0.2</version>
-  </dependency>
+<dependency>
+    <groupId>com.github.hakan-krgn.hCore</groupId>
+    <artifactId>bukkit</artifactId>
+    <version>0.0.2</version>
+</dependency>
 ```
 ---
 
 Gradle
-```xml
-  allprojects {
-    repositories {
-      maven { url 'https://jitpack.io' }
-    }
+``` xml
+allprojects {
+  repositories {
+    maven { url 'https://jitpack.io' }
   }
+}
 
-  dependencies {
-    implementation 'com.github.hakan-krgn.hCore:bukkit:0.0.2'
-  }
+dependencies {
+  implementation 'com.github.hakan-krgn.hCore:bukkit:0.0.2'
+}
 ```
-  
