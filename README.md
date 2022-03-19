@@ -1,8 +1,8 @@
 
 # hCore
 
-A simplified and multi-functional tool for developers. There are dozens of features you can use in it and it is completely open source code.
-It supports all versions from 1.8.x to 1.18.2.
+A simplified and multi-functional tool for spigot developers. There are dozens of features you can use in 
+it, and it is completely open source code. hCore supports all versions from 1.8.x to 1.18.2. 
 
 ## Developers
 
@@ -11,11 +11,16 @@ It supports all versions from 1.8.x to 1.18.2.
 - [@bilektugrul](https://github.com/bilektugrul) Discord: Breakthrough#1006
 - [@rin-17](https://github.com/rin-17) Discord: RIN#8198
 
-  
+##Wiki
+**[CLICK](https://github.com/hakan-krgn/hCore/wiki)**
+
+##Features
+- [`Command`](https://github.com/hakan-krgn/hCore/wiki/command:-Command) - Basic command system to register commands without plugin.yml
+
 ## How to add it to Maven or Gradle?
 [![](https://jitpack.io/v/hakan-krgn/hCore.svg)](https://jitpack.io/#hakan-krgn/hCore)
 
-Maven
+###Maven
 ``` xml
 <repository>
     <id>jitpack.io</id>
@@ -28,9 +33,8 @@ Maven
     <version>0.0.2</version>
 </dependency>
 ```
----
 
-Gradle
+###Gradle
 ``` xml
 allprojects {
   repositories {
