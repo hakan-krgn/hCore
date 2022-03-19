@@ -59,10 +59,8 @@ completely open source code. hCore supports all versions from 1.8.x to 1.18.2.
 ### Gradle
 
 ``` xml
-allprojects {
-  repositories {
-    maven { url 'https://jitpack.io' }
-  }
+repositories {
+  maven { url 'https://jitpack.io' }
 }
 
 dependencies {
