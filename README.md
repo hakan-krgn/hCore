@@ -13,6 +13,7 @@ It supports all versions from 1.8.x to 1.18.2.
 
   
 ## How to add it to Maven or Gradle?
+[![](https://jitpack.io/v/hakan-krgn/hCore.svg)](https://jitpack.io/#hakan-krgn/hCore)
 
 Maven
 ```xml
