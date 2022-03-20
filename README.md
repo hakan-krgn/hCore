@@ -8,7 +8,6 @@ from [here](https://github.com/hakan-krgn/hCore/wiki).
 
 - [@hakan-krgn](https://github.com/hakan-krgn) Discord: Hakan Kargın#7515
 - [@furkanbalci0](https://github.com/furkanbalci0) Discord: caandalek#4917
-- [@bilektugrul](https://github.com/bilektugrul) Discord: Breakthrough#1006
 - [@rin-17](https://github.com/rin-17) Discord: RIN#8198
 
 ## Features
