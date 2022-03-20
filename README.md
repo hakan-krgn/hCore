@@ -38,8 +38,6 @@ from [here](https://github.com/hakan-krgn/hCore/wiki).
 
 ## How to add it to Maven or Gradle?
 
-[![](https://jitpack.io/v/hakan-krgn/hCore.svg)](https://jitpack.io/#hakan-krgn/hCore)
-
 ### Maven
 
 ``` xml
