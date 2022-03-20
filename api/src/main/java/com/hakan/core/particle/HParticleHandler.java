@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import javax.annotation.Nonnull;
 import java.util.Collection;
 
-public final class HParticleAPI {
+public final class HParticleHandler {
 
     private static HParticleWrapper wrapper;
 
@@ -18,7 +18,7 @@ public final class HParticleAPI {
      */
     public static void initialize() {
         try {
-            HParticleAPI.wrapper = (HParticleWrapper) Class.forName("com.hakan.core.particle.wrapper.HParticleWrapper_" + HCore.getVersionString())
+            HParticleHandler.wrapper = (HParticleWrapper) Class.forName("com.hakan.core.particle.wrapper.HParticleWrapper_" + HCore.getVersionString())
                     .getConstructor().newInstance();
         } catch (Exception e) {
             e.printStackTrace();
@@ -36,7 +36,7 @@ public final class HParticleAPI {
         Validate.notNull(player, "player cannot be null!");
         Validate.notNull(location, "location cannot be null!");
         Validate.notNull(particle, "particle cannot be null!");
-        HParticleAPI.wrapper.play(player, location, particle);
+        HParticleHandler.wrapper.play(player, location, particle);
     }
 
     /**
@@ -48,6 +48,6 @@ public final class HParticleAPI {
      */
     public static void play(@Nonnull Collection<Player> players, @Nonnull Location location, @Nonnull HParticle particle) {
         Validate.notNull(players, "players cannot be null!");
-        players.forEach(player -> HParticleAPI.play(player, location, particle));
+        players.forEach(player -> HParticleHandler.play(player, location, particle));
     }
 }

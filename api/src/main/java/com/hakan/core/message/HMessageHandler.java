@@ -15,7 +15,7 @@ import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.Objects;
 
-public final class HMessageAPI {
+public final class HMessageHandler {
 
     private static HActionBarHandler hActionBarHandler;
     private static HTitleHandler hTitleHandler;
@@ -26,8 +26,8 @@ public final class HMessageAPI {
     public static void initialize() {
         try {
             String version = HCore.getVersionString();
-            HMessageAPI.hActionBarHandler = (HActionBarHandler) Class.forName("com.hakan.core.message.actionbar.HActionBarHandler_" + version).getConstructor().newInstance();
-            HMessageAPI.hTitleHandler = (HTitleHandler) Class.forName("com.hakan.core.message.title.HTitleHandler_" + version).getConstructor().newInstance();
+            HMessageHandler.hActionBarHandler = (HActionBarHandler) Class.forName("com.hakan.core.message.actionbar.HActionBarHandler_" + version).getConstructor().newInstance();
+            HMessageHandler.hTitleHandler = (HTitleHandler) Class.forName("com.hakan.core.message.title.HTitleHandler_" + version).getConstructor().newInstance();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -45,7 +45,7 @@ public final class HMessageAPI {
      * @param hTitle HTitle class.
      */
     public static void sendTitle(@Nonnull Player player, @Nonnull HTitle hTitle) {
-        HMessageAPI.hTitleHandler.send(Objects.requireNonNull(player, "player cannot be null!"), Objects.requireNonNull(hTitle, "hTitle cannot be null!"));
+        HMessageHandler.hTitleHandler.send(Objects.requireNonNull(player, "player cannot be null!"), Objects.requireNonNull(hTitle, "hTitle cannot be null!"));
     }
 
     /**
@@ -56,7 +56,7 @@ public final class HMessageAPI {
      * @param subTitle Subtitle.
      */
     public static void sendTitle(@Nonnull Player player, @Nonnull String title, @Nonnull String subTitle) {
-        HMessageAPI.sendTitle(player, new HTitle(title, subTitle));
+        HMessageHandler.sendTitle(player, new HTitle(title, subTitle));
     }
 
     /**
@@ -70,7 +70,7 @@ public final class HMessageAPI {
      * @param fadeout  Fade out time.
      */
     public static void sendTitle(@Nonnull Player player, @Nonnull String title, @Nonnull String subTitle, int stay, int fadein, int fadeout) {
-        HMessageAPI.sendTitle(player, new HTitle(title, subTitle, stay, fadein, fadeout));
+        HMessageHandler.sendTitle(player, new HTitle(title, subTitle, stay, fadein, fadeout));
     }
 
     /**
@@ -80,7 +80,7 @@ public final class HMessageAPI {
      * @param hTitle  HTitle class.
      */
     public static void sendTitle(@Nonnull Collection<Player> players, @Nonnull HTitle hTitle) {
-        Objects.requireNonNull(players, "players cannot be null!").forEach(player -> HMessageAPI.sendTitle(player, hTitle));
+        Objects.requireNonNull(players, "players cannot be null!").forEach(player -> HMessageHandler.sendTitle(player, hTitle));
     }
 
     /**
@@ -91,7 +91,7 @@ public final class HMessageAPI {
      * @param subTitle Subtitle.
      */
     public static void sendTitle(@Nonnull Collection<Player> players, @Nonnull String title, @Nonnull String subTitle) {
-        HMessageAPI.sendTitle(players, new HTitle(title, subTitle));
+        HMessageHandler.sendTitle(players, new HTitle(title, subTitle));
     }
 
     /**
@@ -105,7 +105,7 @@ public final class HMessageAPI {
      * @param fadeout  Fade out time.
      */
     public static void sendTitle(@Nonnull Collection<Player> players, @Nonnull String title, @Nonnull String subTitle, int stay, int fadein, int fadeout) {
-        HMessageAPI.sendTitle(players, new HTitle(title, subTitle, stay, fadein, fadeout));
+        HMessageHandler.sendTitle(players, new HTitle(title, subTitle, stay, fadein, fadeout));
     }
 
 
@@ -120,7 +120,7 @@ public final class HMessageAPI {
      * @param text   Text.
      */
     public static void sendActionBar(@Nonnull Player player, @Nonnull String text) {
-        HMessageAPI.hActionBarHandler.send(Objects.requireNonNull(player, "player cannot be null!"), Objects.requireNonNull(text, "text cannot be null!"));
+        HMessageHandler.hActionBarHandler.send(Objects.requireNonNull(player, "player cannot be null!"), Objects.requireNonNull(text, "text cannot be null!"));
     }
 
     /**
@@ -130,7 +130,7 @@ public final class HMessageAPI {
      * @param text    Text.
      */
     public static void sendActionBar(@Nonnull Collection<Player> players, @Nonnull String text) {
-        players.forEach(player -> HMessageAPI.sendActionBar(player, text));
+        players.forEach(player -> HMessageHandler.sendActionBar(player, text));
     }
 
 
@@ -172,6 +172,6 @@ public final class HMessageAPI {
      * @return New instance of HBossBar.
      */
     public static HBossBar createBossBar(@Nonnull String title, @Nonnull HBarColor color, @Nonnull HBarStyle style) {
-        return HMessageAPI.createBossBar(title, color, style, new HBarFlag[0]);
+        return HMessageHandler.createBossBar(title, color, style, new HBarFlag[0]);
     }
 }
