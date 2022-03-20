@@ -15,7 +15,7 @@ A simplified and multi-functional tool for spigot developers. There are dozens o
   plugin.yml.
 - [`Database`](https://github.com/hakan-krgn/hCore/wiki/database) - Database implementation system for multi-database
   support.
-- [`Hologram`](https://github.com/hakan-krgn/hCore/wiki/hologram) - hologram system for creating and managing
+- [`Hologram`](https://github.com/hakan-krgn/hCore/wiki/hologram) - Hologram system for creating and managing
   client-side holograms.
 - [`Message`](https://github.com/hakan-krgn/hCore/wiki/message) - Message system to send title, action-bar or boss-bar
   to player.
