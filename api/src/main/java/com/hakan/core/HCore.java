@@ -5,7 +5,7 @@ import com.hakan.core.command.functional.HCommand;
 import com.hakan.core.hologram.HHologram;
 import com.hakan.core.hologram.HHologramHandler;
 import com.hakan.core.hooks.Metrics;
-import com.hakan.core.message.HMessageAPI;
+import com.hakan.core.message.HMessageHandler;
 import com.hakan.core.message.bossbar.HBarColor;
 import com.hakan.core.message.bossbar.HBarFlag;
 import com.hakan.core.message.bossbar.HBarStyle;
@@ -13,7 +13,7 @@ import com.hakan.core.message.bossbar.HBossBar;
 import com.hakan.core.message.title.HTitle;
 import com.hakan.core.packet.HPacketHandler;
 import com.hakan.core.particle.HParticle;
-import com.hakan.core.particle.HParticleAPI;
+import com.hakan.core.particle.HParticleHandler;
 import com.hakan.core.scheduler.HScheduler;
 import com.hakan.core.ui.inventory.HInventory;
 import com.hakan.core.ui.inventory.HInventoryHandler;
@@ -68,8 +68,8 @@ public class HCore {
         HWorldBorderHandler.initialize(plugin);
         HInventoryHandler.initialize(plugin);
         HSignHandler.initialize(plugin);
-        HMessageAPI.initialize();
-        HParticleAPI.initialize();
+        HMessageHandler.initialize();
+        HParticleHandler.initialize();
         HHologramHandler.initialize();
     }
 
@@ -420,7 +420,7 @@ public class HCore {
      * @param particle HParticle class.
      */
     public static void playParticle(@Nonnull Player player, @Nonnull Location location, @Nonnull HParticle particle) {
-        HParticleAPI.play(player, location, particle);
+        HParticleHandler.play(player, location, particle);
     }
 
     /**
@@ -431,7 +431,7 @@ public class HCore {
      * @param particle HParticle class.
      */
     public static void playParticle(@Nonnull Collection<Player> players, @Nonnull Location location, @Nonnull HParticle particle) {
-        HParticleAPI.play(players, location, particle);
+        HParticleHandler.play(players, location, particle);
     }
 
 
@@ -446,7 +446,7 @@ public class HCore {
      * @param hTitle HTitle class.
      */
     public static void sendTitle(@Nonnull Player player, @Nonnull HTitle hTitle) {
-        HMessageAPI.sendTitle(player, hTitle);
+        HMessageHandler.sendTitle(player, hTitle);
     }
 
     /**
@@ -457,7 +457,7 @@ public class HCore {
      * @param subTitle Subtitle.
      */
     public static void sendTitle(@Nonnull Player player, @Nonnull String title, @Nonnull String subTitle) {
-        HMessageAPI.sendTitle(player, title, subTitle);
+        HMessageHandler.sendTitle(player, title, subTitle);
     }
 
     /**
@@ -471,7 +471,7 @@ public class HCore {
      * @param fadeout  Fade out time.
      */
     public static void sendTitle(@Nonnull Player player, @Nonnull String title, @Nonnull String subTitle, int stay, int fadein, int fadeout) {
-        HMessageAPI.sendTitle(player, title, subTitle, stay, fadein, fadeout);
+        HMessageHandler.sendTitle(player, title, subTitle, stay, fadein, fadeout);
     }
 
     /**
@@ -481,7 +481,7 @@ public class HCore {
      * @param hTitle  HTitle class.
      */
     public static void sendTitle(@Nonnull Collection<Player> players, @Nonnull HTitle hTitle) {
-        HMessageAPI.sendTitle(players, hTitle);
+        HMessageHandler.sendTitle(players, hTitle);
     }
 
     /**
@@ -492,7 +492,7 @@ public class HCore {
      * @param subTitle Subtitle.
      */
     public static void sendTitle(@Nonnull Collection<Player> players, @Nonnull String title, @Nonnull String subTitle) {
-        HMessageAPI.sendTitle(players, title, subTitle);
+        HMessageHandler.sendTitle(players, title, subTitle);
     }
 
     /**
@@ -506,7 +506,7 @@ public class HCore {
      * @param fadeout  Fade out time.
      */
     public static void sendTitle(@Nonnull Collection<Player> players, @Nonnull String title, @Nonnull String subTitle, int stay, int fadein, int fadeout) {
-        HMessageAPI.sendTitle(players, title, subTitle, stay, fadein, fadeout);
+        HMessageHandler.sendTitle(players, title, subTitle, stay, fadein, fadeout);
     }
 
     /**
@@ -516,7 +516,7 @@ public class HCore {
      * @param text   Text.
      */
     public static void sendActionBar(@Nonnull Player player, @Nonnull String text) {
-        HMessageAPI.sendActionBar(player, text);
+        HMessageHandler.sendActionBar(player, text);
     }
 
     /**
@@ -526,7 +526,7 @@ public class HCore {
      * @param text    Text.
      */
     public static void sendActionBar(@Nonnull Collection<Player> players, @Nonnull String text) {
-        HMessageAPI.sendActionBar(players, text);
+        HMessageHandler.sendActionBar(players, text);
     }
 
     /**
@@ -539,7 +539,7 @@ public class HCore {
      * @return New instance of HBossBar.
      */
     public static HBossBar createBossBar(@Nonnull String title, @Nonnull HBarColor color, @Nonnull HBarStyle style, @Nonnull HBarFlag... flags) {
-        return HMessageAPI.createBossBar(title, color, style, flags);
+        return HMessageHandler.createBossBar(title, color, style, flags);
     }
 
     /**
@@ -551,7 +551,7 @@ public class HCore {
      * @return New instance of HBossBar.
      */
     public static HBossBar createBossBar(@Nonnull String title, @Nonnull HBarColor color, @Nonnull HBarStyle style) {
-        return HMessageAPI.createBossBar(title, color, style);
+        return HMessageHandler.createBossBar(title, color, style);
     }
 
 
