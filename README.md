@@ -48,7 +48,7 @@ from [here](https://github.com/hakan-krgn/hCore/wiki).
 <dependency>
     <groupId>com.github.hakan-krgn.hCore</groupId>
     <artifactId>bukkit</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
 </dependency>
 ```
 
@@ -60,6 +60,6 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.github.hakan-krgn.hCore:bukkit:0.0.3'
+  implementation 'com.github.hakan-krgn.hCore:bukkit:0.0.4'
 }
 ```
