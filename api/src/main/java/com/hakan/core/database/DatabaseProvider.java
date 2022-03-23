@@ -1,5 +1,6 @@
 package com.hakan.core.database;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -12,16 +13,16 @@ import java.util.List;
 public interface DatabaseProvider<T extends DatabaseObject> {
 
     /**
+     * Table create, yaml create, etc.
+     */
+    void create();
+
+    /**
      * Gets values.
      *
      * @return Values.
      */
     List<T> getValues();
-
-    /**
-     * Table create, yaml create, etc.
-     */
-    void create();
 
     /**
      * Inserts data to database.
@@ -43,4 +44,25 @@ public interface DatabaseProvider<T extends DatabaseObject> {
      * @param t T
      */
     void delete(T t);
+
+    /**
+     * Inserts data to database.
+     *
+     * @param t T
+     */
+    void insert(Collection<T> t);
+
+    /**
+     * Saves data to database.
+     *
+     * @param t T
+     */
+    void save(Collection<T> t);
+
+    /**
+     * Deletes data from database.
+     *
+     * @param t T
+     */
+    void delete(Collection<T> t);
 }
