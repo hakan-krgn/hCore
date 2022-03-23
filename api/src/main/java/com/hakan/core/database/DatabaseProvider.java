@@ -36,7 +36,7 @@ public interface DatabaseProvider<T extends DatabaseObject> {
      *
      * @param t T
      */
-    void save(T t);
+    void update(T t);
 
     /**
      * Deletes data from database.
@@ -57,7 +57,7 @@ public interface DatabaseProvider<T extends DatabaseObject> {
      *
      * @param t T
      */
-    void save(Collection<T> t);
+    void update(Collection<T> t);
 
     /**
      * Deletes data from database.
