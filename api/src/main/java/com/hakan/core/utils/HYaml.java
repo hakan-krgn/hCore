@@ -149,6 +149,16 @@ public class HYaml {
         return this.file.delete();
     }
 
+    public Object get(@Nonnull String path) {
+        Validate.notNull(path, "path cannot be null!");
+        return this.fileConfiguration.get(path);
+    }
+
+    public Object get(@Nonnull String path,@Nonnull Object def) {
+        Validate.notNull(path, "path cannot be null!");
+        return this.fileConfiguration.get(path, def);
+    }
+
     public void set(@Nonnull String path, @Nullable Object value) {
         Validate.notNull(path, "path cannot be null!");
         this.fileConfiguration.set(path, value);
