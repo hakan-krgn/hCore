@@ -154,7 +154,7 @@ public class HYaml {
         return this.fileConfiguration.get(path);
     }
 
-    public Object get(@Nonnull String path,@Nonnull Object def) {
+    public Object get(@Nonnull String path, @Nonnull Object def) {
         Validate.notNull(path, "path cannot be null!");
         return this.fileConfiguration.get(path, def);
     }
