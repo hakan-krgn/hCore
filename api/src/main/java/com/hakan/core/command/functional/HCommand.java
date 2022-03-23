@@ -40,7 +40,7 @@ public final class HCommand extends HCommandExecutor {
      * {@inheritDoc}
      */
     @Override
-    public void onCommand(@Nonnull CommandSender sender, @Nonnull String... args) {
+    public void onCommand(@Nonnull CommandSender sender, @Nonnull String[] args) {
         CommandData commandData = new CommandData(sender, this.getCommand(), args);
         if (this.consumer != null)
             this.consumer.accept(commandData);
