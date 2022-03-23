@@ -123,5 +123,5 @@ public abstract class HCommandExecutor extends HSubCommand {
      * @param sender Command sender.
      * @param args   Arguments of command.
      */
-    public abstract void onCommand(@Nonnull CommandSender sender, @Nonnull String... args);
+    public abstract void onCommand(@Nonnull CommandSender sender, @Nonnull String[] args);
 }
