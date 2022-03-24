@@ -1,5 +1,6 @@
 package com.hakan.core.listener;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -28,8 +29,8 @@ public abstract class HListenerAdapter implements Listener {
      * @param listeners Listeners.
      */
     public static void register(@Nonnull Collection<HListenerAdapter> listeners) {
-        HListenerAdapter.register(Objects.requireNonNull(listeners, "listeners cannot be null!")
-                .toArray(new HListenerAdapter[0]));
+        Objects.requireNonNull(listeners, "listeners cannot be null!")
+                .forEach(listenerAdapter -> Bukkit.getPluginManager().registerEvents(listenerAdapter, listenerAdapter.plugin));
     }
 
 
