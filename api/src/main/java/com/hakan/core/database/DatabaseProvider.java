@@ -1,5 +1,6 @@
 package com.hakan.core.database;
 
+import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.List;
 
@@ -22,6 +23,7 @@ public interface DatabaseProvider<T extends DatabaseObject> {
      *
      * @return Values.
      */
+    @Nonnull
     List<T> getValues();
 
     /**
@@ -29,40 +31,40 @@ public interface DatabaseProvider<T extends DatabaseObject> {
      *
      * @param t T
      */
-    void insert(T t);
+    void insert(@Nonnull T t);
 
     /**
      * Saves data to database.
      *
      * @param t T
      */
-    void update(T t);
+    void update(@Nonnull T t);
 
     /**
      * Deletes data from database.
      *
      * @param t T
      */
-    void delete(T t);
+    void delete(@Nonnull T t);
 
     /**
      * Inserts data to database.
      *
      * @param t T
      */
-    void insert(Collection<T> t);
+    void insert(@Nonnull Collection<T> t);
 
     /**
      * Saves data to database.
      *
      * @param t T
      */
-    void update(Collection<T> t);
+    void update(@Nonnull Collection<T> t);
 
     /**
      * Deletes data from database.
      *
      * @param t T
      */
-    void delete(Collection<T> t);
+    void delete(@Nonnull Collection<T> t);
 }
