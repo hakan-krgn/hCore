@@ -41,6 +41,6 @@ public final class PlayerConnectionListener extends HListenerAdapter {
      */
     @EventHandler
     public void onQuit(@Nonnull PlayerQuitEvent event) {
-        HPacketHandler.register(event.getPlayer());
+        HPacketHandler.unregister(event.getPlayer());
     }
 }
