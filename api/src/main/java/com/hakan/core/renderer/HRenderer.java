@@ -22,8 +22,8 @@ public final class HRenderer {
     private boolean useYAxis;
     private Location location;
     private Set<UUID> viewers;
+    private Set<UUID> shownViewers;
 
-    private final Set<UUID> shownViewers;
     private final Consumer<List<Player>> showConsumer;
     private final Consumer<List<Player>> hideConsumer;
     private final Consumer<HRenderer> deleteConsumer;
@@ -284,6 +284,21 @@ public final class HRenderer {
     }
 
     /**
+     * Checks player can see the location.
+     *
+     * @param uid UID of player.
+     * @return If player can see the location, returns true.
+     */
+    public boolean canSee(@Nonnull UUID uid) {
+        Player player = Bukkit.getPlayer(Objects.requireNonNull(uid, "uid cannot be null!"));
+        if (player == null)
+            return false;
+        else if (this.calculateDistance(player.getLocation()) > this.radius)
+            return false;
+        return true;
+    }
+
+    /**
      * Calculates distance between center
      * and target.
      *
@@ -324,41 +339,31 @@ public final class HRenderer {
         if (this.deleted)
             return this;
 
-        List<Player> addShown = new ArrayList<>();
-        List<Player> removedShown = new ArrayList<>();
         Set<UUID> viewers = this.calculateViewers();
+        Set<UUID> newShown = new HashSet<>();
+        Set<UUID> oldShown = this.shownViewers;
+
+        for (UUID uid : viewers)
+            if (this.canSee(uid))
+                newShown.add(uid);
 
         if (this.hideConsumer != null) {
-            new ArrayList<>(this.shownViewers).forEach(uid -> {
-                Player player = Bukkit.getPlayer(uid);
-
-                if (player == null) {
-                    this.shownViewers.remove(uid);
-                } else if (this.calculateDistance(player.getLocation()) > this.radius) {
-                    this.shownViewers.remove(uid);
-                    removedShown.add(player);
-                }
-            });
-
-            if (!removedShown.isEmpty())
-                this.hideConsumer.accept(removedShown);
+            List<Player> hide = new ArrayList<>();
+            for (UUID uid : newShown)
+                if (!oldShown.contains(uid))
+                    hide.add(Bukkit.getPlayer(uid));
+            this.hideConsumer.accept(hide);
         }
 
-        viewers.forEach(uid -> {
-            Player player = Bukkit.getPlayer(uid);
-            if (player == null)
-                return;
-            else if (this.calculateDistance(player.getLocation()) > this.radius)
-                return;
-            else if (this.shownViewers.contains(uid))
-                return;
+        if (this.showConsumer != null) {
+            List<Player> show = new ArrayList<>();
+            for (UUID uid : oldShown)
+                if (!newShown.contains(uid))
+                    show.add(Bukkit.getPlayer(uid));
+            this.showConsumer.accept(show);
+        }
 
-            addShown.add(player);
-            this.shownViewers.add(uid);
-        });
-
-        if (this.showConsumer != null && !addShown.isEmpty())
-            this.showConsumer.accept(addShown);
+        this.shownViewers = newShown;
         return this;
     }
 }
