@@ -96,6 +96,7 @@ public final class HPacketHandler {
     public static void unregister(@Nonnull Player player) {
         Validate.notNull(player, "player cannot be null!");
         HPacketPlayer packetPlayer = HPacketHandler.packetPlayers.remove(player);
-        packetPlayer.unregister();
+        if (packetPlayer != null)
+            packetPlayer.unregister();
     }
 }
