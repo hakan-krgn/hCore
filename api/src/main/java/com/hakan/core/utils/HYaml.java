@@ -1,6 +1,5 @@
 package com.hakan.core.utils;
 
-import com.hakan.core.HCore;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.Validate;
 import org.bukkit.OfflinePlayer;
@@ -8,6 +7,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -26,16 +26,15 @@ public class HYaml {
      * @param resourceName resource from resources
      * @return HYaml class
      */
-    public static HYaml create(File file, String resourceName) {
+    public static HYaml create(JavaPlugin plugin, File file, String resourceName) {
         try {
             if (!file.exists()) {
                 file.mkdirs();
                 file.createNewFile();
 
-                InputStream inputStream = HCore.class.getResourceAsStream("/" + resourceName);
-                if (inputStream != null) {
+                InputStream inputStream = plugin.getClass().getResourceAsStream("/" + resourceName);
+                if (inputStream != null)
                     FileUtils.copyInputStreamToFile(inputStream, file);
-                }
             }
 
             return new HYaml(file);
@@ -51,8 +50,8 @@ public class HYaml {
      * @param resourceName resource from resources
      * @return HYaml class
      */
-    public static HYaml create(String fileURL, String resourceName) {
-        return HYaml.create(new File(fileURL), resourceName);
+    public static HYaml create(JavaPlugin plugin, String fileURL, String resourceName) {
+        return HYaml.create(plugin, new File(plugin.getDataFolder() + "/" + fileURL), resourceName);
     }
 
     /**
