@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class HYaml {
 
@@ -29,12 +30,10 @@ public class HYaml {
     public static HYaml create(JavaPlugin plugin, File file, String resourceName) {
         try {
             if (!file.exists()) {
-                file.mkdirs();
-                file.createNewFile();
+                HYaml.createFile(file.getPath());
 
                 InputStream inputStream = plugin.getClass().getResourceAsStream("/" + resourceName);
-                if (inputStream != null)
-                    FileUtils.copyInputStreamToFile(inputStream, file);
+                if (inputStream != null) FileUtils.copyInputStreamToFile(inputStream, file);
             }
 
             return new HYaml(file);
@@ -61,16 +60,8 @@ public class HYaml {
      * @return HYaml class
      */
     public static HYaml create(File file) {
-        try {
-            if (!file.exists()) {
-                file.mkdirs();
-                file.createNewFile();
-            }
-
-            return new HYaml(file);
-        } catch (IOException e) {
-            return null;
-        }
+        HYaml.createFile(file.getPath());
+        return new HYaml(file);
     }
 
     /**
@@ -81,6 +72,22 @@ public class HYaml {
      */
     public static HYaml create(String fileURL) {
         return HYaml.create(new File(fileURL));
+    }
+
+    public static File createFile(String url) {
+        if (new File(url).exists()) return new File(url);
+        url = url.replace("/", "\\");
+        String[] sp = url.split(Pattern.quote("\\"));
+        String folder = url.substring(0, url.length() - sp[sp.length - 1].length());
+
+        try {
+            new File(folder.replace("\\", "/")).mkdirs();
+            new File(url.replace("\\", "/")).createNewFile();
+            return new File(url.replace("\\", "/"));
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+        return null;
     }
 
 
