@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class HYaml {
@@ -27,7 +28,12 @@ public class HYaml {
      * @param resourceName resource from resources
      * @return HYaml class
      */
-    public static HYaml create(JavaPlugin plugin, File file, String resourceName) {
+    @Nonnull
+    public static HYaml create(@Nonnull JavaPlugin plugin, @Nonnull File file, @Nonnull String resourceName) {
+        Validate.notNull(plugin, "plugin cannot be null!");
+        Validate.notNull(file, "file cannot be null!");
+        Validate.notNull(resourceName, "resourceName cannot be null!");
+
         try {
             if (!file.exists()) {
                 HYaml.createFile(file.getPath());
@@ -38,19 +44,20 @@ public class HYaml {
 
             return new HYaml(file);
         } catch (IOException e) {
-            return null;
+            throw new NullPointerException(e.getMessage());
         }
     }
 
     /**
      * Creates file and include resource to in it.
      *
-     * @param fileURL      File url
+     * @param path         File url
      * @param resourceName resource from resources
      * @return HYaml class
      */
-    public static HYaml create(JavaPlugin plugin, String fileURL, String resourceName) {
-        return HYaml.create(plugin, new File(plugin.getDataFolder() + "/" + fileURL), resourceName);
+    @Nonnull
+    public static HYaml create(@Nonnull JavaPlugin plugin, @Nonnull String path, @Nonnull String resourceName) {
+        return HYaml.create(plugin, new File(plugin.getDataFolder() + "/" + path), resourceName);
     }
 
     /**
@@ -59,35 +66,44 @@ public class HYaml {
      * @param file File
      * @return HYaml class
      */
-    public static HYaml create(File file) {
-        HYaml.createFile(file.getPath());
+    @Nonnull
+    public static HYaml create(@Nonnull File file) {
+        HYaml.createFile(Objects.requireNonNull(file, "file cannot be null!").getPath());
         return new HYaml(file);
     }
 
     /**
      * Creates file.
      *
-     * @param fileURL File url
+     * @param path File url
      * @return HYaml class
      */
-    public static HYaml create(String fileURL) {
-        return HYaml.create(new File(fileURL));
+    @Nonnull
+    public static HYaml create(@Nonnull String path) {
+        return HYaml.create(new File(path));
     }
 
-    public static File createFile(String url) {
-        if (new File(url).exists()) return new File(url);
-        url = url.replace("/", "\\");
-        String[] sp = url.split(Pattern.quote("\\"));
-        String folder = url.substring(0, url.length() - sp[sp.length - 1].length());
+    /**
+     * Creates file.
+     *
+     * @param path File path
+     */
+    @Nonnull
+    public static File createFile(@Nonnull String path) {
+        Validate.notNull(path, "path cannot be null!");
+
+        if (new File(path).exists()) return new File(path);
+        path = path.replace("/", "\\");
+        String[] sp = path.split(Pattern.quote("\\"));
+        String folder = path.substring(0, path.length() - sp[sp.length - 1].length());
 
         try {
             new File(folder.replace("\\", "/")).mkdirs();
-            new File(url.replace("\\", "/")).createNewFile();
-            return new File(url.replace("\\", "/"));
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
+            new File(path.replace("\\", "/")).createNewFile();
+            return new File(path.replace("\\", "/"));
+        } catch (IOException e) {
+            throw new NullPointerException(e.getMessage());
         }
-        return null;
     }
 
 
@@ -100,7 +116,7 @@ public class HYaml {
      * @param file file
      */
     public HYaml(@Nonnull File file) {
-        this.file = file;
+        this.file = Objects.requireNonNull(file, "file cannot be null!");
         this.fileConfiguration = YamlConfiguration.loadConfiguration(file);
     }
 
