@@ -46,7 +46,7 @@ public final class HHologram {
     /**
      * Creates new instance of this class.
      *
-     * @param id Hologram id that you want.
+     * @param id       Hologram id that you want.
      * @param location Hologram location.
      */
     HHologram(@Nonnull String id, @Nonnull Location location) {

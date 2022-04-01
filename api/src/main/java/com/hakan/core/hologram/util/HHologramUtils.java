@@ -25,7 +25,7 @@ public final class HHologramUtils {
         try {
             Validate.notNull(hHologram, "hHologram cannot be null");
 
-            Constructor<?> constructor = Class.forName("com.hakan.core.line.entity.HHologramArmorStand_" + HCore.getVersionString()).getDeclaredConstructor(HHologram.class, Location.class);
+            Constructor<?> constructor = Class.forName("com.hakan.core.hologram.line.entity.HHologramArmorStand_" + HCore.getVersionString()).getDeclaredConstructor(HHologram.class, Location.class);
             constructor.setAccessible(true);
             HHologramArmorStand armorStand = (HHologramArmorStand) constructor.newInstance(hHologram, hHologram.getLocation());
             constructor.setAccessible(false);
