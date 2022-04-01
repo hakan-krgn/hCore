@@ -152,7 +152,7 @@ public final class HMessageHandler {
         Validate.notNull(color, "color cannot be null!");
         Validate.notNull(style, "style cannot be null!");
         Validate.notNull(flags, "flags cannot be null!");
-        
+
         try {
             String version = HCore.getVersionString();
             return (HBossBar) Class.forName("com.hakan.core.message.bossbar.HBossBar_" + version)
