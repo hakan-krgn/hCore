@@ -34,6 +34,7 @@ from [here](https://github.com/hakan-krgn/hCore/wiki).
   client-side.
 - [`HItemStack`](https://github.com/hakan-krgn/hCore/wiki/itemstack) - HItemStack class for creating item stacks and
   manage stacks easily.
+- [`HYaml`](https://github.com/hakan-krgn/hCore/wiki/hyaml) - Basic yaml system.
 
 ## How to add it to Maven or Gradle?
 
