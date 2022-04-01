@@ -23,7 +23,7 @@ public final class HParticleWrapper_v1_11_R1 implements HParticleWrapper {
         Validate.notNull(player, "player cannot be null!");
         Validate.notNull(location, "location cannot be null!");
         Validate.notNull(hParticle, "hParticle class cannot be null!");
-        
+
         EnumParticle enumParticle = null;
         try {
             enumParticle = EnumParticle.valueOf(hParticle.getParticleName());

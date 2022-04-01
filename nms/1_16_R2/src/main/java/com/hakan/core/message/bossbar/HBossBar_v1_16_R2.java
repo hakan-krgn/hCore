@@ -27,7 +27,7 @@ public final class HBossBar_v1_16_R2 implements HBossBar {
         Validate.notNull(color, "color cannot be null!");
         Validate.notNull(style, "style cannot be null!");
         Validate.notNull(flags, "flags cannot be null!");
-        
+
         this.bossBar = new CraftBossBar(title, BarColor.valueOf(color.name()), BarStyle.valueOf(style.name()));
         for (HBarFlag hBarFlag : flags)
             this.bossBar.addFlag(BarFlag.valueOf(hBarFlag.name()));

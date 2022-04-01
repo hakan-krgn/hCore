@@ -21,7 +21,7 @@ public final class HActionBarHandler_v1_18_R2 implements HActionBarHandler {
     public void send(@Nonnull Player player, @Nonnull String text) {
         Validate.notNull(player, "player cannot be null!");
         Validate.notNull(text, "text cannot be null!");
-        
+
         IChatBaseComponent baseComponent = IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + text + "\"}");
         HCore.sendPacket(player, new PacketPlayOutChat(baseComponent, ChatMessageType.c, player.getUniqueId()));
     }

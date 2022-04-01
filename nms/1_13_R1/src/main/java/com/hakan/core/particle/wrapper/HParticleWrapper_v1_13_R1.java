@@ -25,7 +25,7 @@ public final class HParticleWrapper_v1_13_R1 implements HParticleWrapper {
         Validate.notNull(player, "player cannot be null!");
         Validate.notNull(location, "location cannot be null!");
         Validate.notNull(hParticle, "hParticle class cannot be null!");
-        
+
         ParticleParam particleParam = null;
         try {
             particleParam = CraftParticle.toNMS(Particle.valueOf(hParticle.getParticleName()));

@@ -20,7 +20,7 @@ public final class HTitleHandler_v1_11_R1 implements HTitleHandler {
     public void send(@Nonnull Player player, @Nonnull HTitle hTitle) {
         Validate.notNull(player, "player cannot be null!");
         Validate.notNull(player, "hTitle class cannot be null!");
-        
+
         IChatBaseComponent titleString = IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + hTitle.getTitle() + "\"}");
         IChatBaseComponent subtitleString = IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + hTitle.getSubtitle() + "\"}");
 

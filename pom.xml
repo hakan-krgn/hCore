@@ -7,11 +7,12 @@
     <groupId>com.hakan</groupId>
     <artifactId>hCore</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.8</version>
+    <version>0.0.9</version>
 
     <modules>
-        <module>bukkit</module>
         <module>api</module>
+        <module>bukkit</module>
+        <module>bukkit-primary</module>
         <module>nms</module>
     </modules>
 

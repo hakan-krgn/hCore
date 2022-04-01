@@ -25,7 +25,7 @@ public final class HSign_v1_8_R3 extends HSign {
     public HSign_v1_8_R3(@Nonnull Material type, @Nonnull String... lines) {
         super(type, lines);
     }
-    
+
     /**
      * {@inheritDoc}
      */
