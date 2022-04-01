@@ -349,18 +349,27 @@ public final class HRenderer {
 
         if (this.hideConsumer != null) {
             List<Player> hide = new ArrayList<>();
-            for (UUID uid : newShown)
-                if (!oldShown.contains(uid))
-                    hide.add(Bukkit.getPlayer(uid));
-            this.hideConsumer.accept(hide);
+            for (UUID uid : oldShown) {
+                if (!newShown.contains(uid)) {
+                    Player player = Bukkit.getPlayer(uid);
+                    if (player != null) hide.add(Bukkit.getPlayer(uid));
+                }
+            }
+
+            if (hide.size() > 0)
+                this.hideConsumer.accept(hide);
         }
 
         if (this.showConsumer != null) {
             List<Player> show = new ArrayList<>();
-            for (UUID uid : oldShown)
-                if (!newShown.contains(uid))
+            for (UUID uid : newShown) {
+                if (!oldShown.contains(uid)) {
                     show.add(Bukkit.getPlayer(uid));
-            this.showConsumer.accept(show);
+                }
+            }
+
+            if (show.size() > 0)
+                this.showConsumer.accept(show);
         }
 
         this.shownViewers = newShown;
