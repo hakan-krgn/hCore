@@ -1,4 +1,4 @@
 name: 'hCore'
-author: 'Hakan Kargın'
+author: 'Hakan (Hakan#2584)'
 version: ${project.version}
 main: com.hakan.core.Bootstrap
