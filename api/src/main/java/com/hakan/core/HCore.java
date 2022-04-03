@@ -42,7 +42,7 @@ import java.util.*;
 @SuppressWarnings({"unused"})
 public class HCore {
 
-    private static JavaPlugin instance;
+    private static JavaPlugin INSTANCE;
 
     /**
      * Gets instance.
@@ -51,7 +51,7 @@ public class HCore {
      */
     @Nonnull
     public static JavaPlugin getInstance() {
-        return HCore.instance;
+        return HCore.INSTANCE;
     }
 
     /**
@@ -60,8 +60,8 @@ public class HCore {
      * @param plugin Instance of main class.
      */
     public static void initialize(@Nonnull JavaPlugin plugin) {
-        if (HCore.instance != null) return;
-        HCore.instance = Objects.requireNonNull(plugin, "plugin cannot be null!");
+        if (HCore.INSTANCE != null) return;
+        HCore.INSTANCE = Objects.requireNonNull(plugin, "plugin cannot be null!");
 
         Metrics.initialize(plugin);
         HPacketHandler.initialize(plugin);
@@ -101,7 +101,7 @@ public class HCore {
      */
     @Nonnull
     public static HScheduler scheduler(boolean async) {
-        return new HScheduler(HCore.instance, async);
+        return new HScheduler(HCore.INSTANCE, async);
     }
 
     /**
@@ -111,7 +111,7 @@ public class HCore {
      */
     @Nonnull
     public static HScheduler asyncScheduler() {
-        return new HScheduler(HCore.instance, true);
+        return new HScheduler(HCore.INSTANCE, true);
     }
 
     /**
@@ -121,7 +121,7 @@ public class HCore {
      */
     @Nonnull
     public static HScheduler syncScheduler() {
-        return new HScheduler(HCore.instance, false);
+        return new HScheduler(HCore.INSTANCE, false);
     }
 
 
