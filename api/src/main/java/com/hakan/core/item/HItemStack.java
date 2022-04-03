@@ -1,5 +1,6 @@
 package com.hakan.core.item;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -8,10 +9,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 
 import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * HItemStack class to create item stack
@@ -107,7 +105,7 @@ public final class HItemStack extends ItemStack {
      */
     @Nonnull
     public HItemStack name(@Nonnull String name) {
-        this.meta.setDisplayName(Objects.requireNonNull(name, "name cannot be null!"));
+        this.meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(name, "name cannot be null!")));
         return this.meta(this.meta);
     }
 
@@ -130,7 +128,10 @@ public final class HItemStack extends ItemStack {
      */
     @Nonnull
     public HItemStack lores(@Nonnull List<String> lore) {
-        this.meta.setLore(Objects.requireNonNull(lore, "lore cannot be null!"));
+        List<String> lores = new ArrayList<>();
+        for (String line : Objects.requireNonNull(lore, "lore cannot be null!"))
+            lores.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(line, "lore cannot be null!")));
+        this.meta.setLore(lores);
         return this.meta(this.meta);
     }
 

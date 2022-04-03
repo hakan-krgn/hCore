@@ -401,12 +401,13 @@ public class HInventory {
     public final <T extends HInventory> T open(@Nonnull Player player) {
         HInventory hInventory = HInventoryHandler.findByPlayer(Objects.requireNonNull(player, "player cannot be null!")).orElse(null);
 
+        this.onOpen(this, player);
+
         if (hInventory == null || !hInventory.equals(this)) {
             player.openInventory(this.inventory);
             HInventoryHandler.getContent().put(player.getUniqueId(), this);
         }
 
-        this.onOpen(this, player);
         return (T) this;
     }
 
