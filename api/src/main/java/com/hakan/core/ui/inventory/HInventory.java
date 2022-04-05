@@ -48,7 +48,6 @@ public class HInventory {
                 Bukkit.createInventory(null, type, title);
 
         this.fillAir(false);
-        this.onCreate(this);
     }
 
     /**
@@ -430,15 +429,6 @@ public class HInventory {
         }
 
         return (T) this;
-    }
-
-    /**
-     * This method run when inventory created.
-     *
-     * @param hInventory This class.
-     */
-    public void onCreate(@Nonnull HInventory hInventory) {
-
     }
 
     /**
