@@ -15,7 +15,7 @@ import java.util.*;
  * HItemStack class to create item stack
  * and edit it easily.
  */
-public final class HItemStack extends ItemStack {
+public class HItemStack extends ItemStack {
 
     private final ItemMeta meta;
 
