@@ -15,6 +15,7 @@ import com.hakan.core.packet.HPacketHandler;
 import com.hakan.core.particle.HParticle;
 import com.hakan.core.particle.HParticleHandler;
 import com.hakan.core.scheduler.HScheduler;
+import com.hakan.core.spam.HSpam;
 import com.hakan.core.ui.inventory.HInventory;
 import com.hakan.core.ui.inventory.HInventoryHandler;
 import com.hakan.core.ui.inventory.builder.HInventoryBuilder;
@@ -33,6 +34,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Main class of this core.
@@ -719,5 +721,33 @@ public class HCore {
     @Nullable
     public static HHologram deleteHologram(@Nonnull String id) {
         return HHologramHandler.delete(id);
+    }
+
+
+    /*
+    SPAM CONTROLLER
+     */
+
+    /**
+     * Checks if id is spamming.
+     *
+     * @param id       The id to check.
+     * @param time     The time in milliseconds.
+     * @param timeUnit The time unit.
+     * @return True if spamming.
+     */
+    public static boolean spam(@Nonnull String id, int time, @Nonnull TimeUnit timeUnit) {
+        return HSpam.spam(id, time, timeUnit);
+    }
+
+    /**
+     * Checks if id is spamming.
+     *
+     * @param id   The id to check.
+     * @param time The time in milliseconds.
+     * @return True if spamming.
+     */
+    public static boolean spam(@Nonnull String id, long time) {
+        return HSpam.spam(id, time);
     }
 }
