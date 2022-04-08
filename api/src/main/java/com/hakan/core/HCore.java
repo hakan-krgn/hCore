@@ -5,6 +5,7 @@ import com.hakan.core.command.functional.HCommand;
 import com.hakan.core.hologram.HHologram;
 import com.hakan.core.hologram.HHologramHandler;
 import com.hakan.core.hooks.Metrics;
+import com.hakan.core.listener.HListenerAdapter;
 import com.hakan.core.message.HMessageHandler;
 import com.hakan.core.message.bossbar.HBarColor;
 import com.hakan.core.message.bossbar.HBarFlag;
@@ -21,6 +22,7 @@ import com.hakan.core.ui.inventory.HInventoryHandler;
 import com.hakan.core.ui.inventory.builder.HInventoryBuilder;
 import com.hakan.core.ui.sign.HSign;
 import com.hakan.core.ui.sign.HSignHandler;
+import com.hakan.core.utils.HSerializer;
 import com.hakan.core.worldborder.HWorldBorderHandler;
 import com.hakan.core.worldborder.border.HBorderColor;
 import com.hakan.core.worldborder.border.HWorldBorder;
@@ -362,6 +364,29 @@ public class HCore {
      */
     public static void registerCommands(@Nonnull HCommandExecutor... executors) {
         Arrays.asList(Objects.requireNonNull(executors, "executors cannot be null!")).forEach(HCommandExecutor::register);
+    }
+
+
+    /*
+    LISTENERS
+     */
+
+    /**
+     * Registers listeners to bukkit.
+     *
+     * @param listeners Listeners.
+     */
+    public static void registerListener(@Nonnull HListenerAdapter... listeners) {
+        HListenerAdapter.register(listeners);
+    }
+
+    /**
+     * Registers listeners to bukkit.
+     *
+     * @param listeners Listeners.
+     */
+    public static void registerListener(@Nonnull Collection<HListenerAdapter> listeners) {
+        HListenerAdapter.register(listeners);
     }
 
 
@@ -749,5 +774,58 @@ public class HCore {
      */
     public static boolean spam(@Nonnull String id, long time) {
         return HSpam.spam(id, time);
+    }
+
+
+    /*
+    SERIALIZER
+     */
+
+    /**
+     * Serializes object.
+     *
+     * @param object Object.
+     * @return Serialized string as optional.
+     */
+    @Nonnull
+    public synchronized static Optional<String> serializeSafe(@Nonnull Object object) {
+        return HSerializer.serializeSafe(object);
+    }
+
+    /**
+     * Serializes object.
+     *
+     * @param object Object.
+     * @return Serialized string.
+     */
+    @Nonnull
+    public synchronized static String serialize(@Nonnull Object object) {
+        return HSerializer.serialize(object);
+    }
+
+    /**
+     * Deserializes object.
+     *
+     * @param serializedText Text that want to deserialize.
+     * @param clazz          Object type class.
+     * @param <T>            Object type.
+     * @return Deserialized object as optional.
+     */
+    @Nonnull
+    public synchronized static <T> Optional<T> deserializeSafe(@Nonnull String serializedText, @Nonnull Class<T> clazz) {
+        return HSerializer.deserializeSafe(serializedText, clazz);
+    }
+
+    /**
+     * Deserializes object.
+     *
+     * @param serializedText Text that want to deserialize.
+     * @param clazz          Object type class.
+     * @param <T>            Object type.
+     * @return Deserialized object as optional.
+     */
+    @Nonnull
+    public synchronized static <T> T deserialize(@Nonnull String serializedText, @Nonnull Class<T> clazz) {
+        return HSerializer.deserialize(serializedText, clazz);
     }
 }
