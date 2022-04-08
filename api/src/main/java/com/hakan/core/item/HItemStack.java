@@ -18,6 +18,7 @@ import java.util.*;
 public class HItemStack extends ItemStack {
 
     private final ItemMeta meta;
+    private boolean glow = false;
 
     /**
      * Creates new instance of this class.
@@ -337,6 +338,25 @@ public class HItemStack extends ItemStack {
         return this.meta(this.meta);
     }
 
+    /**
+     * Sets glow of item stack.
+     *
+     * @param glow Glow.
+     * @return This class.
+     */
+    @Nonnull
+    public HItemStack glow(boolean glow) {
+        if (glow) {
+            this.meta.addEnchant(Enchantment.ARROW_DAMAGE, 1, true);
+            this.meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        } else if (this.glow) {
+            this.meta.removeEnchant(Enchantment.ARROW_DAMAGE);
+            this.meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+        }
+
+        this.glow = glow;
+        return this.meta(this.meta);
+    }
 
     /**
      * Checks item stack has item meta.

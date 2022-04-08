@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
  * HSpam class to check
  * if the given text is spamming or not.
  */
-public class HSpam {
+public final class HSpam {
 
     private static final Set<String> spams = new HashSet<>();
 
