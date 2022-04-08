@@ -3,8 +3,8 @@ package com.hakan.core.spam;
 import com.hakan.core.HCore;
 
 import javax.annotation.Nonnull;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class HSpam {
 
-    private static final Map<String, Long> spamMap = new HashMap<>();
+    private static final Set<String> spams = new HashSet<>();
 
     /**
      * Checks if id is spamming.
@@ -35,10 +35,10 @@ public class HSpam {
      * @return True if spamming.
      */
     public static boolean spam(@Nonnull String id, long time) {
-        if (!spamMap.containsKey(id)) {
-            spamMap.put(id, System.currentTimeMillis());
+        if (!HSpam.spams.contains(id)) {
+            HSpam.spams.add(id);
             HCore.syncScheduler().after(time / 50)
-                    .run(() -> spamMap.remove(id));
+                    .run(() -> HSpam.spams.remove(id));
             return false;
         }
         return true;
