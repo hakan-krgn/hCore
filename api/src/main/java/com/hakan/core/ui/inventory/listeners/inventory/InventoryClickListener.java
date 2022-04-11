@@ -57,7 +57,10 @@ public final class InventoryClickListener extends HListenerAdapter {
 
             if (event.getClickedInventory().equals(hInventory.toInventory())) {
                 hInventory.findItem(event.getSlot()).flatMap(clickableItem -> Optional.ofNullable(clickableItem.getClick()))
-                        .ifPresent(clickEventConsumer -> clickEventConsumer.accept(event));
+                        .ifPresent(clickEventConsumer -> {
+                            event.setCancelled(true);
+                            clickEventConsumer.accept(event);
+                        });
             }
         });
     }
