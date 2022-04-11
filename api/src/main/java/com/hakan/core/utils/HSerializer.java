@@ -16,7 +16,7 @@ import java.util.Optional;
  * and deserialize any string to object.
  */
 @SuppressWarnings({"unchecked"})
-public class HSerializer {
+public final class HSerializer {
 
     /**
      * Serializes object.

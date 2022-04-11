@@ -9,13 +9,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 
 import javax.annotation.Nonnull;
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * HItemStack class to create item stack
  * and edit it easily.
  */
-public class HItemStack extends ItemStack {
+public class HItemStack extends ItemStack implements Serializable {
 
     private final ItemMeta meta;
     private boolean glow = false;

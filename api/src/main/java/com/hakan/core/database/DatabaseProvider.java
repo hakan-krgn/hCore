@@ -27,6 +27,13 @@ public interface DatabaseProvider<T extends DatabaseObject> {
     List<T> getValues();
 
     /**
+     * Gets value from key and value.
+     *
+     * @return Value.
+     */
+    T getValue(String key, Object value);
+
+    /**
      * Inserts data to database.
      *
      * @param t T

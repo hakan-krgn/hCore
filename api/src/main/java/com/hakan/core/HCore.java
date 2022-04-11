@@ -44,7 +44,7 @@ import java.util.concurrent.TimeUnit;
  * class as static.
  */
 @SuppressWarnings({"unused"})
-public class HCore {
+public final class HCore {
 
     private static JavaPlugin INSTANCE;
 
