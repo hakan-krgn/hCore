@@ -31,7 +31,8 @@ public interface DatabaseProvider<T extends DatabaseObject> {
      *
      * @return Value.
      */
-    T getValue(String key, Object value);
+    @Nonnull
+    T getValue(@Nonnull String key, @Nonnull Object value);
 
     /**
      * Inserts data to database.
