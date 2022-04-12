@@ -52,6 +52,14 @@ from [here](https://github.com/hakan-krgn/hCore/wiki).
     <artifactId>bukkit</artifactId>
     <version>0.1.2</version>
 </dependency>
+
+**OR**
+
+<dependency>
+    <groupId>com.github.hakan-krgn.hCore</groupId>
+    <artifactId>bukkit-primary</artifactId>
+    <version>0.1.2</version>
+</dependency>
 ```
 
 ### Gradle
