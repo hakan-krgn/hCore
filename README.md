@@ -53,7 +53,7 @@ from [here](https://github.com/hakan-krgn/hCore/wiki).
     <version>0.1.2</version>
 </dependency>
 
-**OR**
+<!--If you want to use this api without libraries, you can use below dependency -->
 
 <dependency>
     <groupId>com.github.hakan-krgn.hCore</groupId>
