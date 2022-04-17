@@ -59,10 +59,7 @@ public final class HHologramArmorStand_v1_18_R2 implements HHologramArmorStand {
      */
     @Override
     public void setText(@Nonnull String text) {
-        Validate.notNull(text, "text cannot be null");
-
-        this.armorStand.a(new ChatMessage(text));
-
+        this.armorStand.a(new ChatMessage(Objects.requireNonNull(text, "text cannot be null!")));
         HCore.sendPacket(this.hologram.getRenderer().getShownViewersAsPlayer(),
                 new PacketPlayOutEntityMetadata(this.armorStand.ae(), this.armorStand.ai(), true));
     }
