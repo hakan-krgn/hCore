@@ -40,11 +40,12 @@ public final class HSign_v1_8_R3 extends HSign {
 
         IChatBaseComponent[] components = CraftSign.sanitizeLines(this.lines);
         TileEntitySign sign = new TileEntitySign();
-        sign.a(new BlockPosition(blockPosition.getX(), blockPosition.getY(), blockPosition.getZ()));
+        sign.a(blockPosition);
         System.arraycopy(components, 0, sign.lines, 0, sign.lines.length);
-        HCore.sendPacket(player, sign.getUpdatePacket());
 
+        HCore.sendPacket(player, sign.getUpdatePacket());
         HCore.sendPacket(player, new PacketPlayOutOpenSignEditor(blockPosition));
+
         HSignHandler.getContent().put(player.getUniqueId(), this);
     }
 
@@ -69,5 +70,7 @@ public final class HSign_v1_8_R3 extends HSign {
 
         if (this.consumer != null)
             this.consumer.accept(lines);
+
+        HSignHandler.getContent().remove(player.getUniqueId());
     }
 }
