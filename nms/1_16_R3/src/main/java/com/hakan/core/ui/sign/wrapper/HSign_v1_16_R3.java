@@ -63,5 +63,7 @@ public final class HSign_v1_16_R3 extends HSign {
 
         if (this.consumer != null)
             this.consumer.accept(packetPlayInUpdateSign.c());
+
+        HSignHandler.getContent().remove(player.getUniqueId());
     }
 }

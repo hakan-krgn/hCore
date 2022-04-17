@@ -131,4 +131,29 @@ public final class HSignHandler {
             throw new NullPointerException(e.getMessage());
         }
     }
+
+    /**
+     * Creates HSign.
+     *
+     * @param lines Lines of sign.
+     * @return Created HSign.
+     */
+    @Nonnull
+    public static HSign create(@Nonnull String... lines) {
+        Validate.notNull(lines, "lines cannot be null!");
+
+        Material type;
+        try {
+            type = Material.valueOf("SIGN_POST");
+        } catch (Exception e) {
+            type = Material.valueOf("LEGACY_SIGN");
+        }
+
+        try {
+            return (HSign) Class.forName("com.hakan.core.ui.sign.wrapper.HSign_" + HCore.getVersionString())
+                    .getConstructor(Material.class, String[].class).newInstance(type, lines);
+        } catch (Exception e) {
+            throw new NullPointerException(e.getMessage());
+        }
+    }
 }
