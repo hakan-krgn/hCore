@@ -15,25 +15,28 @@ import java.util.Objects;
 /**
  * {@inheritDoc}
  */
-public final class HHologramArmorStand_v1_8_R3 extends EntityArmorStand implements HHologramArmorStand {
+public final class HHologramArmorStand_v1_8_R3 implements HHologramArmorStand {
 
     private final HHologram hologram;
+    private final EntityArmorStand armorStand;
 
     /**
      * {@inheritDoc}
      */
     private HHologramArmorStand_v1_8_R3(@Nonnull HHologram hHologram, @Nonnull Location location) {
-        super(((CraftWorld) Objects.requireNonNull(location.getWorld())).getHandle(), location.getX(), location.getY(), location.getZ());
-        super.getDataWatcher().watch(10, (byte) 16);
-        super.b(new NBTTagCompound());
-        super.setArms(false);
-        super.setBasePlate(false);
-        super.setGravity(false);
-        super.setInvisible(true);
-        super.setSmall(true);
-        super.setCustomNameVisible(true);
-        super.setHealth(114.13f);
+        World world = ((CraftWorld) Objects.requireNonNull(location.getWorld())).getHandle();
         this.hologram = Objects.requireNonNull(hHologram, "hologram class cannot be null!");
+        this.armorStand = new EntityArmorStand(world, location.getX(), location.getY(), location.getZ());
+
+        this.armorStand.getDataWatcher().watch(10, (byte) 16);
+        this.armorStand.b(new NBTTagCompound());
+        this.armorStand.setArms(false);
+        this.armorStand.setBasePlate(false);
+        this.armorStand.setGravity(false);
+        this.armorStand.setInvisible(true);
+        this.armorStand.setSmall(true);
+        this.armorStand.setCustomNameVisible(true);
+        this.armorStand.setHealth(114.13f);
     }
 
     /**
@@ -42,7 +45,7 @@ public final class HHologramArmorStand_v1_8_R3 extends EntityArmorStand implemen
     @Nonnull
     @Override
     public String getText() {
-        return super.getCustomName();
+        return this.armorStand.getCustomName();
     }
 
     /**
@@ -50,9 +53,9 @@ public final class HHologramArmorStand_v1_8_R3 extends EntityArmorStand implemen
      */
     @Override
     public void setText(@Nonnull String text) {
-        super.setCustomName(Objects.requireNonNull(text, "text cannot be null!"));
+        this.armorStand.setCustomName(Objects.requireNonNull(text, "text cannot be null!"));
         HCore.sendPacket(this.hologram.getRenderer().getShownViewersAsPlayer(),
-                new PacketPlayOutEntityMetadata(super.getId(), super.getDataWatcher(), true));
+                new PacketPlayOutEntityMetadata(this.armorStand.getId(), this.armorStand.getDataWatcher(), true));
     }
 
     /**
@@ -61,7 +64,7 @@ public final class HHologramArmorStand_v1_8_R3 extends EntityArmorStand implemen
     @Nonnull
     @Override
     public Location getLocation() {
-        return super.getBukkitEntity().getLocation();
+        return this.armorStand.getBukkitEntity().getLocation();
     }
 
     /**
@@ -72,11 +75,11 @@ public final class HHologramArmorStand_v1_8_R3 extends EntityArmorStand implemen
         Validate.notNull(location, "location cannot be null");
 
         World world = ((CraftWorld) Objects.requireNonNull(location.getWorld())).getHandle();
-        if (!world.equals(super.getWorld())) super.spawnIn(world);
-        super.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+        if (!world.equals(this.armorStand.getWorld())) this.armorStand.spawnIn(world);
+        this.armorStand.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 
         HCore.sendPacket(this.hologram.getRenderer().getShownViewersAsPlayer(),
-                new PacketPlayOutEntityTeleport(this));
+                new PacketPlayOutEntityTeleport(this.armorStand));
     }
 
     /**
@@ -85,9 +88,9 @@ public final class HHologramArmorStand_v1_8_R3 extends EntityArmorStand implemen
     @Override
     public void show(@Nonnull List<Player> players) {
         HCore.sendPacket(Objects.requireNonNull(players, "players cannot be null"),
-                new PacketPlayOutSpawnEntityLiving(this),
-                new PacketPlayOutEntityMetadata(super.getId(), super.getDataWatcher(), true),
-                new PacketPlayOutEntityTeleport(this));
+                new PacketPlayOutSpawnEntityLiving(this.armorStand),
+                new PacketPlayOutEntityMetadata(this.armorStand.getId(), this.armorStand.getDataWatcher(), true),
+                new PacketPlayOutEntityTeleport(this.armorStand));
     }
 
     /**
@@ -96,6 +99,6 @@ public final class HHologramArmorStand_v1_8_R3 extends EntityArmorStand implemen
     @Override
     public void hide(@Nonnull List<Player> players) {
         HCore.sendPacket(Objects.requireNonNull(players, "players cannot be null"),
-                new PacketPlayOutEntityDestroy(super.getId()));
+                new PacketPlayOutEntityDestroy(this.armorStand.getId()));
     }
 }

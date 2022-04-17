@@ -414,9 +414,8 @@ public final class HHologram {
      */
     @Nonnull
     public HHologram clearLines() {
-        for (int i = this.lines.size() - 1; i >= 0; i--) {
+        for (int i = this.lines.size() - 1; i >= 0; i--)
             this.removeLine(i);
-        }
         return this;
     }
 

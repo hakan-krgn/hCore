@@ -30,7 +30,10 @@ public final class HHologramArmorStand_v1_18_R2 implements HHologramArmorStand {
      * {@inheritDoc}
      */
     private HHologramArmorStand_v1_18_R2(@Nonnull HHologram hHologram, @Nonnull Location location) {
-        this.armorStand = new EntityArmorStand(((CraftWorld) Objects.requireNonNull(location.getWorld())).getHandle(), location.getX(), location.getY(), location.getZ());
+        World world = ((CraftWorld) Objects.requireNonNull(location.getWorld())).getHandle();
+        this.hologram = Objects.requireNonNull(hHologram, "hologram class cannot be null!");
+        this.armorStand = new EntityArmorStand(world, location.getX(), location.getY(), location.getZ());
+
         this.armorStand.persistentInvisibility = true; //set invisibility to true
         this.armorStand.b(5, true); //set invisibility to true
         this.armorStand.n(true); //set custom name visibility to true
@@ -40,7 +43,6 @@ public final class HHologramArmorStand_v1_18_R2 implements HHologramArmorStand {
         this.armorStand.e(true); //set no gravity to true
         this.armorStand.a(true); //set small to true
         this.armorStand.c(114.13f); //set health to 114.13 float
-        this.hologram = Objects.requireNonNull(hHologram, "hologram class cannot be null!");
     }
 
     /**
