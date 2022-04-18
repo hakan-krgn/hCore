@@ -12,13 +12,13 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
-import java.util.Collection;
-import java.util.Objects;
+import java.util.*;
 
 public final class HMessageHandler {
 
     private static HActionBarHandler hActionBarHandler;
     private static HTitleHandler hTitleHandler;
+    private static List<HBossBar> bossBarList;
 
     /**
      * Initializes message api.
@@ -28,6 +28,7 @@ public final class HMessageHandler {
             String version = HCore.getVersionString();
             HMessageHandler.hActionBarHandler = (HActionBarHandler) Class.forName("com.hakan.core.message.actionbar.HActionBarHandler_" + version).getConstructor().newInstance();
             HMessageHandler.hTitleHandler = (HTitleHandler) Class.forName("com.hakan.core.message.title.HTitleHandler_" + version).getConstructor().newInstance();
+            HMessageHandler.bossBarList = new ArrayList<>();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -139,6 +140,83 @@ public final class HMessageHandler {
      */
 
     /**
+     * Gets bossbar list as safe.
+     *
+     * @return Bossbar list.
+     */
+    @Nonnull
+    public static List<HBossBar> getBossBarsSafe() {
+        return new ArrayList<>(HMessageHandler.bossBarList);
+    }
+
+    /**
+     * Gets bossbar list.
+     *
+     * @return Bossbar list.
+     */
+    @Nonnull
+    public static List<HBossBar> getBossBars() {
+        return HMessageHandler.bossBarList;
+    }
+
+    /**
+     * Gets list of boss bars from player.
+     *
+     * @param player Player.
+     * @return List of boss bars.
+     */
+    @Nonnull
+    public static List<HBossBar> getBossBarsByPlayer(@Nonnull Player player) {
+        Validate.notNull(player, "player cannot be null!");
+
+        List<HBossBar> bossBars = new ArrayList<>();
+        for (HBossBar bossBar : HMessageHandler.bossBarList)
+            if (bossBar.getPlayers().contains(player))
+                bossBars.add(bossBar);
+        return bossBars;
+    }
+
+    /**
+     * Finds first bossbar from player.
+     *
+     * @param player Player.
+     * @return Bossbar as optional.
+     */
+    @Nonnull
+    public static Optional<HBossBar> findFirstBossBarByPlayer(@Nonnull Player player) {
+        Validate.notNull(player, "player cannot be null!");
+
+        for (HBossBar bossBar : HMessageHandler.bossBarList)
+            if (bossBar.getPlayers().contains(player))
+                return Optional.of(bossBar);
+        return Optional.empty();
+    }
+
+    /**
+     * Gets first bossbar from player.
+     *
+     * @param player Player.
+     * @return Bossbar.
+     */
+    @Nonnull
+    public static HBossBar getFirstBossBarByPlayer(@Nonnull Player player) {
+        return HMessageHandler.findFirstBossBarByPlayer(player)
+                .orElseThrow(() -> new IllegalArgumentException("player " + player.getName() + " has no bossbar!"));
+    }
+
+    /**
+     * Deletes bossbar.
+     *
+     * @param hBossBar Bossbar.
+     */
+    public static void deleteBossBar(@Nonnull HBossBar hBossBar) {
+        Validate.notNull(hBossBar, "hBossBar cannot be null!");
+
+        HMessageHandler.bossBarList.remove(hBossBar);
+        hBossBar.removeAll();
+    }
+
+    /**
      * Creates bossbar.
      *
      * @param title Title.
@@ -147,6 +225,7 @@ public final class HMessageHandler {
      * @param flags Flags.
      * @return New instance of HBossBar.
      */
+    @Nonnull
     public static HBossBar createBossBar(@Nonnull String title, @Nonnull HBarColor color, @Nonnull HBarStyle style, @Nonnull HBarFlag... flags) {
         Validate.notNull(title, "title cannot be null!");
         Validate.notNull(color, "color cannot be null!");
@@ -155,11 +234,13 @@ public final class HMessageHandler {
 
         try {
             String version = HCore.getVersionString();
-            return (HBossBar) Class.forName("com.hakan.core.message.bossbar.HBossBar_" + version)
+            HBossBar bossBar = (HBossBar) Class.forName("com.hakan.core.message.bossbar.HBossBar_" + version)
                     .getConstructor(String.class, HBarColor.class, HBarStyle.class, HBarFlag[].class)
                     .newInstance(title, color, style, flags);
+            HMessageHandler.bossBarList.add(bossBar);
+            return bossBar;
         } catch (Exception e) {
-            return null;
+            throw new RuntimeException(e);
         }
     }
 
@@ -171,6 +252,7 @@ public final class HMessageHandler {
      * @param style Style.
      * @return New instance of HBossBar.
      */
+    @Nonnull
     public static HBossBar createBossBar(@Nonnull String title, @Nonnull HBarColor color, @Nonnull HBarStyle style) {
         return HMessageHandler.createBossBar(title, color, style, new HBarFlag[0]);
     }

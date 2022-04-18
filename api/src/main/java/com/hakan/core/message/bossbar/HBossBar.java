@@ -133,4 +133,9 @@ public interface HBossBar {
      * @param visible Visibility.
      */
     void setVisible(boolean visible);
+
+    /**
+     * Delete bossbar.
+     */
+    void delete();
 }
