@@ -96,7 +96,7 @@ public final class HScheduler {
      * @return This class.
      */
     @Nonnull
-    public HScheduler every(long every, @Nonnull TimeUnit timeUnit) {
+    public HScheduler every(int every, @Nonnull TimeUnit timeUnit) {
         this.every = timeUnit.toSeconds(every) / 20;
         return this;
     }
