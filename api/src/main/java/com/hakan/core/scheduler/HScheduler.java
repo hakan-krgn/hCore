@@ -6,6 +6,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 /**
@@ -71,6 +72,32 @@ public final class HScheduler {
     @Nonnull
     public HScheduler every(long every) {
         this.every = every;
+        return this;
+    }
+
+    /**
+     * Runs how money ticks later.
+     *
+     * @param after Ticks.
+     * @param timeUnit Time unit.
+     * @return This class.
+     */
+    @Nonnull
+    public HScheduler after(int after, @Nonnull TimeUnit timeUnit) {
+        this.after = timeUnit.toSeconds(after) / 20;
+        return this;
+    }
+
+    /**
+     * Runs every how many ticks.
+     *
+     * @param every Ticks.
+     * @param timeUnit Time unit.
+     * @return This class.
+     */
+    @Nonnull
+    public HScheduler every(long every, @Nonnull TimeUnit timeUnit) {
+        this.every = timeUnit.toSeconds(every) / 20;
         return this;
     }
 
