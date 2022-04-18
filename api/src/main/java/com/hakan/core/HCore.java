@@ -35,8 +35,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.time.Duration;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Main class of this core.
@@ -819,12 +819,11 @@ public final class HCore {
      * Checks if id is spamming.
      *
      * @param id       The id to check.
-     * @param time     The time in milliseconds.
-     * @param timeUnit The time unit.
+     * @param duration The duration to check.
      * @return True if spamming.
      */
-    public static boolean spam(@Nonnull String id, int time, @Nonnull TimeUnit timeUnit) {
-        return HSpam.spam(id, time, timeUnit);
+    public static boolean spam(@Nonnull String id, @Nonnull Duration duration) {
+        return HSpam.spam(id, duration);
     }
 
     /**
