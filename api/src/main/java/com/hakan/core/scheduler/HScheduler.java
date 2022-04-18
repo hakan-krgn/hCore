@@ -78,7 +78,7 @@ public final class HScheduler {
     /**
      * Runs how money ticks later.
      *
-     * @param after Ticks.
+     * @param after    Ticks.
      * @param timeUnit Time unit.
      * @return This class.
      */
@@ -91,7 +91,7 @@ public final class HScheduler {
     /**
      * Runs every how many ticks.
      *
-     * @param every Ticks.
+     * @param every    Ticks.
      * @param timeUnit Time unit.
      * @return This class.
      */
