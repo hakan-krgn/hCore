@@ -1,5 +1,6 @@
 package com.hakan.core.message.bossbar;
 
+import com.hakan.core.message.HMessageHandler;
 import org.apache.commons.lang.Validate;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
@@ -171,5 +172,13 @@ public final class HBossBar_v1_13_R2 implements HBossBar {
     @Override
     public boolean isVisible() {
         return this.bossBar.isVisible();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void delete() {
+        HMessageHandler.deleteBossBar(this);
     }
 }

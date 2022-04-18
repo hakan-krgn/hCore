@@ -557,6 +557,68 @@ public final class HCore {
     }
 
     /**
+     * Gets bossbar list as safe.
+     *
+     * @return Bossbar list.
+     */
+    @Nonnull
+    public static List<HBossBar> getBossBarsSafe() {
+        return HMessageHandler.getBossBarsSafe();
+    }
+
+    /**
+     * Gets bossbar list.
+     *
+     * @return Bossbar list.
+     */
+    @Nonnull
+    public static List<HBossBar> getBossBars() {
+        return HMessageHandler.getBossBars();
+    }
+
+    /**
+     * Gets list of bossbars from player.
+     *
+     * @param player Player.
+     * @return List of boss bars.
+     */
+    @Nonnull
+    public static List<HBossBar> getBossBarsByPlayer(@Nonnull Player player) {
+        return HMessageHandler.getBossBarsByPlayer(player);
+    }
+
+    /**
+     * Finds first bossbar from player.
+     *
+     * @param player Player.
+     * @return Bossbar as optional.
+     */
+    @Nonnull
+    public static Optional<HBossBar> findFirstBossBarByPlayer(@Nonnull Player player) {
+        return HMessageHandler.findFirstBossBarByPlayer(player);
+    }
+
+    /**
+     * Gets first bossbar from player.
+     *
+     * @param player Player.
+     * @return Bossbar.
+     */
+    @Nonnull
+    public static HBossBar getFirstBossBarByPlayer(@Nonnull Player player) {
+        return HMessageHandler.getFirstBossBarByPlayer(player);
+    }
+
+    /**
+     * Deletes bossbar.
+     *
+     * @param hBossBar Bossbar.
+     */
+    public static void deleteBossBar(@Nonnull HBossBar hBossBar) {
+        HMessageHandler.deleteBossBar(hBossBar);
+    }
+
+    /**
      * Creates bossbar.
      *
      * @param title Title.
