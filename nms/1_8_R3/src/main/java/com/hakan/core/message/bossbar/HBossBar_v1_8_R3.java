@@ -1,5 +1,6 @@
 package com.hakan.core.message.bossbar;
 
+import com.hakan.core.message.HMessageHandler;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
@@ -162,5 +163,13 @@ public final class HBossBar_v1_8_R3 implements HBossBar {
     @Override
     public boolean isVisible() {
         return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void delete() {
+        HMessageHandler.deleteBossBar(this);
     }
 }
