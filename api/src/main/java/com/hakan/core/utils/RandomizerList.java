@@ -25,7 +25,7 @@ public class RandomizerList<T> extends ArrayList<T> {
      * {@inheritDoc}
      */
     public RandomizerList(@Nonnull List<T> list) {
-        super(Objects.requireNonNull(list, "list cannot be null!"));
+        super(list);
     }
 
     /**
