@@ -60,7 +60,7 @@ public class HInventory {
      * @param type  Inventory type.
      */
     public HInventory(@Nonnull String id, @Nonnull String title, int size, @Nonnull InventoryType type) {
-        this(id, title, size, type, new HashSet<>(Arrays.asList(Option.values())));
+        this(id, title, size, type, EnumSet.allOf(Option.class));
     }
 
     /**
@@ -311,7 +311,7 @@ public class HInventory {
      */
     @Nonnull
     public final <T extends HInventory> T fill(@Nonnull ItemStack itemStack) {
-        return this.fill(new ClickableItem(itemStack, null), true);
+        return this.fill(itemStack, true);
     }
 
     /**
@@ -334,7 +334,7 @@ public class HInventory {
      */
     @Nonnull
     public final <T extends HInventory> T fillMaterial(@Nonnull Material material) {
-        return this.fill(new ItemStack(Objects.requireNonNull(material, "material cannot be null!")), true);
+        return this.fillMaterial(material, true);
     }
 
     /**
@@ -355,7 +355,7 @@ public class HInventory {
      */
     @Nonnull
     public final <T extends HInventory> T fillAir() {
-        return this.fill(new ItemStack(Material.AIR), true);
+        return this.fillAir(true);
     }
 
     /**
@@ -376,7 +376,7 @@ public class HInventory {
      */
     @Nonnull
     public final <T extends HInventory> T fillNull() {
-        return this.fill((ClickableItem) null, true);
+        return this.fillNull(true);
     }
 
     /**
