@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 /**
  * HRenderer class.
@@ -176,10 +175,11 @@ public final class HRenderer {
      */
     @Nonnull
     public List<Player> getShownViewersAsPlayer() {
-        List<Player> players = this.shownViewers.stream()
-                .map(Bukkit::getPlayer)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+        List<Player> players = new ArrayList<>();
+        this.shownViewers.forEach(uid -> {
+            Player player = Bukkit.getPlayer(uid);
+            if (player != null) players.add(player);
+        });
         return players;
     }
 
@@ -322,9 +322,11 @@ public final class HRenderer {
     public Set<UUID> calculateViewers() {
         if (!this.showEveryone)
             return this.viewers;
-        return location.getWorld().getPlayers().stream()
-                .map(Player::getUniqueId)
-                .collect(Collectors.toSet());
+
+        Set<UUID> viewers = new HashSet<>();
+        this.location.getWorld().getPlayers()
+                .forEach(player -> viewers.add(player.getUniqueId()));
+        return viewers;
     }
 
     /**
