@@ -6,7 +6,7 @@ from [here](https://github.com/hakan-krgn/hCore/wiki).
 
 ## Developers
 
-- [@hakan-krgn](https://github.com/hakan-krgn) Discord: Hakan Kargın#7515
+- [@hakan-krgn](https://github.com/hakan-krgn) Discord: Hakan#2584
 - [@furkanbalci0](https://github.com/furkanbalci0) Discord: caandalek#4917
 - [@rin-17](https://github.com/rin-17) Discord: RIN#8198
 - [@osmanfurkan115](https://github.com/osmanfurkan115)
