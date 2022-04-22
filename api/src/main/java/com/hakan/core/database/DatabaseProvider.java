@@ -1,6 +1,7 @@
 package com.hakan.core.database;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public interface DatabaseProvider<T extends DatabaseObject> {
      *
      * @return Value.
      */
-    @Nonnull
+    @Nullable
     T getValue(@Nonnull String key, @Nonnull Object value);
 
     /**
