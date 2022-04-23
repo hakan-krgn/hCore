@@ -18,7 +18,7 @@ public class EnchantmentGlow_v1_16_R3 extends Enchantment {
      * @param id enchantment id
      */
     private EnchantmentGlow_v1_16_R3(int id) {
-        super(NamespacedKey.minecraft("minecraft:enchantment_" + id));
+        super(NamespacedKey.minecraft(id + ""));
     }
 
     /**
