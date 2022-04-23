@@ -174,7 +174,8 @@ public class HItemStack extends ItemStack implements Serializable {
      */
     @Nonnull
     public List<String> getLore() {
-        return this.meta.getLore();
+        List<String> lore = this.meta.getLore();
+        return lore == null ? new ArrayList<>() : lore;
     }
 
     /**
@@ -192,6 +193,21 @@ public class HItemStack extends ItemStack implements Serializable {
         return this.meta(this.meta);
     }
 
+    /**
+     * Adds lore to item stack.
+     *
+     * @param lines Lines to add.
+     * @return This class.
+     */
+    @Nonnull
+    public HItemStack appendLore(@Nonnull String... lines) {
+        List<String> lore = getLore();
+        for (String line : Objects.requireNonNull(lines, "lines cannot be null!")) {
+            lore.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(line, "line cannot be null!")));
+        }
+        this.meta.setLore(lore);
+        return this.meta(this.meta);
+    }
 
     /**
      * Gets amount of item stack.

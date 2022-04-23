@@ -456,12 +456,8 @@ public class HInventory {
      * Option enums for UI
      */
     public enum Option {
-
         CLOSABLE,
         CANCEL_TOP_CLICK,
-        CANCEL_DOWN_CLICK;
-
-        Option() {
-        }
+        CANCEL_DOWN_CLICK
     }
 }
