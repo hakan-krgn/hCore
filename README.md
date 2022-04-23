@@ -41,6 +41,7 @@ from [here](https://github.com/hakan-krgn/hCore/wiki).
 ## How to add it to Maven or Gradle?
 
 ### Maven
+
 ``` xml
 <repository>
     <id>jitpack.io</id>
@@ -63,6 +64,7 @@ from [here](https://github.com/hakan-krgn/hCore/wiki).
 ```
 
 ### Gradle
+
 ``` xml
 repositories {
   maven { url 'https://jitpack.io' }
