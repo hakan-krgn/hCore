@@ -1,7 +1,5 @@
 package com.hakan.core.item;
 
-import com.hakan.core.HCore;
-import com.hakan.core.item.nbt.HNbtManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -11,73 +9,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 
 import javax.annotation.Nonnull;
-import java.io.Serializable;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.util.*;
 
-/**
- * HItemStack class to create item stack
- * and edit it easily.
- */
-public class HItemStack extends ItemStack implements Serializable {
+public class HItemBuilder {
 
-    private static Enchantment glowEnchantment;
-    private static HNbtManager nbtManager;
-
-    /**
-     * initialize method of HItemStack class.
-     */
-    public static void initialize() {
-        try {
-            Constructor<?> cons = Class.forName("com.hakan.core.item.nbt.HNbtManager_" + HCore.getVersionString())
-                    .getDeclaredConstructor();
-            cons.setAccessible(true);
-            nbtManager = (HNbtManager) cons.newInstance();
-            cons.setAccessible(false);
-
-            if (glowEnchantment == null) {
-                Constructor<?> cons2 = Class.forName("com.hakan.core.item.enchantment.EnchantmentGlow_" + HCore.getVersionString())
-                        .getDeclaredConstructor(int.class);
-                cons2.setAccessible(true);
-                glowEnchantment = (Enchantment) cons2.newInstance(152634);
-                cons2.setAccessible(false);
-
-                if (Arrays.asList(Enchantment.values()).contains(glowEnchantment))
-                    return;
-
-                Field field = Enchantment.class.getDeclaredField("acceptingNew");
-                field.setAccessible(true);
-                field.setBoolean(glowEnchantment, true);
-                Enchantment.registerEnchantment(glowEnchantment);
-                field.setAccessible(false);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Gets Glow enchantment.
-     *
-     * @return Glow enchantment.
-     */
-    @Nonnull
-    public static Enchantment getGlowEnchantment() {
-        return glowEnchantment;
-    }
-
-    /**
-     * Gets NbtManager object.
-     *
-     * @return NbtManager object.
-     */
-    @Nonnull
-    public static HNbtManager getNbtManager() {
-        return nbtManager;
-    }
-
-
+    private ItemStack stack;
     private final ItemMeta meta;
 
     /**
@@ -85,9 +21,11 @@ public class HItemStack extends ItemStack implements Serializable {
      *
      * @param type Material type.
      */
-    public HItemStack(@Nonnull Material type) {
-        super(Objects.requireNonNull(type, "type cannot be null!"));
-        this.meta(this.meta = super.getItemMeta());
+    public HItemBuilder(@Nonnull Material type) {
+        this.stack = new ItemStack(type);
+        this.meta = this.stack.getItemMeta();
+        this.meta.setLore(new ArrayList<>());
+        this.stack.setItemMeta(this.meta);
     }
 
     /**
@@ -96,9 +34,11 @@ public class HItemStack extends ItemStack implements Serializable {
      * @param type   Material type.
      * @param amount Amount.
      */
-    public HItemStack(@Nonnull Material type, int amount) {
-        super(Objects.requireNonNull(type, "type cannot be null!"), amount);
-        this.meta(this.meta = super.getItemMeta());
+    public HItemBuilder(@Nonnull Material type, int amount) {
+        this.stack = new ItemStack(type, amount);
+        this.meta = this.stack.getItemMeta();
+        this.meta.setLore(new ArrayList<>());
+        this.stack.setItemMeta(this.meta);
     }
 
     /**
@@ -108,9 +48,11 @@ public class HItemStack extends ItemStack implements Serializable {
      * @param amount Amount.
      * @param damage Datavalue.
      */
-    public HItemStack(@Nonnull Material type, int amount, short damage) {
-        super(Objects.requireNonNull(type, "type cannot be null!"), amount, damage);
-        this.meta(this.meta = super.getItemMeta());
+    public HItemBuilder(@Nonnull Material type, int amount, short damage) {
+        this.stack = new ItemStack(type, amount, damage);
+        this.meta = this.stack.getItemMeta();
+        this.meta.setLore(new ArrayList<>());
+        this.stack.setItemMeta(this.meta);
     }
 
     /**
@@ -118,9 +60,11 @@ public class HItemStack extends ItemStack implements Serializable {
      *
      * @param stack Item stack.
      */
-    public HItemStack(@Nonnull ItemStack stack) {
-        super(Objects.requireNonNull(stack, "item stack cannot be null!"));
-        this.meta(this.meta = super.getItemMeta());
+    public HItemBuilder(@Nonnull ItemStack stack) {
+        this.stack = new ItemStack(stack);
+        this.meta = this.stack.getItemMeta();
+        this.meta.setLore(this.meta.hasLore() ? this.meta.getLore() : new ArrayList<>());
+        this.stack.setItemMeta(this.meta);
     }
 
     /**
@@ -129,9 +73,8 @@ public class HItemStack extends ItemStack implements Serializable {
      * @return Type of item stack.
      */
     @Nonnull
-    @Override
     public Material getType() {
-        return super.getType();
+        return this.stack.getType();
     }
 
     /**
@@ -141,8 +84,8 @@ public class HItemStack extends ItemStack implements Serializable {
      * @return This class.
      */
     @Nonnull
-    public HItemStack type(@Nonnull Material type) {
-        super.setType(Objects.requireNonNull(type, "type cannot be null!"));
+    public HItemBuilder type(@Nonnull Material type) {
+        this.stack.setType(Objects.requireNonNull(type, "type cannot be null!"));
         return this;
     }
 
@@ -164,9 +107,9 @@ public class HItemStack extends ItemStack implements Serializable {
      * @return This class.
      */
     @Nonnull
-    public HItemStack name(@Nonnull String name) {
+    public HItemBuilder name(@Nonnull String name) {
         this.meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(name, "name cannot be null!")));
-        return this.meta(this.meta);
+        return this;
     }
 
 
@@ -177,8 +120,7 @@ public class HItemStack extends ItemStack implements Serializable {
      */
     @Nonnull
     public List<String> getLore() {
-        List<String> lore = this.meta.getLore();
-        return lore == null ? new ArrayList<>() : lore;
+        return this.meta.getLore();
     }
 
     /**
@@ -188,12 +130,12 @@ public class HItemStack extends ItemStack implements Serializable {
      * @return This class.
      */
     @Nonnull
-    public HItemStack lores(@Nonnull List<String> lore) {
+    public HItemBuilder lores(@Nonnull List<String> lore) {
         List<String> lores = new ArrayList<>();
         for (String line : Objects.requireNonNull(lore, "lore cannot be null!"))
             lores.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(line, "lore cannot be null!")));
         this.meta.setLore(lores);
-        return this.meta(this.meta);
+        return this;
     }
 
     /**
@@ -203,13 +145,13 @@ public class HItemStack extends ItemStack implements Serializable {
      * @return This class.
      */
     @Nonnull
-    public HItemStack appendLore(@Nonnull String... lines) {
+    public HItemBuilder appendLore(@Nonnull String... lines) {
         List<String> lore = this.getLore();
         for (String line : Objects.requireNonNull(lines, "lines cannot be null!"))
             lore.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(line, "line cannot be null!")));
 
         this.meta.setLore(lore);
-        return this.meta(this.meta);
+        return this;
     }
 
     /**
@@ -217,9 +159,8 @@ public class HItemStack extends ItemStack implements Serializable {
      *
      * @return Amount of item stack.
      */
-    @Override
     public int getAmount() {
-        return super.getAmount();
+        return this.stack.getAmount();
     }
 
     /**
@@ -229,8 +170,8 @@ public class HItemStack extends ItemStack implements Serializable {
      * @return This class.
      */
     @Nonnull
-    public HItemStack amount(int amount) {
-        super.setAmount(amount);
+    public HItemBuilder amount(int amount) {
+        this.stack.setAmount(amount);
         return this;
     }
 
@@ -240,9 +181,8 @@ public class HItemStack extends ItemStack implements Serializable {
      *
      * @return Durability of item stack.
      */
-    @Override
     public short getDurability() {
-        return super.getDurability();
+        return this.stack.getDurability();
     }
 
     /**
@@ -252,8 +192,8 @@ public class HItemStack extends ItemStack implements Serializable {
      * @return This class.
      */
     @Nonnull
-    public HItemStack durability(short durability) {
-        super.setDurability(durability);
+    public HItemBuilder durability(short durability) {
+        this.stack.setDurability(durability);
         return this;
     }
 
@@ -264,9 +204,8 @@ public class HItemStack extends ItemStack implements Serializable {
      * @return Data-value of item stack.
      */
     @Nonnull
-    @Override
     public MaterialData getData() {
-        return super.getData();
+        return this.stack.getData();
     }
 
     /**
@@ -276,8 +215,8 @@ public class HItemStack extends ItemStack implements Serializable {
      * @return This class.
      */
     @Nonnull
-    public HItemStack data(@Nonnull MaterialData data) {
-        super.setData(Objects.requireNonNull(data, "material data cannot be null!"));
+    public HItemBuilder data(@Nonnull MaterialData data) {
+        this.stack.setData(Objects.requireNonNull(data, "material data cannot be null!"));
         return this;
     }
 
@@ -329,9 +268,9 @@ public class HItemStack extends ItemStack implements Serializable {
      * @return This class.
      */
     @Nonnull
-    public HItemStack addEnchant(@Nonnull Enchantment enchantment, int level) {
+    public HItemBuilder addEnchant(@Nonnull Enchantment enchantment, int level) {
         this.meta.addEnchant(Objects.requireNonNull(enchantment, "enchantment cannot be null!"), level, true);
-        return this.meta(this.meta);
+        return this;
     }
 
     /**
@@ -341,9 +280,9 @@ public class HItemStack extends ItemStack implements Serializable {
      * @return This class.
      */
     @Nonnull
-    public HItemStack removeEnchant(@Nonnull Enchantment enchantment) {
+    public HItemBuilder removeEnchant(@Nonnull Enchantment enchantment) {
         this.meta.removeEnchant(Objects.requireNonNull(enchantment, "enchantment cannot be null!"));
-        return this.meta(this.meta);
+        return this;
     }
 
 
@@ -374,9 +313,9 @@ public class HItemStack extends ItemStack implements Serializable {
      * @return This class.
      */
     @Nonnull
-    public HItemStack addItemFlags(@Nonnull ItemFlag... flags) {
+    public HItemBuilder addItemFlags(@Nonnull ItemFlag... flags) {
         this.meta.addItemFlags(Objects.requireNonNull(flags, "item flags cannot be null!"));
-        return this.meta(this.meta);
+        return this;
     }
 
     /**
@@ -386,9 +325,9 @@ public class HItemStack extends ItemStack implements Serializable {
      * @return This class.
      */
     @Nonnull
-    public HItemStack removeItemFlags(@Nonnull ItemFlag... flags) {
+    public HItemBuilder removeItemFlags(@Nonnull ItemFlag... flags) {
         this.meta.removeItemFlags(Objects.requireNonNull(flags, "item flags cannot be null!"));
-        return this.meta(this.meta);
+        return this;
     }
 
 
@@ -408,9 +347,9 @@ public class HItemStack extends ItemStack implements Serializable {
      * @return This class.
      */
     @Nonnull
-    public HItemStack unbreakable(boolean unbreakable) {
+    public HItemBuilder unbreakable(boolean unbreakable) {
         this.meta.spigot().setUnbreakable(unbreakable);
-        return this.meta(this.meta);
+        return this;
     }
 
     /**
@@ -420,10 +359,36 @@ public class HItemStack extends ItemStack implements Serializable {
      * @return This class.
      */
     @Nonnull
-    public HItemStack glow(boolean glow) {
-        if (glow) this.meta.addEnchant(glowEnchantment, 0, true);
-        else this.meta.removeEnchant(glowEnchantment);
-        return this.meta(this.meta);
+    public HItemBuilder glow(boolean glow) {
+        if (glow) this.meta.addEnchant(HItemStack.getGlowEnchantment(), 0, true);
+        else this.meta.removeEnchant(HItemStack.getGlowEnchantment());
+        return this;
+    }
+
+    /**
+     * Sets nbt of item stack.
+     *
+     * @param nbt NBT.
+     */
+    @Nonnull
+    public HItemBuilder nbt(@Nonnull String nbt) {
+        this.stack = HItemStack.getNbtManager().set(this.stack,
+                Objects.requireNonNull(nbt, "nbt cannot be null!"));
+        return this;
+    }
+
+    /**
+     * Sets nbt of item stack.
+     *
+     * @param key   Key of nbt.
+     * @param value Value of nbt.
+     */
+    @Nonnull
+    public HItemBuilder nbt(@Nonnull String key, @Nonnull String value) {
+        this.stack = HItemStack.getNbtManager().set(this.stack,
+                Objects.requireNonNull(key, "key cannot be null!"),
+                Objects.requireNonNull(value, "value cannot be null!"));
+        return this;
     }
 
     /**
@@ -431,7 +396,6 @@ public class HItemStack extends ItemStack implements Serializable {
      *
      * @return If item stack has item meta, returns true.
      */
-    @Override
     public boolean hasItemMeta() {
         return true;
     }
@@ -442,9 +406,8 @@ public class HItemStack extends ItemStack implements Serializable {
      * @return Item meta of item stack.
      */
     @Nonnull
-    @Override
     public ItemMeta getItemMeta() {
-        return super.getItemMeta();
+        return this.meta;
     }
 
     /**
@@ -454,8 +417,19 @@ public class HItemStack extends ItemStack implements Serializable {
      * @return This class.
      */
     @Nonnull
-    public HItemStack meta(@Nonnull ItemMeta meta) {
-        super.setItemMeta(Objects.requireNonNull(meta, "item meta cannot be null!"));
+    public HItemBuilder meta(@Nonnull ItemMeta meta) {
+        this.stack.setItemMeta(Objects.requireNonNull(meta, "item meta cannot be null!"));
         return this;
+    }
+
+    /**
+     * Builds item stack.
+     *
+     * @return Item stack.
+     */
+    @Nonnull
+    public ItemStack build() {
+        this.stack.setItemMeta(meta);
+        return this.stack;
     }
 }
