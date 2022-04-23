@@ -68,6 +68,7 @@ public class HItemStack extends ItemStack implements Serializable {
      *
      * @return NbtManager object.
      */
+    @Nonnull
     public static HNbtManager getNbtManager() {
         return nbtManager;
     }
