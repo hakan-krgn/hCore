@@ -7,12 +7,12 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 import net.minecraft.server.v1_9_R2.Packet;
 import net.minecraft.server.v1_9_R2.PlayerConnection;
-import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_9_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -35,7 +35,7 @@ public final class HPacketPlayer_v1_9_R2 extends HPacketPlayer {
      */
     @Override
     public void send(@Nonnull Object... packets) {
-        Validate.notNull(packets, "packets cannot be null!");
+        Objects.requireNonNull(packets, "packets cannot be null!");
         for (Object packet : packets) {
             this.connection.sendPacket((Packet<?>) packet);
         }

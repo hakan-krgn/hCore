@@ -1,7 +1,5 @@
 package com.hakan.core.command;
 
-import org.apache.commons.lang.Validate;
-
 import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
@@ -46,7 +44,7 @@ public class HSubCommand {
      */
     @Nonnull
     public final HSubCommand subCommand(@Nonnull String subCommand) {
-        Validate.notNull(subCommand, "sub command name cannot be null!");
+        Objects.requireNonNull(subCommand, "sub command name cannot be null!");
         if (this.subCommands.containsKey(subCommand)) {
             return this.subCommands.get(subCommand);
         }

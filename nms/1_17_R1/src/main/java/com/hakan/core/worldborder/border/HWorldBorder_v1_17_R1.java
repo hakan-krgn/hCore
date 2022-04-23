@@ -4,7 +4,6 @@ import com.hakan.core.HCore;
 import com.hakan.core.worldborder.HWorldBorderHandler;
 import net.minecraft.network.protocol.game.ClientboundInitializeBorderPacket;
 import net.minecraft.world.level.border.WorldBorder;
-import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
@@ -107,7 +106,7 @@ public final class HWorldBorder_v1_17_R1 extends WorldBorder implements HWorldBo
      */
     @Override
     public void setCenter(@Nonnull Location location) {
-        Validate.notNull(location, "location cannot be null!");
+        Objects.requireNonNull(location, "location cannot be null!");
         super.setCenter(location.getX(), location.getZ());
     }
 

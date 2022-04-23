@@ -89,7 +89,7 @@ public class EnchantmentGlow_v1_18_R2 extends Enchantment {
      * @return item targets of enchantment
      */
     @Override
-    public boolean conflictsWith(Enchantment enchantment) {
+    public boolean conflictsWith(@Nonnull Enchantment enchantment) {
         return false;
     }
 
@@ -99,7 +99,7 @@ public class EnchantmentGlow_v1_18_R2 extends Enchantment {
      * @return enchant with param item stack by this enchantment
      */
     @Override
-    public boolean canEnchantItem(ItemStack itemStack) {
+    public boolean canEnchantItem(@Nonnull ItemStack itemStack) {
         return false;
     }
 }

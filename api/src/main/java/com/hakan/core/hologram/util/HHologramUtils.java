@@ -3,11 +3,11 @@ package com.hakan.core.hologram.util;
 import com.hakan.core.HCore;
 import com.hakan.core.hologram.HHologram;
 import com.hakan.core.hologram.line.entity.HHologramArmorStand;
-import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Constructor;
+import java.util.Objects;
 
 /**
  * Hologram util class
@@ -23,7 +23,7 @@ public final class HHologramUtils {
     @Nonnull
     public static HHologramArmorStand createHologramArmorStand(@Nonnull HHologram hHologram) {
         try {
-            Validate.notNull(hHologram, "hHologram cannot be null");
+            Objects.requireNonNull(hHologram, "hHologram cannot be null");
 
             Constructor<?> constructor = Class.forName("com.hakan.core.hologram.line.entity.HHologramArmorStand_" + HCore.getVersionString()).getDeclaredConstructor(HHologram.class, Location.class);
             constructor.setAccessible(true);

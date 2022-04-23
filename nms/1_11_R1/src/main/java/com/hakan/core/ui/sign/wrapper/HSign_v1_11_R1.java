@@ -4,7 +4,6 @@ import com.hakan.core.HCore;
 import com.hakan.core.ui.sign.HSign;
 import com.hakan.core.ui.sign.HSignHandler;
 import net.minecraft.server.v1_11_R1.*;
-import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_11_R1.CraftWorld;
@@ -13,6 +12,7 @@ import org.bukkit.craftbukkit.v1_11_R1.util.CraftMagicNumbers;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
+import java.util.Objects;
 
 /**
  * {@inheritDoc}
@@ -31,7 +31,7 @@ public final class HSign_v1_11_R1 extends HSign {
      */
     @Override
     public void open(@Nonnull Player player) {
-        Validate.notNull(player, "player cannot be null!");
+        Objects.requireNonNull(player, "player cannot be null!");
         BlockPosition blockPosition = new BlockPosition(player.getLocation().getBlockX(), 1, player.getLocation().getBlockZ());
 
         PacketPlayOutBlockChange packet = new PacketPlayOutBlockChange(((CraftWorld) player.getWorld()).getHandle(), blockPosition);
@@ -53,8 +53,8 @@ public final class HSign_v1_11_R1 extends HSign {
      */
     @Override
     public <T> void listen(@Nonnull Player player, @Nonnull T packet) {
-        Validate.notNull(player, "player cannot be null!");
-        Validate.notNull(packet, "packet cannot be null!");
+        Objects.requireNonNull(player, "player cannot be null!");
+        Objects.requireNonNull(packet, "packet cannot be null!");
         PacketPlayInUpdateSign packetPlayInUpdateSign = (PacketPlayInUpdateSign) packet;
 
         BlockPosition position = packetPlayInUpdateSign.a();

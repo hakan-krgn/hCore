@@ -1,7 +1,6 @@
 package com.hakan.core.message.bossbar;
 
 import com.hakan.core.message.HMessageHandler;
-import org.apache.commons.lang.Validate;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
@@ -24,10 +23,10 @@ public final class HBossBar_v1_9_R1 implements HBossBar {
      * {@inheritDoc}
      */
     public HBossBar_v1_9_R1(@Nonnull String title, @Nonnull HBarColor color, @Nonnull HBarStyle style, @Nonnull HBarFlag... flags) {
-        Validate.notNull(title, "title cannot be null!");
-        Validate.notNull(color, "bar color cannot be null!");
-        Validate.notNull(style, "bar style cannot be null!");
-        Validate.notNull(flags, "bar flags cannot be null!");
+        Objects.requireNonNull(title, "title cannot be null!");
+        Objects.requireNonNull(color, "bar color cannot be null!");
+        Objects.requireNonNull(style, "bar style cannot be null!");
+        Objects.requireNonNull(flags, "bar flags cannot be null!");
 
         this.bossBar = new CraftBossBar(title, BarColor.valueOf(color.name()), BarStyle.valueOf(style.name()));
         for (HBarFlag hBarFlag : flags)
