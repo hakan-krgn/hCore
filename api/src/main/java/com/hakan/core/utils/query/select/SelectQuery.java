@@ -1,9 +1,14 @@
 package com.hakan.core.utils.query.select;
 
+import com.hakan.core.utils.query.criteria.order.OrderType;
 import com.hakan.core.utils.query.QueryBuilder;
+import com.hakan.core.utils.query.criteria.order.OrderCriteria;
+import com.hakan.core.utils.query.criteria.where.WhereCriteria;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Query builder for
@@ -12,7 +17,8 @@ import java.util.*;
 public final class SelectQuery extends QueryBuilder {
 
     private final List<String> values;
-    private final Map<String, String> where;
+    private final WhereCriteria whereCriteria;
+    private final OrderCriteria orderCriteria;
 
     /**
      * Query builder for select query.
@@ -22,7 +28,8 @@ public final class SelectQuery extends QueryBuilder {
     public SelectQuery(@Nonnull String table) {
         super(table);
         this.values = new LinkedList<>();
-        this.where = new LinkedHashMap<>();
+        this.whereCriteria = new WhereCriteria();
+        this.orderCriteria = new OrderCriteria();
     }
 
     /**
@@ -61,12 +68,20 @@ public final class SelectQuery extends QueryBuilder {
      */
     @Nonnull
     public SelectQuery where(@Nonnull String column, @Nonnull Object value) {
-        Objects.requireNonNull(column, "column cannot be null!");
-        Objects.requireNonNull(value, "value cannot be null!");
+        this.whereCriteria.add(column, value);
+        return this;
+    }
 
-        String columnReplaced = column.replace(column, "`" + column + "`");
-        String valueReplaced = value.toString().replace("'", "''");
-        this.where.put(columnReplaced, valueReplaced.replace(valueReplaced, "'" + valueReplaced + "'"));
+    /**
+     * Adds order by column to query.
+     *
+     * @param orderType Order type.
+     * @param columns   Columns to order.
+     * @return Query builder.
+     */
+    @Nonnull
+    public SelectQuery orderBy(@Nonnull OrderType orderType, @Nonnull String... columns) {
+        this.orderCriteria.add(orderType, columns);
         return this;
     }
 
@@ -80,11 +95,9 @@ public final class SelectQuery extends QueryBuilder {
         this.values.forEach((key) -> this.query.append(key).append(", "));
         this.query.delete(this.query.length() - 2, this.query.length());
         this.query.append(" FROM ").append(this.table);
-        if (this.where.size() > 0) {
-            this.query.append(" WHERE ");
-            this.where.forEach((key, value) -> this.query.append(key).append(" = ").append(value).append(" AND "));
-            this.query.delete(this.query.length() - 5, this.query.length());
-        }
+
+        this.query.append(whereCriteria.getCriteriaQuery()).append(orderCriteria.getCriteriaQuery());
+
         return this.query.toString();
     }
 }
