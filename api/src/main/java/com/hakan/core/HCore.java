@@ -5,6 +5,8 @@ import com.hakan.core.command.functional.HCommand;
 import com.hakan.core.hologram.HHologram;
 import com.hakan.core.hologram.HHologramHandler;
 import com.hakan.core.hooks.Metrics;
+import com.hakan.core.item.HItemStack;
+import com.hakan.core.item.nbt.HNbtManager;
 import com.hakan.core.listener.HListenerAdapter;
 import com.hakan.core.message.HMessageHandler;
 import com.hakan.core.message.bossbar.HBarColor;
@@ -75,6 +77,7 @@ public final class HCore {
         HMessageHandler.initialize();
         HParticleHandler.initialize();
         HHologramHandler.initialize();
+        HItemStack.initialize();
     }
 
 
@@ -641,6 +644,21 @@ public final class HCore {
      */
     public static HBossBar createBossBar(@Nonnull String title, @Nonnull HBarColor color, @Nonnull HBarStyle style) {
         return HMessageHandler.createBossBar(title, color, style);
+    }
+
+
+    /*
+    ITEMSTACK
+     */
+
+    /**
+     * Gets NbtManager object.
+     *
+     * @return NbtManager object.
+     */
+    @Nonnull
+    public static HNbtManager getNbtManager() {
+        return HItemStack.getNbtManager();
     }
 
 
