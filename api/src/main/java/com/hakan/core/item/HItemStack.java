@@ -174,7 +174,8 @@ public class HItemStack extends ItemStack implements Serializable {
      */
     @Nonnull
     public List<String> getLore() {
-        return this.meta.getLore();
+        List<String> lore = this.meta.getLore();
+        return lore == null ? new ArrayList<>() : lore;
     }
 
     /**
