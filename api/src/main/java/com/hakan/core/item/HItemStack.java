@@ -1,5 +1,7 @@
 package com.hakan.core.item;
 
+import com.hakan.core.HCore;
+import com.hakan.core.item.nbt.HNbtManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -10,6 +12,8 @@ import org.bukkit.material.MaterialData;
 
 import javax.annotation.Nonnull;
 import java.io.Serializable;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.util.*;
 
 /**
@@ -18,8 +22,58 @@ import java.util.*;
  */
 public class HItemStack extends ItemStack implements Serializable {
 
+    private static Enchantment glowEnchantment;
+    private static HNbtManager nbtManager;
+
+    /**
+     * initialize method of HItemStack class.
+     */
+    public static void initialize() {
+        if (glowEnchantment == null) {
+            try {
+                Constructor<?> cons = Class.forName("com.hakan.core.item.enchantment.EnchantmentGlow_" + HCore.getVersionString())
+                        .getDeclaredConstructor(int.class);
+                cons.setAccessible(true);
+                glowEnchantment = (Enchantment) cons.newInstance(152634);
+                cons.setAccessible(false);
+
+                if (Arrays.asList(Enchantment.values()).contains(glowEnchantment))
+                    return;
+
+                Field field = Enchantment.class.getDeclaredField("acceptingNew");
+                field.setAccessible(true);
+                field.setBoolean(glowEnchantment, true);
+                Enchantment.registerEnchantment(glowEnchantment);
+                field.setAccessible(false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (nbtManager == null) {
+            try {
+                Constructor<?> cons = Class.forName("com.hakan.core.item.nbt.HNbtManager_" + HCore.getVersionString())
+                        .getDeclaredConstructor();
+                cons.setAccessible(true);
+                nbtManager = (HNbtManager) cons.newInstance();
+                cons.setAccessible(false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Gets NbtManager object.
+     *
+     * @return NbtManager object.
+     */
+    public static HNbtManager getNbtManager() {
+        return nbtManager;
+    }
+
+
     private final ItemMeta meta;
-    private boolean glow = false;
 
     /**
      * Creates new instance of this class.
@@ -347,16 +401,31 @@ public class HItemStack extends ItemStack implements Serializable {
      */
     @Nonnull
     public HItemStack glow(boolean glow) {
-        if (glow) {
-            this.meta.addEnchant(Enchantment.ARROW_DAMAGE, 1, true);
-            this.meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        } else if (this.glow) {
-            this.meta.removeEnchant(Enchantment.ARROW_DAMAGE);
-            this.meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
-        }
-
-        this.glow = glow;
+        if (glow) this.meta.addEnchant(glowEnchantment, 0, true);
+        else this.meta.removeEnchant(glowEnchantment);
         return this.meta(this.meta);
+    }
+
+    /**
+     * Sets nbt of item stack.
+     *
+     * @param nbt NBT.
+     */
+    public void nbt(@Nonnull String nbt) {
+        nbtManager.set(this,
+                Objects.requireNonNull(nbt, "nbt cannot be null!"));
+    }
+
+    /**
+     * Sets nbt of item stack.
+     *
+     * @param key   Key of nbt.
+     * @param value Value of nbt.
+     */
+    public void nbt(@Nonnull String key, @Nonnull String value) {
+        nbtManager.set(this,
+                Objects.requireNonNull(key, "key cannot be null!"),
+                Objects.requireNonNull(value, "value cannot be null!"));
     }
 
     /**
