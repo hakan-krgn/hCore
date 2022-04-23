@@ -1,8 +1,8 @@
 package com.hakan.core.utils.query.select;
 
-import com.hakan.core.utils.query.criteria.order.OrderType;
 import com.hakan.core.utils.query.QueryBuilder;
 import com.hakan.core.utils.query.criteria.order.OrderCriteria;
+import com.hakan.core.utils.query.criteria.order.OrderType;
 import com.hakan.core.utils.query.criteria.where.WhereCriteria;
 
 import javax.annotation.Nonnull;
