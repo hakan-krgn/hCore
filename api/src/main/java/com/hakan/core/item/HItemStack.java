@@ -411,9 +411,11 @@ public class HItemStack extends ItemStack implements Serializable {
      *
      * @param nbt NBT.
      */
-    public void nbt(@Nonnull String nbt) {
+    @Nonnull
+    public HItemStack nbt(@Nonnull String nbt) {
         nbtManager.set(this,
                 Objects.requireNonNull(nbt, "nbt cannot be null!"));
+        return this;
     }
 
     /**
@@ -422,10 +424,12 @@ public class HItemStack extends ItemStack implements Serializable {
      * @param key   Key of nbt.
      * @param value Value of nbt.
      */
-    public void nbt(@Nonnull String key, @Nonnull String value) {
+    @Nonnull
+    public HItemStack nbt(@Nonnull String key, @Nonnull String value) {
         nbtManager.set(this,
                 Objects.requireNonNull(key, "key cannot be null!"),
                 Objects.requireNonNull(value, "value cannot be null!"));
+        return this;
     }
 
     /**
