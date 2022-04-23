@@ -83,7 +83,7 @@ public class HSubCommand {
      * @return Sub Command class.
      */
     @Nonnull
-    public final HSubCommand getSubCommand(String subCommand) {
+    public final HSubCommand getSubCommand(@Nonnull String subCommand) {
         return this.findSubCommand(subCommand).orElseThrow(() -> new NullPointerException("there is no subcommand with this name!"));
     }
 }
