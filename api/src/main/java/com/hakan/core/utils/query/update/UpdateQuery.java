@@ -1,6 +1,7 @@
 package com.hakan.core.utils.query.update;
 
 import com.hakan.core.utils.query.QueryBuilder;
+import com.hakan.core.utils.query.criteria.where.WhereCriteria;
 
 import javax.annotation.Nonnull;
 import java.util.LinkedHashMap;
@@ -14,7 +15,7 @@ import java.util.Objects;
 public final class UpdateQuery extends QueryBuilder {
 
     private final Map<String, String> values;
-    private final Map<String, String> where;
+    private final WhereCriteria whereCriteria;
 
     /**
      * Query builder for update query.
@@ -24,7 +25,7 @@ public final class UpdateQuery extends QueryBuilder {
     public UpdateQuery(@Nonnull String table) {
         super(table);
         this.values = new LinkedHashMap<>();
-        this.where = new LinkedHashMap<>();
+        this.whereCriteria = new WhereCriteria();
     }
 
     /**
@@ -54,12 +55,7 @@ public final class UpdateQuery extends QueryBuilder {
      */
     @Nonnull
     public UpdateQuery where(@Nonnull String column, @Nonnull Object value) {
-        Objects.requireNonNull(column, "column cannot be null!");
-        Objects.requireNonNull(value, "value cannot be null!");
-
-        String columnReplaced = column.replace(column, "`" + column + "`");
-        String valueReplaced = value.toString().replace("'", "''");
-        this.where.put(columnReplaced, valueReplaced.replace(valueReplaced, "'" + valueReplaced + "'"));
+        this.whereCriteria.add(column, value);
         return this;
     }
 
@@ -72,11 +68,9 @@ public final class UpdateQuery extends QueryBuilder {
         this.query.append("UPDATE ").append(this.table).append(" SET ");
         this.values.forEach((k, v) -> this.query.append(k).append(" = ").append(v).append(", "));
         this.query.delete(this.query.length() - 2, this.query.length());
-        if (this.where.size() > 0) {
-            this.query.append(" WHERE ");
-            this.where.forEach((k, v) -> this.query.append(k).append(" = ").append(v).append(" AND "));
-            this.query.delete(this.query.length() - 5, this.query.length());
-        }
+
+        this.query.append(whereCriteria.getCriteriaQuery());
+
         return this.query.toString();
     }
 }
