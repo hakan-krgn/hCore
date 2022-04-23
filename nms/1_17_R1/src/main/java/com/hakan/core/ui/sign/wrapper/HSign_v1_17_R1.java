@@ -10,13 +10,13 @@ import net.minecraft.network.protocol.game.PacketPlayOutBlockChange;
 import net.minecraft.network.protocol.game.PacketPlayOutOpenSignEditor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.TileEntitySign;
-import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_17_R1.block.CraftSign;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
+import java.util.Objects;
 
 /**
  * {@inheritDoc}
@@ -35,7 +35,7 @@ public final class HSign_v1_17_R1 extends HSign {
      */
     @Override
     public void open(@Nonnull Player player) {
-        Validate.notNull(player, "player cannot be null!");
+        Objects.requireNonNull(player, "player cannot be null!");
         BlockPosition blockPosition = new BlockPosition(player.getLocation().getBlockX(), 1, player.getLocation().getBlockZ());
 
         HCore.sendPacket(player, new PacketPlayOutBlockChange(blockPosition, Blocks.cg.getBlockData()));
@@ -54,8 +54,8 @@ public final class HSign_v1_17_R1 extends HSign {
      */
     @Override
     public <T> void listen(@Nonnull Player player, @Nonnull T packet) {
-        Validate.notNull(player, "player cannot be null!");
-        Validate.notNull(packet, "packet cannot be null!");
+        Objects.requireNonNull(player, "player cannot be null!");
+        Objects.requireNonNull(packet, "packet cannot be null!");
         PacketPlayInUpdateSign packetPlayInUpdateSign = (PacketPlayInUpdateSign) packet;
 
         BlockPosition position = packetPlayInUpdateSign.b();

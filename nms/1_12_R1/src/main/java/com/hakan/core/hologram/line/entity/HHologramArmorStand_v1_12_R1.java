@@ -3,7 +3,6 @@ package com.hakan.core.hologram.line.entity;
 import com.hakan.core.HCore;
 import com.hakan.core.hologram.HHologram;
 import net.minecraft.server.v1_12_R1.*;
-import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.entity.Player;
@@ -71,7 +70,7 @@ public final class HHologramArmorStand_v1_12_R1 implements HHologramArmorStand {
      */
     @Override
     public void setLocation(@Nonnull Location location) {
-        Validate.notNull(location, "location cannot be null");
+        Objects.requireNonNull(location, "location cannot be null");
 
         World world = ((CraftWorld) Objects.requireNonNull(location.getWorld())).getHandle();
         if (!world.equals(this.armorStand.getWorld())) this.armorStand.spawnIn(world);

@@ -1,6 +1,5 @@
 package com.hakan.core.scheduler;
 
-import org.apache.commons.lang.Validate;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -109,7 +108,7 @@ public final class HScheduler {
      */
     @Nonnull
     public synchronized HScheduler run(@Nonnull Runnable runnable) {
-        Validate.notNull(runnable, "runnable cannot be null!");
+        Objects.requireNonNull(runnable, "runnable cannot be null!");
         return this.run(consumer -> runnable.run());
     }
 
@@ -121,7 +120,7 @@ public final class HScheduler {
      */
     @Nonnull
     public synchronized HScheduler run(@Nonnull Consumer<BukkitRunnable> taskConsumer) {
-        Validate.notNull(taskConsumer, "task consumer cannot be null!");
+        Objects.requireNonNull(taskConsumer, "task consumer cannot be null!");
 
         BukkitRunnable bukkitRunnable = new BukkitRunnable() {
             @Override

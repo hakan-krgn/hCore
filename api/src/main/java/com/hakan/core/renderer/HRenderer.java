@@ -1,6 +1,5 @@
 package com.hakan.core.renderer;
 
-import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -306,7 +305,7 @@ public final class HRenderer {
      * @return Distance as double.
      */
     public double calculateDistance(@Nonnull Location target) {
-        Validate.notNull(target, "target location cannot be null!");
+        Objects.requireNonNull(target, "target location cannot be null!");
 
         double xDis = Math.pow(target.getX() - this.location.getX(), 2);
         double zDis = Math.pow(target.getZ() - this.location.getZ(), 2);
@@ -343,18 +342,20 @@ public final class HRenderer {
         Set<UUID> newShown = new HashSet<>();
         Set<UUID> oldShown = this.shownViewers;
 
-        for (UUID uid : viewers)
+        viewers.forEach(uid -> {
             if (this.canSee(uid))
                 newShown.add(uid);
+        });
 
         if (this.hideConsumer != null) {
             List<Player> hide = new ArrayList<>();
-            for (UUID uid : oldShown) {
+
+            oldShown.forEach(uid -> {
                 if (!newShown.contains(uid)) {
                     Player player = Bukkit.getPlayer(uid);
                     if (player != null) hide.add(Bukkit.getPlayer(uid));
                 }
-            }
+            });
 
             if (hide.size() > 0)
                 this.hideConsumer.accept(hide);
@@ -362,11 +363,12 @@ public final class HRenderer {
 
         if (this.showConsumer != null) {
             List<Player> show = new ArrayList<>();
-            for (UUID uid : newShown) {
+
+            newShown.forEach(uid -> {
                 if (!oldShown.contains(uid)) {
                     show.add(Bukkit.getPlayer(uid));
                 }
-            }
+            });
 
             if (show.size() > 0)
                 this.showConsumer.accept(show);

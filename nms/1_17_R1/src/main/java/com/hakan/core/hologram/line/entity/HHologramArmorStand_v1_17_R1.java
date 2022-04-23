@@ -9,7 +9,6 @@ import net.minecraft.network.protocol.game.PacketPlayOutEntityTeleport;
 import net.minecraft.network.protocol.game.PacketPlayOutSpawnEntityLiving;
 import net.minecraft.world.entity.decoration.EntityArmorStand;
 import net.minecraft.world.level.World;
-import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.entity.Player;
@@ -77,7 +76,7 @@ public final class HHologramArmorStand_v1_17_R1 implements HHologramArmorStand {
      */
     @Override
     public void setLocation(@Nonnull Location location) {
-        Validate.notNull(location, "location cannot be null");
+        Objects.requireNonNull(location, "location cannot be null");
 
         World world = ((CraftWorld) Objects.requireNonNull(location.getWorld())).getHandle();
         if (!world.equals(this.armorStand.getWorld())) this.armorStand.t = world;

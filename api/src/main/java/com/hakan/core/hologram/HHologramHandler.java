@@ -1,7 +1,6 @@
 package com.hakan.core.hologram;
 
 import com.hakan.core.HCore;
-import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 
 import javax.annotation.Nonnull;
@@ -92,8 +91,8 @@ public final class HHologramHandler {
      */
     @Nonnull
     public static HHologram create(@Nonnull String id, @Nonnull Location location, @Nullable Set<UUID> players) {
-        Validate.notNull(id, "id cannot be null");
-        Validate.notNull(location, "location cannot be null");
+        Objects.requireNonNull(id, "id cannot be null");
+        Objects.requireNonNull(location, "location cannot be null");
 
         HHologramHandler.delete(id);
 
@@ -122,7 +121,7 @@ public final class HHologramHandler {
      */
     @Nullable
     public static HHologram delete(@Nonnull String id) {
-        Validate.notNull(id, "id cannot be null");
+        Objects.requireNonNull(id, "id cannot be null");
 
         HHologram oldHologram = HHologramHandler.holograms.get(id);
         if (oldHologram != null)

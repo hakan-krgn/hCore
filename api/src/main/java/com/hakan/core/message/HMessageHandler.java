@@ -8,7 +8,6 @@ import com.hakan.core.message.bossbar.HBarStyle;
 import com.hakan.core.message.bossbar.HBossBar;
 import com.hakan.core.message.title.HTitle;
 import com.hakan.core.message.title.HTitleHandler;
-import org.apache.commons.lang.Validate;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
@@ -167,7 +166,7 @@ public final class HMessageHandler {
      */
     @Nonnull
     public static List<HBossBar> getBossBarsByPlayer(@Nonnull Player player) {
-        Validate.notNull(player, "player cannot be null!");
+        Objects.requireNonNull(player, "player cannot be null!");
 
         List<HBossBar> bossBars = new ArrayList<>();
         for (HBossBar bossBar : HMessageHandler.bossBarList)
@@ -184,7 +183,7 @@ public final class HMessageHandler {
      */
     @Nonnull
     public static Optional<HBossBar> findFirstBossBarByPlayer(@Nonnull Player player) {
-        Validate.notNull(player, "player cannot be null!");
+        Objects.requireNonNull(player, "player cannot be null!");
 
         for (HBossBar bossBar : HMessageHandler.bossBarList)
             if (bossBar.getPlayers().contains(player))
@@ -210,7 +209,7 @@ public final class HMessageHandler {
      * @param hBossBar Bossbar.
      */
     public static void deleteBossBar(@Nonnull HBossBar hBossBar) {
-        Validate.notNull(hBossBar, "hBossBar cannot be null!");
+        Objects.requireNonNull(hBossBar, "hBossBar cannot be null!");
 
         HMessageHandler.bossBarList.remove(hBossBar);
         hBossBar.removeAll();
@@ -227,10 +226,10 @@ public final class HMessageHandler {
      */
     @Nonnull
     public static HBossBar createBossBar(@Nonnull String title, @Nonnull HBarColor color, @Nonnull HBarStyle style, @Nonnull HBarFlag... flags) {
-        Validate.notNull(title, "title cannot be null!");
-        Validate.notNull(color, "color cannot be null!");
-        Validate.notNull(style, "style cannot be null!");
-        Validate.notNull(flags, "flags cannot be null!");
+        Objects.requireNonNull(title, "title cannot be null!");
+        Objects.requireNonNull(color, "color cannot be null!");
+        Objects.requireNonNull(style, "style cannot be null!");
+        Objects.requireNonNull(flags, "flags cannot be null!");
 
         try {
             String version = HCore.getVersionString();

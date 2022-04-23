@@ -4,15 +4,11 @@ import com.hakan.core.HCore;
 import com.hakan.core.listener.HListenerAdapter;
 import com.hakan.core.packet.listeners.PlayerConnectionListener;
 import com.hakan.core.packet.player.HPacketPlayer;
-import org.apache.commons.lang.Validate;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * HPacketHandler class.
@@ -78,7 +74,7 @@ public final class HPacketHandler {
      */
     public static void register(@Nonnull Player player) {
         try {
-            Validate.notNull(player, "player cannot be null!");
+            Objects.requireNonNull(player, "player cannot be null!");
             HPacketPlayer packetPlayer = (HPacketPlayer) Class.forName("com.hakan.core.packet.player.HPacketPlayer_" + HCore.getVersionString())
                     .getConstructor(Player.class).newInstance(player);
             HPacketHandler.packetPlayers.put(player, packetPlayer);
@@ -94,7 +90,7 @@ public final class HPacketHandler {
      * @param player Player.
      */
     public static void unregister(@Nonnull Player player) {
-        Validate.notNull(player, "player cannot be null!");
+        Objects.requireNonNull(player, "player cannot be null!");
         HPacketPlayer packetPlayer = HPacketHandler.packetPlayers.remove(player);
         if (packetPlayer != null)
             packetPlayer.unregister();
