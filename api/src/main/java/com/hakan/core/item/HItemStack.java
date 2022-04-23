@@ -119,7 +119,6 @@ public class HItemStack extends ItemStack implements Serializable {
         this.meta(this.meta = super.getItemMeta());
     }
 
-
     /**
      * Gets type of item stack.
      *
@@ -201,10 +200,10 @@ public class HItemStack extends ItemStack implements Serializable {
      */
     @Nonnull
     public HItemStack appendLore(@Nonnull String... lines) {
-        List<String> lore = getLore();
-        for (String line : Objects.requireNonNull(lines, "lines cannot be null!")) {
+        List<String> lore = this.getLore();
+        for (String line : Objects.requireNonNull(lines, "lines cannot be null!"))
             lore.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(line, "line cannot be null!")));
-        }
+
         this.meta.setLore(lore);
         return this.meta(this.meta);
     }
