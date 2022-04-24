@@ -50,5 +50,4 @@ public final class HParticleHandler {
         Objects.requireNonNull(players, "players cannot be null!");
         players.forEach(player -> HParticleHandler.play(player, location, particle));
     }
-
 }
