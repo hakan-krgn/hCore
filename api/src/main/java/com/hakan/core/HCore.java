@@ -29,7 +29,6 @@ import com.hakan.core.utils.HSerializer;
 import com.hakan.core.worldborder.HWorldBorderHandler;
 import com.hakan.core.worldborder.border.HBorderColor;
 import com.hakan.core.worldborder.border.HWorldBorder;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -39,7 +38,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.time.Duration;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * Main class of this core.
@@ -911,4 +917,5 @@ public final class HCore {
     @Nonnull
     public synchronized static <T> T deserialize(@Nonnull String serializedText, @Nonnull Class<T> clazz) {
         return HSerializer.deserialize(serializedText, clazz);
-asd
+    }
+}
