@@ -31,9 +31,7 @@ public final class HSignHandler {
      * @param plugin Main class of plugin.
      */
     public static void initialize(@Nonnull JavaPlugin plugin) {
-
         try {
-
             Class<?> clazz = Class.forName("com.hakan.core.ui.sign.wrapper.HSign_" + HCore.getVersionString());
             if (HSign.class.isAssignableFrom(clazz)) {
                 HSignHandler.SIGN_CLASS = clazz;
@@ -44,7 +42,6 @@ public final class HSignHandler {
             e.printStackTrace();
             plugin.getLogger().warning("Could not initialize sign system. Probably you are using an unsupported version. (" + HCore.getVersionString() + ")");
         }
-
     }
 
     /**

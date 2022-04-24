@@ -27,8 +27,8 @@ import java.util.Set;
  */
 public class HItemStack extends ItemStack implements Serializable {
 
-    private static Enchantment GLOW_ENCHANTMENT;
-    private static HNbtManager NBT_MANAGER;
+    private static Enchantment GLOW;
+    private static HNbtManager nbtManager;
 
     /**
      * initialize method of HItemStack class.
@@ -38,23 +38,23 @@ public class HItemStack extends ItemStack implements Serializable {
             Constructor<?> cons = Class.forName("com.hakan.core.item.nbt.HNbtManager_" + HCore.getVersionString())
                     .getDeclaredConstructor();
             cons.setAccessible(true);
-            HItemStack.NBT_MANAGER = (HNbtManager) cons.newInstance();
+            HItemStack.nbtManager = (HNbtManager) cons.newInstance();
             cons.setAccessible(false);
 
-            if (HItemStack.GLOW_ENCHANTMENT == null) {
+            if (HItemStack.GLOW == null) {
                 Constructor<?> cons2 = Class.forName("com.hakan.core.item.enchantment.EnchantmentGlow_" + HCore.getVersionString())
                         .getDeclaredConstructor(int.class);
                 cons2.setAccessible(true);
-                HItemStack.GLOW_ENCHANTMENT = (Enchantment) cons2.newInstance(152634);
+                HItemStack.GLOW = (Enchantment) cons2.newInstance(152634);
                 cons2.setAccessible(false);
 
-                if (Arrays.asList(Enchantment.values()).contains(GLOW_ENCHANTMENT))
+                if (Arrays.asList(Enchantment.values()).contains(GLOW))
                     return;
 
                 Field field = Enchantment.class.getDeclaredField("acceptingNew");
                 field.setAccessible(true);
-                field.setBoolean(HItemStack.GLOW_ENCHANTMENT, true);
-                Enchantment.registerEnchantment(HItemStack.GLOW_ENCHANTMENT);
+                field.setBoolean(HItemStack.GLOW, true);
+                Enchantment.registerEnchantment(HItemStack.GLOW);
                 field.setAccessible(false);
             }
         } catch (Exception e) {
@@ -69,7 +69,7 @@ public class HItemStack extends ItemStack implements Serializable {
      */
     @Nonnull
     public static Enchantment getGlowEnchantment() {
-        return HItemStack.GLOW_ENCHANTMENT;
+        return HItemStack.GLOW;
     }
 
     /**
@@ -79,7 +79,7 @@ public class HItemStack extends ItemStack implements Serializable {
      */
     @Nonnull
     public static HNbtManager getNbtManager() {
-        return HItemStack.NBT_MANAGER;
+        return HItemStack.nbtManager;
     }
 
 
@@ -426,8 +426,8 @@ public class HItemStack extends ItemStack implements Serializable {
      */
     @Nonnull
     public HItemStack glow(boolean glow) {
-        if (glow) this.meta.addEnchant(HItemStack.GLOW_ENCHANTMENT, 0, true);
-        else this.meta.removeEnchant(HItemStack.GLOW_ENCHANTMENT);
+        if (glow) this.meta.addEnchant(HItemStack.GLOW, 0, true);
+        else this.meta.removeEnchant(HItemStack.GLOW);
         return this.meta(this.meta);
     }
 

@@ -15,16 +15,17 @@ import java.util.Objects;
  */
 public final class HHologramUtils {
 
-    public static Class<?> HOLOGRAM_CLASS;
+    public static Class<?> hologramClass;
 
+    /**
+     * Initializes HologramUtils class.
+     */
     public static void initialize() {
         try {
-
             Class<?> clazz = Class.forName("com.hakan.core.hologram.line.entity.HHologramArmorStand_" + HCore.getVersionString());
             if (HSign.class.isAssignableFrom(clazz)) {
-                HHologramUtils.HOLOGRAM_CLASS = clazz;
+                HHologramUtils.hologramClass = clazz;
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Could not initialize hologram system. Probably you are using an unsupported version. (" + HCore.getVersionString() + ")");
@@ -42,7 +43,7 @@ public final class HHologramUtils {
         try {
             Objects.requireNonNull(hHologram, "hHologram cannot be null");
 
-            Constructor<?> constructor = HHologramUtils.HOLOGRAM_CLASS.getDeclaredConstructor(HHologram.class, Location.class);
+            Constructor<?> constructor = hologramClass.getDeclaredConstructor(HHologram.class, Location.class);
             constructor.setAccessible(true);
             HHologramArmorStand armorStand = (HHologramArmorStand) constructor.newInstance(hHologram, hHologram.getLocation());
             constructor.setAccessible(false);
@@ -52,5 +53,4 @@ public final class HHologramUtils {
             throw new NullPointerException(e.getMessage());
         }
     }
-
 }
