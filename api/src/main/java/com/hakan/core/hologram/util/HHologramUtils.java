@@ -3,7 +3,6 @@ package com.hakan.core.hologram.util;
 import com.hakan.core.HCore;
 import com.hakan.core.hologram.HHologram;
 import com.hakan.core.hologram.line.entity.HHologramArmorStand;
-import com.hakan.core.ui.sign.HSign;
 import org.bukkit.Location;
 
 import javax.annotation.Nonnull;
@@ -14,23 +13,6 @@ import java.util.Objects;
  * Hologram util class
  */
 public final class HHologramUtils {
-
-    public static Class<?> hologramClass;
-
-    /**
-     * Initializes HologramUtils class.
-     */
-    public static void initialize() {
-        try {
-            Class<?> clazz = Class.forName("com.hakan.core.hologram.line.entity.HHologramArmorStand_" + HCore.getVersionString());
-            if (HSign.class.isAssignableFrom(clazz)) {
-                HHologramUtils.hologramClass = clazz;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Could not initialize hologram system. Probably you are using an unsupported version. (" + HCore.getVersionString() + ")");
-        }
-    }
 
     /**
      * Creates new instance of HologramArmorStand class.
@@ -43,7 +25,8 @@ public final class HHologramUtils {
         try {
             Objects.requireNonNull(hHologram, "hHologram cannot be null");
 
-            Constructor<?> constructor = hologramClass.getDeclaredConstructor(HHologram.class, Location.class);
+            Class<?> clazz = Class.forName("com.hakan.core.hologram.line.entity.HHologramArmorStand_" + HCore.getVersionString());
+            Constructor<?> constructor = clazz.getDeclaredConstructor(HHologram.class, Location.class);
             constructor.setAccessible(true);
             HHologramArmorStand armorStand = (HHologramArmorStand) constructor.newInstance(hHologram, hHologram.getLocation());
             constructor.setAccessible(false);

@@ -4,8 +4,8 @@ import com.hakan.core.command.HCommandExecutor;
 import com.hakan.core.command.functional.HCommand;
 import com.hakan.core.hologram.HHologram;
 import com.hakan.core.hologram.HHologramHandler;
-import com.hakan.core.hologram.util.HHologramUtils;
 import com.hakan.core.hooks.Metrics;
+import com.hakan.core.item.HItemBuilder;
 import com.hakan.core.item.HItemStack;
 import com.hakan.core.item.nbt.HNbtManager;
 import com.hakan.core.listener.HListenerAdapter;
@@ -33,6 +33,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
@@ -85,7 +86,6 @@ public final class HCore {
         HInventoryHandler.initialize(plugin);
         HSignHandler.initialize(plugin);
         HItemStack.initialize();
-        HHologramUtils.initialize();
         HMessageHandler.initialize();
         HParticleHandler.initialize();
         HHologramHandler.initialize();
@@ -659,7 +659,7 @@ public final class HCore {
 
 
     /*
-    ITEMSTACK
+    ITEM
      */
 
     /**
@@ -670,6 +670,53 @@ public final class HCore {
     @Nonnull
     public static HNbtManager getNbtManager() {
         return HItemStack.getNbtManager();
+    }
+
+    /**
+     * Creates new item stack builder.
+     *
+     * @param type Material.
+     * @return New instance of HItemStackBuilder.
+     */
+    @Nonnull
+    public static HItemBuilder createItemBuilder(Material type) {
+        return new HItemBuilder(type);
+    }
+
+    /**
+     * Creates new item stack builder.
+     *
+     * @param type   Material.
+     * @param amount Amount.
+     * @return New instance of HItemStackBuilder.
+     */
+    @Nonnull
+    public static HItemBuilder createItemBuilder(Material type, int amount) {
+        return new HItemBuilder(type, amount);
+    }
+
+    /**
+     * Creates new item stack builder.
+     *
+     * @param type       Material.
+     * @param amount     Amount.
+     * @param durability Durability.
+     * @return New instance of HItemStackBuilder.
+     */
+    @Nonnull
+    public static HItemBuilder createItemBuilder(Material type, int amount, short durability) {
+        return new HItemBuilder(type, amount, durability);
+    }
+
+    /**
+     * Creates new item stack builder.
+     *
+     * @param itemStack Item stack.
+     * @return New instance of HItemStackBuilder.
+     */
+    @Nonnull
+    public static HItemBuilder createItemBuilder(ItemStack itemStack) {
+        return new HItemBuilder(itemStack);
     }
 
 
