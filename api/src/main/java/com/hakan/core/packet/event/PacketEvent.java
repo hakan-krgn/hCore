@@ -180,6 +180,7 @@ public final class PacketEvent extends Event implements Cancellable {
      * Packet types.
      */
     public enum Type {
+
         READ,
         WRITE
     }
