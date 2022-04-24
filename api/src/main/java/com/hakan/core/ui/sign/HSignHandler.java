@@ -8,7 +8,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * HSignHandler class to find
@@ -16,7 +22,8 @@ import java.util.*;
  */
 public final class HSignHandler {
 
-    private static final Map<UUID, HSign> signMap = new HashMap<>();
+    private static final Map<UUID, HSign> SIGN_MAP = new HashMap<>();
+    private static Class<?> SIGN_CLASS;
 
     /**
      * Initializes sign system.
@@ -24,7 +31,20 @@ public final class HSignHandler {
      * @param plugin Main class of plugin.
      */
     public static void initialize(@Nonnull JavaPlugin plugin) {
-        HListenerAdapter.register(new HSignListener(plugin));
+
+        try {
+
+            Class<?> clazz = Class.forName("com.hakan.core.ui.sign.wrapper.HSign_" + HCore.getVersionString());
+            if (HSign.class.isAssignableFrom(clazz)) {
+                HSignHandler.SIGN_CLASS = clazz;
+            }
+
+            HListenerAdapter.register(new HSignListener(plugin));
+        } catch (Exception e) {
+            e.printStackTrace();
+            plugin.getLogger().warning("Could not initialize sign system. Probably you are using an unsupported version. (" + HCore.getVersionString() + ")");
+        }
+
     }
 
     /**
@@ -34,7 +54,7 @@ public final class HSignHandler {
      */
     @Nonnull
     public static Map<UUID, HSign> getContentSafe() {
-        return new HashMap<>(HSignHandler.signMap);
+        return new HashMap<>(HSignHandler.SIGN_MAP);
     }
 
     /**
@@ -44,7 +64,7 @@ public final class HSignHandler {
      */
     @Nonnull
     public static Map<UUID, HSign> getContent() {
-        return HSignHandler.signMap;
+        return HSignHandler.SIGN_MAP;
     }
 
     /**
@@ -54,7 +74,7 @@ public final class HSignHandler {
      */
     @Nonnull
     public static Collection<HSign> getValuesSafe() {
-        return new ArrayList<>(HSignHandler.signMap.values());
+        return new ArrayList<>(HSignHandler.SIGN_MAP.values());
     }
 
     /**
@@ -64,7 +84,7 @@ public final class HSignHandler {
      */
     @Nonnull
     public static Collection<HSign> getValues() {
-        return HSignHandler.signMap.values();
+        return HSignHandler.SIGN_MAP.values();
     }
 
     /**
@@ -97,7 +117,27 @@ public final class HSignHandler {
      */
     @Nonnull
     public static Optional<HSign> findByUID(@Nonnull UUID uid) {
-        return Optional.ofNullable(HSignHandler.signMap.get(Objects.requireNonNull(uid, "UID cannot be null!")));
+        return Optional.ofNullable(HSignHandler.SIGN_MAP.get(Objects.requireNonNull(uid, "UID cannot be null!")));
+    }
+
+    /**
+     * Creates HSign.
+     *
+     * @param lines Lines of sign.
+     * @return Created HSign.
+     */
+    @Nonnull
+    public static HSign create(@Nonnull String... lines) {
+        Objects.requireNonNull(lines, "lines cannot be null!");
+
+        Material type;
+        try {
+            type = Material.valueOf("SIGN_POST");
+        } catch (Exception e) {
+            type = Material.valueOf("LEGACY_SIGN");
+        }
+
+        return create(type, lines);
     }
 
     /**
@@ -124,35 +164,10 @@ public final class HSignHandler {
         Objects.requireNonNull(lines, "lines cannot be null!");
 
         try {
-            return (HSign) Class.forName("com.hakan.core.ui.sign.wrapper.HSign_" + HCore.getVersionString())
-                    .getConstructor(Material.class, String[].class).newInstance(type, lines);
+            return (HSign) HSignHandler.SIGN_CLASS.getConstructor(Material.class, String[].class).newInstance(type, lines);
         } catch (Exception e) {
             throw new NullPointerException(e.getMessage());
         }
     }
 
-    /**
-     * Creates HSign.
-     *
-     * @param lines Lines of sign.
-     * @return Created HSign.
-     */
-    @Nonnull
-    public static HSign create(@Nonnull String... lines) {
-        Objects.requireNonNull(lines, "lines cannot be null!");
-
-        Material type;
-        try {
-            type = Material.valueOf("SIGN_POST");
-        } catch (Exception e) {
-            type = Material.valueOf("LEGACY_SIGN");
-        }
-
-        try {
-            return (HSign) Class.forName("com.hakan.core.ui.sign.wrapper.HSign_" + HCore.getVersionString())
-                    .getConstructor(Material.class, String[].class).newInstance(type, lines);
-        } catch (Exception e) {
-            throw new NullPointerException(e.getMessage());
-        }
-    }
 }
