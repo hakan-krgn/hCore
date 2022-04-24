@@ -6,7 +6,6 @@ import com.hakan.core.hologram.HHologram;
 import com.hakan.core.hologram.HHologramHandler;
 import com.hakan.core.hooks.Metrics;
 import com.hakan.core.item.HItemBuilder;
-import com.hakan.core.item.HItemStack;
 import com.hakan.core.item.nbt.HNbtManager;
 import com.hakan.core.listener.HListenerAdapter;
 import com.hakan.core.message.HMessageHandler;
@@ -85,7 +84,7 @@ public final class HCore {
         HWorldBorderHandler.initialize(plugin);
         HInventoryHandler.initialize(plugin);
         HSignHandler.initialize(plugin);
-        HItemStack.initialize();
+        HItemBuilder.initialize();
         HMessageHandler.initialize();
         HParticleHandler.initialize();
         HHologramHandler.initialize();
@@ -669,7 +668,7 @@ public final class HCore {
      */
     @Nonnull
     public static HNbtManager getNbtManager() {
-        return HItemStack.getNbtManager();
+        return HItemBuilder.getNbtManager();
     }
 
     /**
