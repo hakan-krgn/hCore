@@ -2,15 +2,19 @@ package com.hakan.core.ui.sign;
 
 import com.hakan.core.HCore;
 import com.hakan.core.listener.HListenerAdapter;
-import com.hakan.core.packet.HPacketHandler;
-import com.hakan.core.packet.player.HPacketPlayer;
 import com.hakan.core.ui.sign.listeners.HSignListener;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * HSignHandler class to find

@@ -2,7 +2,12 @@ package com.hakan.core.hologram.line.entity;
 
 import com.hakan.core.HCore;
 import com.hakan.core.hologram.HHologram;
-import net.minecraft.server.v1_9_R1.*;
+import net.minecraft.server.v1_9_R1.EntityArmorStand;
+import net.minecraft.server.v1_9_R1.PacketPlayOutEntityDestroy;
+import net.minecraft.server.v1_9_R1.PacketPlayOutEntityMetadata;
+import net.minecraft.server.v1_9_R1.PacketPlayOutEntityTeleport;
+import net.minecraft.server.v1_9_R1.PacketPlayOutSpawnEntityLiving;
+import net.minecraft.server.v1_9_R1.World;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_9_R1.CraftWorld;
 import org.bukkit.entity.Player;
