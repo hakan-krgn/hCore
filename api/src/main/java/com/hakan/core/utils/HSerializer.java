@@ -91,5 +91,4 @@ public final class HSerializer {
     public synchronized static <T> T deserialize(@Nonnull String serializedText, @Nonnull Class<T> clazz) {
         return HSerializer.deserializeSafe(serializedText, clazz).orElseThrow(() -> new NullPointerException("there is a problem with deserializing!"));
     }
-
 }
