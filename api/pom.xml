@@ -5,13 +5,13 @@
     <parent>
         <artifactId>hCore</artifactId>
         <groupId>com.hakan</groupId>
-        <version>0.1.8</version>
+        <version>0.1.9</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>api</artifactId>
     <packaging>jar</packaging>
-    <version>0.1.8</version>
+    <version>0.1.9</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
