@@ -84,11 +84,11 @@ public final class HCore {
         HWorldBorderHandler.initialize(plugin);
         HInventoryHandler.initialize(plugin);
         HSignHandler.initialize(plugin);
+        HItemStack.initialize();
+        HHologramUtils.initialize();
         HMessageHandler.initialize();
         HParticleHandler.initialize();
         HHologramHandler.initialize();
-        HItemStack.initialize();
-        HHologramUtils.initialize();
     }
 
 
