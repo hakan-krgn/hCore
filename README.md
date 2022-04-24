@@ -33,7 +33,7 @@ from [here](https://github.com/hakan-krgn/hCore/wiki).
 - [`Sign`](https://github.com/hakan-krgn/hCore/wiki/Sign) - Sign system for receiving input from the player.
 - [`WorldBorder`](https://github.com/hakan-krgn/hCore/wiki/WorldBorder) - WorldBorder system to display WorldBorder
   client-side.
-- [`HItemStack`](https://github.com/hakan-krgn/hCore/wiki/HItemStack) - HItemStack class for creating item stacks and
+- [`HItemBuilder`](https://github.com/hakan-krgn/hCore/wiki/HItemBuilder) - HItemBuilder class for creating item stacks and
   manage stacks easily.
 - [`HYaml`](https://github.com/hakan-krgn/hCore/wiki/HYaml) - Basic yaml system for creating and manage yamls easily.
 - [`HSpam`](https://github.com/hakan-krgn/hCore/wiki/HSpam) - Spam system to check if the given ID is spamming.
