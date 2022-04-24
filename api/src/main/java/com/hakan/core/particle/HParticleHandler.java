@@ -11,14 +11,14 @@ import java.util.Objects;
 
 public final class HParticleHandler {
 
-    private static HParticleWrapper WRAPPER;
+    private static HParticleWrapper wrapper;
 
     /**
      * Initializes the particle api.
      */
     public static void initialize() {
         try {
-            HParticleHandler.WRAPPER = (HParticleWrapper) Class.forName("com.hakan.core.particle.wrapper.HParticleWrapper_" + HCore.getVersionString())
+            HParticleHandler.wrapper = (HParticleWrapper) Class.forName("com.hakan.core.particle.wrapper.HParticleWrapper_" + HCore.getVersionString())
                     .getConstructor().newInstance();
         } catch (Exception e) {
             e.printStackTrace();
@@ -36,7 +36,7 @@ public final class HParticleHandler {
         Objects.requireNonNull(player, "player cannot be null!");
         Objects.requireNonNull(location, "location cannot be null!");
         Objects.requireNonNull(particle, "particle cannot be null!");
-        HParticleHandler.WRAPPER.play(player, location, particle);
+        HParticleHandler.wrapper.play(player, location, particle);
     }
 
     /**

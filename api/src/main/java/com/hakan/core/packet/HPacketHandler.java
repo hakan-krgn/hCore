@@ -19,8 +19,8 @@ import java.util.Objects;
  */
 public final class HPacketHandler {
 
-    private static final Map<Player, HPacketPlayer> PACKET_PLAYERS = new HashMap<>();
-    private static Class<?> PACKET_CLASS;
+    private static Class<?> packetManagerClass;
+    private static final Map<Player, HPacketPlayer> packetPlayers = new HashMap<>();
 
     /**
      * Initializes the packet system.
@@ -29,10 +29,9 @@ public final class HPacketHandler {
      */
     public static void initialize(@Nonnull JavaPlugin plugin) {
         try {
-
             Class<?> clazz = Class.forName("com.hakan.core.packet.player.HPacketPlayer_" + HCore.getVersionString());
             if (HPacketPlayer.class.isAssignableFrom(clazz)) {
-                HPacketHandler.PACKET_CLASS = clazz;
+                HPacketHandler.packetManagerClass = clazz;
             }
 
             HListenerAdapter.register(new PlayerConnectionListener(plugin));
@@ -40,7 +39,6 @@ public final class HPacketHandler {
             e.printStackTrace();
             plugin.getLogger().warning("Could not initialize packet system. Probably you are using an unsupported version(" + HCore.getVersionString() + ")");
         }
-
     }
 
 
@@ -51,7 +49,7 @@ public final class HPacketHandler {
      */
     @Nonnull
     public static Map<Player, HPacketPlayer> getContentSafe() {
-        return new HashMap<>(HPacketHandler.PACKET_PLAYERS);
+        return new HashMap<>(HPacketHandler.packetPlayers);
     }
 
     /**
@@ -61,7 +59,7 @@ public final class HPacketHandler {
      */
     @Nonnull
     public static Map<Player, HPacketPlayer> getContent() {
-        return HPacketHandler.PACKET_PLAYERS;
+        return HPacketHandler.packetPlayers;
     }
 
     /**
@@ -71,7 +69,7 @@ public final class HPacketHandler {
      */
     @Nonnull
     public static Collection<HPacketPlayer> getValuesSafe() {
-        return new ArrayList<>(HPacketHandler.PACKET_PLAYERS.values());
+        return new ArrayList<>(HPacketHandler.packetPlayers.values());
     }
 
     /**
@@ -81,7 +79,7 @@ public final class HPacketHandler {
      */
     @Nonnull
     public static Collection<HPacketPlayer> getValues() {
-        return HPacketHandler.PACKET_PLAYERS.values();
+        return HPacketHandler.packetPlayers.values();
     }
 
     /**
@@ -93,8 +91,8 @@ public final class HPacketHandler {
         try {
             Objects.requireNonNull(player, "player cannot be null!");
 
-            HPacketPlayer packetPlayer = (HPacketPlayer) HPacketHandler.PACKET_CLASS.getConstructor(Player.class).newInstance(player);
-            HPacketHandler.PACKET_PLAYERS.put(player, packetPlayer);
+            HPacketPlayer packetPlayer = (HPacketPlayer) HPacketHandler.packetManagerClass.getConstructor(Player.class).newInstance(player);
+            HPacketHandler.packetPlayers.put(player, packetPlayer);
 
             packetPlayer.register();
         } catch (Exception e) {
@@ -109,7 +107,7 @@ public final class HPacketHandler {
      */
     public static void unregister(@Nonnull Player player) {
         Objects.requireNonNull(player, "player cannot be null!");
-        HPacketPlayer packetPlayer = HPacketHandler.PACKET_PLAYERS.remove(player);
+        HPacketPlayer packetPlayer = HPacketHandler.packetPlayers.remove(player);
         if (packetPlayer != null)
             packetPlayer.unregister();
     }
