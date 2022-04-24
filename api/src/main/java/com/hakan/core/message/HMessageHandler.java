@@ -15,9 +15,9 @@ import java.util.*;
 
 public final class HMessageHandler {
 
-    private static HActionBarHandler hActionBarHandler;
-    private static HTitleHandler hTitleHandler;
-    private static List<HBossBar> bossBarList;
+    private static HActionBarHandler ACTIONBAR_HANDLER;
+    private static HTitleHandler TITLE_HANDLER;
+    private static List<HBossBar> BOSS_BARS;
 
     /**
      * Initializes message api.
@@ -25,11 +25,14 @@ public final class HMessageHandler {
     public static void initialize() {
         try {
             String version = HCore.getVersionString();
-            HMessageHandler.hActionBarHandler = (HActionBarHandler) Class.forName("com.hakan.core.message.actionbar.HActionBarHandler_" + version).getConstructor().newInstance();
-            HMessageHandler.hTitleHandler = (HTitleHandler) Class.forName("com.hakan.core.message.title.HTitleHandler_" + version).getConstructor().newInstance();
-            HMessageHandler.bossBarList = new ArrayList<>();
+
+            HMessageHandler.ACTIONBAR_HANDLER = (HActionBarHandler) Class.forName("com.hakan.core.message.actionbar.HActionBarHandler_" + version).getConstructor().newInstance();
+            HMessageHandler.TITLE_HANDLER = (HTitleHandler) Class.forName("com.hakan.core.message.title.HTitleHandler_" + version).getConstructor().newInstance();
+            HMessageHandler.BOSS_BARS = new ArrayList<>();
+
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Could not initialize message system. Probably you are using an unsupported version. (" + HCore.getVersionString() + ")");
         }
     }
 
@@ -45,7 +48,7 @@ public final class HMessageHandler {
      * @param hTitle HTitle class.
      */
     public static void sendTitle(@Nonnull Player player, @Nonnull HTitle hTitle) {
-        HMessageHandler.hTitleHandler.send(Objects.requireNonNull(player, "player cannot be null!"), Objects.requireNonNull(hTitle, "hTitle cannot be null!"));
+        HMessageHandler.TITLE_HANDLER.send(Objects.requireNonNull(player, "player cannot be null!"), Objects.requireNonNull(hTitle, "hTitle cannot be null!"));
     }
 
     /**
@@ -120,7 +123,7 @@ public final class HMessageHandler {
      * @param text   Text.
      */
     public static void sendActionBar(@Nonnull Player player, @Nonnull String text) {
-        HMessageHandler.hActionBarHandler.send(Objects.requireNonNull(player, "player cannot be null!"), Objects.requireNonNull(text, "text cannot be null!"));
+        HMessageHandler.ACTIONBAR_HANDLER.send(Objects.requireNonNull(player, "player cannot be null!"), Objects.requireNonNull(text, "text cannot be null!"));
     }
 
     /**
@@ -145,7 +148,7 @@ public final class HMessageHandler {
      */
     @Nonnull
     public static List<HBossBar> getBossBarsSafe() {
-        return new ArrayList<>(HMessageHandler.bossBarList);
+        return new ArrayList<>(HMessageHandler.BOSS_BARS);
     }
 
     /**
@@ -155,7 +158,7 @@ public final class HMessageHandler {
      */
     @Nonnull
     public static List<HBossBar> getBossBars() {
-        return HMessageHandler.bossBarList;
+        return HMessageHandler.BOSS_BARS;
     }
 
     /**
@@ -169,7 +172,7 @@ public final class HMessageHandler {
         Objects.requireNonNull(player, "player cannot be null!");
 
         List<HBossBar> bossBars = new ArrayList<>();
-        for (HBossBar bossBar : HMessageHandler.bossBarList)
+        for (HBossBar bossBar : HMessageHandler.BOSS_BARS)
             if (bossBar.getPlayers().contains(player))
                 bossBars.add(bossBar);
         return bossBars;
@@ -185,7 +188,7 @@ public final class HMessageHandler {
     public static Optional<HBossBar> findFirstBossBarByPlayer(@Nonnull Player player) {
         Objects.requireNonNull(player, "player cannot be null!");
 
-        for (HBossBar bossBar : HMessageHandler.bossBarList)
+        for (HBossBar bossBar : HMessageHandler.BOSS_BARS)
             if (bossBar.getPlayers().contains(player))
                 return Optional.of(bossBar);
         return Optional.empty();
@@ -211,7 +214,7 @@ public final class HMessageHandler {
     public static void deleteBossBar(@Nonnull HBossBar hBossBar) {
         Objects.requireNonNull(hBossBar, "hBossBar cannot be null!");
 
-        HMessageHandler.bossBarList.remove(hBossBar);
+        HMessageHandler.BOSS_BARS.remove(hBossBar);
         hBossBar.removeAll();
     }
 
@@ -236,7 +239,7 @@ public final class HMessageHandler {
             HBossBar bossBar = (HBossBar) Class.forName("com.hakan.core.message.bossbar.HBossBar_" + version)
                     .getConstructor(String.class, HBarColor.class, HBarStyle.class, HBarFlag[].class)
                     .newInstance(title, color, style, flags);
-            HMessageHandler.bossBarList.add(bossBar);
+            HMessageHandler.BOSS_BARS.add(bossBar);
             return bossBar;
         } catch (Exception e) {
             throw new RuntimeException(e);

@@ -4,6 +4,7 @@ import com.hakan.core.command.HCommandExecutor;
 import com.hakan.core.command.functional.HCommand;
 import com.hakan.core.hologram.HHologram;
 import com.hakan.core.hologram.HHologramHandler;
+import com.hakan.core.hologram.util.HHologramUtils;
 import com.hakan.core.hooks.Metrics;
 import com.hakan.core.item.HItemStack;
 import com.hakan.core.item.nbt.HNbtManager;
@@ -49,6 +50,7 @@ import java.util.*;
 public final class HCore {
 
     private static JavaPlugin INSTANCE;
+    private static String VERSION;
 
     /**
      * Gets instance.
@@ -67,7 +69,9 @@ public final class HCore {
      */
     public static void initialize(@Nonnull JavaPlugin plugin) {
         if (HCore.INSTANCE != null) return;
+
         HCore.INSTANCE = Objects.requireNonNull(plugin, "plugin cannot be null!");
+        HCore.VERSION = plugin.getServer().getClass().getName().split("\\.")[3];
 
         Metrics.initialize(plugin);
         HPacketHandler.initialize(plugin);
@@ -78,6 +82,7 @@ public final class HCore {
         HParticleHandler.initialize();
         HHologramHandler.initialize();
         HItemStack.initialize();
+        HHologramUtils.initialize();
     }
 
 
@@ -92,7 +97,7 @@ public final class HCore {
      */
     @Nonnull
     public static String getVersionString() {
-        return Bukkit.getServer().getClass().getName().split("\\.")[3];
+        return HCore.VERSION;
     }
 
 
@@ -906,5 +911,4 @@ public final class HCore {
     @Nonnull
     public synchronized static <T> T deserialize(@Nonnull String serializedText, @Nonnull Class<T> clazz) {
         return HSerializer.deserialize(serializedText, clazz);
-    }
-}
+asd
