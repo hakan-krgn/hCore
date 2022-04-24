@@ -1,15 +1,21 @@
 package com.hakan.core.item;
 
+import com.hakan.core.HCore;
+import com.hakan.core.item.nbt.HNbtManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.MaterialData;
 
 import javax.annotation.Nonnull;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -17,8 +23,72 @@ import java.util.Set;
 
 public class HItemBuilder {
 
-    private ItemStack stack;
-    private final ItemMeta meta;
+    private static Enchantment glowEnchantment;
+    private static HNbtManager nbtManager;
+
+    /**
+     * initialize method of HItemStack class.
+     */
+    public static void initialize() {
+        try {
+            Constructor<?> cons = Class.forName("com.hakan.core.item.nbt.HNbtManager_" + HCore.getVersionString())
+                    .getDeclaredConstructor();
+            cons.setAccessible(true);
+            HItemBuilder.nbtManager = (HNbtManager) cons.newInstance();
+            cons.setAccessible(false);
+
+            if (HItemBuilder.glowEnchantment == null) {
+                Constructor<?> cons2 = Class.forName("com.hakan.core.item.enchantment.EnchantmentGlow_" + HCore.getVersionString())
+                        .getDeclaredConstructor(int.class);
+                cons2.setAccessible(true);
+                HItemBuilder.glowEnchantment = (Enchantment) cons2.newInstance(152634);
+                cons2.setAccessible(false);
+
+                if (Arrays.asList(Enchantment.values()).contains(glowEnchantment))
+                    return;
+
+                Field field = Enchantment.class.getDeclaredField("acceptingNew");
+                field.setAccessible(true);
+                field.setBoolean(HItemBuilder.glowEnchantment, true);
+                Enchantment.registerEnchantment(HItemBuilder.glowEnchantment);
+                field.setAccessible(false);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Gets Glow enchantment.
+     *
+     * @return Glow enchantment.
+     */
+    @Nonnull
+    public static Enchantment getGlowEnchantment() {
+        return HItemBuilder.glowEnchantment;
+    }
+
+    /**
+     * Gets NbtManager object.
+     *
+     * @return NbtManager object.
+     */
+    @Nonnull
+    public static HNbtManager getNbtManager() {
+        return HItemBuilder.nbtManager;
+    }
+
+
+    private Material type;
+    private String nbt;
+    private String name;
+    private int amount;
+    private short durability;
+    private boolean glow;
+    private boolean unbreakable;
+    private List<String> lore;
+    private Set<ItemFlag> flags;
+    private Map<Enchantment, Integer> enchantments;
 
     /**
      * Creates new instance of this class.
@@ -26,10 +96,7 @@ public class HItemBuilder {
      * @param type Material type.
      */
     public HItemBuilder(@Nonnull Material type) {
-        this.stack = new ItemStack(type);
-        this.meta = this.stack.getItemMeta();
-        this.meta.setLore(new ArrayList<>());
-        this.stack.setItemMeta(this.meta);
+        this(type, 1);
     }
 
     /**
@@ -39,24 +106,26 @@ public class HItemBuilder {
      * @param amount Amount.
      */
     public HItemBuilder(@Nonnull Material type, int amount) {
-        this.stack = new ItemStack(type, amount);
-        this.meta = this.stack.getItemMeta();
-        this.meta.setLore(new ArrayList<>());
-        this.stack.setItemMeta(this.meta);
+        this(type, amount, (short) 0);
     }
 
     /**
      * Creates new instance of this class.
      *
-     * @param type   Material type.
-     * @param amount Amount.
-     * @param damage Datavalue.
+     * @param type       Material type.
+     * @param amount     Amount.
+     * @param durability Datavalue.
      */
-    public HItemBuilder(@Nonnull Material type, int amount, short damage) {
-        this.stack = new ItemStack(type, amount, damage);
-        this.meta = this.stack.getItemMeta();
-        this.meta.setLore(new ArrayList<>());
-        this.stack.setItemMeta(this.meta);
+    public HItemBuilder(@Nonnull Material type, int amount, short durability) {
+        this.type = type;
+        this.nbt = "{}";
+        this.amount = amount;
+        this.durability = durability;
+        this.glow = false;
+        this.unbreakable = false;
+        this.lore = new ArrayList<>();
+        this.flags = new HashSet<>();
+        this.enchantments = new HashMap<>();
     }
 
     /**
@@ -65,10 +134,18 @@ public class HItemBuilder {
      * @param stack Item stack.
      */
     public HItemBuilder(@Nonnull ItemStack stack) {
-        this.stack = new ItemStack(stack);
-        this.meta = this.stack.getItemMeta();
-        this.meta.setLore(this.meta.hasLore() ? this.meta.getLore() : new ArrayList<>());
-        this.stack.setItemMeta(this.meta);
+        this(stack.getType(), stack.getAmount(), stack.getDurability());
+        this.nbt = HItemBuilder.nbtManager.get(stack);
+
+        ItemMeta itemMeta = stack.getItemMeta();
+        if (itemMeta != null) {
+            this.glow = itemMeta.hasEnchants() && itemMeta.getEnchants().containsKey(glowEnchantment);
+            this.unbreakable = itemMeta.spigot().isUnbreakable();
+            this.name = itemMeta.getDisplayName();
+            this.lore = itemMeta.getLore();
+            this.flags = itemMeta.getItemFlags();
+            this.enchantments = itemMeta.getEnchants();
+        }
     }
 
     /**
@@ -78,7 +155,7 @@ public class HItemBuilder {
      */
     @Nonnull
     public Material getType() {
-        return this.stack.getType();
+        return this.type;
     }
 
     /**
@@ -89,7 +166,7 @@ public class HItemBuilder {
      */
     @Nonnull
     public HItemBuilder type(@Nonnull Material type) {
-        this.stack.setType(Objects.requireNonNull(type, "type cannot be null!"));
+        this.type = Objects.requireNonNull(type, "type cannot be null!");
         return this;
     }
 
@@ -101,7 +178,7 @@ public class HItemBuilder {
      */
     @Nonnull
     public String getName() {
-        return this.meta.getDisplayName();
+        return this.name;
     }
 
     /**
@@ -112,7 +189,20 @@ public class HItemBuilder {
      */
     @Nonnull
     public HItemBuilder name(@Nonnull String name) {
-        this.meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(name, "name cannot be null!")));
+        return this.name(true, name);
+    }
+
+    /**
+     * Sets name of item stack.
+     *
+     * @param colored Name is colored.
+     * @param name    Name of item stack.
+     * @return This class.
+     */
+    @Nonnull
+    public HItemBuilder name(boolean colored, @Nonnull String name) {
+        this.name = Objects.requireNonNull(name, "name cannot be null!");
+        if (colored) this.name = ChatColor.translateAlternateColorCodes('&', this.name);
         return this;
     }
 
@@ -124,7 +214,7 @@ public class HItemBuilder {
      */
     @Nonnull
     public List<String> getLore() {
-        return this.meta.getLore();
+        return this.lore;
     }
 
     /**
@@ -135,11 +225,7 @@ public class HItemBuilder {
      */
     @Nonnull
     public HItemBuilder lores(@Nonnull List<String> lore) {
-        List<String> lores = new ArrayList<>();
-        for (String line : Objects.requireNonNull(lore, "lore cannot be null!"))
-            lores.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(line, "lore cannot be null!")));
-        this.meta.setLore(lores);
-        return this;
+        return this.appendLore(true, lore);
     }
 
     /**
@@ -150,11 +236,60 @@ public class HItemBuilder {
      */
     @Nonnull
     public HItemBuilder appendLore(@Nonnull String... lines) {
-        List<String> lore = this.getLore();
-        for (String line : Objects.requireNonNull(lines, "lines cannot be null!"))
-            lore.add(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(line, "line cannot be null!")));
+        return this.appendLore(true, lines);
+    }
 
-        this.meta.setLore(lore);
+    /**
+     * Adds lore to item stack.
+     *
+     * @param lines Lines to add.
+     * @return This class.
+     */
+    @Nonnull
+    public HItemBuilder appendLore(@Nonnull List<String> lines) {
+        return this.appendLore(true, lines);
+    }
+
+    /**
+     * Sets lore of item stack.
+     *
+     * @param colored Lore is colored.
+     * @param lore    Lore of item stack
+     * @return This class.
+     */
+    @Nonnull
+    public HItemBuilder lores(boolean colored, @Nonnull List<String> lore) {
+        this.lore.clear();
+        return this.appendLore(colored, lore);
+    }
+
+    /**
+     * Adds lore to item stack.
+     *
+     * @param colored Lore is colored.
+     * @param lines   Lines to add.
+     * @return This class.
+     */
+    @Nonnull
+    public HItemBuilder appendLore(boolean colored, @Nonnull String... lines) {
+        return this.appendLore(colored, Arrays.asList(lines));
+    }
+
+    /**
+     * Adds lore to item stack.
+     *
+     * @param colored Lore is colored.
+     * @param lines   Lines to add.
+     * @return This class.
+     */
+    @Nonnull
+    public HItemBuilder appendLore(boolean colored, @Nonnull List<String> lines) {
+        for (String _line : Objects.requireNonNull(lines, "lines cannot be null!")) {
+            String line = Objects.requireNonNull(_line, "lore cannot be null!");
+            if (colored) line = ChatColor.translateAlternateColorCodes('&', line);
+            this.lore.add(line);
+        }
+
         return this;
     }
 
@@ -164,7 +299,7 @@ public class HItemBuilder {
      * @return Amount of item stack.
      */
     public int getAmount() {
-        return this.stack.getAmount();
+        return this.amount;
     }
 
     /**
@@ -175,7 +310,7 @@ public class HItemBuilder {
      */
     @Nonnull
     public HItemBuilder amount(int amount) {
-        this.stack.setAmount(amount);
+        this.amount = amount;
         return this;
     }
 
@@ -186,7 +321,7 @@ public class HItemBuilder {
      * @return Durability of item stack.
      */
     public short getDurability() {
-        return this.stack.getDurability();
+        return this.durability;
     }
 
     /**
@@ -197,33 +332,9 @@ public class HItemBuilder {
      */
     @Nonnull
     public HItemBuilder durability(short durability) {
-        this.stack.setDurability(durability);
+        this.durability = durability;
         return this;
     }
-
-
-    /**
-     * Gets data-value of item stack.
-     *
-     * @return Data-value of item stack.
-     */
-    @Nonnull
-    public MaterialData getData() {
-        return this.stack.getData();
-    }
-
-    /**
-     * Sets data of item stack.
-     *
-     * @param data Data of item stack.
-     * @return This class.
-     */
-    @Nonnull
-    public HItemBuilder data(@Nonnull MaterialData data) {
-        this.stack.setData(Objects.requireNonNull(data, "material data cannot be null!"));
-        return this;
-    }
-
 
     /**
      * Checks item stack has any enchantment.
@@ -231,7 +342,7 @@ public class HItemBuilder {
      * @return If item stack has enchantment, returns true.
      */
     public boolean hasEnchants() {
-        return this.meta.hasEnchants();
+        return this.enchantments.size() > 0;
     }
 
     /**
@@ -241,7 +352,7 @@ public class HItemBuilder {
      * @return This class.
      */
     public boolean hasEnchant(@Nonnull Enchantment enchantment) {
-        return this.meta.hasEnchant(Objects.requireNonNull(enchantment, "enchantment cannot be null!"));
+        return this.enchantments.containsKey(Objects.requireNonNull(enchantment, "enchantment cannot be null!"));
     }
 
     /**
@@ -251,7 +362,7 @@ public class HItemBuilder {
      */
     @Nonnull
     public Map<Enchantment, Integer> getEnchants() {
-        return this.meta.getEnchants();
+        return this.enchantments;
     }
 
     /**
@@ -261,7 +372,7 @@ public class HItemBuilder {
      * @return Level of enchantment.
      */
     public int getEnchantLevel(@Nonnull Enchantment enchantment) {
-        return this.meta.getEnchantLevel(Objects.requireNonNull(enchantment, "enchantment cannot be null!"));
+        return this.enchantments.get(Objects.requireNonNull(enchantment, "enchantment cannot be null!"));
     }
 
     /**
@@ -273,7 +384,7 @@ public class HItemBuilder {
      */
     @Nonnull
     public HItemBuilder addEnchant(@Nonnull Enchantment enchantment, int level) {
-        this.meta.addEnchant(Objects.requireNonNull(enchantment, "enchantment cannot be null!"), level, true);
+        this.enchantments.put(Objects.requireNonNull(enchantment, "enchantment cannot be null!"), level);
         return this;
     }
 
@@ -285,7 +396,7 @@ public class HItemBuilder {
      */
     @Nonnull
     public HItemBuilder removeEnchant(@Nonnull Enchantment enchantment) {
-        this.meta.removeEnchant(Objects.requireNonNull(enchantment, "enchantment cannot be null!"));
+        this.enchantments.remove(Objects.requireNonNull(enchantment, "enchantment cannot be null!"));
         return this;
     }
 
@@ -297,7 +408,7 @@ public class HItemBuilder {
      * @return If item stack has flag, returns true.
      */
     public boolean hasItemFlag(@Nonnull ItemFlag flag) {
-        return this.meta.hasItemFlag(Objects.requireNonNull(flag, "item flag cannot be null!"));
+        return this.flags.contains(Objects.requireNonNull(flag, "item flag cannot be null!"));
     }
 
     /**
@@ -307,7 +418,7 @@ public class HItemBuilder {
      */
     @Nonnull
     public Set<ItemFlag> getItemFlags() {
-        return this.meta.getItemFlags();
+        return this.flags;
     }
 
     /**
@@ -318,7 +429,8 @@ public class HItemBuilder {
      */
     @Nonnull
     public HItemBuilder addItemFlags(@Nonnull ItemFlag... flags) {
-        this.meta.addItemFlags(Objects.requireNonNull(flags, "item flags cannot be null!"));
+        for (ItemFlag flag : Objects.requireNonNull(flags, "item flags cannot be null!"))
+            this.flags.add(Objects.requireNonNull(flag, "item flag cannot be null!"));
         return this;
     }
 
@@ -330,7 +442,8 @@ public class HItemBuilder {
      */
     @Nonnull
     public HItemBuilder removeItemFlags(@Nonnull ItemFlag... flags) {
-        this.meta.removeItemFlags(Objects.requireNonNull(flags, "item flags cannot be null!"));
+        for (ItemFlag flag : Objects.requireNonNull(flags, "item flags cannot be null!"))
+            this.flags.remove(Objects.requireNonNull(flag, "item flag cannot be null!"));
         return this;
     }
 
@@ -341,7 +454,7 @@ public class HItemBuilder {
      * @return If item is unbreakable, returns true.
      */
     public boolean isUnbreakable() {
-        return this.meta.spigot().isUnbreakable();
+        return this.unbreakable;
     }
 
     /**
@@ -352,7 +465,7 @@ public class HItemBuilder {
      */
     @Nonnull
     public HItemBuilder unbreakable(boolean unbreakable) {
-        this.meta.spigot().setUnbreakable(unbreakable);
+        this.unbreakable = unbreakable;
         return this;
     }
 
@@ -364,8 +477,7 @@ public class HItemBuilder {
      */
     @Nonnull
     public HItemBuilder glow(boolean glow) {
-        if (glow) this.meta.addEnchant(HItemStack.getGlowEnchantment(), 0, true);
-        else this.meta.removeEnchant(HItemStack.getGlowEnchantment());
+        this.glow = glow;
         return this;
     }
 
@@ -376,22 +488,7 @@ public class HItemBuilder {
      */
     @Nonnull
     public HItemBuilder nbt(@Nonnull String nbt) {
-        this.stack = HItemStack.getNbtManager().set(this.stack,
-                Objects.requireNonNull(nbt, "nbt cannot be null!"));
-        return this;
-    }
-
-    /**
-     * Sets nbt of item stack.
-     *
-     * @param key   Key of nbt.
-     * @param value Value of nbt.
-     */
-    @Nonnull
-    public HItemBuilder nbt(@Nonnull String key, @Nonnull String value) {
-        this.stack = HItemStack.getNbtManager().set(this.stack,
-                Objects.requireNonNull(key, "key cannot be null!"),
-                Objects.requireNonNull(value, "value cannot be null!"));
+        this.nbt = Objects.requireNonNull(nbt, "nbt cannot be null!");
         return this;
     }
 
@@ -405,35 +502,28 @@ public class HItemBuilder {
     }
 
     /**
-     * Gets item meta of item stack.
-     *
-     * @return Item meta of item stack.
-     */
-    @Nonnull
-    public ItemMeta getItemMeta() {
-        return this.meta;
-    }
-
-    /**
-     * Sets item meta of item stack.
-     *
-     * @param meta Item meta.
-     * @return This class.
-     */
-    @Nonnull
-    public HItemBuilder meta(@Nonnull ItemMeta meta) {
-        this.stack.setItemMeta(Objects.requireNonNull(meta, "item meta cannot be null!"));
-        return this;
-    }
-
-    /**
      * Builds item stack.
      *
      * @return Item stack.
      */
     @Nonnull
     public ItemStack build() {
-        this.stack.setItemMeta(meta);
-        return this.stack;
+        ItemStack stack = new ItemStack(this.type, this.amount, this.durability);
+        ItemMeta meta = stack.getItemMeta();
+
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', this.name));
+        meta.spigot().setUnbreakable(this.unbreakable);
+        meta.setLore(this.lore);
+
+        if (this.glow)
+            meta.addEnchant(glowEnchantment, 0, true);
+
+        this.lore.forEach(line -> meta.getLore());
+        this.flags.forEach(meta::addItemFlags);
+        this.enchantments.forEach((key, value) -> meta.addEnchant(key, value, true));
+
+        stack.setItemMeta(meta);
+
+        return nbtManager.set(stack, this.nbt);
     }
 }
