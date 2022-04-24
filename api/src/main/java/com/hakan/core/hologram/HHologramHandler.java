@@ -5,11 +5,18 @@ import org.bukkit.Location;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 
 public final class HHologramHandler {
 
-    private static final Map<String, HHologram> holograms = new HashMap<>();
+    private static final Map<String, HHologram> HOLOGRAMS = new HashMap<>();
 
     /**
      * Initializes holograms.
@@ -26,7 +33,7 @@ public final class HHologramHandler {
      */
     @Nonnull
     public static Map<String, HHologram> getContentSafe() {
-        return new HashMap<>(HHologramHandler.holograms);
+        return new HashMap<>(HHologramHandler.HOLOGRAMS);
     }
 
     /**
@@ -36,7 +43,7 @@ public final class HHologramHandler {
      */
     @Nonnull
     public static Map<String, HHologram> getContent() {
-        return HHologramHandler.holograms;
+        return HHologramHandler.HOLOGRAMS;
     }
 
     /**
@@ -46,7 +53,7 @@ public final class HHologramHandler {
      */
     @Nonnull
     public static Collection<HHologram> getValuesSafe() {
-        return new ArrayList<>(HHologramHandler.holograms.values());
+        return new ArrayList<>(HHologramHandler.HOLOGRAMS.values());
     }
 
     /**
@@ -56,7 +63,7 @@ public final class HHologramHandler {
      */
     @Nonnull
     public static Collection<HHologram> getValues() {
-        return HHologramHandler.holograms.values();
+        return HHologramHandler.HOLOGRAMS.values();
     }
 
     /**
@@ -67,7 +74,7 @@ public final class HHologramHandler {
      */
     @Nonnull
     public static Optional<HHologram> findByID(@Nonnull String id) {
-        return Optional.ofNullable(HHologramHandler.holograms.get(Objects.requireNonNull(id, "id cannot be null!")));
+        return Optional.ofNullable(HHologramHandler.HOLOGRAMS.get(Objects.requireNonNull(id, "id cannot be null!")));
     }
 
     /**
@@ -97,7 +104,7 @@ public final class HHologramHandler {
         HHologramHandler.delete(id);
 
         HHologram hHologram = (players != null) ? new HHologram(id, location, players) : new HHologram(id, location);
-        HHologramHandler.holograms.put(id, hHologram);
+        HHologramHandler.HOLOGRAMS.put(id, hHologram);
         return hHologram;
     }
 
@@ -123,7 +130,7 @@ public final class HHologramHandler {
     public static HHologram delete(@Nonnull String id) {
         Objects.requireNonNull(id, "id cannot be null");
 
-        HHologram oldHologram = HHologramHandler.holograms.get(id);
+        HHologram oldHologram = HHologramHandler.HOLOGRAMS.get(id);
         if (oldHologram != null)
             oldHologram.delete();
 

@@ -4,6 +4,7 @@ import com.hakan.core.command.HCommandExecutor;
 import com.hakan.core.command.functional.HCommand;
 import com.hakan.core.hologram.HHologram;
 import com.hakan.core.hologram.HHologramHandler;
+import com.hakan.core.hologram.util.HHologramUtils;
 import com.hakan.core.hooks.Metrics;
 import com.hakan.core.item.HItemStack;
 import com.hakan.core.item.nbt.HNbtManager;
@@ -28,7 +29,6 @@ import com.hakan.core.utils.HSerializer;
 import com.hakan.core.worldborder.HWorldBorderHandler;
 import com.hakan.core.worldborder.border.HBorderColor;
 import com.hakan.core.worldborder.border.HWorldBorder;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -38,7 +38,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.time.Duration;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * Main class of this core.
@@ -49,6 +56,7 @@ import java.util.*;
 public final class HCore {
 
     private static JavaPlugin INSTANCE;
+    private static String VERSION;
 
     /**
      * Gets instance.
@@ -67,7 +75,9 @@ public final class HCore {
      */
     public static void initialize(@Nonnull JavaPlugin plugin) {
         if (HCore.INSTANCE != null) return;
+
         HCore.INSTANCE = Objects.requireNonNull(plugin, "plugin cannot be null!");
+        HCore.VERSION = plugin.getServer().getClass().getName().split("\\.")[3];
 
         Metrics.initialize(plugin);
         HPacketHandler.initialize(plugin);
@@ -78,6 +88,7 @@ public final class HCore {
         HParticleHandler.initialize();
         HHologramHandler.initialize();
         HItemStack.initialize();
+        HHologramUtils.initialize();
     }
 
 
@@ -92,7 +103,7 @@ public final class HCore {
      */
     @Nonnull
     public static String getVersionString() {
-        return Bukkit.getServer().getClass().getName().split("\\.")[3];
+        return HCore.VERSION;
     }
 
 
