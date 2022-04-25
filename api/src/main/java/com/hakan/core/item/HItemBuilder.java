@@ -85,7 +85,6 @@ public class HItemBuilder {
     private int amount;
     private short durability;
     private boolean glow;
-    private boolean unbreakable;
     private List<String> lore;
     private Set<ItemFlag> flags;
     private Map<Enchantment, Integer> enchantments;
@@ -122,10 +121,25 @@ public class HItemBuilder {
         this.amount = amount;
         this.durability = durability;
         this.glow = false;
-        this.unbreakable = false;
         this.lore = new ArrayList<>();
         this.flags = new HashSet<>();
         this.enchantments = new HashMap<>();
+    }
+
+    /**
+     * Creates new instance of this class from item builder.
+     *
+     * @param builder Item builder.
+     */
+    public HItemBuilder(@Nonnull HItemBuilder builder) {
+        this.type = builder.type;
+        this.nbt = builder.nbt;
+        this.amount = builder.amount;
+        this.durability = builder.durability;
+        this.glow = builder.glow;
+        this.lore = new ArrayList<>(builder.lore);
+        this.flags = new HashSet<>(builder.flags);
+        this.enchantments = new HashMap<>(builder.enchantments);
     }
 
     /**
@@ -137,14 +151,13 @@ public class HItemBuilder {
         this(stack.getType(), stack.getAmount(), stack.getDurability());
         this.nbt = HItemBuilder.nbtManager.get(stack);
 
-        ItemMeta itemMeta = stack.getItemMeta();
-        if (itemMeta != null) {
-            this.glow = itemMeta.hasEnchants() && itemMeta.getEnchants().containsKey(glowEnchantment);
-            this.unbreakable = itemMeta.spigot().isUnbreakable();
-            this.name = itemMeta.getDisplayName();
-            this.lore = itemMeta.getLore();
-            this.flags = itemMeta.getItemFlags();
-            this.enchantments = itemMeta.getEnchants();
+        ItemMeta meta = stack.getItemMeta();
+        if (meta != null) {
+            this.name = meta.getDisplayName();
+            this.flags = meta.getItemFlags();
+            this.lore = meta.hasLore() ? meta.getLore() : new ArrayList<>();
+            this.enchantments = meta.hasEnchants() ? meta.getEnchants() : new HashMap<>();
+            this.glow = meta.hasEnchants() && meta.getEnchants().containsKey(glowEnchantment);
         }
     }
 
@@ -447,28 +460,6 @@ public class HItemBuilder {
         return this;
     }
 
-
-    /**
-     * Checks item is unbreakable.
-     *
-     * @return If item is unbreakable, returns true.
-     */
-    public boolean isUnbreakable() {
-        return this.unbreakable;
-    }
-
-    /**
-     * Sets unbreakability of item stack.
-     *
-     * @param unbreakable Unbreakability.
-     * @return This class.
-     */
-    @Nonnull
-    public HItemBuilder unbreakable(boolean unbreakable) {
-        this.unbreakable = unbreakable;
-        return this;
-    }
-
     /**
      * Sets glow of item stack.
      *
@@ -512,13 +503,11 @@ public class HItemBuilder {
         ItemMeta meta = stack.getItemMeta();
 
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', this.name));
-        meta.spigot().setUnbreakable(this.unbreakable);
         meta.setLore(this.lore);
 
         if (this.glow)
             meta.addEnchant(glowEnchantment, 0, true);
 
-        this.lore.forEach(line -> meta.getLore());
         this.flags.forEach(meta::addItemFlags);
         this.enchantments.forEach((key, value) -> meta.addEnchant(key, value, true));
 
