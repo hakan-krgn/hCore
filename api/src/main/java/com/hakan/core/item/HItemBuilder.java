@@ -240,7 +240,7 @@ public class HItemBuilder {
      */
     @Nonnull
     public HItemBuilder lores(@Nonnull List<String> lore) {
-        return this.appendLore(true, lore);
+        return this.lores(true, lore);
     }
 
     /**
