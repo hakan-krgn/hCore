@@ -4,6 +4,10 @@ import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 
+/**
+ * HNbtManager class for multi
+ * version support.
+ */
 public interface HNbtManager {
 
     /**

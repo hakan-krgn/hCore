@@ -21,6 +21,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * HItemBuilder class to create and
+ * manage item stacks easily.
+ */
 public class HItemBuilder {
 
     private static Enchantment glowEnchantment;
@@ -235,7 +239,7 @@ public class HItemBuilder {
     /**
      * Sets lore of item stack.
      *
-     * @param lore Lore of item stack
+     * @param lore Lore of item stack.
      * @return This class.
      */
     @Nonnull
@@ -373,7 +377,7 @@ public class HItemBuilder {
     /**
      * Gets enchantment list.
      *
-     * @return Enchantments
+     * @return Enchantments.
      */
     @Nonnull
     public Map<Enchantment, Integer> getEnchants() {
