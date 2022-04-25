@@ -502,19 +502,17 @@ public class HItemBuilder {
     @Nonnull
     public ItemStack build() {
         ItemStack stack = new ItemStack(this.type, this.amount, this.durability);
+        stack = nbtManager.set(stack, this.nbt);
+
         ItemMeta meta = stack.getItemMeta();
 
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', this.name));
         meta.setLore(this.lore);
-
-        if (this.glow)
-            meta.addEnchant(glowEnchantment, 0, true);
-
         this.flags.forEach(meta::addItemFlags);
         this.enchantments.forEach((key, value) -> meta.addEnchant(key, value, true));
-
+        if (this.glow) meta.addEnchant(glowEnchantment, 0, true);
         stack.setItemMeta(meta);
 
-        return nbtManager.set(stack, this.nbt);
+        return stack;
     }
 }
