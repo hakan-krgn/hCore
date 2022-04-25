@@ -118,6 +118,7 @@ public class HItemBuilder {
     public HItemBuilder(@Nonnull Material type, int amount, short durability) {
         this.type = type;
         this.nbt = "{}";
+        this.name = "";
         this.amount = amount;
         this.durability = durability;
         this.glow = false;
@@ -134,6 +135,7 @@ public class HItemBuilder {
     public HItemBuilder(@Nonnull HItemBuilder builder) {
         this.type = builder.type;
         this.nbt = builder.nbt;
+        this.name = builder.name;
         this.amount = builder.amount;
         this.durability = builder.durability;
         this.glow = builder.glow;
