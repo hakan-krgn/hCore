@@ -40,9 +40,7 @@ public final class WhereCriteria extends QueryCriteria {
     }
 
     /**
-     * Builds where criteria.
-     *
-     * @return Where criteria.
+     * {@inheritDoc}
      */
     @Nonnull
     @Override

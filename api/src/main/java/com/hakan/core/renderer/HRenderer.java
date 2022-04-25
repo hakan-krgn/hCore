@@ -297,9 +297,7 @@ public final class HRenderer {
         Player player = Bukkit.getPlayer(Objects.requireNonNull(uid, "uid cannot be null!"));
         if (player == null)
             return false;
-        else if (this.calculateDistance(player.getLocation()) > this.radius)
-            return false;
-        return true;
+        else return !(this.calculateDistance(player.getLocation()) > this.radius);
     }
 
     /**

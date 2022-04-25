@@ -39,9 +39,7 @@ public final class OrderCriteria extends QueryCriteria {
     }
 
     /**
-     * Builds criteria query.
-     *
-     * @return Criteria query.
+     * {@inheritDoc}
      */
     @Nonnull
     @Override
