@@ -46,33 +46,36 @@ public final class HPacketPlayer_v1_16_R3 extends HPacketPlayer {
      */
     @Override
     public void register() {
-        this.pipeline = this.connection.networkManager.channel.pipeline().addBefore("packet_handler", CHANNEL, new ChannelDuplexHandler() {
-            @Override
-            public void channelRead(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
-                AtomicBoolean status = new AtomicBoolean(false);
-                HCore.syncScheduler().run(() -> {
-                    PacketEvent packet_event = new PacketEvent(player, msg, PacketEvent.Type.READ);
-                    Bukkit.getPluginManager().callEvent(packet_event);
-                    status.set(packet_event.isCancelled());
-                });
+        try {
+            this.pipeline = this.connection.networkManager.channel.pipeline().addBefore("packet_handler", CHANNEL, new ChannelDuplexHandler() {
+                @Override
+                public void channelRead(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
+                    AtomicBoolean status = new AtomicBoolean(false);
+                    HCore.syncScheduler().run(() -> {
+                        PacketEvent packet_event = new PacketEvent(player, msg, PacketEvent.Type.READ);
+                        Bukkit.getPluginManager().callEvent(packet_event);
+                        status.set(packet_event.isCancelled());
+                    });
 
-                if (status.get()) return;
-                super.channelRead(channelHandlerContext, msg);
-            }
+                    if (status.get()) return;
+                    super.channelRead(channelHandlerContext, msg);
+                }
 
-            @Override
-            public void write(ChannelHandlerContext channelHandlerContext, Object o, ChannelPromise channelPromise) throws Exception {
-                AtomicBoolean status = new AtomicBoolean(false);
-                HCore.syncScheduler().run(() -> {
-                    PacketEvent packet_event = new PacketEvent(player, o, PacketEvent.Type.WRITE);
-                    Bukkit.getPluginManager().callEvent(packet_event);
-                    status.set(packet_event.isCancelled());
-                });
+                @Override
+                public void write(ChannelHandlerContext channelHandlerContext, Object o, ChannelPromise channelPromise) throws Exception {
+                    AtomicBoolean status = new AtomicBoolean(false);
+                    HCore.syncScheduler().run(() -> {
+                        PacketEvent packet_event = new PacketEvent(player, o, PacketEvent.Type.WRITE);
+                        Bukkit.getPluginManager().callEvent(packet_event);
+                        status.set(packet_event.isCancelled());
+                    });
 
-                if (status.get()) return;
-                super.write(channelHandlerContext, o, channelPromise);
-            }
-        });
+                    if (status.get()) return;
+                    super.write(channelHandlerContext, o, channelPromise);
+                }
+            });
+        } catch (Exception ignored) {
+        }
     }
 
     /**
