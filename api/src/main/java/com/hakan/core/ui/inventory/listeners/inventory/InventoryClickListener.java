@@ -37,16 +37,17 @@ public final class InventoryClickListener extends HListenerAdapter {
         if (event.getClick() == ClickType.UNKNOWN) {
             event.setCancelled(true);
             return;
-        } else if (event.getClickedInventory() == null) {
-            event.setCancelled(true);
-            return;
         } else if (!(event.getWhoClicked() instanceof Player)) {
-            event.setCancelled(true);
             return;
         }
 
         Player player = (Player) event.getWhoClicked();
         HInventoryHandler.findByPlayer(player).ifPresent(hInventory -> {
+            if (event.getClickedInventory() == null) {
+                event.setCancelled(true);
+                return;
+            }
+
             if (event.getClickedInventory().equals(hInventory.toInventory())) {
                 if (hInventory.hasOption(HInventory.Option.CANCEL_TOP_CLICK))
                     event.setCancelled(true);
