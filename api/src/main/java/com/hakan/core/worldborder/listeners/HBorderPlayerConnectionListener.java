@@ -2,8 +2,10 @@ package com.hakan.core.worldborder.listeners;
 
 import com.hakan.core.listener.HListenerAdapter;
 import com.hakan.core.worldborder.HWorldBorderHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -28,7 +30,7 @@ public final class HBorderPlayerConnectionListener extends HListenerAdapter {
      *
      * @param event Event.
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onQuit(@Nonnull PlayerQuitEvent event) {
         Player player = event.getPlayer();
         HWorldBorderHandler.findByPlayer(player)
