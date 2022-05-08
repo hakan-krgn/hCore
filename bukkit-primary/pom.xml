@@ -5,13 +5,13 @@
     <parent>
         <artifactId>hCore</artifactId>
         <groupId>com.hakan</groupId>
-        <version>0.2.4</version>
+        <version>0.2.5</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>bukkit-primary</artifactId>
     <packaging>jar</packaging>
-    <version>0.2.4</version>
+    <version>0.2.5</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -32,119 +32,119 @@
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>api</artifactId>
-            <version>0.2.4</version>
+            <version>0.2.5</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_8_R3</artifactId>
-            <version>0.2.4</version>
+            <version>0.2.5</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_9_R1</artifactId>
-            <version>0.2.4</version>
+            <version>0.2.5</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_9_R2</artifactId>
-            <version>0.2.4</version>
+            <version>0.2.5</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_10_R1</artifactId>
-            <version>0.2.4</version>
+            <version>0.2.5</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_11_R1</artifactId>
-            <version>0.2.4</version>
+            <version>0.2.5</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_12_R1</artifactId>
-            <version>0.2.4</version>
+            <version>0.2.5</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_13_R1</artifactId>
-            <version>0.2.4</version>
+            <version>0.2.5</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_13_R2</artifactId>
-            <version>0.2.4</version>
+            <version>0.2.5</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_14_R1</artifactId>
-            <version>0.2.4</version>
+            <version>0.2.5</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_15_R1</artifactId>
-            <version>0.2.4</version>
+            <version>0.2.5</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_16_R1</artifactId>
-            <version>0.2.4</version>
+            <version>0.2.5</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_16_R2</artifactId>
-            <version>0.2.4</version>
+            <version>0.2.5</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_16_R3</artifactId>
-            <version>0.2.4</version>
+            <version>0.2.5</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_17_R1</artifactId>
-            <version>0.2.4</version>
+            <version>0.2.5</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_18_R1</artifactId>
-            <version>0.2.4</version>
+            <version>0.2.5</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_18_R2</artifactId>
-            <version>0.2.4</version>
+            <version>0.2.5</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
