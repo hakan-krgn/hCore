@@ -2,7 +2,6 @@ package com.hakan.core.worldborder.listeners;
 
 import com.hakan.core.listener.HListenerAdapter;
 import com.hakan.core.worldborder.HWorldBorderHandler;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
