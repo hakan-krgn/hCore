@@ -22,7 +22,7 @@ public final class HHologramHandler {
      * Initializes holograms.
      */
     public static void initialize() {
-        HCore.syncScheduler().every(1)
+        HCore.syncScheduler().every(10)
                 .run(() -> HHologramHandler.getValues().forEach(hologram -> hologram.getRenderer().render()));
     }
 
