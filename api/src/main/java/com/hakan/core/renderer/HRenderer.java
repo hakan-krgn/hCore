@@ -341,9 +341,9 @@ public final class HRenderer {
         if (this.deleted)
             return this;
 
-        Set<UUID> viewers = new HashSet<>(this.calculateViewers());
-        Set<UUID> oldShown = new HashSet<>(this.shownViewers);
-        Set<UUID> newShown = new HashSet<>();
+        List<UUID> viewers = new ArrayList<>(this.calculateViewers());
+        List<UUID> oldShown = new ArrayList<>(this.shownViewers);
+        List<UUID> newShown = new ArrayList<>();
 
         viewers.forEach(uid -> {
             if (this.canSee(uid))
@@ -377,7 +377,7 @@ public final class HRenderer {
                 this.showConsumer.accept(show);
         }
 
-        this.shownViewers = newShown;
+        this.shownViewers = new HashSet<>(newShown);
         return this;
     }
 }
