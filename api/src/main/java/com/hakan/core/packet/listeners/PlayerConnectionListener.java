@@ -3,6 +3,7 @@ package com.hakan.core.packet.listeners;
 import com.hakan.core.listener.HListenerAdapter;
 import com.hakan.core.packet.HPacketHandler;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -29,7 +30,7 @@ public final class PlayerConnectionListener extends HListenerAdapter {
      *
      * @param event Event.
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(@Nonnull PlayerJoinEvent event) {
         HPacketHandler.register(event.getPlayer());
     }
@@ -39,7 +40,7 @@ public final class PlayerConnectionListener extends HListenerAdapter {
      *
      * @param event Event.
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onQuit(@Nonnull PlayerQuitEvent event) {
         HPacketHandler.unregister(event.getPlayer());
     }
