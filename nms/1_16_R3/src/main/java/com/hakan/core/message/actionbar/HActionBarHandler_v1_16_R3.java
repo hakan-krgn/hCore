@@ -4,6 +4,7 @@ import com.hakan.core.HCore;
 import net.minecraft.server.v1_16_R3.ChatMessageType;
 import net.minecraft.server.v1_16_R3.IChatBaseComponent;
 import net.minecraft.server.v1_16_R3.PacketPlayOutChat;
+import org.bukkit.craftbukkit.v1_16_R3.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
@@ -22,7 +23,7 @@ public final class HActionBarHandler_v1_16_R3 implements HActionBarHandler {
         Objects.requireNonNull(player, "player cannot be null!");
         Objects.requireNonNull(text, "text cannot be null!");
 
-        IChatBaseComponent baseComponent = IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + text + "\"}");
+        IChatBaseComponent baseComponent = CraftChatMessage.fromStringOrNull(text);
         HCore.sendPacket(player, new PacketPlayOutChat(baseComponent, ChatMessageType.GAME_INFO, player.getUniqueId()));
     }
 }

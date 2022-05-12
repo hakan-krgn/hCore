@@ -2,7 +2,6 @@ package com.hakan.core.hologram.line.entity;
 
 import com.hakan.core.HCore;
 import com.hakan.core.hologram.HHologram;
-import net.minecraft.network.chat.ChatMessage;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityDestroy;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityMetadata;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityTeleport;
@@ -11,6 +10,7 @@ import net.minecraft.world.entity.decoration.EntityArmorStand;
 import net.minecraft.world.level.World;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_18_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_18_R1.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
@@ -58,7 +58,7 @@ public final class HHologramArmorStand_v1_18_R1 implements HHologramArmorStand {
      */
     @Override
     public void setText(@Nonnull String text) {
-        this.armorStand.a(new ChatMessage(Objects.requireNonNull(text, "text cannot be null")));
+        this.armorStand.a(CraftChatMessage.fromStringOrNull(Objects.requireNonNull(text, "text cannot be null")));
         HCore.sendPacket(this.hologram.getRenderer().getShownViewersAsPlayer(),
                 new PacketPlayOutEntityMetadata(this.armorStand.ae(), this.armorStand.ai(), true));
     }

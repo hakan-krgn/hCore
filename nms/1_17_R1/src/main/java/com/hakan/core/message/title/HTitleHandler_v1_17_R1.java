@@ -5,6 +5,7 @@ import net.minecraft.network.chat.IChatBaseComponent;
 import net.minecraft.network.protocol.game.ClientboundSetSubtitleTextPacket;
 import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
 import net.minecraft.network.protocol.game.ClientboundSetTitlesAnimationPacket;
+import org.bukkit.craftbukkit.v1_17_R1.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
@@ -23,8 +24,8 @@ public final class HTitleHandler_v1_17_R1 implements HTitleHandler {
         Objects.requireNonNull(player, "player cannot be null!");
         Objects.requireNonNull(player, "hTitle class cannot be null!");
 
-        IChatBaseComponent titleString = IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + hTitle.getTitle() + "\"}");
-        IChatBaseComponent subtitleString = IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + hTitle.getSubtitle() + "\"}");
+        IChatBaseComponent titleString = CraftChatMessage.fromStringOrNull(hTitle.getTitle());
+        IChatBaseComponent subtitleString = CraftChatMessage.fromStringOrNull(hTitle.getSubtitle());
 
         HCore.sendPacket(player, new ClientboundSetTitlesAnimationPacket(hTitle.getFadeIn(), hTitle.getStay(), hTitle.getFadeOut()));
         HCore.sendPacket(player, new ClientboundSetTitleTextPacket(titleString));
