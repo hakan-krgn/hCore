@@ -3,6 +3,7 @@ package com.hakan.core.message.title;
 import com.hakan.core.HCore;
 import net.minecraft.server.v1_15_R1.IChatBaseComponent;
 import net.minecraft.server.v1_15_R1.PacketPlayOutTitle;
+import org.bukkit.craftbukkit.v1_15_R1.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
@@ -21,8 +22,8 @@ public final class HTitleHandler_v1_15_R1 implements HTitleHandler {
         Objects.requireNonNull(player, "player cannot be null!");
         Objects.requireNonNull(player, "hTitle class cannot be null!");
 
-        IChatBaseComponent titleString = IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + hTitle.getTitle() + "\"}");
-        IChatBaseComponent subtitleString = IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + hTitle.getSubtitle() + "\"}");
+        IChatBaseComponent titleString = CraftChatMessage.fromStringOrNull(hTitle.getTitle());
+        IChatBaseComponent subtitleString = CraftChatMessage.fromStringOrNull(hTitle.getSubtitle());
 
         HCore.sendPacket(player, new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TIMES, null, hTitle.getFadeIn(), hTitle.getStay(), hTitle.getFadeOut()));
         HCore.sendPacket(player, new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TITLE, titleString, hTitle.getFadeIn(), hTitle.getStay(), hTitle.getFadeOut()));

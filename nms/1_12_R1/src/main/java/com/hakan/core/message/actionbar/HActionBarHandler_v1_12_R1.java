@@ -1,6 +1,7 @@
 package com.hakan.core.message.actionbar;
 
 import com.hakan.core.HCore;
+import net.minecraft.server.v1_12_R1.ChatMessage;
 import net.minecraft.server.v1_12_R1.ChatMessageType;
 import net.minecraft.server.v1_12_R1.IChatBaseComponent;
 import net.minecraft.server.v1_12_R1.PacketPlayOutChat;
@@ -22,7 +23,7 @@ public final class HActionBarHandler_v1_12_R1 implements HActionBarHandler {
         Objects.requireNonNull(player, "player cannot be null!");
         Objects.requireNonNull(text, "text cannot be null!");
 
-        IChatBaseComponent baseComponent = IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + text + "\"}");
+        IChatBaseComponent baseComponent = new ChatMessage(text);
         HCore.sendPacket(player, new PacketPlayOutChat(baseComponent, ChatMessageType.GAME_INFO));
     }
 }
