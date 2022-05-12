@@ -2,7 +2,7 @@ package com.hakan.core.item;
 
 import com.hakan.core.HCore;
 import com.hakan.core.item.nbt.HNbtManager;
-import org.bukkit.ChatColor;
+import com.hakan.core.utils.ColorUtil;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -221,7 +221,7 @@ public class HItemBuilder {
     @Nonnull
     public HItemBuilder name(boolean colored, @Nonnull String name) {
         this.name = Objects.requireNonNull(name, "name cannot be null!");
-        if (colored) this.name = ChatColor.translateAlternateColorCodes('&', this.name);
+        if (colored) this.name = ColorUtil.colored(this.name);
         return this;
     }
 
@@ -305,7 +305,7 @@ public class HItemBuilder {
     public HItemBuilder appendLore(boolean colored, @Nonnull List<String> lines) {
         for (String _line : Objects.requireNonNull(lines, "lines cannot be null!")) {
             String line = Objects.requireNonNull(_line, "lore cannot be null!");
-            if (colored) line = ChatColor.translateAlternateColorCodes('&', line);
+            if (colored) line = ColorUtil.colored(line);
             this.lore.add(line);
         }
 
@@ -510,12 +510,14 @@ public class HItemBuilder {
 
         ItemMeta meta = stack.getItemMeta();
 
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', this.name));
-        meta.setLore(this.lore);
-        this.flags.forEach(meta::addItemFlags);
-        this.enchantments.forEach((key, value) -> meta.addEnchant(key, value, true));
-        if (this.glow) meta.addEnchant(glowEnchantment, 0, true);
-        stack.setItemMeta(meta);
+        if (meta != null) {
+            meta.setDisplayName(this.name);
+            meta.setLore(this.lore);
+            this.flags.forEach(meta::addItemFlags);
+            this.enchantments.forEach((key, value) -> meta.addEnchant(key, value, true));
+            if (this.glow) meta.addEnchant(glowEnchantment, 0, true);
+            stack.setItemMeta(meta);
+        }
 
         return stack;
     }
