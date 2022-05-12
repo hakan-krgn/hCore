@@ -1,6 +1,5 @@
 package com.hakan.core.utils;
 
-import org.apache.commons.io.FileUtils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -13,6 +12,9 @@ import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -33,18 +35,24 @@ public class HYaml {
         Objects.requireNonNull(file, "file cannot be null!");
         Objects.requireNonNull(resourceName, "resourceName cannot be null!");
 
-        try {
-            if (!file.exists()) {
-                HYaml.createFile(file.getPath());
+        if (!file.exists()) {
+            HYaml.createFile(file.getPath());
 
-                InputStream inputStream = plugin.getClass().getResourceAsStream("/" + resourceName);
-                if (inputStream != null) FileUtils.copyInputStreamToFile(inputStream, file);
+            try (InputStream stream = plugin.getClass().getResourceAsStream("/" + resourceName);
+                 OutputStream resStreamOut = Files.newOutputStream(Paths.get(file.getPath()))) {
+                Objects.requireNonNull(stream, "stream cannot be null!");
+
+                int readBytes;
+                byte[] buffer = new byte[4096];
+                while ((readBytes = stream.read(buffer)) > 0) {
+                    resStreamOut.write(buffer, 0, readBytes);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-            return new HYaml(file);
-        } catch (IOException e) {
-            throw new NullPointerException(e.getMessage());
         }
+
+        return new HYaml(file);
     }
 
     /**
