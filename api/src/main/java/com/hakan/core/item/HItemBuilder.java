@@ -467,6 +467,15 @@ public class HItemBuilder {
     }
 
     /**
+     * Gets glow of item stack.
+     *
+     * @return Returns true, if item is glowing.
+     */
+    public boolean isGlow() {
+        return this.glow;
+    }
+
+    /**
      * Sets glow of item stack.
      *
      * @param glow Glow.
@@ -476,6 +485,15 @@ public class HItemBuilder {
     public HItemBuilder glow(boolean glow) {
         this.glow = glow;
         return this;
+    }
+
+    /**
+     * Gets nbt tag of item stack.
+     *
+     * @return Nbt tag.
+     */
+    public String getNbt() {
+        return this.nbt;
     }
 
     /**
