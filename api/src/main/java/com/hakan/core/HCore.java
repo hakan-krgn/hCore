@@ -25,6 +25,7 @@ import com.hakan.core.ui.inventory.builder.HInventoryBuilder;
 import com.hakan.core.ui.sign.HSign;
 import com.hakan.core.ui.sign.HSignHandler;
 import com.hakan.core.utils.HSerializer;
+import com.hakan.core.utils.ProtocolVersion;
 import com.hakan.core.worldborder.HWorldBorderHandler;
 import com.hakan.core.worldborder.border.HBorderColor;
 import com.hakan.core.worldborder.border.HWorldBorder;
@@ -56,7 +57,7 @@ import java.util.UUID;
 public final class HCore {
 
     private static JavaPlugin INSTANCE;
-    private static String VERSION;
+    private static ProtocolVersion VERSION;
 
     /**
      * Gets instance.
@@ -77,7 +78,7 @@ public final class HCore {
         if (HCore.INSTANCE != null) return;
 
         HCore.INSTANCE = Objects.requireNonNull(plugin, "plugin cannot be null!");
-        HCore.VERSION = plugin.getServer().getClass().getName().split("\\.")[3];
+        HCore.VERSION = ProtocolVersion.getCurrentVersion();
 
         Metrics.initialize(plugin);
         HPacketHandler.initialize(plugin);
@@ -102,6 +103,16 @@ public final class HCore {
      */
     @Nonnull
     public static String getVersionString() {
+        return HCore.VERSION.getKey();
+    }
+
+    /**
+     * Gets version string (example: v1_8_R3)
+     *
+     * @return Version string
+     */
+    @Nonnull
+    public static ProtocolVersion getProtocolVersion() {
         return HCore.VERSION;
     }
 
