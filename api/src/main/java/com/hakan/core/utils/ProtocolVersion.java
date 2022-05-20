@@ -2,6 +2,9 @@ package com.hakan.core.utils;
 
 import org.bukkit.Bukkit;
 
+import javax.annotation.Nonnull;
+import java.util.Objects;
+
 /**
  * ProtocolVersion class to get the current
  * protocol version of the server and compare
@@ -33,12 +36,13 @@ public enum ProtocolVersion {
      *
      * @return The current protocol version.
      */
+    @Nonnull
     public static ProtocolVersion getCurrentVersion() {
         String version = Bukkit.getServer().getClass().getName().split("\\.")[3];
         for (ProtocolVersion protocolVersion : ProtocolVersion.values())
             if (version.equals(protocolVersion.getKey()))
                 return protocolVersion;
-        return null;
+        throw new IllegalStateException("Unknown protocol version!");
     }
 
 
@@ -49,8 +53,8 @@ public enum ProtocolVersion {
      *
      * @param key The protocol version key.
      */
-    ProtocolVersion(String key) {
-        this.key = key;
+    ProtocolVersion(@Nonnull String key) {
+        this.key = Objects.requireNonNull(key, "key cannot be null!");
     }
 
     /**
@@ -58,6 +62,7 @@ public enum ProtocolVersion {
      *
      * @return The protocol version key.
      */
+    @Nonnull
     public String getKey() {
         return this.key;
     }
@@ -68,7 +73,8 @@ public enum ProtocolVersion {
      * @param version The version to check.
      * @return True if the protocol version is newer or equal to the given version.
      */
-    public boolean isNewer(ProtocolVersion version) {
+    public boolean isNewer(@Nonnull ProtocolVersion version) {
+        Objects.requireNonNull(version, "version cannot be null!");
         return this.ordinal() > version.ordinal();
     }
 
@@ -78,7 +84,8 @@ public enum ProtocolVersion {
      * @param version The version to check.
      * @return True if the protocol version is older or equal to the given version.
      */
-    public boolean isNewerOrEqual(ProtocolVersion version) {
+    public boolean isNewerOrEqual(@Nonnull ProtocolVersion version) {
+        Objects.requireNonNull(version, "version cannot be null!");
         return this.ordinal() >= version.ordinal();
     }
 
@@ -88,7 +95,8 @@ public enum ProtocolVersion {
      * @param version The version to check.
      * @return True if the protocol version is older or equal to the given version.
      */
-    public boolean isOlder(ProtocolVersion version) {
+    public boolean isOlder(@Nonnull ProtocolVersion version) {
+        Objects.requireNonNull(version, "version cannot be null!");
         return this.ordinal() < version.ordinal();
     }
 
@@ -98,7 +106,8 @@ public enum ProtocolVersion {
      * @param version The version to check.
      * @return True if the protocol version is older or equal to the given version.
      */
-    public boolean isOlderOrEqual(ProtocolVersion version) {
+    public boolean isOlderOrEqual(@Nonnull ProtocolVersion version) {
+        Objects.requireNonNull(version, "version cannot be null!");
         return this.ordinal() <= version.ordinal();
     }
 }
