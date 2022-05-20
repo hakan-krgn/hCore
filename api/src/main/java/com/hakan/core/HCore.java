@@ -99,7 +99,7 @@ public final class HCore {
     /**
      * Gets version string (example: v1_8_R3)
      *
-     * @return Version string
+     * @return Version string.
      */
     @Nonnull
     public static String getVersionString() {
@@ -107,9 +107,9 @@ public final class HCore {
     }
 
     /**
-     * Gets version string (example: v1_8_R3)
+     * Gets protocol version of current server.
      *
-     * @return Version string
+     * @return Protocol version.
      */
     @Nonnull
     public static ProtocolVersion getProtocolVersion() {
