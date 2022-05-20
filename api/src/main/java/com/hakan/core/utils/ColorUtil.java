@@ -3,7 +3,9 @@ package com.hakan.core.utils;
 import com.hakan.core.HCore;
 import org.bukkit.ChatColor;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,7 +23,10 @@ public class ColorUtil {
      * @param message The message to convert.
      * @return The colored message.
      */
-    public static String colored(String message) {
+    @Nonnull
+    public static String colored(@Nonnull String message) {
+        Objects.requireNonNull(message, "message cannot be null!");
+
         if (HCore.getProtocolVersion().isOlder(ProtocolVersion.v1_16_R1)) {
             Matcher matcher = PATTERN.matcher(message);
 
@@ -40,7 +45,9 @@ public class ColorUtil {
      * @param hex The hex color code.
      * @return The chat color.
      */
-    public static String color(String hex) {
+    @Nonnull
+    public static String color(@Nonnull String hex) {
+        Objects.requireNonNull(hex, "hex color code cannot be null!");
         return colored(hex);
     }
 
@@ -52,6 +59,7 @@ public class ColorUtil {
      * @param g The green value.
      * @return The chat color.
      */
+    @Nonnull
     public static String color(float r, float b, float g) {
         return color(new Color(r, b, g));
     }
@@ -65,6 +73,7 @@ public class ColorUtil {
      * @param a The alpha value.
      * @return The chat color.
      */
+    @Nonnull
     public static String color(float r, float b, float g, float a) {
         return color(new Color(r, b, g, a));
     }
@@ -75,7 +84,9 @@ public class ColorUtil {
      * @param color The color.
      * @return The chat color.
      */
-    public static String color(Color color) {
+    @Nonnull
+    public static String color(@Nonnull Color color) {
+        Objects.requireNonNull(color, "color cannot be null!");
         String hex = String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
         return color(hex);
     }
