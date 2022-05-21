@@ -2,6 +2,7 @@ package com.hakan.core.npc;
 
 import com.hakan.core.HCore;
 import com.hakan.core.hologram.HHologram;
+import com.hakan.core.npc.types.HNPCSlotType;
 import com.hakan.core.renderer.HRenderer;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -19,7 +20,8 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
- * //todo do
+ * HNPC class to create and manages
+ * NPCs' easily and client-side.
  */
 public abstract class HNPC {
 
@@ -38,10 +40,10 @@ public abstract class HNPC {
      * @param location NPC location.
      * @param lines    NPC hologram lines.
      */
-    HNPC(@Nonnull String id,
-         @Nonnull EntityType type,
-         @Nonnull Location location,
-         @Nonnull List<String> lines) {
+    protected HNPC(@Nonnull String id,
+                   @Nonnull EntityType type,
+                   @Nonnull Location location,
+                   @Nonnull List<String> lines) {
         this.id = Objects.requireNonNull(id, "id cannot be null!");
         this.type = Objects.requireNonNull(type, "type cannot be null!");
         this.hologram = HCore.createHologram("hcore_npc_hologram:" + id, location);
@@ -63,11 +65,11 @@ public abstract class HNPC {
      * @param lines    NPC hologram lines.
      * @param viewers  NPC viewers.
      */
-    HNPC(@Nonnull String id,
-         @Nonnull EntityType type,
-         @Nonnull Location location,
-         @Nonnull List<String> lines,
-         @Nonnull Set<UUID> viewers) {
+    protected HNPC(@Nonnull String id,
+                   @Nonnull EntityType type,
+                   @Nonnull Location location,
+                   @Nonnull List<String> lines,
+                   @Nonnull Set<UUID> viewers) {
         this.id = Objects.requireNonNull(id, "id cannot be null!");
         this.type = Objects.requireNonNull(type, "type cannot be null!");
         this.hologram = HCore.createHologram("hcore_npc_hologram:" + id, location);
@@ -121,20 +123,6 @@ public abstract class HNPC {
     @Nonnull
     public Location getLocation() {
         return this.renderer.getLocation();
-    }
-
-    /**
-     * Updates location.
-     *
-     * @param location Location.
-     * @return HNPC for chain.
-     */
-    @Nonnull
-    public HNPC setLocation(@Nonnull Location location) {
-        Objects.requireNonNull(location, "location cannot be null!");
-        this.renderer.setLocation(location);
-        this.hologram.setLocation(location);
-        return this;
     }
 
     /**
@@ -328,45 +316,68 @@ public abstract class HNPC {
         return this.walking;
     }
 
+
     /**
      * Moves NPC.
      *
      * @param to    Destination location.
      * @param speed Speed.
+     * @return instance of this class.
      */
-    public abstract void move(@Nonnull Location to, double speed);
+    @Nonnull
+    public abstract HNPC move(@Nonnull Location to, double speed);
+
+    /**
+     * Updates location.
+     *
+     * @param location Location.
+     * @return instance of this class.
+     */
+    @Nonnull
+    public abstract HNPC setLocation(@Nonnull Location location);
 
     /**
      * Sets skin on NPC.
      *
      * @param username Skin username.
+     * @return instance of this class.
      */
-    public abstract void setSkin(@Nonnull String username);
+    @Nonnull
+    public abstract HNPC setSkin(@Nonnull String username);
 
     /**
      * Equip NPC with items.
      *
      * @param slotType  Slot type. Ex: HAND_ITEM, LEGGINGS,
      * @param itemStack Item.
+     * @return instance of this class.
      */
-    public abstract void equipment(@Nonnull HNPCSlotType slotType, @Nonnull ItemStack itemStack);
+    @Nonnull
+    public abstract HNPC setEquipment(@Nonnull HNPCSlotType slotType, @Nonnull ItemStack itemStack);
 
     /**
      * Who sees NPC?
      *
      * @param players Player list.
+     * @return instance of this class.
      */
-    public abstract void show(@Nonnull List<Player> players);
+    @Nonnull
+    public abstract HNPC show(@Nonnull List<Player> players);
 
     /**
      * From whom should this NPC be hidden?
      *
      * @param players Player list.
+     * @return instance of this class.
      */
-    public abstract void hide(@Nonnull List<Player> players);
+    @Nonnull
+    public abstract HNPC hide(@Nonnull List<Player> players);
 
     /**
      * Deletes NPC.
+     *
+     * @return instance of this class.
      */
-    public abstract void delete();
+    @Nonnull
+    public abstract HNPC delete();
 }
