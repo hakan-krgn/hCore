@@ -1,4 +1,4 @@
-package com.hakan.core.npc;
+package com.hakan.core.npc.types;
 
 /**
  * HNPC slot types.
