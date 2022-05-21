@@ -252,7 +252,7 @@ public final class HHologram {
     }
 
     /**
-     * Removes player to hologram to hide.
+     * Removes player from hologram to hide.
      *
      * @param players Player list.
      * @return Instance of this class.
@@ -265,7 +265,7 @@ public final class HHologram {
     }
 
     /**
-     * Removes player to hologram to hide.
+     * Removes player from hologram to hide.
      *
      * @param players Player list.
      * @return Instance of this class.
@@ -278,7 +278,7 @@ public final class HHologram {
     }
 
     /**
-     * Removes player to hologram to hide.
+     * Removes player from hologram to hide.
      *
      * @param uids UID list.
      * @return Instance of this class.
@@ -291,7 +291,7 @@ public final class HHologram {
     }
 
     /**
-     * Removes player to hologram to hide.
+     * Removes player from hologram to hide.
      *
      * @param uids UID list.
      * @return Instance of this class.

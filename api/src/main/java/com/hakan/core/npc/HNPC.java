@@ -25,7 +25,6 @@ public abstract class HNPC {
 
     protected final String id;
     protected EntityType type;
-    protected Location location;
     protected HRenderer renderer;
     protected HHologram hologram;
     protected boolean walking = false;
@@ -45,14 +44,12 @@ public abstract class HNPC {
          @Nonnull List<String> lines) {
         this.id = Objects.requireNonNull(id, "id cannot be null!");
         this.type = Objects.requireNonNull(type, "type cannot be null!");
-        this.location = Objects.requireNonNull(location, "location cannot be null!");
         this.hologram = HCore.createHologram("hcore_npc_hologram:" + id, location);
         this.hologram.addLines(Objects.requireNonNull(lines, "lines cannot be null!"));
 
         double radius = this.hologram.getRenderer().getRadius();
-        this.renderer = new HRenderer(location, radius,
-                this::show,
-                this::hide,
+        this.renderer = new HRenderer(Objects.requireNonNull(location, "location cannot be null!"), radius,
+                this::show, this::hide,
                 renderer -> this.hide(renderer.getShownViewersAsPlayer())
         ).showEveryone(true);
     }
@@ -73,16 +70,14 @@ public abstract class HNPC {
          @Nonnull Set<UUID> viewers) {
         this.id = Objects.requireNonNull(id, "id cannot be null!");
         this.type = Objects.requireNonNull(type, "type cannot be null!");
-        this.location = Objects.requireNonNull(location, "location cannot be null!");
         this.hologram = HCore.createHologram("hcore_npc_hologram:" + id, location);
         this.hologram.addLines(Objects.requireNonNull(lines, "lines cannot be null!"));
 
         double radius = this.hologram.getRenderer().getRadius();
-        this.renderer = new HRenderer(location, radius, viewers,
-                this::show,
-                this::hide,
+        this.renderer = new HRenderer(Objects.requireNonNull(location, "location cannot be null!"), radius, viewers,
+                this::show, this::hide,
                 renderer -> this.hide(renderer.getShownViewersAsPlayer())
-        ).showEveryone(true);
+        ).showEveryone(false);
     }
 
     /**
@@ -125,7 +120,7 @@ public abstract class HNPC {
      */
     @Nonnull
     public Location getLocation() {
-        return this.location;
+        return this.renderer.getLocation();
     }
 
     /**
@@ -137,7 +132,6 @@ public abstract class HNPC {
     @Nonnull
     public HNPC setLocation(@Nonnull Location location) {
         Objects.requireNonNull(location, "location cannot be null!");
-        this.location = location;
         this.renderer.setLocation(location);
         this.hologram.setLocation(location);
         return this;
@@ -166,7 +160,7 @@ public abstract class HNPC {
     /**
      * Is client side mode active?
      *
-     * @return if client side mode active, return true
+     * @return if client side mode active, return true.
      */
     public boolean canSeeEveryone() {
         return this.renderer.canSeeEveryone();
@@ -202,55 +196,117 @@ public abstract class HNPC {
     }
 
     /**
-     * Adds player to hologram to show
+     * Adds player to hologram to show.
      *
-     * @param players Player list
-     * @return instance of this class
+     * @param players Player list.
+     * @return instance of this class.
      */
     @Nonnull
     public HNPC addPlayer(@Nonnull List<Player> players) {
         Objects.requireNonNull(players, "players cannot be null!");
+        this.hologram.addPlayer(players);
         players.forEach(player -> this.renderer.addViewer(player));
         return this;
     }
 
     /**
-     * Adds player to hologram to show
+     * Adds player to hologram to show.
      *
-     * @param players Player list
-     * @return instance of this class
+     * @param players Player list.
+     * @return instance of this class.
      */
     @Nonnull
     public HNPC addPlayer(@Nonnull Player... players) {
         Objects.requireNonNull(players, "players cannot be null!");
-        Arrays.asList(players).forEach(player -> this.renderer.addViewer(player));
+        return this.addPlayer(Arrays.asList(players));
+    }
+
+    /**
+     * Adds player to hologram to show.
+     *
+     * @param uids Player list.
+     * @return instance of this class.
+     */
+    @Nonnull
+    public HNPC addPlayerByUID(@Nonnull List<UUID> uids) {
+        Objects.requireNonNull(uids, "uids cannot be null!");
+        this.hologram.addPlayerByUID(uids);
+        uids.forEach(uid -> this.renderer.addViewer(uid));
         return this;
     }
 
     /**
-     * Removes player to hologram to hide
+     * Adds player to hologram to show.
      *
-     * @param players Player list
-     * @return instance of this class
+     * @param uids Player list.
+     * @return instance of this class.
+     */
+    @Nonnull
+    public HNPC addPlayerByUID(@Nonnull UUID... uids) {
+        Objects.requireNonNull(uids, "uids cannot be null!");
+        return this.addPlayerByUID(Arrays.asList(uids));
+    }
+
+    /**
+     * Removes player from hologram to hide.
+     *
+     * @param players Player list.
+     * @return instance of this class.
      */
     @Nonnull
     public HNPC removePlayer(@Nonnull List<Player> players) {
         Objects.requireNonNull(players, "players cannot be null!");
+        this.hologram.removePlayer(players);
         players.forEach(player -> this.renderer.removeViewer(player));
         return this;
     }
 
     /**
-     * Removes player to hologram to hide
+     * Removes player from hologram to hide.
      *
-     * @param players Player list
-     * @return instance of this class
+     * @param players Player list.
+     * @return instance of this class.
      */
     @Nonnull
     public HNPC removePlayer(@Nonnull Player... players) {
         Objects.requireNonNull(players, "players cannot be null!");
-        Arrays.asList(players).forEach(player -> this.renderer.removeViewer(player));
+        return this.removePlayer(Arrays.asList(players));
+    }
+
+    /**
+     * Removes player from hologram to hide.
+     *
+     * @param uids Player list.
+     * @return instance of this class.
+     */
+    @Nonnull
+    public HNPC removePlayerByUID(@Nonnull List<UUID> uids) {
+        Objects.requireNonNull(uids, "uids cannot be null!");
+        this.hologram.removePlayerByUID(uids);
+        uids.forEach(uid -> this.renderer.removeViewer(uid));
         return this;
+    }
+
+    /**
+     * Removes player from npc to hide.
+     *
+     * @param uids Player list.
+     * @return instance of this class.
+     */
+    @Nonnull
+    public HNPC removePlayerByUID(@Nonnull UUID... uids) {
+        Objects.requireNonNull(uids, "uids cannot be null!");
+        return this.removePlayerByUID(Arrays.asList(uids));
+    }
+
+    /**
+     * Gets items as safe.
+     *
+     * @return Slot and ItemStack map.
+     */
+    @Nonnull
+    public Map<HNPCSlotType, ItemStack> getItemsSafe() {
+        return new HashMap<>(this.items);
     }
 
     /**
@@ -260,7 +316,7 @@ public abstract class HNPC {
      */
     @Nonnull
     public Map<HNPCSlotType, ItemStack> getItems() {
-        return new HashMap<>(this.items);
+        return this.items;
     }
 
     /**
@@ -273,38 +329,19 @@ public abstract class HNPC {
     }
 
     /**
-     * Deletes NPC.
-     */
-    public abstract void delete();
-
-    /**
      * Moves NPC.
      *
-     * @param moveTo Destination location.
-     * @param speed  Speed.
+     * @param to    Destination location.
+     * @param speed Speed.
      */
-    public abstract void move(Location moveTo, double speed);
-
-    /**
-     * Who sees NPC?
-     *
-     * @param players Player list.
-     */
-    public abstract void show(List<Player> players);
-
-    /**
-     * From whom should this NPC be hidden?
-     *
-     * @param players Player list.
-     */
-    public abstract void hide(List<Player> players);
+    public abstract void move(@Nonnull Location to, double speed);
 
     /**
      * Sets skin on NPC.
      *
      * @param username Skin username.
      */
-    public abstract void setSkin(String username);
+    public abstract void setSkin(@Nonnull String username);
 
     /**
      * Equip NPC with items.
@@ -312,5 +349,24 @@ public abstract class HNPC {
      * @param slotType  Slot type. Ex: HAND_ITEM, LEGGINGS,
      * @param itemStack Item.
      */
-    public abstract void equipment(HNPCSlotType slotType, ItemStack itemStack);
+    public abstract void equipment(@Nonnull HNPCSlotType slotType, @Nonnull ItemStack itemStack);
+
+    /**
+     * Who sees NPC?
+     *
+     * @param players Player list.
+     */
+    public abstract void show(@Nonnull List<Player> players);
+
+    /**
+     * From whom should this NPC be hidden?
+     *
+     * @param players Player list.
+     */
+    public abstract void hide(@Nonnull List<Player> players);
+
+    /**
+     * Deletes NPC.
+     */
+    public abstract void delete();
 }
