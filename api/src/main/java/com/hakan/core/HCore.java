@@ -24,7 +24,7 @@ import com.hakan.core.ui.inventory.HInventoryHandler;
 import com.hakan.core.ui.inventory.builder.HInventoryBuilder;
 import com.hakan.core.ui.sign.HSign;
 import com.hakan.core.ui.sign.HSignHandler;
-import com.hakan.core.utils.HSerializer;
+import com.hakan.core.utils.Serializer;
 import com.hakan.core.utils.ProtocolVersion;
 import com.hakan.core.worldborder.HWorldBorderHandler;
 import com.hakan.core.worldborder.border.HBorderColor;
@@ -936,7 +936,7 @@ public final class HCore {
      */
     @Nonnull
     public synchronized static Optional<String> serializeSafe(@Nonnull Object object) {
-        return HSerializer.serializeSafe(object);
+        return Serializer.serializeSafe(object);
     }
 
     /**
@@ -947,7 +947,7 @@ public final class HCore {
      */
     @Nonnull
     public synchronized static String serialize(@Nonnull Object object) {
-        return HSerializer.serialize(object);
+        return Serializer.serialize(object);
     }
 
     /**
@@ -960,7 +960,7 @@ public final class HCore {
      */
     @Nonnull
     public synchronized static <T> Optional<T> deserializeSafe(@Nonnull String serializedText, @Nonnull Class<T> clazz) {
-        return HSerializer.deserializeSafe(serializedText, clazz);
+        return Serializer.deserializeSafe(serializedText, clazz);
     }
 
     /**
@@ -973,6 +973,6 @@ public final class HCore {
      */
     @Nonnull
     public synchronized static <T> T deserialize(@Nonnull String serializedText, @Nonnull Class<T> clazz) {
-        return HSerializer.deserialize(serializedText, clazz);
+        return Serializer.deserialize(serializedText, clazz);
     }
 }
