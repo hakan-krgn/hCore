@@ -42,7 +42,8 @@ public final class HRenderer {
      * @param hideConsumer   Hide consumer.
      * @param deleteConsumer Delete consumer.
      */
-    public HRenderer(@Nonnull Location location, double radius, @Nonnull Set<UUID> viewers,
+    public HRenderer(@Nonnull Location location, double radius,
+                     @Nonnull Set<UUID> viewers,
                      @Nonnull Consumer<List<Player>> showConsumer,
                      @Nonnull Consumer<List<Player>> hideConsumer,
                      @Nonnull Consumer<HRenderer> deleteConsumer) {
@@ -124,7 +125,7 @@ public final class HRenderer {
      *
      * @return If includes, returns true.
      */
-    public boolean canShowEveryone() {
+    public boolean canSeeEveryone() {
         return this.showEveryone;
     }
 
