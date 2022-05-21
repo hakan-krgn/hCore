@@ -1,7 +1,7 @@
 package com.hakan.core.npc;
 
 /**
- * Vezor NPC slot types.
+ * HNPC slot types.
  */
 
 public enum HNPCSlotType {

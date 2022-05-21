@@ -146,7 +146,7 @@ public abstract class HNPC {
     /**
      * Gets renderer.
      *
-     * @return VezorRenderer.
+     * @return HRenderer.
      */
     @Nonnull
     public HRenderer getRenderer() {
@@ -156,7 +156,7 @@ public abstract class HNPC {
     /**
      * Gets hologram.
      *
-     * @return VezorHologram.
+     * @return HHologram.
      */
     @Nonnull
     public HHologram getHologram() {
