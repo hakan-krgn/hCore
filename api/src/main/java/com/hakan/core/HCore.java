@@ -88,10 +88,6 @@ public final class HCore {
         HMessageHandler.initialize();
         HParticleHandler.initialize();
         HHologramHandler.initialize();
-
-        HCommandHandler.register(
-                new ExampleCommand()
-        );
     }
 
 
