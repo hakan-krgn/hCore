@@ -14,6 +14,7 @@ import com.hakan.core.message.bossbar.HBarFlag;
 import com.hakan.core.message.bossbar.HBarStyle;
 import com.hakan.core.message.bossbar.HBossBar;
 import com.hakan.core.message.title.HTitle;
+import com.hakan.core.npc.HNPCHandler;
 import com.hakan.core.packet.HPacketHandler;
 import com.hakan.core.particle.HParticle;
 import com.hakan.core.particle.HParticleHandler;
@@ -24,8 +25,8 @@ import com.hakan.core.ui.inventory.HInventoryHandler;
 import com.hakan.core.ui.inventory.builder.HInventoryBuilder;
 import com.hakan.core.ui.sign.HSign;
 import com.hakan.core.ui.sign.HSignHandler;
-import com.hakan.core.utils.Serializer;
 import com.hakan.core.utils.ProtocolVersion;
+import com.hakan.core.utils.Serializer;
 import com.hakan.core.worldborder.HWorldBorderHandler;
 import com.hakan.core.worldborder.border.HBorderColor;
 import com.hakan.core.worldborder.border.HWorldBorder;
@@ -89,6 +90,7 @@ public final class HCore {
         HMessageHandler.initialize();
         HParticleHandler.initialize();
         HHologramHandler.initialize();
+        HNPCHandler.initialize();
     }
 
 
