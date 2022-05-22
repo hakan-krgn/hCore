@@ -2,10 +2,9 @@ package com.hakan.core.npc;
 
 import com.hakan.core.HCore;
 import com.hakan.core.hologram.HHologram;
-import com.hakan.core.npc.types.HNPCSlotType;
+import com.hakan.core.npc.types.HNPCEquipmentType;
 import com.hakan.core.renderer.HRenderer;
 import org.bukkit.Location;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -26,28 +25,26 @@ import java.util.concurrent.TimeUnit;
 public abstract class HNPC {
 
     protected final String id;
-    protected EntityType type;
+    protected final Map<HNPCEquipmentType, ItemStack> equipments;
+
     protected HRenderer renderer;
     protected HHologram hologram;
     protected boolean walking = false;
-    protected final Map<HNPCSlotType, ItemStack> items = new HashMap<>();
 
     /**
      * Constructor to create new NPC.
      *
      * @param id       NPC id.
-     * @param type     NPC type.
      * @param location NPC location.
      * @param lines    NPC hologram lines.
      */
-    protected HNPC(@Nonnull String id,
-                   @Nonnull EntityType type,
-                   @Nonnull Location location,
-                   @Nonnull List<String> lines) {
+    public HNPC(@Nonnull String id,
+                @Nonnull Location location,
+                @Nonnull List<String> lines) {
         this.id = Objects.requireNonNull(id, "id cannot be null!");
-        this.type = Objects.requireNonNull(type, "type cannot be null!");
         this.hologram = HCore.createHologram("hcore_npc_hologram:" + id, location);
         this.hologram.addLines(Objects.requireNonNull(lines, "lines cannot be null!"));
+        this.equipments = new HashMap<>();
 
         double radius = this.hologram.getRenderer().getRadius();
         this.renderer = new HRenderer(Objects.requireNonNull(location, "location cannot be null!"), radius,
@@ -60,20 +57,18 @@ public abstract class HNPC {
      * Constructor to create new NPC.
      *
      * @param id       NPC id.
-     * @param type     NPC type.
      * @param location NPC location.
      * @param lines    NPC hologram lines.
      * @param viewers  NPC viewers.
      */
-    protected HNPC(@Nonnull String id,
-                   @Nonnull EntityType type,
-                   @Nonnull Location location,
-                   @Nonnull List<String> lines,
-                   @Nonnull Set<UUID> viewers) {
+    public HNPC(@Nonnull String id,
+                @Nonnull Location location,
+                @Nonnull List<String> lines,
+                @Nonnull Set<UUID> viewers) {
         this.id = Objects.requireNonNull(id, "id cannot be null!");
-        this.type = Objects.requireNonNull(type, "type cannot be null!");
         this.hologram = HCore.createHologram("hcore_npc_hologram:" + id, location);
         this.hologram.addLines(Objects.requireNonNull(lines, "lines cannot be null!"));
+        this.equipments = new HashMap<>();
 
         double radius = this.hologram.getRenderer().getRadius();
         this.renderer = new HRenderer(Objects.requireNonNull(location, "location cannot be null!"), radius, viewers,
@@ -90,29 +85,6 @@ public abstract class HNPC {
     @Nonnull
     public String getId() {
         return this.id;
-    }
-
-    /**
-     * Gets entity type.
-     *
-     * @return EntityType.
-     */
-    @Nonnull
-    public EntityType getType() {
-        return this.type;
-    }
-
-    /**
-     * Sets entity type.
-     * Attention! Creates a new NPC.
-     *
-     * @param type EntityType.
-     * @return New vezorNPC.
-     */
-    @Nonnull
-    public HNPC setType(@Nonnull EntityType type) {
-        this.type = Objects.requireNonNull(type, "entityType cannot be null!");
-        return this;
     }
 
     /**
@@ -293,8 +265,8 @@ public abstract class HNPC {
      * @return Slot and ItemStack map.
      */
     @Nonnull
-    public Map<HNPCSlotType, ItemStack> getItemsSafe() {
-        return new HashMap<>(this.items);
+    public Map<HNPCEquipmentType, ItemStack> getEquipmentsSafe() {
+        return new HashMap<>(this.equipments);
     }
 
     /**
@@ -303,8 +275,8 @@ public abstract class HNPC {
      * @return Slot and ItemStack map.
      */
     @Nonnull
-    public Map<HNPCSlotType, ItemStack> getItems() {
-        return this.items;
+    public Map<HNPCEquipmentType, ItemStack> getEquipments() {
+        return this.equipments;
     }
 
     /**
@@ -346,14 +318,14 @@ public abstract class HNPC {
     public abstract HNPC setSkin(@Nonnull String username);
 
     /**
-     * Equip NPC with items.
+     * Equips NPC with items.
      *
      * @param slotType  Slot type. Ex: HAND_ITEM, LEGGINGS,
      * @param itemStack Item.
      * @return instance of this class.
      */
     @Nonnull
-    public abstract HNPC setEquipment(@Nonnull HNPCSlotType slotType, @Nonnull ItemStack itemStack);
+    public abstract HNPC setEquipment(@Nonnull HNPCEquipmentType slotType, @Nonnull ItemStack itemStack);
 
     /**
      * Who sees NPC?

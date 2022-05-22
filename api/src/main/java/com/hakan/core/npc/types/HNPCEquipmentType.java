@@ -4,23 +4,23 @@ package com.hakan.core.npc.types;
  * HNPC slot types.
  */
 
-public enum HNPCSlotType {
+public enum HNPCEquipmentType {
 
     HAND_ITEM(0),
     OFF_HAND(0),
-    HELMET(4),
-    CHESTPLATE(3),
-    LEGGINGS(2),
-    BOOTS(1);
+    HELMET(3),
+    CHESTPLATE(2),
+    LEGGINGS(1),
+    BOOTS(0);
 
     private final int slot;
 
     /**
-     * Sets slot.
+     * Constructor with slot.
      *
      * @param slot Slot number.
      */
-    HNPCSlotType(int slot) {
+    HNPCEquipmentType(int slot) {
         this.slot = slot;
     }
 
