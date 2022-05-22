@@ -5,15 +5,19 @@ import com.hakan.core.command.executors.base.BaseCommand;
 import com.hakan.core.command.executors.sub.SubCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
-@BaseCommand(name = "example",
+@BaseCommand(
+        name = "example",
         description = "Example command",
         usage = "/example",
         aliases = {"ex"}
 )
 public class ExampleCommand implements HCommandAdapter {
 
-    @SubCommand(permission = "example.main")
+    @SubCommand(
+            permission = "example.main"
+    )
     public void mainCommand(CommandSender sender, String[] args) {
         sender.sendMessage("ana komudu yazdın");
     }
