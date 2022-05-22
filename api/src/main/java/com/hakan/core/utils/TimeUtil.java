@@ -8,7 +8,7 @@ import java.util.Objects;
 /**
  * TimeUtil class to format dates.
  */
-public class TimeUtil {
+public final class TimeUtil {
 
     /**
      * Formats the now to the given pattern.
