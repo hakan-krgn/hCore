@@ -378,7 +378,6 @@ public final class HCore {
     }
 
 
-
     /*
     LISTENERS
      */
