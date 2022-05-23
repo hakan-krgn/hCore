@@ -146,7 +146,7 @@ public class HNPC_v1_8_R3 extends HNPC {
         Objects.requireNonNull(username, "username cannot be null!");
 
         this.hide(super.renderer.getShownViewersAsPlayer());
-
+        //todo set skin
         this.show(super.renderer.getShownViewersAsPlayer());
 
         return this;
