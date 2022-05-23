@@ -83,7 +83,7 @@ public abstract class HNPC {
      * @return NPC id.
      */
     @Nonnull
-    public String getId() {
+    public final String getId() {
         return this.id;
     }
 
@@ -93,7 +93,7 @@ public abstract class HNPC {
      * @return Location.
      */
     @Nonnull
-    public Location getLocation() {
+    public final Location getLocation() {
         return this.renderer.getLocation();
     }
 
@@ -103,7 +103,7 @@ public abstract class HNPC {
      * @return HRenderer.
      */
     @Nonnull
-    public HRenderer getRenderer() {
+    public final HRenderer getRenderer() {
         return this.renderer;
     }
 
@@ -113,7 +113,7 @@ public abstract class HNPC {
      * @return HHologram.
      */
     @Nonnull
-    public HHologram getHologram() {
+    public final HHologram getHologram() {
         return this.hologram;
     }
 
@@ -122,7 +122,7 @@ public abstract class HNPC {
      *
      * @return if client side mode active, return true.
      */
-    public boolean canSeeEveryone() {
+    public final boolean canSeeEveryone() {
         return this.renderer.canSeeEveryone();
     }
 
@@ -134,7 +134,7 @@ public abstract class HNPC {
      * @return Instance of this class.
      */
     @Nonnull
-    public HNPC showEveryone(boolean mode) {
+    public final HNPC showEveryone(boolean mode) {
         this.renderer.showEveryone(mode);
         this.hologram.showEveryone(mode);
         return this;
@@ -148,7 +148,7 @@ public abstract class HNPC {
      * @return HNPC for chain.
      */
     @Nonnull
-    public HNPC expire(int expire, @Nonnull TimeUnit timeUnit) {
+    public final HNPC expire(int expire, @Nonnull TimeUnit timeUnit) {
         Objects.requireNonNull(timeUnit, "time unit cannot be null!");
         HCore.syncScheduler().after(expire, timeUnit)
                 .run(this::delete);
@@ -265,7 +265,7 @@ public abstract class HNPC {
      * @return Slot and ItemStack map.
      */
     @Nonnull
-    public Map<HNPCEquipmentType, ItemStack> getEquipmentsSafe() {
+    public final Map<HNPCEquipmentType, ItemStack> getEquipmentsSafe() {
         return new HashMap<>(this.equipments);
     }
 
@@ -275,7 +275,7 @@ public abstract class HNPC {
      * @return Slot and ItemStack map.
      */
     @Nonnull
-    public Map<HNPCEquipmentType, ItemStack> getEquipments() {
+    public final Map<HNPCEquipmentType, ItemStack> getEquipments() {
         return this.equipments;
     }
 
@@ -284,7 +284,7 @@ public abstract class HNPC {
      *
      * @return Walking.
      */
-    public boolean isWalking() {
+    public final boolean isWalking() {
         return this.walking;
     }
 

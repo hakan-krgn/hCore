@@ -2,6 +2,7 @@ package com.hakan.core.npc.wrapper;
 
 import com.hakan.core.HCore;
 import com.hakan.core.npc.HNPC;
+import com.hakan.core.npc.HNPCHandler;
 import com.hakan.core.npc.types.HNPCEquipmentType;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.server.v1_8_R3.EntityArmorStand;
@@ -58,6 +59,7 @@ public class HNPC_v1_8_R3 extends HNPC {
         this.npc = new EntityPlayer(this.server, this.world, this.gameProfile, new PlayerInteractManager(this.world));
         this.npc.setInvisible(false);
         this.npc.setHealth(77.21f);
+
 
         this.armorStand = new EntityArmorStand(this.world, 0, 0, 0);
         this.armorStand.getDataWatcher().watch(10, (byte) 16);
@@ -128,8 +130,8 @@ public class HNPC_v1_8_R3 extends HNPC {
         super.hologram.setLocation(location);
 
         HCore.sendPacket(super.renderer.getShownViewersAsPlayer(),
-                new PacketPlayOutEntity.PacketPlayOutEntityLook(this.npc.getId(), (byte) (location.getYaw() % 360f * 0.711111f), (byte) (location.getPitch() % 360f * 0.711111f), false),
-                new PacketPlayOutEntityHeadRotation(this.npc, (byte) (location.getYaw() * 0.711111f)),
+                new PacketPlayOutEntity.PacketPlayOutEntityLook(this.npc.getId(), (byte) (location.getYaw() % 360f * 256f / 360f), (byte) (location.getPitch() % 360f * 256f / 360f), false),
+                new PacketPlayOutEntityHeadRotation(this.npc, (byte) (location.getYaw() * 256f / 360f)),
                 new PacketPlayOutEntityTeleport(this.npc));
 
         return this;
@@ -144,7 +146,7 @@ public class HNPC_v1_8_R3 extends HNPC {
         Objects.requireNonNull(username, "username cannot be null!");
 
         this.hide(super.renderer.getShownViewersAsPlayer());
-        //todo set skin
+
         this.show(super.renderer.getShownViewersAsPlayer());
 
         return this;
@@ -177,7 +179,8 @@ public class HNPC_v1_8_R3 extends HNPC {
         HCore.sendPacket(players,
                 new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, this.npc),
                 new PacketPlayOutNamedEntitySpawn(this.npc),
-                new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, this.npc));
+                new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, this.npc),
+                new PacketPlayOutEntityMetadata(this.npc.getId(), this.npc.getDataWatcher(), true));
 
         //todo add equipment packets
 
@@ -208,6 +211,7 @@ public class HNPC_v1_8_R3 extends HNPC {
     @Nonnull
     @Override
     public HNPC delete() {
+        HNPCHandler.getContent().remove(super.id);
         super.hologram.delete();
         super.renderer.delete();
         super.walking = false;
