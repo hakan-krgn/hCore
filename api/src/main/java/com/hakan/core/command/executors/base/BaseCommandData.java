@@ -11,6 +11,8 @@ import org.bukkit.command.SimpleCommandMap;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -34,7 +36,7 @@ public class BaseCommandData {
         this.aliases = baseCommand.aliases();
         this.description = baseCommand.description();
 
-        this.subCommands = new ArrayList<>();
+        this.subCommands = new LinkedList<>();
         this.listener = new HCommandListener(this);
     }
 
@@ -58,18 +60,28 @@ public class BaseCommandData {
         return this.usage;
     }
 
+    public List<SubCommandData> getSubCommandsSafe() {
+        return new ArrayList<>(this.subCommands);
+    }
+
+    public List<SubCommandData> getSubCommands() {
+        return this.subCommands;
+    }
+
     public void addSubCommand(SubCommandData subCommand) {
         this.subCommands.add(subCommand);
+        Collections.sort(this.subCommands);
     }
 
     public void removeSubCommand(SubCommandData subCommand) {
         this.subCommands.remove(subCommand);
+        Collections.sort(this.subCommands);
     }
 
     public Optional<SubCommandData> findSubCommand(String[] subCommands) {
         for (SubCommandData subCommandData : this.subCommands) {
             String[] commands = subCommandData.getArgs();
-            if (CommandUtils.isMatching(subCommands, commands)) {
+            if (CommandUtils.isMatching(commands, subCommands)) {
                 return Optional.of(subCommandData);
             }
         }
@@ -89,7 +101,7 @@ public class BaseCommandData {
             Command command = commandMap.getCommand(this.name);
 
             if (command != null && command.isRegistered())
-                throw new IllegalStateException("This command already registered.");
+                return;
             commandMap.register(this.name, this.listener);
         } catch (Exception e) {
             e.printStackTrace();

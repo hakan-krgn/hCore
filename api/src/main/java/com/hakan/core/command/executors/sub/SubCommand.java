@@ -13,4 +13,6 @@ public @interface SubCommand {
 
     String permission() default "";
 
+    String permissionMessage() default "";
+
 }

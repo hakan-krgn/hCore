@@ -1,7 +1,7 @@
 package com.hakan.core;
 
+import com.hakan.core.command.HCommandAdapter;
 import com.hakan.core.command.HCommandHandler;
-import com.hakan.core.command.test.ExampleCommand;
 import com.hakan.core.hologram.HHologram;
 import com.hakan.core.hologram.HHologramHandler;
 import com.hakan.core.hooks.Metrics;
@@ -368,6 +368,14 @@ public final class HCore {
     COMMAND
      */
 
+    /**
+     * Registers commands to server.
+     *
+     * @param adapters List of command adapters.
+     */
+    public static void register(@Nonnull HCommandAdapter... adapters) {
+        HCommandHandler.register(adapters);
+    }
 
 
 
