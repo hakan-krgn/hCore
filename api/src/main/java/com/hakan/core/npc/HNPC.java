@@ -162,7 +162,7 @@ public abstract class HNPC {
      * @return instance of this class.
      */
     @Nonnull
-    public HNPC addPlayer(@Nonnull List<Player> players) {
+    public final HNPC addPlayer(@Nonnull List<Player> players) {
         Objects.requireNonNull(players, "players cannot be null!");
         this.hologram.addPlayer(players);
         players.forEach(player -> this.renderer.addViewer(player));
@@ -176,7 +176,7 @@ public abstract class HNPC {
      * @return instance of this class.
      */
     @Nonnull
-    public HNPC addPlayer(@Nonnull Player... players) {
+    public final HNPC addPlayer(@Nonnull Player... players) {
         Objects.requireNonNull(players, "players cannot be null!");
         return this.addPlayer(Arrays.asList(players));
     }
@@ -188,7 +188,7 @@ public abstract class HNPC {
      * @return instance of this class.
      */
     @Nonnull
-    public HNPC addPlayerByUID(@Nonnull List<UUID> uids) {
+    public final HNPC addPlayerByUID(@Nonnull List<UUID> uids) {
         Objects.requireNonNull(uids, "uids cannot be null!");
         this.hologram.addPlayerByUID(uids);
         uids.forEach(uid -> this.renderer.addViewer(uid));
@@ -202,7 +202,7 @@ public abstract class HNPC {
      * @return instance of this class.
      */
     @Nonnull
-    public HNPC addPlayerByUID(@Nonnull UUID... uids) {
+    public final HNPC addPlayerByUID(@Nonnull UUID... uids) {
         Objects.requireNonNull(uids, "uids cannot be null!");
         return this.addPlayerByUID(Arrays.asList(uids));
     }
@@ -214,7 +214,7 @@ public abstract class HNPC {
      * @return instance of this class.
      */
     @Nonnull
-    public HNPC removePlayer(@Nonnull List<Player> players) {
+    public final HNPC removePlayer(@Nonnull List<Player> players) {
         Objects.requireNonNull(players, "players cannot be null!");
         this.hologram.removePlayer(players);
         players.forEach(player -> this.renderer.removeViewer(player));
@@ -228,7 +228,7 @@ public abstract class HNPC {
      * @return instance of this class.
      */
     @Nonnull
-    public HNPC removePlayer(@Nonnull Player... players) {
+    public final HNPC removePlayer(@Nonnull Player... players) {
         Objects.requireNonNull(players, "players cannot be null!");
         return this.removePlayer(Arrays.asList(players));
     }
@@ -240,7 +240,7 @@ public abstract class HNPC {
      * @return instance of this class.
      */
     @Nonnull
-    public HNPC removePlayerByUID(@Nonnull List<UUID> uids) {
+    public final HNPC removePlayerByUID(@Nonnull List<UUID> uids) {
         Objects.requireNonNull(uids, "uids cannot be null!");
         this.hologram.removePlayerByUID(uids);
         uids.forEach(uid -> this.renderer.removeViewer(uid));
@@ -254,7 +254,7 @@ public abstract class HNPC {
      * @return instance of this class.
      */
     @Nonnull
-    public HNPC removePlayerByUID(@Nonnull UUID... uids) {
+    public final HNPC removePlayerByUID(@Nonnull UUID... uids) {
         Objects.requireNonNull(uids, "uids cannot be null!");
         return this.removePlayerByUID(Arrays.asList(uids));
     }
