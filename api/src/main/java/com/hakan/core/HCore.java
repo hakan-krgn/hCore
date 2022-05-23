@@ -14,6 +14,7 @@ import com.hakan.core.message.bossbar.HBarFlag;
 import com.hakan.core.message.bossbar.HBarStyle;
 import com.hakan.core.message.bossbar.HBossBar;
 import com.hakan.core.message.title.HTitle;
+import com.hakan.core.npc.HNPC;
 import com.hakan.core.npc.HNPCHandler;
 import com.hakan.core.packet.HPacketHandler;
 import com.hakan.core.particle.HParticle;
@@ -654,6 +655,111 @@ public final class HCore {
      */
     public static HBossBar createBossBar(@Nonnull String title, @Nonnull HBarColor color, @Nonnull HBarStyle style) {
         return HMessageHandler.createBossBar(title, color, style);
+    }
+
+
+    /*
+    NPC
+     */
+
+    /**
+     * Gets content as safe.
+     *
+     * @return npc map.
+     */
+    @Nonnull
+    public static Map<String, HNPC> getNpcContentSafe() {
+        return HNPCHandler.getContentSafe();
+    }
+
+    /**
+     * Gets content.
+     *
+     * @return npc map.
+     */
+    @Nonnull
+    public static Map<String, HNPC> getNpcContent() {
+        return HNPCHandler.getContent();
+    }
+
+    /**
+     * Gets npc list as safe.
+     *
+     * @return npc.
+     */
+    @Nonnull
+    public static Collection<HNPC> getNpcValuesSafe() {
+        return HNPCHandler.getValuesSafe();
+    }
+
+    /**
+     * Gets npc list.
+     *
+     * @return NPC.
+     */
+    @Nonnull
+    public static Collection<HNPC> getNpcValues() {
+        return HNPCHandler.getValues();
+    }
+
+    /**
+     * Finds a created npc.
+     *
+     * @param id NPC id that you want.
+     * @return NPC from id.
+     */
+    @Nonnull
+    public static Optional<HNPC> findNpcByID(@Nonnull String id) {
+        return HNPCHandler.findByID(id);
+    }
+
+    /**
+     * Gets a created npc.
+     *
+     * @param id NPC id that you want.
+     * @return NPC from id.
+     */
+    @Nonnull
+    public static HNPC getNpcByID(@Nonnull String id) {
+        return HNPCHandler.getByID(id);
+    }
+
+    /**
+     * Deletes a npc with given id.
+     *
+     * @param id NPC id.
+     * @return Deleted NPC.
+     */
+    @Nonnull
+    public static HNPC deleteNpc(@Nonnull String id) {
+        return HNPCHandler.delete(id);
+    }
+
+    /**
+     * Creates a npc.
+     *
+     * @param id       NPC id.
+     * @param location NPC location.
+     * @param lines    NPC lines.
+     * @return Created NPC.
+     */
+    @Nonnull
+    public static HNPC createNpc(@Nonnull String id, @Nonnull Location location, @Nonnull List<String> lines) {
+        return HNPCHandler.create(id, location, lines);
+    }
+
+    /**
+     * Creates a npc.
+     *
+     * @param id       NPC id.
+     * @param location NPC location.
+     * @param lines    NPC lines.
+     * @param viewers  NPC viewers for client side.
+     * @return Created NPC.
+     */
+    @Nonnull
+    public static HNPC createNpc(@Nonnull String id, @Nonnull Location location, @Nonnull List<String> lines, @Nonnull Set<UUID> viewers) {
+        return HNPCHandler.create(id, location, lines, viewers);
     }
 
 
