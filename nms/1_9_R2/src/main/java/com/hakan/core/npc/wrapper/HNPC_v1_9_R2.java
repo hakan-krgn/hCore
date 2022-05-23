@@ -5,25 +5,24 @@ import com.hakan.core.npc.HNPC;
 import com.hakan.core.npc.HNPCHandler;
 import com.hakan.core.npc.types.HNPCEquipmentType;
 import com.mojang.authlib.GameProfile;
-import net.minecraft.server.v1_8_R3.EntityArmorStand;
-import net.minecraft.server.v1_8_R3.EntityPlayer;
-import net.minecraft.server.v1_8_R3.MinecraftServer;
-import net.minecraft.server.v1_8_R3.NBTTagCompound;
-import net.minecraft.server.v1_8_R3.PacketPlayOutAttachEntity;
-import net.minecraft.server.v1_8_R3.PacketPlayOutEntity;
-import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
-import net.minecraft.server.v1_8_R3.PacketPlayOutEntityHeadRotation;
-import net.minecraft.server.v1_8_R3.PacketPlayOutEntityMetadata;
-import net.minecraft.server.v1_8_R3.PacketPlayOutEntityTeleport;
-import net.minecraft.server.v1_8_R3.PacketPlayOutNamedEntitySpawn;
-import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerInfo;
-import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntityLiving;
-import net.minecraft.server.v1_8_R3.PlayerInteractManager;
-import net.minecraft.server.v1_8_R3.WorldServer;
+import net.minecraft.server.v1_9_R2.EntityArmorStand;
+import net.minecraft.server.v1_9_R2.EntityPlayer;
+import net.minecraft.server.v1_9_R2.MinecraftServer;
+import net.minecraft.server.v1_9_R2.PacketPlayOutEntity;
+import net.minecraft.server.v1_9_R2.PacketPlayOutEntityDestroy;
+import net.minecraft.server.v1_9_R2.PacketPlayOutEntityHeadRotation;
+import net.minecraft.server.v1_9_R2.PacketPlayOutEntityMetadata;
+import net.minecraft.server.v1_9_R2.PacketPlayOutEntityTeleport;
+import net.minecraft.server.v1_9_R2.PacketPlayOutMount;
+import net.minecraft.server.v1_9_R2.PacketPlayOutNamedEntitySpawn;
+import net.minecraft.server.v1_9_R2.PacketPlayOutPlayerInfo;
+import net.minecraft.server.v1_9_R2.PacketPlayOutSpawnEntityLiving;
+import net.minecraft.server.v1_9_R2.PlayerInteractManager;
+import net.minecraft.server.v1_9_R2.WorldServer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_9_R2.CraftServer;
+import org.bukkit.craftbukkit.v1_9_R2.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -36,7 +35,7 @@ import java.util.UUID;
 /**
  * {@inheritDoc}
  */
-public class HNPC_v1_8_R3 extends HNPC {
+public class HNPC_v1_9_R2 extends HNPC {
 
     private final EntityPlayer npc;
     private final EntityArmorStand armorStand;
@@ -47,7 +46,7 @@ public class HNPC_v1_8_R3 extends HNPC {
     /**
      * {@inheritDoc}
      */
-    public HNPC_v1_8_R3(@Nonnull String id,
+    public HNPC_v1_9_R2(@Nonnull String id,
                         @Nonnull Location location,
                         @Nonnull List<String> lines) {
         super(id, location, lines);
@@ -62,8 +61,7 @@ public class HNPC_v1_8_R3 extends HNPC {
 
 
         this.armorStand = new EntityArmorStand(this.world, 0, 0, 0);
-        this.armorStand.getDataWatcher().watch(10, (byte) 16);
-        this.armorStand.b(new NBTTagCompound());
+        this.armorStand.setMarker(true);
         this.armorStand.setArms(false);
         this.armorStand.setBasePlate(false);
         this.armorStand.setGravity(false);
@@ -77,7 +75,7 @@ public class HNPC_v1_8_R3 extends HNPC {
     /**
      * {@inheritDoc}
      */
-    public HNPC_v1_8_R3(@Nonnull String id,
+    public HNPC_v1_9_R2(@Nonnull String id,
                         @Nonnull Location location,
                         @Nonnull List<String> lines,
                         @Nonnull Set<UUID> viewers) {
@@ -92,8 +90,7 @@ public class HNPC_v1_8_R3 extends HNPC {
         this.npc.setHealth(77.21f);
 
         this.armorStand = new EntityArmorStand(this.world, 0, 0, 0);
-        this.armorStand.getDataWatcher().watch(10, (byte) 16);
-        this.armorStand.b(new NBTTagCompound());
+        this.armorStand.setMarker(true);
         this.armorStand.setArms(false);
         this.armorStand.setBasePlate(false);
         this.armorStand.setGravity(false);
@@ -176,7 +173,8 @@ public class HNPC_v1_8_R3 extends HNPC {
     public HNPC show(@Nonnull List<Player> players) {
         Objects.requireNonNull(players, "players cannot be null!");
 
-        this.npc.passenger = this.armorStand;
+        this.npc.passengers.clear();
+        this.npc.passengers.add(this.armorStand);
 
         HCore.sendPacket(players,
                 new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, this.npc),
@@ -190,7 +188,7 @@ public class HNPC_v1_8_R3 extends HNPC {
                 new PacketPlayOutSpawnEntityLiving(this.armorStand),
                 new PacketPlayOutEntityMetadata(this.armorStand.getId(), this.armorStand.getDataWatcher(), true),
                 new PacketPlayOutEntityTeleport(this.armorStand),
-                new PacketPlayOutAttachEntity(0, this.armorStand, this.npc));
+                new PacketPlayOutMount(this.npc));
 
         return this;
     }
