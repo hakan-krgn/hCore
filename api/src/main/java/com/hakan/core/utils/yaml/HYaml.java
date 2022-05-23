@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-public class HYaml {
+public final class HYaml {
 
     /**
      * Creates file and include resource to in it.
