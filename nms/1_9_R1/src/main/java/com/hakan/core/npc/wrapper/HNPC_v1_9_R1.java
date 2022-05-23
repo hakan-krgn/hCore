@@ -8,7 +8,6 @@ import com.mojang.authlib.GameProfile;
 import net.minecraft.server.v1_9_R1.EntityArmorStand;
 import net.minecraft.server.v1_9_R1.EntityPlayer;
 import net.minecraft.server.v1_9_R1.MinecraftServer;
-import net.minecraft.server.v1_9_R1.PacketPlayOutAttachEntity;
 import net.minecraft.server.v1_9_R1.PacketPlayOutEntity;
 import net.minecraft.server.v1_9_R1.PacketPlayOutEntityDestroy;
 import net.minecraft.server.v1_9_R1.PacketPlayOutEntityHeadRotation;
