@@ -11,7 +11,10 @@ import javax.annotation.Nonnull;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * {@inheritDoc}
@@ -41,6 +44,9 @@ public class HCommandListener extends BukkitCommand {
         if (subCommandData == null) {
             sender.sendMessage(this.baseCommandData.getUsage());
             return false;
+        } else if (!sender.hasPermission(subCommandData.getPermission())) {
+            sender.sendMessage(subCommandData.getPermissionMessage());
+            return false;
         }
 
         try {
@@ -66,7 +72,41 @@ public class HCommandListener extends BukkitCommand {
      */
     @Nonnull
     @Override
-    public List<String> tabComplete(@Nonnull CommandSender sender, @Nonnull String alias, @Nonnull String[] args) throws IllegalArgumentException {
-        return new ArrayList<>();
+    public List<String> tabComplete(@Nonnull CommandSender sender, @Nonnull String alias, @Nonnull String[] args) {
+        Set<String> tabComplete = new LinkedHashSet<>();
+
+        List<String> enteredArgs = new LinkedList<>(Arrays.asList(args));
+        List<SubCommandData> subCommandDatas = this.baseCommandData.getSubCommandsSafe();
+
+        String lastArg = enteredArgs.get(enteredArgs.size() - 1);
+        enteredArgs.remove(enteredArgs.size() - 1);
+
+        int i = 0;
+        for (; i < enteredArgs.size(); i++) {
+            String arg = enteredArgs.get(i);
+            for (SubCommandData subCommandData : new ArrayList<>(subCommandDatas)) {
+                if (subCommandData.getArgs().length <= i || !arg.equals(subCommandData.getArgs()[i]))
+                    subCommandDatas.remove(subCommandData);
+            }
+        }
+
+        Set<String> tabCompleteBefore = new LinkedHashSet<>();
+        for (SubCommandData subCommandData : subCommandDatas) {
+            String[] subArgs = subCommandData.getArgs();
+            int subArgLen = subArgs.length;
+            if (subArgLen != 0 && subArgLen > i) {
+                tabCompleteBefore.add(subArgs[i]);
+            }
+        }
+
+        for (String tab : tabCompleteBefore) {
+            if (tab.startsWith(lastArg)) {
+                tabComplete.add(tab);
+            }
+        }
+
+        tabComplete.addAll(tabCompleteBefore);
+
+        return new ArrayList<>(tabComplete);
     }
 }

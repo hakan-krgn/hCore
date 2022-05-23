@@ -5,11 +5,24 @@ import com.hakan.core.command.executors.base.BaseCommandData;
 import com.hakan.core.command.executors.sub.SubCommand;
 import com.hakan.core.command.executors.sub.SubCommandData;
 
+import javax.annotation.Nonnull;
 import java.lang.reflect.Method;
+import java.util.Objects;
 
-public class HCommandHandler {
+/**
+ * HCommandHandler class to register
+ * commands and sub commands to server.
+ */
+public final class HCommandHandler {
 
-    public static void register(HCommandAdapter... adapters) {
+    /**
+     * Registers commands to server.
+     *
+     * @param adapters List of command adapters.
+     */
+    public static void register(@Nonnull HCommandAdapter... adapters) {
+        Objects.requireNonNull(adapters, "adapters cannot be null!");
+
         for (HCommandAdapter adapter : adapters) {
             BaseCommand baseCommand = adapter.getClass().getAnnotation(BaseCommand.class);
             if (baseCommand == null)
