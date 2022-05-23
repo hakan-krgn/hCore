@@ -1,7 +1,7 @@
 package com.hakan.core;
 
-import com.hakan.core.command.HCommandExecutor;
-import com.hakan.core.command.functional.HCommand;
+import com.hakan.core.command.HCommandAdapter;
+import com.hakan.core.command.HCommandHandler;
 import com.hakan.core.hologram.HHologram;
 import com.hakan.core.hologram.HHologramHandler;
 import com.hakan.core.hooks.Metrics;
@@ -39,7 +39,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -370,25 +369,14 @@ public final class HCore {
      */
 
     /**
-     * Registers a new command with aliases.
+     * Registers commands to server.
      *
-     * @param command Command name.
-     * @param aliases Aliases.
-     * @return HCommand.
+     * @param adapters List of command adapters.
      */
-    @Nonnull
-    public static HCommand registerCommand(@Nonnull String command, @Nonnull String... aliases) {
-        return new HCommand(command, aliases).register();
+    public static void register(@Nonnull HCommandAdapter... adapters) {
+        HCommandHandler.register(adapters);
     }
 
-    /**
-     * Registers command executors.
-     *
-     * @param executors Command executors.
-     */
-    public static void registerCommands(@Nonnull HCommandExecutor... executors) {
-        Arrays.asList(Objects.requireNonNull(executors, "executors cannot be null!")).forEach(HCommandExecutor::register);
-    }
 
 
     /*

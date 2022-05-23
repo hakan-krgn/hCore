@@ -1,42 +1,38 @@
 package com.hakan.core.command.listeners;
 
-import com.hakan.core.command.HCommandExecutor;
-import com.hakan.core.command.HSubCommand;
-import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandMap;
+import com.hakan.core.command.HCommandAdapter;
+import com.hakan.core.command.executors.base.BaseCommandData;
+import com.hakan.core.command.executors.sub.SubCommandData;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
-import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.function.Function;
+import java.util.Set;
 
 /**
- * Listener class for command executor.
+ * {@inheritDoc}
  */
 public final class HCommandListener extends BukkitCommand {
 
-    private final HCommandExecutor executor;
+    private final BaseCommandData baseCommandData;
 
     /**
-     * Creates new instance of listener.
-     *
-     * @param executor Command executor.
+     * {@inheritDoc}
      */
-    public HCommandListener(@Nonnull HCommandExecutor executor) {
-        super(Objects.requireNonNull(executor).getCommand());
-        super.setAliases(Arrays.asList(executor.getAliases()));
-        super.setPermission(executor.getPermission());
-
-        this.executor = executor;
+    public HCommandListener(@Nonnull BaseCommandData baseCommandData) {
+        super(baseCommandData.getName(),
+                baseCommandData.getDescription(),
+                baseCommandData.getUsage(),
+                Arrays.asList(baseCommandData.getAliases()));
+        this.baseCommandData = Objects.requireNonNull(baseCommandData, "baseCommandData cannot be null!");
     }
 
     /**
@@ -44,72 +40,74 @@ public final class HCommandListener extends BukkitCommand {
      */
     @Override
     public boolean execute(@Nonnull CommandSender sender, @Nonnull String label, @Nonnull String[] args) {
-        for (Function<HCommandExecutor, Boolean> function : this.executor.getFilters())
-            if (!function.apply(this.executor))
-                return false;
+        SubCommandData subCommandData = this.baseCommandData.findSubCommand(args).orElse(null);
 
-        this.executor.onCommand(sender, args);
+        if (subCommandData == null) {
+            sender.sendMessage(this.baseCommandData.getUsage());
+            return false;
+        } else if (!subCommandData.getPermission().isEmpty() && !sender.hasPermission(subCommandData.getPermission())) {
+            sender.sendMessage(subCommandData.getPermissionMessage());
+            return false;
+        }
+
+        try {
+            HCommandAdapter adapter = this.baseCommandData.getAdapter();
+            Method method = subCommandData.getMethod();
+            Class<?> parameterType = method.getParameterTypes()[0];
+
+            if (parameterType.equals(Player.class) && sender instanceof Player) {
+                Player player = (Player) sender;
+                method.invoke(adapter, player, args);
+            } else if (parameterType.equals(CommandSender.class)) {
+                method.invoke(adapter, sender, args);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return false;
     }
 
     /**
      * {@inheritDoc}
      */
+    @Nonnull
     @Override
-    public List<String> tabComplete(@Nonnull CommandSender sender, @Nonnull String alias, @Nonnull String[] args) throws IllegalArgumentException {
-        HSubCommand subCommand = this.executor;
-        for (String arg : args) {
-            HSubCommand hSubCommand = subCommand.findSubCommand(arg).orElse(null);
-            if (hSubCommand != null) subCommand = hSubCommand;
-        }
+    public List<String> tabComplete(@Nonnull CommandSender sender, @Nonnull String alias, @Nonnull String[] args) {
+        Set<String> tabComplete = new LinkedHashSet<>();
 
-        if (subCommand.getSubCommands().isEmpty()) {
-            List<String> list = new ArrayList<>();
-            for (Player player : Bukkit.getOnlinePlayers())
-                list.add(player.getName());
-            return list;
-        }
+        List<String> enteredArgs = new LinkedList<>(Arrays.asList(args));
+        List<SubCommandData> subCommandDatas = this.baseCommandData.getSubCommandsSafe();
 
-        return new ArrayList<>(subCommand.getSubCommands().keySet());
-    }
+        String lastArg = enteredArgs.get(enteredArgs.size() - 1);
+        enteredArgs.remove(enteredArgs.size() - 1);
 
-    /**
-     * Registers to bukkit map.
-     */
-    public void register() {
-        try {
-            Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
-            bukkitCommandMap.setAccessible(true);
-
-            CommandMap commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
-            Command command = commandMap.getCommand(this.getName());
-
-            if (command == null || !command.isRegistered()) {
-                commandMap.register(this.getName(), this);
-            } else {
-                throw new IllegalStateException("This command already registered.");
+        int i = 0;
+        for (; i < enteredArgs.size(); i++) {
+            String arg = enteredArgs.get(i);
+            for (SubCommandData subCommandData : new ArrayList<>(subCommandDatas)) {
+                if (subCommandData.getArgs().length <= i || !arg.equals(subCommandData.getArgs()[i]))
+                    subCommandDatas.remove(subCommandData);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-    }
 
-    /**
-     * Unregisters from bukkit map.
-     */
-    @SuppressWarnings("unchecked")
-    public void unregister() {
-        try {
-            Field commandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
-            Field knownCommands = SimpleCommandMap.class.getDeclaredField("knownCommands");
-
-            commandMap.setAccessible(true);
-            knownCommands.setAccessible(true);
-
-            ((Map<String, Command>) knownCommands.get(commandMap.get(Bukkit.getServer()))).remove(this.getName());
-            this.unregister((CommandMap) commandMap.get(Bukkit.getServer()));
-        } catch (Exception e) {
-            e.printStackTrace();
+        Set<String> tabCompleteBefore = new LinkedHashSet<>();
+        for (SubCommandData subCommandData : subCommandDatas) {
+            String[] subArgs = subCommandData.getArgs();
+            int subArgLen = subArgs.length;
+            if (subArgLen != 0 && subArgLen > i) {
+                tabCompleteBefore.add(subArgs[i]);
+            }
         }
+
+        for (String tab : tabCompleteBefore) {
+            if (tab.startsWith(lastArg)) {
+                tabComplete.add(tab);
+            }
+        }
+
+        tabComplete.addAll(tabCompleteBefore);
+
+        return new ArrayList<>(tabComplete);
     }
 }

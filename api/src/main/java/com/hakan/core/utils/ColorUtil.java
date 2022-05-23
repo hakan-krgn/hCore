@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  * ColorUtil class to convert color
  * codes in messages.
  */
-public class ColorUtil {
+public final class ColorUtil {
 
     private static final Pattern PATTERN = Pattern.compile("#[a-fA-F\\d]{6}");
 

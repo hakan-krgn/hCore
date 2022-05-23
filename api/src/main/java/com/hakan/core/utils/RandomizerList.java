@@ -11,7 +11,7 @@ import java.util.stream.IntStream;
  *
  * @param <T> Class type.
  */
-public class RandomizerList<T> extends ArrayList<T> {
+public final class RandomizerList<T> extends ArrayList<T> {
 
     /**
      * {@inheritDoc}
