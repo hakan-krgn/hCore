@@ -105,8 +105,9 @@ public class HNPC_v1_9_R1 extends HNPC {
     /**
      * {@inheritDoc}
      */
+    @Nonnull
     @Override
-    public @Nonnull HNPC move(@Nonnull Location to, double speed) {
+    public HNPC move(@Nonnull Location to, double speed) {
         Objects.requireNonNull(to, "to location cannot be null!");
 
         super.walking = true;
