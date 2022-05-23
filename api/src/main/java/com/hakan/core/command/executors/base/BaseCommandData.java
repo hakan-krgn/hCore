@@ -9,16 +9,22 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.SimpleCommandMap;
 
+import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * BaseCommandData class to get datas
+ * of main command from annotated class.
+ */
 @SuppressWarnings({"unchecked"})
-public class BaseCommandData {
+public final class BaseCommandData {
 
     private final HCommandAdapter adapter;
 
@@ -29,7 +35,16 @@ public class BaseCommandData {
     private final HCommandListener listener;
     private final List<SubCommandData> subCommands;
 
-    public BaseCommandData(HCommandAdapter adapter, BaseCommand baseCommand) {
+    /**
+     * Constructor to create BaseCommandData object.
+     *
+     * @param adapter     Annotated class.
+     * @param baseCommand Annotation.
+     */
+    public BaseCommandData(@Nonnull HCommandAdapter adapter, @Nonnull BaseCommand baseCommand) {
+        Objects.requireNonNull(adapter, "adapter cannot be null!");
+        Objects.requireNonNull(baseCommand, "baseCommand cannot be null!");
+
         this.adapter = adapter;
         this.name = baseCommand.name();
         this.usage = baseCommand.usage();
@@ -40,45 +55,109 @@ public class BaseCommandData {
         this.listener = new HCommandListener(this);
     }
 
+    /**
+     * Gets adapter class from annotation.
+     *
+     * @return Adapter class from annotation.
+     */
+    @Nonnull
     public HCommandAdapter getAdapter() {
         return this.adapter;
     }
 
+    /**
+     * Gets command name from annotation.
+     *
+     * @return Command name from annotation.
+     */
+    @Nonnull
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Gets command description from annotation.
+     *
+     * @return Command description from annotation.
+     */
+    @Nonnull
     public String[] getAliases() {
         return this.aliases;
     }
 
+    /**
+     * Gets command description from annotation.
+     *
+     * @return Command description from annotation.
+     */
+    @Nonnull
     public String getDescription() {
         return this.description;
     }
 
+    /**
+     * Gets command usage from annotation.
+     *
+     * @return Command usage from annotation.
+     */
+    @Nonnull
     public String getUsage() {
         return this.usage;
     }
 
+    /**
+     * Gets sub commands from annotated class as safe.
+     *
+     * @return Sub commands from annotated class.
+     */
+    @Nonnull
     public List<SubCommandData> getSubCommandsSafe() {
         return new ArrayList<>(this.subCommands);
     }
 
+    /**
+     * Gets sub commands from annotated class.
+     *
+     * @return Sub commands from annotated class.
+     */
+    @Nonnull
     public List<SubCommandData> getSubCommands() {
         return this.subCommands;
     }
 
-    public void addSubCommand(SubCommandData subCommand) {
-        this.subCommands.add(subCommand);
+    /**
+     * Adds sub command.
+     *
+     * @return Instance of this class.
+     */
+    @Nonnull
+    public BaseCommandData addSubCommand(@Nonnull SubCommandData subCommand) {
+        this.subCommands.add(Objects.requireNonNull(subCommand, "subCommand cannot be null!"));
         Collections.sort(this.subCommands);
+        return this;
     }
 
-    public void removeSubCommand(SubCommandData subCommand) {
-        this.subCommands.remove(subCommand);
+    /**
+     * Removes sub command.
+     *
+     * @return Instance of this class.
+     */
+    @Nonnull
+    public BaseCommandData removeSubCommand(@Nonnull SubCommandData subCommand) {
+        this.subCommands.remove(Objects.requireNonNull(subCommand, "subCommand cannot be null!"));
         Collections.sort(this.subCommands);
+        return this;
     }
 
-    public Optional<SubCommandData> findSubCommand(String[] subCommands) {
+    /**
+     * Finds sub command by arguments.
+     *
+     * @return SubCommandData as Optional.
+     */
+    @Nonnull
+    public Optional<SubCommandData> findSubCommand(@Nonnull String[] subCommands) {
+        Objects.requireNonNull(subCommands, "subCommands cannot be null!");
+
         for (SubCommandData subCommandData : this.subCommands) {
             String[] commands = subCommandData.getArgs();
             if (CommandUtils.isMatching(commands, subCommands)) {
@@ -91,6 +170,10 @@ public class BaseCommandData {
 
     /*
     HANDLERS
+     */
+
+    /**
+     * Registers command to server.
      */
     public void register() {
         try {
@@ -108,6 +191,9 @@ public class BaseCommandData {
         }
     }
 
+    /**
+     * Unregisters command from server.
+     */
     public void unregister() {
         try {
             Field commandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");

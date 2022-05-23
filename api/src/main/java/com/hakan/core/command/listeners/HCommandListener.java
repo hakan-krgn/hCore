@@ -14,24 +14,25 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
  * {@inheritDoc}
  */
-public class HCommandListener extends BukkitCommand {
+public final class HCommandListener extends BukkitCommand {
 
     private final BaseCommandData baseCommandData;
 
     /**
      * {@inheritDoc}
      */
-    public HCommandListener(BaseCommandData baseCommandData) {
+    public HCommandListener(@Nonnull BaseCommandData baseCommandData) {
         super(baseCommandData.getName(),
                 baseCommandData.getDescription(),
                 baseCommandData.getUsage(),
                 Arrays.asList(baseCommandData.getAliases()));
-        this.baseCommandData = baseCommandData;
+        this.baseCommandData = Objects.requireNonNull(baseCommandData, "baseCommandData cannot be null!");
     }
 
     /**
@@ -44,7 +45,7 @@ public class HCommandListener extends BukkitCommand {
         if (subCommandData == null) {
             sender.sendMessage(this.baseCommandData.getUsage());
             return false;
-        } else if (!sender.hasPermission(subCommandData.getPermission())) {
+        } else if (!subCommandData.getPermission().isEmpty() && !sender.hasPermission(subCommandData.getPermission())) {
             sender.sendMessage(subCommandData.getPermissionMessage());
             return false;
         }
