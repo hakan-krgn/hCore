@@ -373,7 +373,7 @@ public final class HCore {
      *
      * @param adapters List of command adapters.
      */
-    public static void register(@Nonnull HCommandAdapter... adapters) {
+    public static void registerCommands(@Nonnull HCommandAdapter... adapters) {
         HCommandHandler.register(adapters);
     }
 
