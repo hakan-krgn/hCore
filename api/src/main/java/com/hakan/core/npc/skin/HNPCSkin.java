@@ -65,7 +65,7 @@ public final class HNPCSkin {
      * @param texture   Texture.
      * @param signature Signature.
      */
-    public HNPCSkin(@Nonnull String texture,@Nonnull String signature) {
+    public HNPCSkin(@Nonnull String texture, @Nonnull String signature) {
         this.texture = Objects.requireNonNull(texture, "texture cannot be null!");
         this.signature = Objects.requireNonNull(signature, "signature cannot be null!");
     }

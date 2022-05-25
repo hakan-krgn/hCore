@@ -6,7 +6,6 @@ import com.hakan.core.command.executors.sub.SubCommand;
 import com.hakan.core.npc.HNPC;
 import com.hakan.core.npc.HNPCHandler;
 import com.hakan.core.npc.types.HNPCEquipmentType;
-import net.minecraft.server.v1_16_R3.EnumItemSlot;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
