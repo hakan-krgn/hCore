@@ -13,29 +13,19 @@ from [here](https://github.com/hakan-krgn/hCore/wiki).
 
 ## Features
 
-- [`Command`](https://github.com/hakan-krgn/hCore/wiki/Command) - Basic command system for registering commands without
-  plugin.yml.
-- [`Database`](https://github.com/hakan-krgn/hCore/wiki/Database) - Database implementation system for multi-database
-  support.
-- [`Hologram`](https://github.com/hakan-krgn/hCore/wiki/Hologram) - Hologram system for creating and managing
-  client-side holograms.
-- [`Message`](https://github.com/hakan-krgn/hCore/wiki/Message) - Message system to send title, action-bar or boss-bar
-  to player.
-- [`Packet`](https://github.com/hakan-krgn/hCore/wiki/Packet) - Packet system to listen to the packet and send it to the
-  player.
-- [`Particle`](https://github.com/hakan-krgn/hCore/wiki/Particle) - Particle system to play particle effects client-side
-  for any player.
-- [`Renderer`](https://github.com/hakan-krgn/hCore/wiki/Renderer) - Renderer system for rendering and sending the
-  package to the closest players.
+- [`Annotation Command`](https://github.com/hakan-krgn/hCore/wiki/AnnotationCommand) - Basic command system for registering commands without plugin.yml.
+- [`NPC`](https://github.com/hakan-krgn/hCore/wiki/NPC) - NPC system for creating and managing client-side npcs.
+- [`Database`](https://github.com/hakan-krgn/hCore/wiki/Database) - Database implementation system for multi-database support.
+- [`Hologram`](https://github.com/hakan-krgn/hCore/wiki/Hologram) - Hologram system for creating and managing client-side holograms.
+- [`Message`](https://github.com/hakan-krgn/hCore/wiki/Message) - Message system to send title, action-bar or boss-bar to player.
+- [`Packet`](https://github.com/hakan-krgn/hCore/wiki/Packet) - Packet system to listen to the packet and send it to the player.
+- [`Particle`](https://github.com/hakan-krgn/hCore/wiki/Particle) - Particle system to play particle effects client-side for any player.
+- [`Renderer`](https://github.com/hakan-krgn/hCore/wiki/Renderer) - Renderer system for rendering and sending the package to the closest players.
 - [`Scheduler`](https://github.com/hakan-krgn/hCore/wiki/Scheduler) - Scheduler system to easily create new scheduler.
-- [`Inventory`](https://github.com/hakan-krgn/hCore/wiki/Inventory) - Inventory system for creating and opening special
-  inventories for players.
+- [`Inventory`](https://github.com/hakan-krgn/hCore/wiki/Inventory) - Inventory system for creating and opening special inventories for players.
 - [`Sign`](https://github.com/hakan-krgn/hCore/wiki/Sign) - Sign system for receiving input from the player.
-- [`WorldBorder`](https://github.com/hakan-krgn/hCore/wiki/WorldBorder) - WorldBorder system to display WorldBorder
-  client-side.
-- [`HItemBuilder`](https://github.com/hakan-krgn/hCore/wiki/HItemBuilder) - HItemBuilder class for creating item stacks
-  and
-  manage stacks easily.
+- [`WorldBorder`](https://github.com/hakan-krgn/hCore/wiki/WorldBorder) - WorldBorder system to display WorldBorder client-side.
+- [`HItemBuilder`](https://github.com/hakan-krgn/hCore/wiki/HItemBuilder) - HItemBuilder class for creating item stacks and manage stacks easily.
 - [`HYaml`](https://github.com/hakan-krgn/hCore/wiki/HYaml) - Basic yaml system for creating and manage yamls easily.
 - [`HSpam`](https://github.com/hakan-krgn/hCore/wiki/HSpam) - Spam system to check if the given ID is spamming.
 
