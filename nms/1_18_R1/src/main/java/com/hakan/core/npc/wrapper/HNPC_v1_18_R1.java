@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableList;
 import com.hakan.core.HCore;
 import com.hakan.core.npc.HNPC;
 import com.hakan.core.npc.HNPCHandler;
+import com.hakan.core.npc.listeners.HNpcClickListener_v1_18_R1;
+import com.hakan.core.packet.event.PacketEvent;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.network.protocol.game.PacketPlayOutEntity;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityDestroy;
@@ -38,6 +40,7 @@ import java.util.UUID;
 public final class HNPC_v1_18_R1 extends HNPC {
 
     private final HNPCUtils_v1_18_R1 utils;
+    private final HNpcClickListener_v1_18_R1 listener;
     private EntityPlayer npc;
     private EntityArmorStand armorStand;
 
@@ -55,6 +58,8 @@ public final class HNPC_v1_18_R1 extends HNPC {
         super.showEveryone(showEveryone);
 
         this.utils = new HNPCUtils_v1_18_R1();
+        this.listener = new HNpcClickListener_v1_18_R1(this);
+
         this.npc = this.utils.createNPC(skin, location);
         this.armorStand = this.utils.createNameHider(location);
         ((Entity) this.npc).au = ImmutableList.<Entity>builder().add(this.armorStand).build();
@@ -63,6 +68,17 @@ public final class HNPC_v1_18_R1 extends HNPC {
                 .run(() -> this.hide(super.renderer.getShownViewersAsPlayer()));
         HCore.syncScheduler().after(20 * 4)
                 .run(() -> this.show(super.renderer.getShownViewersAsPlayer()));
+        HCore.registerListener(this.listener);
+    }
+
+    /**
+     * Gets nms entity of player.
+     *
+     * @return NMS entity of player.
+     */
+    @Nonnull
+    public EntityPlayer getEntityPlayer() {
+        return this.npc;
     }
 
     /**
@@ -117,12 +133,10 @@ public final class HNPC_v1_18_R1 extends HNPC {
         List<Player> players = super.renderer.getShownViewersAsPlayer();
 
         this.hide(players);
-        HCore.asyncScheduler().run(() -> {
-            this.npc = this.utils.createNPC(skin, super.getLocation());
-            this.armorStand = this.utils.createNameHider(super.getLocation());
-            ((Entity) this.npc).au = ImmutableList.<Entity>builder().add(this.armorStand).build();
-            this.show(players);
-        });
+        this.npc = this.utils.createNPC(skin, super.getLocation());
+        this.armorStand = this.utils.createNameHider(super.getLocation());
+        ((Entity) this.npc).au = ImmutableList.<Entity>builder().add(this.armorStand).build();
+        HCore.syncScheduler().after(10).run(() -> this.show(players));
 
         return this;
     }
@@ -167,11 +181,11 @@ public final class HNPC_v1_18_R1 extends HNPC {
             HCore.sendPacket(players, new PacketPlayOutEntityEquipment(this.npc.ae(), equipmentList));
         }
 
-        HCore.syncScheduler().after(1)
+        HCore.syncScheduler().after(5)
                 .run(() -> HCore.sendPacket(players, new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.e, this.npc)));
-        HCore.syncScheduler().after(2)
+        HCore.syncScheduler().after(6)
                 .run(() -> HCore.sendPacket(players, new PacketPlayOutEntityMetadata(this.npc.ae(), this.utils.createDataWatcher(), true)));
-        HCore.syncScheduler().after(2)
+        HCore.syncScheduler().after(6)
                 .run(() -> this.setLocation(super.getLocation()));
 
         return this.setLocation(super.getLocation());
@@ -198,6 +212,7 @@ public final class HNPC_v1_18_R1 extends HNPC {
     @Override
     public HNPC delete() {
         HNPCHandler.getContent().remove(super.id);
+        PacketEvent.getHandlerList().unregister(this.listener);
         super.action.onDelete();
         super.hologram.delete();
         super.renderer.delete();

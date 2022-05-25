@@ -3,6 +3,8 @@ package com.hakan.core.npc.wrapper;
 import com.hakan.core.HCore;
 import com.hakan.core.npc.HNPC;
 import com.hakan.core.npc.HNPCHandler;
+import com.hakan.core.npc.listeners.HNpcClickListener_v1_8_R3;
+import com.hakan.core.packet.event.PacketEvent;
 import net.minecraft.server.v1_8_R3.EntityArmorStand;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAttachEntity;
@@ -33,6 +35,7 @@ import java.util.UUID;
 public final class HNPC_v1_8_R3 extends HNPC {
 
     private final HNPCUtils_v1_8_R3 utils;
+    private final HNpcClickListener_v1_8_R3 listener;
     private EntityPlayer npc;
     private EntityArmorStand armorStand;
 
@@ -50,6 +53,8 @@ public final class HNPC_v1_8_R3 extends HNPC {
         super.showEveryone(showEveryone);
 
         this.utils = new HNPCUtils_v1_8_R3();
+        this.listener = new HNpcClickListener_v1_8_R3(this);
+
         this.npc = this.utils.createNPC(skin, location);
         this.armorStand = this.utils.createNameHider(location);
         this.npc.passenger = this.armorStand;
@@ -58,6 +63,17 @@ public final class HNPC_v1_8_R3 extends HNPC {
                 .run(() -> this.hide(super.renderer.getShownViewersAsPlayer()));
         HCore.syncScheduler().after(20 * 4)
                 .run(() -> this.show(super.renderer.getShownViewersAsPlayer()));
+        HCore.registerListener(this.listener);
+    }
+
+    /**
+     * Gets nms entity of player.
+     *
+     * @return NMS entity of player.
+     */
+    @Nonnull
+    public EntityPlayer getEntityPlayer() {
+        return this.npc;
     }
 
     /**
@@ -112,12 +128,10 @@ public final class HNPC_v1_8_R3 extends HNPC {
         List<Player> players = super.renderer.getShownViewersAsPlayer();
 
         this.hide(players);
-        HCore.asyncScheduler().run(() -> {
-            this.npc = this.utils.createNPC(skin, super.getLocation());
-            this.armorStand = this.utils.createNameHider(super.getLocation());
-            this.npc.passenger = this.armorStand;
-            this.show(players);
-        });
+        this.npc = this.utils.createNPC(skin, super.getLocation());
+        this.armorStand = this.utils.createNameHider(super.getLocation());
+        this.npc.passenger = this.armorStand;
+        HCore.syncScheduler().after(10).run(() -> this.show(players));
 
         return this;
     }
@@ -189,6 +203,7 @@ public final class HNPC_v1_8_R3 extends HNPC {
     @Override
     public HNPC delete() {
         HNPCHandler.getContent().remove(super.id);
+        PacketEvent.getHandlerList().unregister(this.listener);
         super.action.onDelete();
         super.hologram.delete();
         super.renderer.delete();

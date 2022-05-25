@@ -1,7 +1,6 @@
 package com.hakan.core.npc.listeners;
 
 import com.hakan.core.listener.HListenerAdapter;
-import com.hakan.core.packet.event.PacketEvent;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityTargetEvent;
@@ -12,14 +11,14 @@ import javax.annotation.Nonnull;
 /**
  * HNPCListeners class.
  */
-public final class HNpcListeners extends HListenerAdapter {
+public final class HNpcTargetListener extends HListenerAdapter {
 
     /**
      * Creates new instance of this class.
      *
      * @param plugin Plugin class.
      */
-    public HNpcListeners(@Nonnull JavaPlugin plugin) {
+    public HNpcTargetListener(@Nonnull JavaPlugin plugin) {
         super(plugin);
     }
 
@@ -33,19 +32,10 @@ public final class HNpcListeners extends HListenerAdapter {
         if (event.getEntity() instanceof LivingEntity && event.getTarget() instanceof LivingEntity) {
             LivingEntity attacker = (LivingEntity) event.getEntity();
             LivingEntity target = (LivingEntity) event.getTarget();
-            if (attacker.getHealth() == 11.91231632232666d && target.getHealth() != 11.91231632232666d) {
+            double health = 11.91231632232666d;
+            if (attacker.getHealth() == health && target.getHealth() != health) {
                 event.setCancelled(true);
             }
         }
-    }
-
-    /**
-     * Checks if any player is clicked on any NPC.
-     *
-     * @param event The event.
-     */
-    @EventHandler
-    public void onPacket(@Nonnull PacketEvent event) {
-
     }
 }

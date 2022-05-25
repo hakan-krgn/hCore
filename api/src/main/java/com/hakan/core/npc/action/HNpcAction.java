@@ -6,7 +6,6 @@ import com.hakan.core.npc.events.HNpcDeleteEvent;
 import com.hakan.core.npc.events.HNpcSpawnEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.Action;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
@@ -58,7 +57,7 @@ public class HNpcAction {
      * Triggers when anyone
      * clicks the NPC.
      */
-    public void onClick(@Nonnull Player player, @Nonnull Action action) {
+    public void onClick(@Nonnull Player player, @Nonnull HNPC.Action action) {
         Objects.requireNonNull(action, "action cannot be null!");
         HNpcClickEvent event = new HNpcClickEvent(this.hnpc, player, action);
         Bukkit.getPluginManager().callEvent(event);
