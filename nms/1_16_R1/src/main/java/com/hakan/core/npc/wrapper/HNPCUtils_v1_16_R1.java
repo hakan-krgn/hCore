@@ -21,14 +21,12 @@ import net.minecraft.server.v1_16_R1.PlayerInteractManager;
 import net.minecraft.server.v1_16_R1.WorldServer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.craftbukkit.v1_16_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_16_R1.CraftWorld;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;

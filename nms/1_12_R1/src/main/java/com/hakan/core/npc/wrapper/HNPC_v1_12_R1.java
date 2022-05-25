@@ -73,7 +73,7 @@ public final class HNPC_v1_12_R1 extends HNPC {
 
         if (this.walking)
             throw new IllegalStateException("NPC is already walking!");
-        
+
         super.walking = true;
         this.utils.walk(this, to, speed, () -> super.walking = false);
 
