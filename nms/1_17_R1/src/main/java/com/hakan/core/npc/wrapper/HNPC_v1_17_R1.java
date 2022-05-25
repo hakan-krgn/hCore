@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import com.hakan.core.HCore;
 import com.hakan.core.npc.HNPC;
 import com.hakan.core.npc.HNPCHandler;
-import com.hakan.core.npc.types.HNPCEquipmentType;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.network.protocol.game.PacketPlayOutEntity;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityDestroy;
@@ -50,7 +49,7 @@ public final class HNPC_v1_17_R1 extends HNPC {
                          @Nonnull Location location,
                          @Nonnull List<String> lines,
                          @Nonnull Set<UUID> viewers,
-                         @Nonnull Map<HNPCEquipmentType, ItemStack> equipments,
+                         @Nonnull Map<EquipmentType, ItemStack> equipments,
                          boolean showEveryone) {
         super(id, location, lines, viewers, equipments, showEveryone);
         super.showEveryone(showEveryone);
@@ -133,7 +132,7 @@ public final class HNPC_v1_17_R1 extends HNPC {
      */
     @Nonnull
     @Override
-    public HNPC setEquipment(@Nonnull HNPCEquipmentType equipment, @Nonnull ItemStack itemStack) {
+    public HNPC setEquipment(@Nonnull EquipmentType equipment, @Nonnull ItemStack itemStack) {
         Objects.requireNonNull(equipment, "equipment type cannot be null!");
         Objects.requireNonNull(itemStack, "itemStack type cannot be null!");
 

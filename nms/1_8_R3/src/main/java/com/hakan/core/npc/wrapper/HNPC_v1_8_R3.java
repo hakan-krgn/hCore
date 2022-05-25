@@ -3,7 +3,6 @@ package com.hakan.core.npc.wrapper;
 import com.hakan.core.HCore;
 import com.hakan.core.npc.HNPC;
 import com.hakan.core.npc.HNPCHandler;
-import com.hakan.core.npc.types.HNPCEquipmentType;
 import net.minecraft.server.v1_8_R3.EntityArmorStand;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAttachEntity;
@@ -45,7 +44,7 @@ public final class HNPC_v1_8_R3 extends HNPC {
                         @Nonnull Location location,
                         @Nonnull List<String> lines,
                         @Nonnull Set<UUID> viewers,
-                        @Nonnull Map<HNPCEquipmentType, ItemStack> equipments,
+                        @Nonnull Map<EquipmentType, ItemStack> equipments,
                         boolean showEveryone) {
         super(id, location, lines, viewers, equipments, showEveryone);
         super.showEveryone(showEveryone);
@@ -128,7 +127,7 @@ public final class HNPC_v1_8_R3 extends HNPC {
      */
     @Nonnull
     @Override
-    public HNPC setEquipment(@Nonnull HNPCEquipmentType equipment, @Nonnull ItemStack itemStack) {
+    public HNPC setEquipment(@Nonnull EquipmentType equipment, @Nonnull ItemStack itemStack) {
         Objects.requireNonNull(equipment, "equipment type cannot be null!");
         Objects.requireNonNull(itemStack, "itemStack type cannot be null!");
 
