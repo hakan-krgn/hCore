@@ -1,8 +1,11 @@
 package com.hakan.core.npc;
 
 import com.hakan.core.HCore;
+import com.hakan.core.listener.HListenerAdapter;
+import com.hakan.core.npc.listeners.HNpcListeners;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -23,7 +26,9 @@ public final class HNPCHandler {
     /**
      * Initializes the NPC system.
      */
-    public static void initialize() {
+    public static void initialize(JavaPlugin plugin) {
+        HListenerAdapter.register(new HNpcListeners(plugin));
+
         Bukkit.getWorlds().stream().flatMap(world -> world.getLivingEntities().stream())
                 .filter(entity -> entity.getHealth() == 11.9123165d).forEach(Entity::remove);
         HCore.asyncScheduler().every(10)
