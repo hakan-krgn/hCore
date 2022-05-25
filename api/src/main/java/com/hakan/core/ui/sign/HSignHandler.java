@@ -1,7 +1,7 @@
 package com.hakan.core.ui.sign;
 
 import com.hakan.core.HCore;
-import com.hakan.core.ui.sign.listeners.HSignListener;
+import com.hakan.core.packet.event.PacketEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -34,7 +34,13 @@ public final class HSignHandler {
                 HSignHandler.signClass = clazz;
             }
 
-            HCore.registerListeners(new HSignListener());
+            HCore.registerEvent(PacketEvent.class)
+                    .consume(event -> {
+                        if (!event.getPacket().toString().contains("PacketPlayInUpdateSign"))
+                            return;
+                        HSignHandler.findByPlayer(event.getPlayer())
+                                .ifPresent(hSign -> hSign.listen(event.getPlayer(), event.getPacket()));
+                    });
         } catch (Exception e) {
             Bukkit.getLogger().warning("Could not initialize sign system. Probably you are using an unsupported version. (" + HCore.getVersionString() + ")");
             e.printStackTrace();
