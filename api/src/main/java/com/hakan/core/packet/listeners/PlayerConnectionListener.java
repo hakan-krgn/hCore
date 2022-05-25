@@ -1,9 +1,9 @@
 package com.hakan.core.packet.listeners;
 
-import com.hakan.core.listener.HListenerAdapter;
 import com.hakan.core.packet.HPacketHandler;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -14,16 +14,7 @@ import javax.annotation.Nonnull;
  * Player connection listeners to
  * handle and listen the packets.
  */
-public final class PlayerConnectionListener extends HListenerAdapter {
-
-    /**
-     * Creates new instance of this class
-     *
-     * @param plugin Main class.
-     */
-    public PlayerConnectionListener(@Nonnull JavaPlugin plugin) {
-        super(plugin);
-    }
+public final class PlayerConnectionListener implements Listener {
 
     /**
      * Join listener handler.

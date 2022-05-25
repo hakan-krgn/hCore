@@ -1,7 +1,6 @@
 package com.hakan.core.worldborder;
 
 import com.hakan.core.HCore;
-import com.hakan.core.listener.HListenerAdapter;
 import com.hakan.core.worldborder.border.HBorderColor;
 import com.hakan.core.worldborder.border.HWorldBorder;
 import com.hakan.core.worldborder.listeners.HBorderPlayerActionListener;
@@ -27,12 +26,10 @@ public final class HWorldBorderHandler {
 
     /**
      * Initializes the world border system.
-     *
-     * @param plugin Main class of plugin.
      */
-    public static void initialize(@Nonnull JavaPlugin plugin) {
-        HListenerAdapter.register(new HBorderPlayerActionListener(plugin),
-                new HBorderPlayerConnectionListener(plugin));
+    public static void initialize() {
+        HCore.registerListeners(new HBorderPlayerActionListener(),
+                new HBorderPlayerConnectionListener());
     }
 
 
