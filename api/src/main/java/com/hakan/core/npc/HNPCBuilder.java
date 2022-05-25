@@ -1,7 +1,6 @@
 package com.hakan.core.npc;
 
 import com.hakan.core.HCore;
-import com.hakan.core.npc.types.HNPCEquipmentType;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
@@ -30,7 +29,7 @@ public final class HNPCBuilder {
     private Location location;
     private Set<UUID> viewers;
     private List<String> lines;
-    private Map<HNPCEquipmentType, ItemStack> equipments;
+    private Map<HNPC.EquipmentType, ItemStack> equipments;
 
     /**
      * Constructor to create builder.
@@ -196,7 +195,7 @@ public final class HNPCBuilder {
      * @return HNPCBuilder instance.
      */
     @Nonnull
-    public HNPCBuilder equipment(@Nonnull HNPCEquipmentType type, @Nonnull ItemStack item) {
+    public HNPCBuilder equipment(@Nonnull HNPC.EquipmentType type, @Nonnull ItemStack item) {
         Objects.requireNonNull(type, "type cannot be null!");
         Objects.requireNonNull(item, "item cannot be null!");
         this.equipments.put(type, item);
@@ -210,7 +209,7 @@ public final class HNPCBuilder {
      * @return HNPCBuilder instance.
      */
     @Nonnull
-    public HNPCBuilder equipments(@Nonnull Map<HNPCEquipmentType, ItemStack> equipments) {
+    public HNPCBuilder equipments(@Nonnull Map<HNPC.EquipmentType, ItemStack> equipments) {
         Objects.requireNonNull(equipments, "equipments cannot be null!");
         this.equipments = equipments;
         return this;

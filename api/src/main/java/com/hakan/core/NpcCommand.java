@@ -5,7 +5,6 @@ import com.hakan.core.command.executors.base.BaseCommand;
 import com.hakan.core.command.executors.sub.SubCommand;
 import com.hakan.core.npc.HNPC;
 import com.hakan.core.npc.HNPCHandler;
-import com.hakan.core.npc.types.HNPCEquipmentType;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -32,8 +31,8 @@ public class NpcCommand implements HCommandAdapter {
                 .skin(player.getName())
                 .build();
 
-        npc.setEquipment(HNPCEquipmentType.CHEST, new ItemStack(Material.DIAMOND_CHESTPLATE));
-        npc.setEquipment(HNPCEquipmentType.LEGS, new ItemStack(Material.LEATHER_LEGGINGS));
+        npc.setEquipment(HNPC.EquipmentType.CHEST, new ItemStack(Material.DIAMOND_CHESTPLATE));
+        npc.setEquipment(HNPC.EquipmentType.LEGS, new ItemStack(Material.LEATHER_LEGGINGS));
         npc.expire(15, TimeUnit.SECONDS);
 
         HCore.syncScheduler().after(20 * 5)

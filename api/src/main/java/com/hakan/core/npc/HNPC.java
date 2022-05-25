@@ -3,7 +3,6 @@ package com.hakan.core.npc;
 import com.hakan.core.HCore;
 import com.hakan.core.hologram.HHologram;
 import com.hakan.core.npc.action.HNpcAction;
-import com.hakan.core.npc.types.HNPCEquipmentType;
 import com.hakan.core.renderer.HRenderer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -27,7 +26,7 @@ public abstract class HNPC {
 
     protected final String id;
     protected final HNpcAction action;
-    protected final Map<HNPCEquipmentType, ItemStack> equipments;
+    protected final Map<EquipmentType, ItemStack> equipments;
 
     protected HRenderer renderer;
     protected HHologram hologram;
@@ -48,7 +47,7 @@ public abstract class HNPC {
                 @Nonnull Location location,
                 @Nonnull List<String> lines,
                 @Nonnull Set<UUID> viewers,
-                @Nonnull Map<HNPCEquipmentType, ItemStack> equipments,
+                @Nonnull Map<EquipmentType, ItemStack> equipments,
                 boolean showEveryone) {
         this.action = new HNpcAction(this);
         this.id = Objects.requireNonNull(id, "id cannot be null!");
@@ -261,7 +260,7 @@ public abstract class HNPC {
      * @return Slot and ItemStack map.
      */
     @Nonnull
-    public final Map<HNPCEquipmentType, ItemStack> getEquipmentsSafe() {
+    public final Map<EquipmentType, ItemStack> getEquipmentsSafe() {
         return new HashMap<>(this.equipments);
     }
 
@@ -271,7 +270,7 @@ public abstract class HNPC {
      * @return Slot and ItemStack map.
      */
     @Nonnull
-    public final Map<HNPCEquipmentType, ItemStack> getEquipments() {
+    public final Map<EquipmentType, ItemStack> getEquipments() {
         return this.equipments;
     }
 
@@ -330,7 +329,7 @@ public abstract class HNPC {
      * @return instance of this class.
      */
     @Nonnull
-    public abstract HNPC setEquipment(@Nonnull HNPCEquipmentType slotType, @Nonnull ItemStack itemStack);
+    public abstract HNPC setEquipment(@Nonnull EquipmentType slotType, @Nonnull ItemStack itemStack);
 
     /**
      * Who sees NPC?
@@ -357,4 +356,50 @@ public abstract class HNPC {
      */
     @Nonnull
     public abstract HNPC delete();
+
+
+    /**
+     * HNPC slot types.
+     */
+    public enum EquipmentType {
+
+        MAINHAND(0, "mainhand"),
+        OFFHAND(0, "offhand"),
+        FEET(4, "feet"),
+        LEGS(3, "legs"),
+        CHEST(2, "chest"),
+        HEAD(1, "head"),
+        ;
+
+        private final int slot;
+        private final String value;
+
+        /**
+         * Constructor with slot.
+         *
+         * @param slot Slot number.
+         */
+        EquipmentType(int slot, String value) {
+            this.slot = slot;
+            this.value = value;
+        }
+
+        /**
+         * Gets slot.
+         *
+         * @return slot.
+         */
+        public int getSlot() {
+            return this.slot;
+        }
+
+        /**
+         * Gets value for higher versions.
+         *
+         * @return value.
+         */
+        public String getValue() {
+            return this.value;
+        }
+    }
 }
