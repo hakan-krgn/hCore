@@ -5,7 +5,6 @@ import com.hakan.core.packet.listeners.PlayerConnectionListener;
 import com.hakan.core.packet.player.HPacketPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
