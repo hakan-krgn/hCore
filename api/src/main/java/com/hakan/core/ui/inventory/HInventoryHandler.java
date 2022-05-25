@@ -1,13 +1,12 @@
 package com.hakan.core.ui.inventory;
 
-import com.hakan.core.listener.HListenerAdapter;
+import com.hakan.core.HCore;
 import com.hakan.core.ui.inventory.builder.HInventoryBuilder;
 import com.hakan.core.ui.inventory.listeners.bukkit.PlayerQuitListener;
 import com.hakan.core.ui.inventory.listeners.bukkit.PluginDisableListener;
 import com.hakan.core.ui.inventory.listeners.inventory.InventoryClickListener;
 import com.hakan.core.ui.inventory.listeners.inventory.InventoryCloseListener;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -28,14 +27,12 @@ public final class HInventoryHandler {
 
     /**
      * Initializes the inventory system.
-     *
-     * @param plugin Main class of plugin.
      */
-    public static void initialize(@Nonnull JavaPlugin plugin) {
-        HListenerAdapter.register(new PlayerQuitListener(plugin),
-                new PluginDisableListener(plugin),
-                new InventoryClickListener(plugin),
-                new InventoryCloseListener(plugin));
+    public static void initialize() {
+        HCore.registerListeners(new PlayerQuitListener(),
+                new PluginDisableListener(),
+                new InventoryClickListener(),
+                new InventoryCloseListener());
     }
 
 

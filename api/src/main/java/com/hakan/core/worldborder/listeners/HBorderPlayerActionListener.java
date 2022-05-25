@@ -1,10 +1,10 @@
 package com.hakan.core.worldborder.listeners;
 
 import com.hakan.core.HCore;
-import com.hakan.core.listener.HListenerAdapter;
 import com.hakan.core.worldborder.HWorldBorderHandler;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -14,16 +14,7 @@ import javax.annotation.Nonnull;
 /**
  * Border action listeners class.
  */
-public final class HBorderPlayerActionListener extends HListenerAdapter {
-
-    /**
-     * Creates new instance of this class.
-     *
-     * @param plugin Main class of plugin.
-     */
-    public HBorderPlayerActionListener(@Nonnull JavaPlugin plugin) {
-        super(plugin);
-    }
+public final class HBorderPlayerActionListener implements Listener {
 
     /**
      * Teleport event.

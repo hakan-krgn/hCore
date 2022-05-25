@@ -1,9 +1,9 @@
 package com.hakan.core.ui.sign.listeners;
 
-import com.hakan.core.listener.HListenerAdapter;
 import com.hakan.core.packet.event.PacketEvent;
 import com.hakan.core.ui.sign.HSignHandler;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
@@ -11,16 +11,7 @@ import javax.annotation.Nonnull;
 /**
  * HSignListener class.
  */
-public final class HSignListener extends HListenerAdapter {
-
-    /**
-     * Creates new instance of this class.
-     *
-     * @param plugin Main class of plugin.
-     */
-    public HSignListener(@Nonnull JavaPlugin plugin) {
-        super(plugin);
-    }
+public final class HSignListener implements Listener {
 
     /**
      * Packet event.

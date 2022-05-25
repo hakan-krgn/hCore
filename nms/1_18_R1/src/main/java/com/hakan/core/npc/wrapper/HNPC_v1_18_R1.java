@@ -68,7 +68,7 @@ public final class HNPC_v1_18_R1 extends HNPC {
                 .run(() -> this.hide(super.renderer.getShownViewersAsPlayer()));
         HCore.syncScheduler().after(20 * 4)
                 .run(() -> this.show(super.renderer.getShownViewersAsPlayer()));
-        HCore.registerListener(this.listener);
+        HCore.registerListeners(this.listener);
     }
 
     /**

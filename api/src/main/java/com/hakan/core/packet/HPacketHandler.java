@@ -1,9 +1,9 @@
 package com.hakan.core.packet;
 
 import com.hakan.core.HCore;
-import com.hakan.core.listener.HListenerAdapter;
 import com.hakan.core.packet.listeners.PlayerConnectionListener;
 import com.hakan.core.packet.player.HPacketPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -24,20 +24,18 @@ public final class HPacketHandler {
 
     /**
      * Initializes the packet system.
-     *
-     * @param plugin Main class of plugin.
      */
-    public static void initialize(@Nonnull JavaPlugin plugin) {
+    public static void initialize() {
         try {
             Class<?> clazz = Class.forName("com.hakan.core.packet.player.HPacketPlayer_" + HCore.getVersionString());
             if (HPacketPlayer.class.isAssignableFrom(clazz)) {
                 HPacketHandler.packetManagerClass = clazz;
             }
 
-            HListenerAdapter.register(new PlayerConnectionListener(plugin));
+            HCore.registerListeners(new PlayerConnectionListener());
         } catch (Exception e) {
+            Bukkit.getLogger().warning("Could not initialize packet system. Probably you are using an unsupported version(" + HCore.getVersionString() + ")");
             e.printStackTrace();
-            plugin.getLogger().warning("Could not initialize packet system. Probably you are using an unsupported version(" + HCore.getVersionString() + ")");
         }
     }
 

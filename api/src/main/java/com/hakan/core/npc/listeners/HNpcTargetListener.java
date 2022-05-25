@@ -1,26 +1,16 @@
 package com.hakan.core.npc.listeners;
 
-import com.hakan.core.listener.HListenerAdapter;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityTargetEvent;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
 
 /**
  * HNPCListeners class.
  */
-public final class HNpcTargetListener extends HListenerAdapter {
-
-    /**
-     * Creates new instance of this class.
-     *
-     * @param plugin Plugin class.
-     */
-    public HNpcTargetListener(@Nonnull JavaPlugin plugin) {
-        super(plugin);
-    }
+public final class HNpcTargetListener implements Listener {
 
     /**
      * Cancels the target event if the target is not a villager.

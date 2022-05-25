@@ -1,28 +1,18 @@
 package com.hakan.core.worldborder.listeners;
 
-import com.hakan.core.listener.HListenerAdapter;
 import com.hakan.core.worldborder.HWorldBorderHandler;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
 
 /**
  * Player connection listener.
  */
-public final class HBorderPlayerConnectionListener extends HListenerAdapter {
-
-    /**
-     * Creates new instance of this class.
-     *
-     * @param plugin Main class of plugin.
-     */
-    public HBorderPlayerConnectionListener(@Nonnull JavaPlugin plugin) {
-        super(plugin);
-    }
+public final class HBorderPlayerConnectionListener implements Listener {
 
     /**
      * Player quit event.

@@ -1,10 +1,10 @@
 package com.hakan.core.ui.inventory.listeners.inventory;
 
-import com.hakan.core.listener.HListenerAdapter;
 import com.hakan.core.ui.inventory.HInventory;
 import com.hakan.core.ui.inventory.HInventoryHandler;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,16 +16,7 @@ import java.util.Optional;
  * This class handles hInventory click
  * events.
  */
-public final class InventoryClickListener extends HListenerAdapter {
-
-    /**
-     * Creates new instance of this class.
-     *
-     * @param plugin Main class of plugin.
-     */
-    public InventoryClickListener(@Nonnull JavaPlugin plugin) {
-        super(plugin);
-    }
+public final class InventoryClickListener implements Listener {
 
     /**
      * Inventory click event.
