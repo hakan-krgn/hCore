@@ -14,7 +14,7 @@ import java.util.Objects;
  * HNpcAction class to
  * handle NPC actions.
  */
-public class HNpcAction {
+public final class HNpcAction {
 
     private final HNPC hnpc;
 
