@@ -1,19 +1,14 @@
 package com.hakan.core.npc;
 
 import com.hakan.core.HCore;
-import org.bukkit.Location;
 
 import javax.annotation.Nonnull;
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
 
 /**
  * HNPCHandler class to create
@@ -28,11 +23,7 @@ public final class HNPCHandler {
      */
     public static void initialize() {
         HCore.asyncScheduler().every(10)
-                .run(() -> {
-                    for (HNPC hnpc : HNPCHandler.npcList.values()) {
-                        hnpc.renderer.render();
-                    }
-                });
+                .run(() -> HNPCHandler.npcList.values().forEach(hnpc -> hnpc.renderer.render()));
     }
 
     /**
@@ -98,6 +89,17 @@ public final class HNPCHandler {
     }
 
     /**
+     * Creates a new HNPCBuilder instance.
+     *
+     * @param id NPC id.
+     * @return HNPCBuilder instance.
+     */
+    @Nonnull
+    public static HNPCBuilder build(@Nonnull String id) {
+        return new HNPCBuilder(id);
+    }
+
+    /**
      * Deletes a npc with given id.
      *
      * @param id NPC id.
@@ -107,61 +109,5 @@ public final class HNPCHandler {
     public static HNPC delete(@Nonnull String id) {
         HNPC npc = HNPCHandler.getByID(Objects.requireNonNull(id, "id cannot be null!"));
         return npc.delete();
-    }
-
-    /**
-     * Creates a npc.
-     *
-     * @param id       NPC id.
-     * @param location NPC location.
-     * @param lines    NPC lines.
-     * @return Created NPC.
-     */
-    @Nonnull
-    public static HNPC create(@Nonnull String id, @Nonnull Location location, @Nonnull List<String> lines) {
-        try {
-            Objects.requireNonNull(id, "id cannot be null!");
-            Objects.requireNonNull(location, "location cannot be null!");
-            Objects.requireNonNull(lines, "lines cannot be null!");
-
-            Class<?> aClass = Class.forName("com.hakan.core.npc.wrapper.HNPC_" + HCore.getVersionString());
-            Constructor<?> constructor = aClass.getDeclaredConstructor(String.class, Location.class, List.class);
-            HNPC npc = (HNPC) constructor.newInstance(id, location, lines);
-
-            HNPCHandler.npcList.put(id, npc);
-
-            return npc;
-        } catch (Exception e) {
-            throw new NullPointerException(e.getMessage());
-        }
-    }
-
-    /**
-     * Creates a npc.
-     *
-     * @param id       NPC id.
-     * @param location NPC location.
-     * @param lines    NPC lines.
-     * @param viewers  NPC viewers for client side.
-     * @return Created NPC.
-     */
-    @Nonnull
-    public static HNPC create(@Nonnull String id, @Nonnull Location location, @Nonnull List<String> lines, @Nonnull Set<UUID> viewers) {
-        try {
-            Objects.requireNonNull(id, "id cannot be null!");
-            Objects.requireNonNull(location, "location cannot be null!");
-            Objects.requireNonNull(lines, "lines cannot be null!");
-            Objects.requireNonNull(viewers, "viewers cannot be null!");
-
-            Class<?> aClass = Class.forName("com.hakan.core.npc.wrapper.HNPC_" + HCore.getVersionString());
-            Constructor<?> constructor = aClass.getDeclaredConstructor(String.class, Location.class, List.class, Set.class);
-            HNPC npc = (HNPC) constructor.newInstance(id, location, lines, viewers);
-
-            HNPCHandler.npcList.put(id, npc);
-
-            return npc;
-        } catch (Exception e) {
-            throw new NullPointerException(e.getMessage());
-        }
     }
 }

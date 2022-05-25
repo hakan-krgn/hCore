@@ -4,12 +4,12 @@ import com.hakan.core.HCore;
 import com.hakan.core.npc.HNPC;
 import com.hakan.core.npc.HNPCHandler;
 import com.hakan.core.npc.types.HNPCEquipmentType;
-import com.mojang.authlib.GameProfile;
 import net.minecraft.server.v1_12_R1.EntityArmorStand;
 import net.minecraft.server.v1_12_R1.EntityPlayer;
-import net.minecraft.server.v1_12_R1.MinecraftServer;
+import net.minecraft.server.v1_12_R1.EnumItemSlot;
 import net.minecraft.server.v1_12_R1.PacketPlayOutEntity;
 import net.minecraft.server.v1_12_R1.PacketPlayOutEntityDestroy;
+import net.minecraft.server.v1_12_R1.PacketPlayOutEntityEquipment;
 import net.minecraft.server.v1_12_R1.PacketPlayOutEntityHeadRotation;
 import net.minecraft.server.v1_12_R1.PacketPlayOutEntityMetadata;
 import net.minecraft.server.v1_12_R1.PacketPlayOutEntityTeleport;
@@ -17,17 +17,14 @@ import net.minecraft.server.v1_12_R1.PacketPlayOutMount;
 import net.minecraft.server.v1_12_R1.PacketPlayOutNamedEntitySpawn;
 import net.minecraft.server.v1_12_R1.PacketPlayOutPlayerInfo;
 import net.minecraft.server.v1_12_R1.PacketPlayOutSpawnEntityLiving;
-import net.minecraft.server.v1_12_R1.PlayerInteractManager;
-import net.minecraft.server.v1_12_R1.WorldServer;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
-import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -35,70 +32,35 @@ import java.util.UUID;
 /**
  * {@inheritDoc}
  */
-public class HNPC_v1_12_R1 extends HNPC {
+public final class HNPC_v1_12_R1 extends HNPC {
 
-    private final EntityPlayer npc;
-    private final EntityArmorStand armorStand;
-    private final MinecraftServer server;
-    private final WorldServer world;
-    private final GameProfile gameProfile;
+    private final HNPCUtils_v1_12_R1 utils;
+    private EntityPlayer npc;
+    private EntityArmorStand armorStand;
 
     /**
      * {@inheritDoc}
      */
     public HNPC_v1_12_R1(@Nonnull String id,
-                         @Nonnull Location location,
-                         @Nonnull List<String> lines) {
-        super(id, location, lines);
-
-        this.server = ((CraftServer) Bukkit.getServer()).getServer();
-        this.world = ((CraftWorld) location.getWorld()).getHandle();
-        this.gameProfile = new GameProfile(UUID.randomUUID(), id);
-
-        this.npc = new EntityPlayer(this.server, this.world, this.gameProfile, new PlayerInteractManager(this.world));
-        this.npc.setInvisible(false);
-        this.npc.setHealth(77.21f);
-
-
-        this.armorStand = new EntityArmorStand(this.world, 0, 0, 0);
-        this.armorStand.setMarker(true);
-        this.armorStand.setArms(false);
-        this.armorStand.setBasePlate(false);
-        this.armorStand.setNoGravity(true);
-        this.armorStand.setInvisible(true);
-        this.armorStand.setSmall(true);
-        this.armorStand.setCustomNameVisible(false);
-
-        this.setLocation(location);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public HNPC_v1_12_R1(@Nonnull String id,
+                         @Nonnull String skin,
                          @Nonnull Location location,
                          @Nonnull List<String> lines,
-                         @Nonnull Set<UUID> viewers) {
-        super(id, location, lines, viewers);
+                         @Nonnull Set<UUID> viewers,
+                         @Nonnull Map<HNPCEquipmentType, ItemStack> equipments,
+                         boolean showEveryone) {
+        super(id, location, lines, viewers, equipments, showEveryone);
+        super.showEveryone(showEveryone);
 
-        this.server = ((CraftServer) Bukkit.getServer()).getServer();
-        this.world = ((CraftWorld) location.getWorld()).getHandle();
-        this.gameProfile = new GameProfile(UUID.randomUUID(), id);
+        this.utils = new HNPCUtils_v1_12_R1();
+        this.npc = this.utils.createNPC(skin, location);
+        this.armorStand = this.utils.createNameHider(location);
+        this.npc.passengers.clear();
+        this.npc.passengers.add(this.armorStand);
 
-        this.npc = new EntityPlayer(this.server, this.world, this.gameProfile, new PlayerInteractManager(this.world));
-        this.npc.setInvisible(false);
-        this.npc.setHealth(77.21f);
-
-        this.armorStand = new EntityArmorStand(this.world, 0, 0, 0);
-        this.armorStand.setMarker(true);
-        this.armorStand.setArms(false);
-        this.armorStand.setBasePlate(false);
-        this.armorStand.setNoGravity(true);
-        this.armorStand.setInvisible(true);
-        this.armorStand.setSmall(true);
-        this.armorStand.setCustomNameVisible(false);
-
-        this.setLocation(location);
+        HCore.syncScheduler().after(20 * 3)
+                .run(() -> this.hide(super.renderer.getShownViewersAsPlayer()));
+        HCore.syncScheduler().after(20 * 4)
+                .run(() -> this.show(super.renderer.getShownViewersAsPlayer()));
     }
 
     /**
@@ -106,11 +68,14 @@ public class HNPC_v1_12_R1 extends HNPC {
      */
     @Nonnull
     @Override
-    public HNPC move(@Nonnull Location to, double speed) {
+    public HNPC walk(@Nonnull Location to, double speed) {
         Objects.requireNonNull(to, "to location cannot be null!");
 
+        if (this.walking)
+            throw new IllegalStateException("NPC is already walking!");
+        
         super.walking = true;
-        //todo move
+        this.utils.walk(this, to, speed, () -> super.walking = false);
 
         return this;
     }
@@ -124,13 +89,17 @@ public class HNPC_v1_12_R1 extends HNPC {
         Objects.requireNonNull(location, "location cannot be null!");
 
         this.npc.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+        super.hologram.setLocation(location.clone().add(0, this.npc.getHeadHeight() + (this.hologram.getLines().size() * 0.125), 0));
         super.renderer.setLocation(location);
-        super.hologram.setLocation(location);
 
+        double imp = 256f / 360f;
+        float yaw = Math.round(location.getYaw() % 360f * imp);
+        float pitch = Math.round(location.getPitch() % 360f * imp);
         HCore.sendPacket(super.renderer.getShownViewersAsPlayer(),
-                new PacketPlayOutEntity.PacketPlayOutEntityLook(this.npc.getId(), (byte) (location.getYaw() % 360f * 256f / 360f), (byte) (location.getPitch() % 360f * 256f / 360f), false),
-                new PacketPlayOutEntityHeadRotation(this.npc, (byte) (location.getYaw() * 256f / 360f)),
-                new PacketPlayOutEntityTeleport(this.npc));
+                new PacketPlayOutEntityTeleport(this.npc),
+                new PacketPlayOutEntityHeadRotation(this.npc, (byte) (location.getYaw() * imp)),
+                new PacketPlayOutEntity.PacketPlayOutEntityLook(this.npc.getId(), (byte) yaw, (byte) pitch, false)
+        );
 
         return this;
     }
@@ -140,12 +109,19 @@ public class HNPC_v1_12_R1 extends HNPC {
      */
     @Nonnull
     @Override
-    public HNPC setSkin(@Nonnull String username) {
-        Objects.requireNonNull(username, "username cannot be null!");
+    public HNPC setSkin(@Nonnull String skin) {
+        Objects.requireNonNull(skin, "skin cannot be null!");
 
-        this.hide(super.renderer.getShownViewersAsPlayer());
-        //todo set skin
-        this.show(super.renderer.getShownViewersAsPlayer());
+        List<Player> players = super.renderer.getShownViewersAsPlayer();
+
+        this.hide(players);
+        HCore.asyncScheduler().run(() -> {
+            this.npc = this.utils.createNPC(skin, super.getLocation());
+            this.armorStand = this.utils.createNameHider(super.getLocation());
+            this.npc.passengers.clear();
+            this.npc.passengers.add(this.armorStand);
+            this.show(players);
+        });
 
         return this;
     }
@@ -161,7 +137,8 @@ public class HNPC_v1_12_R1 extends HNPC {
 
         super.equipments.put(equipment, itemStack);
 
-        //todo fix equipment packets
+        HCore.sendPacket(super.renderer.getShownViewersAsPlayer(),
+                new PacketPlayOutEntityEquipment(this.npc.getId(), EnumItemSlot.valueOf(equipment.name()), CraftItemStack.asNMSCopy(itemStack)));
 
         return this;
     }
@@ -172,26 +149,29 @@ public class HNPC_v1_12_R1 extends HNPC {
     @Nonnull
     @Override
     public HNPC show(@Nonnull List<Player> players) {
-        Objects.requireNonNull(players, "players cannot be null!");
-
-        this.npc.passengers.clear();
-        this.npc.passengers.add(this.armorStand);
-
-        HCore.sendPacket(players,
+        HCore.sendPacket(Objects.requireNonNull(players, "players cannot be null!"),
                 new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, this.npc),
                 new PacketPlayOutNamedEntitySpawn(this.npc),
-                new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, this.npc),
-                new PacketPlayOutEntityMetadata(this.npc.getId(), this.npc.getDataWatcher(), true));
 
-        //todo add equipment packets
-
-        HCore.sendPacket(players,
                 new PacketPlayOutSpawnEntityLiving(this.armorStand),
                 new PacketPlayOutEntityMetadata(this.armorStand.getId(), this.armorStand.getDataWatcher(), true),
                 new PacketPlayOutEntityTeleport(this.armorStand),
-                new PacketPlayOutMount(this.npc));
+                new PacketPlayOutMount(this.npc)
+        );
 
-        return this;
+        if (super.equipments.size() > 0) {
+            super.equipments.forEach((key, value) -> HCore.sendPacket(players,
+                    new PacketPlayOutEntityEquipment(this.npc.getId(), EnumItemSlot.valueOf(key.name()), CraftItemStack.asNMSCopy(value))));
+        }
+
+        HCore.syncScheduler().after(1)
+                .run(() -> HCore.sendPacket(players, new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, this.npc)));
+        HCore.syncScheduler().after(2)
+                .run(() -> HCore.sendPacket(players, new PacketPlayOutEntityMetadata(this.npc.getId(), this.utils.createDataWatcher(), true)));
+        HCore.syncScheduler().after(2)
+                .run(() -> this.setLocation(super.getLocation()));
+
+        return this.setLocation(super.getLocation());
     }
 
     /**
@@ -200,9 +180,11 @@ public class HNPC_v1_12_R1 extends HNPC {
     @Nonnull
     @Override
     public HNPC hide(@Nonnull List<Player> players) {
-        HCore.sendPacket(Objects.requireNonNull(players, "players cannot be null!"),
-                new PacketPlayOutEntityDestroy(this.npc.getId()),
-                new PacketPlayOutEntityDestroy(this.armorStand.getId()));
+        Objects.requireNonNull(players, "players cannot be null!");
+
+        HCore.sendPacket(players,
+                new PacketPlayOutEntityDestroy(this.npc.getId(), this.armorStand.getId()));
+
         return this;
     }
 

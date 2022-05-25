@@ -6,22 +6,25 @@ package com.hakan.core.npc.types;
 
 public enum HNPCEquipmentType {
 
-    HAND_ITEM(0),
-    OFF_HAND(0),
-    HELMET(3),
-    CHESTPLATE(2),
-    LEGGINGS(1),
-    BOOTS(0);
+    MAINHAND(0, "mainhand"),
+    OFFHAND(0, "offhand"),
+    FEET(4, "feet"),
+    LEGS(3, "legs"),
+    CHEST(2, "chest"),
+    HEAD(1, "head"),
+    ;
 
     private final int slot;
+    private final String value;
 
     /**
      * Constructor with slot.
      *
      * @param slot Slot number.
      */
-    HNPCEquipmentType(int slot) {
+    HNPCEquipmentType(int slot, String value) {
         this.slot = slot;
+        this.value = value;
     }
 
     /**
@@ -31,5 +34,14 @@ public enum HNPCEquipmentType {
      */
     public int getSlot() {
         return this.slot;
+    }
+
+    /**
+     * Gets value for higher versions.
+     *
+     * @return value.
+     */
+    public String getValue() {
+        return this.value;
     }
 }

@@ -15,6 +15,7 @@ import com.hakan.core.message.bossbar.HBarStyle;
 import com.hakan.core.message.bossbar.HBossBar;
 import com.hakan.core.message.title.HTitle;
 import com.hakan.core.npc.HNPC;
+import com.hakan.core.npc.HNPCBuilder;
 import com.hakan.core.npc.HNPCHandler;
 import com.hakan.core.packet.HPacketHandler;
 import com.hakan.core.particle.HParticle;
@@ -740,30 +741,14 @@ public final class HCore {
     }
 
     /**
-     * Creates a npc.
+     * Creates a new HNPCBuilder instance.
      *
-     * @param id       NPC id.
-     * @param location NPC location.
-     * @param lines    NPC lines.
-     * @return Created NPC.
+     * @param id NPC id.
+     * @return HNPCBuilder instance.
      */
     @Nonnull
-    public static HNPC createNpc(@Nonnull String id, @Nonnull Location location, @Nonnull List<String> lines) {
-        return HNPCHandler.create(id, location, lines);
-    }
-
-    /**
-     * Creates a npc.
-     *
-     * @param id       NPC id.
-     * @param location NPC location.
-     * @param lines    NPC lines.
-     * @param viewers  NPC viewers for client side.
-     * @return Created NPC.
-     */
-    @Nonnull
-    public static HNPC createNpc(@Nonnull String id, @Nonnull Location location, @Nonnull List<String> lines, @Nonnull Set<UUID> viewers) {
-        return HNPCHandler.create(id, location, lines, viewers);
+    public static HNPCBuilder buildNpc(@Nonnull String id) {
+        return HNPCHandler.build(id);
     }
 
 
