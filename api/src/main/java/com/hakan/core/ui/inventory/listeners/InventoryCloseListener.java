@@ -1,4 +1,4 @@
-package com.hakan.core.ui.inventory.listeners.inventory;
+package com.hakan.core.ui.inventory.listeners;
 
 import com.hakan.core.HCore;
 import com.hakan.core.ui.inventory.HInventory;

@@ -2,11 +2,12 @@ package com.hakan.core.ui.inventory;
 
 import com.hakan.core.HCore;
 import com.hakan.core.ui.inventory.builder.HInventoryBuilder;
-import com.hakan.core.ui.inventory.listeners.bukkit.PlayerQuitListener;
-import com.hakan.core.ui.inventory.listeners.bukkit.PluginDisableListener;
-import com.hakan.core.ui.inventory.listeners.inventory.InventoryClickListener;
-import com.hakan.core.ui.inventory.listeners.inventory.InventoryCloseListener;
+import com.hakan.core.ui.inventory.listeners.InventoryClickListener;
+import com.hakan.core.ui.inventory.listeners.InventoryCloseListener;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.server.PluginDisableEvent;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -29,10 +30,26 @@ public final class HInventoryHandler {
      * Initializes the inventory system.
      */
     public static void initialize() {
-        HCore.registerListeners(new PlayerQuitListener(),
-                new PluginDisableListener(),
+        HCore.registerEvent(PlayerQuitEvent.class)
+                .consume(event -> {
+                    Player player = event.getPlayer();
+                    HInventoryHandler.findByPlayer(player)
+                            .ifPresent(hInventory -> hInventory.close(player));
+                });
+
+        HCore.registerEvent(PluginDisableEvent.class)
+                .consume(event -> {
+                    if (!event.getPlugin().equals(HCore.getInstance()))
+                        return;
+
+                    Bukkit.getOnlinePlayers().forEach(player -> HInventoryHandler.findByPlayer(player)
+                            .ifPresent(hInventory -> hInventory.close(player)));
+                });
+
+        HCore.registerListeners(
                 new InventoryClickListener(),
-                new InventoryCloseListener());
+                new InventoryCloseListener()
+        );
     }
 
 

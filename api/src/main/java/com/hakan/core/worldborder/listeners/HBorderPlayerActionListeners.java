@@ -13,7 +13,7 @@ import javax.annotation.Nonnull;
 /**
  * Border action listeners class.
  */
-public final class HBorderPlayerActionListener implements Listener {
+public final class HBorderPlayerActionListeners implements Listener {
 
     /**
      * Teleport event.

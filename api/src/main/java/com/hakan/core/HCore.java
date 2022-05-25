@@ -6,6 +6,7 @@ import com.hakan.core.hologram.HHologram;
 import com.hakan.core.hologram.HHologramHandler;
 import com.hakan.core.item.HItemBuilder;
 import com.hakan.core.item.nbt.HNbtManager;
+import com.hakan.core.listener.HListenerAdapter;
 import com.hakan.core.message.HMessageHandler;
 import com.hakan.core.message.bossbar.HBarColor;
 import com.hakan.core.message.bossbar.HBarFlag;
@@ -35,6 +36,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
@@ -394,7 +396,20 @@ public final class HCore {
      * @param listeners List of listeners.
      */
     public static void registerListeners(@Nonnull Listener... listeners) {
-        Arrays.asList(listeners).forEach(listener -> Bukkit.getPluginManager().registerEvents(listener, INSTANCE));
+        Arrays.asList(Objects.requireNonNull(listeners, "listeners cannot be null!"))
+                .forEach(listener -> Bukkit.getPluginManager().registerEvents(listener, INSTANCE));
+    }
+
+    /**
+     * Registers listeners to server.
+     *
+     * @param eventClass Class of event.
+     * @param <T>        Event type.
+     * @return Listener.
+     */
+    @Nonnull
+    public static <T extends Event> HListenerAdapter<T> registerEvent(@Nonnull Class<T> eventClass) {
+        return new HListenerAdapter<>(eventClass);
     }
 
 
