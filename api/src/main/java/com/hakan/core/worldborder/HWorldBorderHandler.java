@@ -7,7 +7,6 @@ import com.hakan.core.worldborder.listeners.HBorderPlayerActionListener;
 import com.hakan.core.worldborder.listeners.HBorderPlayerConnectionListener;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;

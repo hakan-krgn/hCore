@@ -4,7 +4,6 @@ import com.hakan.core.HCore;
 import com.hakan.core.npc.listeners.HNpcTargetListener;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
