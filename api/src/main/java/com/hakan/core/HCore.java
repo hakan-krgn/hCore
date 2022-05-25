@@ -4,7 +4,7 @@ import com.hakan.core.command.HCommandAdapter;
 import com.hakan.core.command.HCommandHandler;
 import com.hakan.core.hologram.HHologram;
 import com.hakan.core.hologram.HHologramHandler;
-import com.hakan.core.hooks.Metrics;
+import com.hakan.core.utils.hooks.Metrics;
 import com.hakan.core.item.HItemBuilder;
 import com.hakan.core.item.nbt.HNbtManager;
 import com.hakan.core.listener.HListenerAdapter;

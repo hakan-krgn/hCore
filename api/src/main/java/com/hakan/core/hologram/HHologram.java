@@ -195,7 +195,8 @@ public final class HHologram {
      */
     @Nonnull
     public HHologram expire(long expire) {
-        HCore.syncScheduler().after(expire).run(this::delete);
+        HCore.syncScheduler().after(expire)
+                .run(this::delete);
         return this;
     }
 
