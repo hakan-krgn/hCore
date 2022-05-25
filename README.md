@@ -13,7 +13,7 @@ from [here](https://github.com/hakan-krgn/hCore/wiki).
 
 ## Features
 
-- [`Annotation Command`](https://github.com/hakan-krgn/hCore/wiki/AnnotationCommand) - Basic command system for registering commands without plugin.yml.
+- [`Annotation Command`](https://github.com/hakan-krgn/hCore/wiki/AnnotationCommand) - Command system with annotation for registering commands without plugin.yml.
 - [`NPC`](https://github.com/hakan-krgn/hCore/wiki/NPC) - NPC system for creating and managing client-side NPCs.
 - [`Database`](https://github.com/hakan-krgn/hCore/wiki/Database) - Database implementation system for multi-database support.
 - [`Hologram`](https://github.com/hakan-krgn/hCore/wiki/Hologram) - Hologram system for creating and managing client-side holograms.
