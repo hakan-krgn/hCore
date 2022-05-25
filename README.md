@@ -1,7 +1,7 @@
 # hCore
 
 A simplified and multi-functional tool for spigot developers. There are dozens of features you can use in it, and it is
-completely open source code. hCore supports all versions from 1.8.x to 1.18.2. Also you can find all these APIs usages
+completely open source code. hCore supports all versions from 1.8.x to 1.18.2. Also, you can find all these APIs usages
 from [here](https://github.com/hakan-krgn/hCore/wiki).
 
 ## Developers
@@ -14,7 +14,7 @@ from [here](https://github.com/hakan-krgn/hCore/wiki).
 ## Features
 
 - [`Annotation Command`](https://github.com/hakan-krgn/hCore/wiki/AnnotationCommand) - Basic command system for registering commands without plugin.yml.
-- [`NPC`](https://github.com/hakan-krgn/hCore/wiki/NPC) - NPC system for creating and managing client-side npcs.
+- [`NPC`](https://github.com/hakan-krgn/hCore/wiki/NPC) - NPC system for creating and managing client-side NPCs.
 - [`Database`](https://github.com/hakan-krgn/hCore/wiki/Database) - Database implementation system for multi-database support.
 - [`Hologram`](https://github.com/hakan-krgn/hCore/wiki/Hologram) - Hologram system for creating and managing client-side holograms.
 - [`Message`](https://github.com/hakan-krgn/hCore/wiki/Message) - Message system to send title, action-bar or boss-bar to player.
@@ -26,7 +26,7 @@ from [here](https://github.com/hakan-krgn/hCore/wiki).
 - [`Sign`](https://github.com/hakan-krgn/hCore/wiki/Sign) - Sign system for receiving input from the player.
 - [`WorldBorder`](https://github.com/hakan-krgn/hCore/wiki/WorldBorder) - WorldBorder system to display WorldBorder client-side.
 - [`HItemBuilder`](https://github.com/hakan-krgn/hCore/wiki/HItemBuilder) - HItemBuilder class for creating item stacks and manage stacks easily.
-- [`HYaml`](https://github.com/hakan-krgn/hCore/wiki/HYaml) - Basic yaml system for creating and manage yamls easily.
+- [`HYaml`](https://github.com/hakan-krgn/hCore/wiki/HYaml) - Basic yaml system for creating and manage YAMLs easily.
 - [`HSpam`](https://github.com/hakan-krgn/hCore/wiki/HSpam) - Spam system to check if the given ID is spamming.
 
 ## How to add it to Maven or Gradle?
