@@ -1,4 +1,4 @@
-package com.hakan.core.utils;
+package com.hakan.core.utils.yaml;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;

@@ -23,9 +23,9 @@ import java.util.UUID;
 public final class HHologram {
 
     private final String id;
-    private final HRenderer renderer;
     private final List<HHologramLine> lines;
     private double lineDistance = 0.25;
+    private HRenderer renderer;
 
     /**
      * Creates new instance of this class.
@@ -129,13 +129,25 @@ public final class HHologram {
     }
 
     /**
+     * Sets renderer of hologram.
+     *
+     * @param renderer Renderer.
+     * @return Instance of this class.
+     */
+    @Nonnull
+    public HHologram setRenderer(@Nonnull HRenderer renderer) {
+        this.renderer = Objects.requireNonNull(renderer, "renderer cannot be null!");
+        return this;
+    }
+
+    /**
      * If everyone can see hologram,
      * returns true.
      *
      * @return If everyone can see hologram, returns true.
      */
     public boolean canEveryoneSee() {
-        return this.renderer.canShowEveryone();
+        return this.renderer.canSeeEveryone();
     }
 
     /**
@@ -220,7 +232,7 @@ public final class HHologram {
      * @return Instance of this class.
      */
     @Nonnull
-    public HHologram addUID(@Nonnull Collection<UUID> uids) {
+    public HHologram addPlayerByUID(@Nonnull Collection<UUID> uids) {
         Objects.requireNonNull(uids, "uuids cannot be null");
         uids.forEach(this.renderer::addViewer);
         return this;
@@ -233,14 +245,14 @@ public final class HHologram {
      * @return Instance of this class.
      */
     @Nonnull
-    public HHologram addUID(@Nonnull UUID... uids) {
+    public HHologram addPlayerByUID(@Nonnull UUID... uids) {
         Objects.requireNonNull(uids, "uuids cannot be null");
         Arrays.asList(uids).forEach(this.renderer::addViewer);
         return this;
     }
 
     /**
-     * Removes player to hologram to hide.
+     * Removes player from hologram to hide.
      *
      * @param players Player list.
      * @return Instance of this class.
@@ -253,7 +265,7 @@ public final class HHologram {
     }
 
     /**
-     * Removes player to hologram to hide.
+     * Removes player from hologram to hide.
      *
      * @param players Player list.
      * @return Instance of this class.
@@ -266,26 +278,26 @@ public final class HHologram {
     }
 
     /**
-     * Removes player to hologram to hide.
+     * Removes player from hologram to hide.
      *
      * @param uids UID list.
      * @return Instance of this class.
      */
     @Nonnull
-    public HHologram removeUID(@Nonnull Collection<UUID> uids) {
+    public HHologram removePlayerByUID(@Nonnull Collection<UUID> uids) {
         Objects.requireNonNull(uids, "players cannot be null");
         uids.forEach(this.renderer::removeViewer);
         return this;
     }
 
     /**
-     * Removes player to hologram to hide.
+     * Removes player from hologram to hide.
      *
      * @param uids UID list.
      * @return Instance of this class.
      */
     @Nonnull
-    public HHologram removeUID(@Nonnull UUID... uids) {
+    public HHologram removePlayerByUID(@Nonnull UUID... uids) {
         Objects.requireNonNull(uids, "players cannot be null");
         Arrays.asList(uids).forEach(this.renderer::removeViewer);
         return this;

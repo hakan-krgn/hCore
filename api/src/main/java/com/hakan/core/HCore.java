@@ -14,6 +14,9 @@ import com.hakan.core.message.bossbar.HBarFlag;
 import com.hakan.core.message.bossbar.HBarStyle;
 import com.hakan.core.message.bossbar.HBossBar;
 import com.hakan.core.message.title.HTitle;
+import com.hakan.core.npc.HNPC;
+import com.hakan.core.npc.HNPCBuilder;
+import com.hakan.core.npc.HNPCHandler;
 import com.hakan.core.packet.HPacketHandler;
 import com.hakan.core.particle.HParticle;
 import com.hakan.core.particle.HParticleHandler;
@@ -24,8 +27,8 @@ import com.hakan.core.ui.inventory.HInventoryHandler;
 import com.hakan.core.ui.inventory.builder.HInventoryBuilder;
 import com.hakan.core.ui.sign.HSign;
 import com.hakan.core.ui.sign.HSignHandler;
-import com.hakan.core.utils.HSerializer;
 import com.hakan.core.utils.ProtocolVersion;
+import com.hakan.core.utils.Serializer;
 import com.hakan.core.worldborder.HWorldBorderHandler;
 import com.hakan.core.worldborder.border.HBorderColor;
 import com.hakan.core.worldborder.border.HWorldBorder;
@@ -84,6 +87,7 @@ public final class HCore {
         HWorldBorderHandler.initialize(plugin);
         HInventoryHandler.initialize(plugin);
         HSignHandler.initialize(plugin);
+        HNPCHandler.initialize(plugin);
         HItemBuilder.initialize();
         HMessageHandler.initialize();
         HParticleHandler.initialize();
@@ -656,6 +660,95 @@ public final class HCore {
 
 
     /*
+    NPC
+     */
+
+    /**
+     * Gets content as safe.
+     *
+     * @return npc map.
+     */
+    @Nonnull
+    public static Map<String, HNPC> getNpcContentSafe() {
+        return HNPCHandler.getContentSafe();
+    }
+
+    /**
+     * Gets content.
+     *
+     * @return npc map.
+     */
+    @Nonnull
+    public static Map<String, HNPC> getNpcContent() {
+        return HNPCHandler.getContent();
+    }
+
+    /**
+     * Gets npc list as safe.
+     *
+     * @return npc.
+     */
+    @Nonnull
+    public static Collection<HNPC> getNpcValuesSafe() {
+        return HNPCHandler.getValuesSafe();
+    }
+
+    /**
+     * Gets npc list.
+     *
+     * @return NPC.
+     */
+    @Nonnull
+    public static Collection<HNPC> getNpcValues() {
+        return HNPCHandler.getValues();
+    }
+
+    /**
+     * Finds a created npc.
+     *
+     * @param id NPC id that you want.
+     * @return NPC from id.
+     */
+    @Nonnull
+    public static Optional<HNPC> findNpcByID(@Nonnull String id) {
+        return HNPCHandler.findByID(id);
+    }
+
+    /**
+     * Gets a created npc.
+     *
+     * @param id NPC id that you want.
+     * @return NPC from id.
+     */
+    @Nonnull
+    public static HNPC getNpcByID(@Nonnull String id) {
+        return HNPCHandler.getByID(id);
+    }
+
+    /**
+     * Deletes a npc with given id.
+     *
+     * @param id NPC id.
+     * @return Deleted NPC.
+     */
+    @Nonnull
+    public static HNPC deleteNpc(@Nonnull String id) {
+        return HNPCHandler.delete(id);
+    }
+
+    /**
+     * Creates a new HNPCBuilder instance.
+     *
+     * @param id NPC id.
+     * @return HNPCBuilder instance.
+     */
+    @Nonnull
+    public static HNPCBuilder buildNpc(@Nonnull String id) {
+        return HNPCHandler.build(id);
+    }
+
+
+    /*
     ITEM
      */
 
@@ -923,7 +1016,7 @@ public final class HCore {
      */
     @Nonnull
     public synchronized static Optional<String> serializeSafe(@Nonnull Object object) {
-        return HSerializer.serializeSafe(object);
+        return Serializer.serializeSafe(object);
     }
 
     /**
@@ -934,7 +1027,7 @@ public final class HCore {
      */
     @Nonnull
     public synchronized static String serialize(@Nonnull Object object) {
-        return HSerializer.serialize(object);
+        return Serializer.serialize(object);
     }
 
     /**
@@ -947,7 +1040,7 @@ public final class HCore {
      */
     @Nonnull
     public synchronized static <T> Optional<T> deserializeSafe(@Nonnull String serializedText, @Nonnull Class<T> clazz) {
-        return HSerializer.deserializeSafe(serializedText, clazz);
+        return Serializer.deserializeSafe(serializedText, clazz);
     }
 
     /**
@@ -960,6 +1053,6 @@ public final class HCore {
      */
     @Nonnull
     public synchronized static <T> T deserialize(@Nonnull String serializedText, @Nonnull Class<T> clazz) {
-        return HSerializer.deserialize(serializedText, clazz);
+        return Serializer.deserialize(serializedText, clazz);
     }
 }

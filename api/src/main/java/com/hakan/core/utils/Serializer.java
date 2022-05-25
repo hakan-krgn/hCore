@@ -16,7 +16,7 @@ import java.util.Optional;
  * and deserialize any string to object.
  */
 @SuppressWarnings({"unchecked"})
-public final class HSerializer {
+public final class Serializer {
 
     /**
      * Serializes object.
@@ -50,7 +50,7 @@ public final class HSerializer {
      */
     @Nonnull
     public synchronized static String serialize(@Nonnull Object object) {
-        return HSerializer.serializeSafe(object).orElseThrow(() -> new NullPointerException("there is a problem with serializing!"));
+        return Serializer.serializeSafe(object).orElseThrow(() -> new NullPointerException("there is a problem with serializing!"));
     }
 
     /**
@@ -89,6 +89,6 @@ public final class HSerializer {
      */
     @Nonnull
     public synchronized static <T> T deserialize(@Nonnull String serializedText, @Nonnull Class<T> clazz) {
-        return HSerializer.deserializeSafe(serializedText, clazz).orElseThrow(() -> new NullPointerException("there is a problem with deserializing!"));
+        return Serializer.deserializeSafe(serializedText, clazz).orElseThrow(() -> new NullPointerException("there is a problem with deserializing!"));
     }
 }
