@@ -41,7 +41,8 @@ public final class TimeUtil {
      * @return The formatted date.
      */
     @Nonnull
-    public static String formatDate(Date date, @Nonnull String pattern) {
+    public static String formatDate(@Nonnull Date date, @Nonnull String pattern) {
+        Objects.requireNonNull(date, "date cannot be null!");
         Objects.requireNonNull(pattern, "pattern cannot be null!");
 
         SimpleDateFormat formatter = new SimpleDateFormat(pattern);
