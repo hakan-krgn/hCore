@@ -99,9 +99,9 @@ public final class HNPC_v1_17_R1 extends HNPC {
         float yaw = Math.round(location.getYaw() % 360f * imp);
         float pitch = Math.round(location.getPitch() % 360f * imp);
         HCore.sendPacket(super.renderer.getShownViewersAsPlayer(),
-                new PacketPlayOutEntityTeleport(this.npc),
                 new PacketPlayOutEntityHeadRotation(this.npc, (byte) (location.getYaw() * imp)),
-                new PacketPlayOutEntity.PacketPlayOutEntityLook(this.npc.getId(), (byte) yaw, (byte) pitch, false)
+                new PacketPlayOutEntity.PacketPlayOutEntityLook(this.npc.getId(), (byte) yaw, (byte) pitch, false),
+                new PacketPlayOutEntityTeleport(this.npc)
         );
 
         return this;
@@ -202,6 +202,7 @@ public final class HNPC_v1_17_R1 extends HNPC {
         HNPCHandler.getContent().remove(super.id);
         super.hologram.delete();
         super.renderer.delete();
+        super.dead = true;
         super.walking = false;
         return this.hide(super.renderer.getShownViewersAsPlayer());
     }

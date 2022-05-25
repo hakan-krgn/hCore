@@ -30,6 +30,7 @@ public abstract class HNPC {
     protected HRenderer renderer;
     protected HHologram hologram;
     protected boolean walking = false;
+    protected boolean dead = false;
 
     /**
      * Constructor to create new NPC.
@@ -266,6 +267,15 @@ public abstract class HNPC {
      */
     public final boolean isWalking() {
         return this.walking;
+    }
+
+    /**
+     * Gets if NPC is removed.
+     *
+     * @return If NPC is removed, returns true.
+     */
+    public final boolean isDead() {
+        return this.dead;
     }
 
 
