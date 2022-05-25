@@ -163,7 +163,7 @@ public abstract class HNPC {
     @Nonnull
     public final HNPC addViewer(@Nonnull List<Player> players) {
         Objects.requireNonNull(players, "players cannot be null!");
-        this.hologram.addPlayer(players);
+        this.hologram.addViewer(players);
         players.forEach(player -> this.renderer.addViewer(player));
         return this;
     }
@@ -189,7 +189,7 @@ public abstract class HNPC {
     @Nonnull
     public final HNPC addViewerByUID(@Nonnull List<UUID> uids) {
         Objects.requireNonNull(uids, "uids cannot be null!");
-        this.hologram.addPlayerByUID(uids);
+        this.hologram.addViewerByUID(uids);
         uids.forEach(uid -> this.renderer.addViewer(uid));
         return this;
     }
@@ -215,7 +215,7 @@ public abstract class HNPC {
     @Nonnull
     public final HNPC removeViewer(@Nonnull List<Player> players) {
         Objects.requireNonNull(players, "players cannot be null!");
-        this.hologram.removePlayer(players);
+        this.hologram.removeViewer(players);
         players.forEach(player -> this.renderer.removeViewer(player));
         return this;
     }
@@ -241,7 +241,7 @@ public abstract class HNPC {
     @Nonnull
     public final HNPC removeViewerByUID(@Nonnull List<UUID> uids) {
         Objects.requireNonNull(uids, "uids cannot be null!");
-        this.hologram.removePlayerByUID(uids);
+        this.hologram.removeViewerByUID(uids);
         uids.forEach(uid -> this.renderer.removeViewer(uid));
         return this;
     }

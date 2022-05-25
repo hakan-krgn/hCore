@@ -206,7 +206,7 @@ public final class HHologram {
      * @return Instance of this class.
      */
     @Nonnull
-    public HHologram addPlayer(@Nonnull Collection<Player> players) {
+    public HHologram addViewer(@Nonnull Collection<Player> players) {
         Objects.requireNonNull(players, "players cannot be null");
         players.forEach(player -> this.renderer.addViewer(player.getUniqueId()));
         return this;
@@ -219,7 +219,7 @@ public final class HHologram {
      * @return Instance of this class.
      */
     @Nonnull
-    public HHologram addPlayer(@Nonnull Player... players) {
+    public HHologram addViewer(@Nonnull Player... players) {
         Objects.requireNonNull(players, "players cannot be null");
         Arrays.asList(players).forEach(this.renderer::addViewer);
         return this;
@@ -232,7 +232,7 @@ public final class HHologram {
      * @return Instance of this class.
      */
     @Nonnull
-    public HHologram addPlayerByUID(@Nonnull Collection<UUID> uids) {
+    public HHologram addViewerByUID(@Nonnull Collection<UUID> uids) {
         Objects.requireNonNull(uids, "uuids cannot be null");
         uids.forEach(this.renderer::addViewer);
         return this;
@@ -245,7 +245,7 @@ public final class HHologram {
      * @return Instance of this class.
      */
     @Nonnull
-    public HHologram addPlayerByUID(@Nonnull UUID... uids) {
+    public HHologram addViewerByUID(@Nonnull UUID... uids) {
         Objects.requireNonNull(uids, "uuids cannot be null");
         Arrays.asList(uids).forEach(this.renderer::addViewer);
         return this;
@@ -258,7 +258,7 @@ public final class HHologram {
      * @return Instance of this class.
      */
     @Nonnull
-    public HHologram removePlayer(@Nonnull Collection<Player> players) {
+    public HHologram removeViewer(@Nonnull Collection<Player> players) {
         Objects.requireNonNull(players, "players cannot be null");
         players.forEach(player -> this.renderer.removeViewer(player.getUniqueId()));
         return this;
@@ -271,7 +271,7 @@ public final class HHologram {
      * @return Instance of this class.
      */
     @Nonnull
-    public HHologram removePlayer(@Nonnull Player... players) {
+    public HHologram removeViewer(@Nonnull Player... players) {
         Objects.requireNonNull(players, "players cannot be null");
         Arrays.asList(players).forEach(this.renderer::removeViewer);
         return this;
@@ -284,7 +284,7 @@ public final class HHologram {
      * @return Instance of this class.
      */
     @Nonnull
-    public HHologram removePlayerByUID(@Nonnull Collection<UUID> uids) {
+    public HHologram removeViewerByUID(@Nonnull Collection<UUID> uids) {
         Objects.requireNonNull(uids, "players cannot be null");
         uids.forEach(this.renderer::removeViewer);
         return this;
@@ -297,7 +297,7 @@ public final class HHologram {
      * @return Instance of this class.
      */
     @Nonnull
-    public HHologram removePlayerByUID(@Nonnull UUID... uids) {
+    public HHologram removeViewerByUID(@Nonnull UUID... uids) {
         Objects.requireNonNull(uids, "players cannot be null");
         Arrays.asList(uids).forEach(this.renderer::removeViewer);
         return this;
