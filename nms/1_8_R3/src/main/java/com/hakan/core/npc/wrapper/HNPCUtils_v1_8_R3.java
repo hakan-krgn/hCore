@@ -19,10 +19,15 @@ import net.minecraft.server.v1_8_R3.PlayerInteractManager;
 import net.minecraft.server.v1_8_R3.WorldServer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
-import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftVillager;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
+import org.bukkit.entity.Villager;
+import org.bukkit.entity.Zombie;
+import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -128,43 +133,47 @@ public final class HNPCUtils_v1_8_R3 {
         Objects.requireNonNull(callback, "callback cannot be null!");
 
         Location from = npc.getLocation();
-        if (from.getWorld() != to.getWorld())
+        World toWorld = to.getWorld();
+        World fromWorld = from.getWorld();
+
+        if (toWorld == null || !toWorld.equals(fromWorld))
             throw new IllegalArgumentException("cannot walk between different worlds!");
 
-        WorldServer world = ((CraftWorld) to.getWorld()).getHandle();
+        Villager villager = toWorld.spawn(to, Villager.class);
+        villager.setCustomNameVisible(false);
+        villager.setHealth(11.9123165d);
 
-        EntityVillager villager = new EntityVillager(world);
-        villager.setLocation(to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
-        villager.setInvisible(true);
-        villager.b(true);
+        Zombie zombie = fromWorld.spawn(from, Zombie.class);
+        zombie.getEquipment().setHelmet(new ItemStack(Material.DIAMOND_HELMET));
+        zombie.setCustomNameVisible(false);
+        zombie.setHealth(11.9123165d);
+        zombie.setTarget(villager);
 
-        EntityZombie zombie = new EntityZombie(world);
-        zombie.setLocation(from.getX(), from.getY(), from.getZ(), from.getYaw(), from.getPitch());
-        zombie.setInvisible(false);
-        zombie.b(true);
+        EntityZombie entityZombie = ((CraftZombie) zombie).getHandle();
+        EntityVillager entityVillager = ((CraftVillager) villager).getHandle();
+        entityZombie.b(true);
+        entityVillager.b(true);
 
-
-        AttributeInstance villagerAttribute = villager.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED);
-        villagerAttribute.setValue(0);
-
-        AttributeInstance zombieAttribute = zombie.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED);
-        zombieAttribute.setValue(speed);
-
-        world.addEntity(zombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
-        world.addEntity(villager, CreatureSpawnEvent.SpawnReason.CUSTOM);
-
-        zombie.setGoalTarget(villager, EntityTargetEvent.TargetReason.CUSTOM, true);
+        AttributeInstance attribute1 = entityZombie.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED);
+        AttributeInstance attribute2 = entityZombie.getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
+        AttributeInstance attribute3 = entityVillager.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED);
+        if (attribute1 != null) attribute1.setValue(speed);
+        if (attribute2 != null) attribute2.setValue(200);
+        if (attribute3 != null) attribute3.setValue(0);
 
         HCore.sendPacket(new ArrayList<>(Bukkit.getOnlinePlayers()),
-                new PacketPlayOutEntityDestroy(zombie.getId(), villager.getId()));
+                new PacketPlayOutEntityDestroy(zombie.getEntityId(), villager.getEntityId()));
 
         HCore.syncScheduler().every(1)
                 .run((task) -> {
-                    Location zombieLocation = zombie.getBukkitEntity().getLocation();
+                    Location zombieLocation = zombie.getLocation();
 
-                    if (zombieLocation.distance(to) < 1) {
-                        world.removeEntity(zombie);
-                        world.removeEntity(villager);
+                    if (zombie.getTarget() == null)
+                        zombie.setTarget(villager);
+
+                    if (zombieLocation.distance(to) < 1 || npc.isDead()) {
+                        zombie.remove();
+                        villager.remove();
                         npc.setLocation(to);
                         callback.run();
                         task.cancel();

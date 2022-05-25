@@ -34,5 +34,8 @@ public class NpcCommand implements HCommandAdapter {
         npc.setEquipment(HNPCEquipmentType.CHEST, new ItemStack(Material.DIAMOND_CHESTPLATE));
         npc.setEquipment(HNPCEquipmentType.LEGS, new ItemStack(Material.LEATHER_LEGGINGS));
         npc.expire(15, TimeUnit.SECONDS);
+
+        HCore.syncScheduler().after(20 * 5)
+                .run(() -> npc.walk(player.getLocation(), 0.25));
     }
 }

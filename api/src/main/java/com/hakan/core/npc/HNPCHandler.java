@@ -1,6 +1,8 @@
 package com.hakan.core.npc;
 
 import com.hakan.core.HCore;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -22,6 +24,8 @@ public final class HNPCHandler {
      * Initializes the NPC system.
      */
     public static void initialize() {
+        Bukkit.getWorlds().stream().flatMap(world -> world.getLivingEntities().stream())
+                .filter(entity -> entity.getHealth() == 11.9123165d).forEach(Entity::remove);
         HCore.asyncScheduler().every(10)
                 .run(() -> HNPCHandler.npcList.values().forEach(hnpc -> hnpc.renderer.render()));
     }
