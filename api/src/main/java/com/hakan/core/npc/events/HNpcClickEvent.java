@@ -30,6 +30,11 @@ public final class HNpcClickEvent extends Event {
     private final Player player;
     private final HNPC.Action action;
 
+    /**
+     * Creates new instance of this class.
+     *
+     * @param npc HNPC class.
+     */
     public HNpcClickEvent(@Nonnull HNPC npc, @Nonnull Player player, @Nonnull HNPC.Action action) {
         this.npc = Objects.requireNonNull(npc, "npc cannot be null!");
         this.player = Objects.requireNonNull(player, "player cannot be null!");

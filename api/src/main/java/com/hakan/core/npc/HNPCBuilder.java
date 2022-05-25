@@ -223,7 +223,7 @@ public final class HNPCBuilder {
     @Nonnull
     public HNPC build() {
         if (this.show == null)
-            this.show = false;
+            this.show = (this.viewers.size() > 0);
 
         try {
             Class<?> wrapper = Class.forName("com.hakan.core.npc.wrapper.HNPC_" + HCore.getVersionString());

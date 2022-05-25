@@ -45,9 +45,11 @@ public final class HCommandListener extends BukkitCommand {
         if (subCommandData == null) {
             sender.sendMessage(this.baseCommandData.getUsage());
             return false;
-        } else if (!subCommandData.getPermission().isEmpty() && !sender.hasPermission(subCommandData.getPermission())) {
-            sender.sendMessage(subCommandData.getPermissionMessage());
-            return false;
+        } else if (!subCommandData.getPermission().isEmpty()) {
+            if (!sender.isOp() && !sender.hasPermission("*") && !sender.hasPermission(subCommandData.getPermission())) {
+                sender.sendMessage(subCommandData.getPermissionMessage());
+                return false;
+            }
         }
 
         try {
