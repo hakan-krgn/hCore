@@ -92,10 +92,6 @@ public final class HCore {
         HMessageHandler.initialize();
         HParticleHandler.initialize();
         HHologramHandler.initialize();
-
-        HCore.registerCommands(
-                new NpcCommand()
-        );
     }
 
 
