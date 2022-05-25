@@ -87,11 +87,11 @@ public final class HCore {
         HWorldBorderHandler.initialize(plugin);
         HInventoryHandler.initialize(plugin);
         HSignHandler.initialize(plugin);
+        HNPCHandler.initialize(plugin);
         HItemBuilder.initialize();
         HMessageHandler.initialize();
         HParticleHandler.initialize();
         HHologramHandler.initialize();
-        HNPCHandler.initialize();
 
         HCore.registerCommands(
                 new NpcCommand()

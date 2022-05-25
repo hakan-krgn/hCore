@@ -25,7 +25,8 @@ public class NpcCommand implements HCommandAdapter {
         List<String> lines = Arrays.asList("this is a", "client-side npc", "with client-side hologram");
 
         HNPC npc = HNPCHandler.build(id)
-                .showEveryone(true)
+                .showEveryone(false)
+                .addViewers(player.getUniqueId())
                 .location(location)
                 .lines(lines)
                 .skin(player.getName())

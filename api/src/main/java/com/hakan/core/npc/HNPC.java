@@ -2,6 +2,7 @@ package com.hakan.core.npc;
 
 import com.hakan.core.HCore;
 import com.hakan.core.hologram.HHologram;
+import com.hakan.core.npc.action.HNpcAction;
 import com.hakan.core.npc.types.HNPCEquipmentType;
 import com.hakan.core.renderer.HRenderer;
 import org.bukkit.Location;
@@ -25,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 public abstract class HNPC {
 
     protected final String id;
+    protected final HNpcAction action;
     protected final Map<HNPCEquipmentType, ItemStack> equipments;
 
     protected HRenderer renderer;
@@ -48,6 +50,7 @@ public abstract class HNPC {
                 @Nonnull Set<UUID> viewers,
                 @Nonnull Map<HNPCEquipmentType, ItemStack> equipments,
                 boolean showEveryone) {
+        this.action = new HNpcAction(this);
         this.id = Objects.requireNonNull(id, "id cannot be null!");
         this.hologram = HCore.createHologram("hcore_npc_hologram:" + id, location);
         this.hologram.addLines(Objects.requireNonNull(lines, "lines cannot be null!"));
@@ -56,6 +59,8 @@ public abstract class HNPC {
                 this::show, this::hide,
                 renderer -> this.hide(renderer.getShownViewersAsPlayer())
         ).showEveryone(showEveryone);
+
+        this.action.onSpawn();
     }
 
     /**
@@ -66,6 +71,16 @@ public abstract class HNPC {
     @Nonnull
     public final String getId() {
         return this.id;
+    }
+
+    /**
+     * Gets action manager of NPC.
+     *
+     * @return NPC action manager.
+     */
+    @Nonnull
+    public final HNpcAction getAction() {
+        return this.action;
     }
 
     /**

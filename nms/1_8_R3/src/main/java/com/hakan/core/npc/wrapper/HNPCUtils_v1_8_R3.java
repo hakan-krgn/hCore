@@ -168,7 +168,7 @@ public final class HNPCUtils_v1_8_R3 {
                 .run((task) -> {
                     Location zombieLocation = zombie.getLocation();
 
-                    if (zombie.getTarget() == null)
+                    if (zombie.getTarget() == null || !zombie.getTarget().equals(villager))
                         zombie.setTarget(villager);
 
                     if (zombieLocation.distance(to) < 1 || npc.isDead()) {

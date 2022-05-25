@@ -195,6 +195,7 @@ public final class HNPC_v1_13_R1 extends HNPC {
     @Override
     public HNPC delete() {
         HNPCHandler.getContent().remove(super.id);
+        super.action.onDelete();
         super.hologram.delete();
         super.renderer.delete();
         super.dead = true;
