@@ -4,7 +4,6 @@ import com.hakan.core.npc.HNPC;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.block.Action;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
@@ -29,9 +28,9 @@ public final class HNpcClickEvent extends Event {
 
     private final HNPC npc;
     private final Player player;
-    private final Action action;
+    private final HNPC.Action action;
 
-    public HNpcClickEvent(@Nonnull HNPC npc, @Nonnull Player player, @Nonnull Action action) {
+    public HNpcClickEvent(@Nonnull HNPC npc, @Nonnull Player player, @Nonnull HNPC.Action action) {
         this.npc = Objects.requireNonNull(npc, "npc cannot be null!");
         this.player = Objects.requireNonNull(player, "player cannot be null!");
         this.action = Objects.requireNonNull(action, "action cannot be null!");
@@ -73,7 +72,7 @@ public final class HNpcClickEvent extends Event {
      * @return click type of event.
      */
     @Nonnull
-    public Action getAction() {
+    public HNPC.Action getAction() {
         return this.action;
     }
 }

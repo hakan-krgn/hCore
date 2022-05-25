@@ -30,6 +30,7 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * HNPCUtils_v1_8_R3 class.
@@ -46,10 +47,18 @@ public final class HNPCUtils_v1_11_R1 {
     public GameProfile createGameProfile(@Nonnull String name) {
         Objects.requireNonNull(name, "name cannot be null!");
 
-        HNPCSkin skin = HNPCSkin.from(name);
-        GameProfile profile = new GameProfile(UUID.randomUUID(), name);
-        profile.getProperties().put("textures", new Property("textures", skin.getTexture(), skin.getSignature()));
-        return profile;
+        CompletableFuture<GameProfile> completableFuture = CompletableFuture.supplyAsync(() -> {
+            GameProfile profile = new GameProfile(UUID.randomUUID(), name);
+            HNPCSkin skin = HNPCSkin.from(name);
+            profile.getProperties().put("textures", new Property("textures", skin.getTexture(), skin.getSignature()));
+            return profile;
+        });
+
+        try {
+            return completableFuture.get();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -69,6 +78,7 @@ public final class HNPCUtils_v1_11_R1 {
         GameProfile profile = this.createGameProfile(name);
 
         EntityPlayer entityPlayer = new EntityPlayer(server, world, profile, new PlayerInteractManager(world));
+        entityPlayer.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
         entityPlayer.setInvisible(false);
         entityPlayer.setHealth(77.21f);
 

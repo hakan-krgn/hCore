@@ -50,14 +50,18 @@ public abstract class HNPC {
                 @Nonnull Map<EquipmentType, ItemStack> equipments,
                 boolean showEveryone) {
         this.action = new HNpcAction(this);
+
         this.id = Objects.requireNonNull(id, "id cannot be null!");
-        this.hologram = HCore.createHologram("hcore_npc_hologram:" + id, location);
-        this.hologram.addLines(Objects.requireNonNull(lines, "lines cannot be null!"));
+        this.hologram = HCore.createHologram("hcore_npc_hologram:" + id, location, viewers);
         this.equipments = Objects.requireNonNull(equipments, "equipments cannot be null!");
+
         this.renderer = new HRenderer(location, 30, viewers,
                 this::show, this::hide,
-                renderer -> this.hide(renderer.getShownViewersAsPlayer())
-        ).showEveryone(showEveryone);
+                renderer -> this.hide(renderer.getShownViewersAsPlayer()));
+
+        this.hologram.addLines(Objects.requireNonNull(lines, "lines cannot be null!"));
+        this.hologram.showEveryone(showEveryone);
+        this.renderer.showEveryone(showEveryone);
 
         this.action.onSpawn();
     }
@@ -356,6 +360,16 @@ public abstract class HNPC {
      */
     @Nonnull
     public abstract HNPC delete();
+
+
+    /**
+     * Click types.
+     */
+    public enum Action {
+
+        RIGHT_CLICK,
+        LEFT_CLICK,
+    }
 
 
     /**
