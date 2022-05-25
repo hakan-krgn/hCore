@@ -26,11 +26,11 @@ public final class HNPCHandler {
     /**
      * Initializes the NPC system.
      */
-    public static void initialize(JavaPlugin plugin) {
+    public static void initialize(@Nonnull JavaPlugin plugin) {
         HListenerAdapter.register(new HNpcTargetListener(plugin));
 
         Bukkit.getWorlds().stream().flatMap(world -> world.getLivingEntities().stream())
-                .filter(entity -> entity.getHealth() == 11.9123165d).forEach(Entity::remove);
+                .filter(entity -> entity.getHealth() == 11.91231632232666d).forEach(Entity::remove);
         HCore.asyncScheduler().every(10)
                 .run(() -> HNPCHandler.npcList.values().forEach(hnpc -> hnpc.renderer.render()));
     }
