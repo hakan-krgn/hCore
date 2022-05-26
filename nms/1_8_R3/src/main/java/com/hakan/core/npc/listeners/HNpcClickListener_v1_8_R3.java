@@ -15,7 +15,7 @@ import java.util.Objects;
 /**
  * HNpcClickListener_v1_8_R3 class.
  */
-public class HNpcClickListener_v1_8_R3 implements Listener {
+public final class HNpcClickListener_v1_8_R3 implements Listener {
 
     private final HNPC_v1_8_R3 handle;
 
