@@ -1,47 +1,174 @@
 package com.hakan.core.listener;
 
+import com.hakan.core.HCore;
 import org.bukkit.Bukkit;
+import org.bukkit.event.Event;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.EventExecutor;
 
 import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
- * Listener adapter class.
+ * HListenerAdapter class for registering listeners
+ * and consume events.
+ *
+ * @param <T> Event type.
  */
-public abstract class HListenerAdapter implements Listener {
+@SuppressWarnings({"unchecked"})
+public final class HListenerAdapter<T extends Event> implements Listener, EventExecutor {
 
-    /**
-     * Registers listeners to bukkit.
-     *
-     * @param listeners Listeners.
-     */
-    public static void register(@Nonnull HListenerAdapter... listeners) {
-        HListenerAdapter.register(Arrays.asList(listeners));
-    }
+    private final Class<T> eventClass;
+    private final List<Function<T, Boolean>> filters;
 
-    /**
-     * Registers listeners to bukkit.
-     *
-     * @param listeners Listeners.
-     */
-    public static void register(@Nonnull Collection<HListenerAdapter> listeners) {
-        Objects.requireNonNull(listeners, "listeners cannot be null!")
-                .forEach(listenerAdapter -> Bukkit.getPluginManager().registerEvents(listenerAdapter, listenerAdapter.plugin));
-    }
-
-
-    protected final JavaPlugin plugin;
+    private int limit;
+    private EventPriority priority;
+    private Consumer<T> consumer;
+    private Consumer<T> consumerAsync;
 
     /**
      * Creates new instance of this class.
      *
-     * @param plugin Plugin class.
+     * @param eventClass Event class.
      */
-    public HListenerAdapter(@Nonnull JavaPlugin plugin) {
-        this.plugin = Objects.requireNonNull(plugin, "plugin cannot be null!");
+    public HListenerAdapter(@Nonnull Class<T> eventClass) {
+        this.eventClass = Objects.requireNonNull(eventClass, "eventClass cannot be null!");
+        this.filters = new ArrayList<>();
+        this.priority = EventPriority.NORMAL;
+        this.limit = -10;
+        this.register();
+    }
+
+    /**
+     * Sets event priority.
+     *
+     * @param priority Event priority.
+     * @return This class.
+     */
+    @Nonnull
+    public HListenerAdapter<T> priority(@Nonnull EventPriority priority) {
+        this.priority = Objects.requireNonNull(priority, "priority cannot be null!");
+        return this;
+    }
+
+    /**
+     * Sets event filter.
+     *
+     * @param filter Event filter.
+     * @return This class.
+     */
+    @Nonnull
+    public HListenerAdapter<T> filter(@Nonnull Function<T, Boolean> filter) {
+        this.filters.add(Objects.requireNonNull(filter, "filter cannot be null!"));
+        return this;
+    }
+
+    /**
+     * Sets event limit.
+     * When limit is reached, event will not be consumed.
+     *
+     * @param limit Event limit.
+     * @return This class.
+     */
+    @Nonnull
+    public HListenerAdapter<T> limit(int limit) {
+        this.limit = limit;
+        return this;
+    }
+
+    /**
+     * This event will remove in duration
+     * if this method is called.
+     *
+     * @param duration Duration.
+     * @param unit     Unit.
+     * @return This class.
+     */
+    @Nonnull
+    public HListenerAdapter<T> expire(int duration, @Nonnull TimeUnit unit) {
+        Objects.requireNonNull(unit, "time unit cannot be null!");
+        HCore.syncScheduler().after(duration, unit)
+                .run(this::unregister);
+        return this;
+    }
+
+    /**
+     * Sets event consumer.
+     * If event triggers, this consumer
+     * will call.
+     *
+     * @param consumer Consumer.
+     * @return This class.
+     */
+    @Nonnull
+    public HListenerAdapter<T> consume(@Nonnull Consumer<T> consumer) {
+        this.consumer = Objects.requireNonNull(consumer, "consumer cannot be null!");
+        return this;
+    }
+
+    /**
+     * Sets event consumer.
+     * If event triggers, this consumer
+     * will call as async.
+     *
+     * @param consumer Consumer.
+     * @return This class.
+     */
+    @Nonnull
+    public HListenerAdapter<T> consumeAsync(@Nonnull Consumer<T> consumer) {
+        this.consumerAsync = Objects.requireNonNull(consumer, "consumer cannot be null!");
+        return this;
+    }
+
+    /**
+     * Registers this listener to server.
+     */
+    @Nonnull
+    public HListenerAdapter<T> register() {
+        Bukkit.getPluginManager().registerEvent(this.eventClass, this, this.priority, this, HCore.getInstance(), false);
+        return this;
+    }
+
+    /**
+     * Unregisters this listener from server.
+     */
+    @Nonnull
+    public HListenerAdapter<T> unregister() {
+        HandlerList.unregisterAll(this);
+        return this;
+    }
+
+    /**
+     * Executes event.
+     *
+     * @param event Event.
+     */
+    @Override
+    public void execute(@Nonnull Listener listener, @Nonnull Event event) {
+        if (event.getClass().equals(this.eventClass)) {
+            T t = (T) event;
+
+            for (Function<T, Boolean> filter : this.filters)
+                if (!filter.apply(t))
+                    return;
+
+            if (this.consumer != null)
+                this.consumer.accept(t);
+            if (this.consumerAsync != null)
+                HCore.asyncScheduler().run(() -> this.consumerAsync.accept(t));
+
+            if (this.limit != -10) {
+                this.limit--;
+                if (this.limit == 0)
+                    this.unregister();
+            }
+        }
     }
 }

@@ -1,14 +1,13 @@
 package com.hakan.core.worldborder;
 
 import com.hakan.core.HCore;
-import com.hakan.core.listener.HListenerAdapter;
 import com.hakan.core.worldborder.border.HBorderColor;
 import com.hakan.core.worldborder.border.HWorldBorder;
-import com.hakan.core.worldborder.listeners.HBorderPlayerActionListener;
-import com.hakan.core.worldborder.listeners.HBorderPlayerConnectionListener;
+import com.hakan.core.worldborder.listeners.HBorderPlayerActionListeners;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -27,12 +26,17 @@ public final class HWorldBorderHandler {
 
     /**
      * Initializes the world border system.
-     *
-     * @param plugin Main class of plugin.
      */
-    public static void initialize(@Nonnull JavaPlugin plugin) {
-        HListenerAdapter.register(new HBorderPlayerActionListener(plugin),
-                new HBorderPlayerConnectionListener(plugin));
+    public static void initialize() {
+        HCore.registerEvent(PlayerQuitEvent.class)
+                .priority(EventPriority.LOWEST)
+                .consume(event -> {
+                    Player player = event.getPlayer();
+                    HWorldBorderHandler.findByPlayer(player)
+                            .ifPresent(hWorldBorder -> hWorldBorder.hide(player));
+                });
+
+        HCore.registerListeners(new HBorderPlayerActionListeners());
     }
 
 
