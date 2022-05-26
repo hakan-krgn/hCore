@@ -104,10 +104,9 @@ public final class HScheduler {
      * Starts to scheduler.
      *
      * @param runnable Callback.
-     * @return This class.
+     * @return Bukkit task id.
      */
-    @Nonnull
-    public synchronized HScheduler run(@Nonnull Runnable runnable) {
+    public synchronized int run(@Nonnull Runnable runnable) {
         Objects.requireNonNull(runnable, "runnable cannot be null!");
         return this.run(consumer -> runnable.run());
     }
@@ -116,10 +115,9 @@ public final class HScheduler {
      * Starts to scheduler.
      *
      * @param taskConsumer Callback.
-     * @return This class.
+     * @return Bukkit task id.
      */
-    @Nonnull
-    public synchronized HScheduler run(@Nonnull Consumer<BukkitRunnable> taskConsumer) {
+    public synchronized int run(@Nonnull Consumer<BukkitRunnable> taskConsumer) {
         Objects.requireNonNull(taskConsumer, "task consumer cannot be null!");
 
         BukkitRunnable bukkitRunnable = new BukkitRunnable() {
@@ -130,13 +128,15 @@ public final class HScheduler {
         };
 
         if (this.async) {
-            if (this.every == null) bukkitRunnable.runTaskLaterAsynchronously(this.plugin, this.after);
-            else bukkitRunnable.runTaskTimerAsynchronously(this.plugin, this.after, this.every);
+            if (this.every == null)
+                return bukkitRunnable.runTaskLaterAsynchronously(this.plugin, this.after).getTaskId();
+            else
+                return bukkitRunnable.runTaskTimerAsynchronously(this.plugin, this.after, this.every).getTaskId();
         } else {
-            if (this.every == null) bukkitRunnable.runTaskLater(this.plugin, this.after);
-            else bukkitRunnable.runTaskTimer(this.plugin, this.after, this.every);
+            if (this.every == null)
+                return bukkitRunnable.runTaskLater(this.plugin, this.after).getTaskId();
+            else
+                return bukkitRunnable.runTaskTimer(this.plugin, this.after, this.every).getTaskId();
         }
-
-        return this;
     }
 }
