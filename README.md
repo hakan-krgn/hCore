@@ -19,6 +19,7 @@ from [here](https://github.com/hakan-krgn/hCore/wiki).
 - [`Hologram`](https://github.com/hakan-krgn/hCore/wiki/Hologram) - Hologram system for creating and managing client-side holograms.
 - [`Message`](https://github.com/hakan-krgn/hCore/wiki/Message) - Message system to send title, action-bar or boss-bar to player.
 - [`Packet`](https://github.com/hakan-krgn/hCore/wiki/Packet) - Packet system to listen to the packet and send it to the player.
+- [`Event Subscriber`](https://github.com/hakan-krgn/hCore/wiki/EventSubscriber) - Event subscribe system to register listeners without any class.
 - [`Particle`](https://github.com/hakan-krgn/hCore/wiki/Particle) - Particle system to play particle effects client-side for any player.
 - [`Renderer`](https://github.com/hakan-krgn/hCore/wiki/Renderer) - Renderer system for rendering and sending the package to the closest players.
 - [`Scheduler`](https://github.com/hakan-krgn/hCore/wiki/Scheduler) - Scheduler system to easily create new scheduler.
