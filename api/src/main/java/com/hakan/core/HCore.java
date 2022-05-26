@@ -32,9 +32,12 @@ import com.hakan.core.utils.hooks.Metrics;
 import com.hakan.core.worldborder.HWorldBorderHandler;
 import com.hakan.core.worldborder.border.HBorderColor;
 import com.hakan.core.worldborder.border.HWorldBorder;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -42,6 +45,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -83,11 +87,11 @@ public final class HCore {
         HCore.VERSION = ProtocolVersion.getCurrentVersion();
 
         Metrics.initialize(plugin);
-        HPacketHandler.initialize(plugin);
-        HWorldBorderHandler.initialize(plugin);
-        HInventoryHandler.initialize(plugin);
-        HSignHandler.initialize(plugin);
-        HNPCHandler.initialize(plugin);
+        HPacketHandler.initialize();
+        HSignHandler.initialize();
+        HWorldBorderHandler.initialize();
+        HInventoryHandler.initialize();
+        HNPCHandler.initialize();
         HItemBuilder.initialize();
         HMessageHandler.initialize();
         HParticleHandler.initialize();
@@ -387,21 +391,25 @@ public final class HCore {
      */
 
     /**
-     * Registers listeners to bukkit.
+     * Registers listeners to server.
      *
-     * @param listeners Listeners.
+     * @param listeners List of listeners.
      */
-    public static void registerListener(@Nonnull HListenerAdapter... listeners) {
-        HListenerAdapter.register(listeners);
+    public static void registerListeners(@Nonnull Listener... listeners) {
+        Arrays.asList(Objects.requireNonNull(listeners, "listeners cannot be null!"))
+                .forEach(listener -> Bukkit.getPluginManager().registerEvents(listener, INSTANCE));
     }
 
     /**
-     * Registers listeners to bukkit.
+     * Registers listeners to server.
      *
-     * @param listeners Listeners.
+     * @param eventClass Class of event.
+     * @param <T>        Event type.
+     * @return Listener.
      */
-    public static void registerListener(@Nonnull Collection<HListenerAdapter> listeners) {
-        HListenerAdapter.register(listeners);
+    @Nonnull
+    public static <T extends Event> HListenerAdapter<T> registerEvent(@Nonnull Class<T> eventClass) {
+        return new HListenerAdapter<>(eventClass);
     }
 
 

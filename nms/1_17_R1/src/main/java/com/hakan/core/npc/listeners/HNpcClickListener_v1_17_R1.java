@@ -1,13 +1,13 @@
 package com.hakan.core.npc.listeners;
 
 import com.hakan.core.HCore;
-import com.hakan.core.listener.HListenerAdapter;
 import com.hakan.core.npc.HNPC;
 import com.hakan.core.npc.wrapper.HNPC_v1_17_R1;
 import com.hakan.core.packet.event.PacketEvent;
 import net.minecraft.network.protocol.game.PacketPlayInUseEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
@@ -15,7 +15,7 @@ import java.util.Objects;
 /**
  * HNpcClickListener_v1_8_R3 class.
  */
-public class HNpcClickListener_v1_17_R1 extends HListenerAdapter {
+public class HNpcClickListener_v1_17_R1 implements Listener {
 
     private final HNPC_v1_17_R1 handle;
 
@@ -25,7 +25,6 @@ public class HNpcClickListener_v1_17_R1 extends HListenerAdapter {
      * @param handle NMS class of HNPC.
      */
     public HNpcClickListener_v1_17_R1(@Nonnull HNPC_v1_17_R1 handle) {
-        super(HCore.getInstance());
         this.handle = Objects.requireNonNull(handle, "handle cannot be null!");
     }
 

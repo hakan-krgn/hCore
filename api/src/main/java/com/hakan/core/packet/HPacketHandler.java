@@ -1,11 +1,12 @@
 package com.hakan.core.packet;
 
 import com.hakan.core.HCore;
-import com.hakan.core.listener.HListenerAdapter;
-import com.hakan.core.packet.listeners.PlayerConnectionListener;
 import com.hakan.core.packet.player.HPacketPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -24,20 +25,22 @@ public final class HPacketHandler {
 
     /**
      * Initializes the packet system.
-     *
-     * @param plugin Main class of plugin.
      */
-    public static void initialize(@Nonnull JavaPlugin plugin) {
+    public static void initialize() {
         try {
             Class<?> clazz = Class.forName("com.hakan.core.packet.player.HPacketPlayer_" + HCore.getVersionString());
-            if (HPacketPlayer.class.isAssignableFrom(clazz)) {
+            if (HPacketPlayer.class.isAssignableFrom(clazz))
                 HPacketHandler.packetManagerClass = clazz;
-            }
 
-            HListenerAdapter.register(new PlayerConnectionListener(plugin));
+            HCore.registerEvent(PlayerJoinEvent.class)
+                    .priority(EventPriority.LOWEST)
+                    .consume(event -> HPacketHandler.register(event.getPlayer()));
+            HCore.registerEvent(PlayerQuitEvent.class)
+                    .priority(EventPriority.LOWEST)
+                    .consume(event -> HPacketHandler.unregister(event.getPlayer()));
         } catch (Exception e) {
+            Bukkit.getLogger().warning("Could not initialize packet system. Probably you are using an unsupported version(" + HCore.getVersionString() + ")");
             e.printStackTrace();
-            plugin.getLogger().warning("Could not initialize packet system. Probably you are using an unsupported version(" + HCore.getVersionString() + ")");
         }
     }
 

@@ -1,11 +1,10 @@
 package com.hakan.core.ui.sign;
 
 import com.hakan.core.HCore;
-import com.hakan.core.listener.HListenerAdapter;
-import com.hakan.core.ui.sign.listeners.HSignListener;
+import com.hakan.core.packet.event.PacketEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -27,20 +26,24 @@ public final class HSignHandler {
 
     /**
      * Initializes sign system.
-     *
-     * @param plugin Main class of plugin.
      */
-    public static void initialize(@Nonnull JavaPlugin plugin) {
+    public static void initialize() {
         try {
             Class<?> clazz = Class.forName("com.hakan.core.ui.sign.wrapper.HSign_" + HCore.getVersionString());
             if (HSign.class.isAssignableFrom(clazz)) {
                 HSignHandler.signClass = clazz;
             }
 
-            HListenerAdapter.register(new HSignListener(plugin));
+            HCore.registerEvent(PacketEvent.class)
+                    .consume(event -> {
+                        if (!event.getPacket().toString().contains("PacketPlayInUpdateSign"))
+                            return;
+                        HSignHandler.findByPlayer(event.getPlayer())
+                                .ifPresent(hSign -> hSign.listen(event.getPlayer(), event.getPacket()));
+                    });
         } catch (Exception e) {
+            Bukkit.getLogger().warning("Could not initialize sign system. Probably you are using an unsupported version. (" + HCore.getVersionString() + ")");
             e.printStackTrace();
-            plugin.getLogger().warning("Could not initialize sign system. Probably you are using an unsupported version. (" + HCore.getVersionString() + ")");
         }
     }
 
