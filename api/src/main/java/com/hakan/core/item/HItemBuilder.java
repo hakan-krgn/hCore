@@ -2,6 +2,7 @@ package com.hakan.core.item;
 
 import com.hakan.core.HCore;
 import com.hakan.core.item.nbt.HNbtManager;
+import com.hakan.core.item.skull.HSkullBuilder;
 import com.hakan.core.utils.ColorUtil;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -25,6 +26,7 @@ import java.util.Set;
  * HItemBuilder class to create and
  * manage item stacks easily.
  */
+@SuppressWarnings({"unchecked"})
 public class HItemBuilder {
 
     private static Enchantment glowEnchantment;
@@ -187,9 +189,9 @@ public class HItemBuilder {
      * @return This class.
      */
     @Nonnull
-    public HItemBuilder type(@Nonnull Material type) {
+    public <T extends HItemBuilder> T type(@Nonnull Material type) {
         this.type = Objects.requireNonNull(type, "type cannot be null!");
-        return this;
+        return (T) this;
     }
 
 
@@ -210,7 +212,7 @@ public class HItemBuilder {
      * @return This class.
      */
     @Nonnull
-    public HItemBuilder name(@Nonnull String name) {
+    public <T extends HItemBuilder> T name(@Nonnull String name) {
         return this.name(true, name);
     }
 
@@ -222,10 +224,10 @@ public class HItemBuilder {
      * @return This class.
      */
     @Nonnull
-    public HItemBuilder name(boolean colored, @Nonnull String name) {
+    public <T extends HItemBuilder> T name(boolean colored, @Nonnull String name) {
         this.name = Objects.requireNonNull(name, "name cannot be null!");
         if (colored) this.name = ColorUtil.colored(this.name);
-        return this;
+        return (T) this;
     }
 
 
@@ -246,7 +248,7 @@ public class HItemBuilder {
      * @return This class.
      */
     @Nonnull
-    public HItemBuilder lores(@Nonnull List<String> lore) {
+    public <T extends HItemBuilder> T lores(@Nonnull List<String> lore) {
         return this.lores(true, lore);
     }
 
@@ -257,7 +259,7 @@ public class HItemBuilder {
      * @return This class.
      */
     @Nonnull
-    public HItemBuilder appendLore(@Nonnull String... lines) {
+    public <T extends HItemBuilder> T appendLore(@Nonnull String... lines) {
         return this.appendLore(true, lines);
     }
 
@@ -268,7 +270,7 @@ public class HItemBuilder {
      * @return This class.
      */
     @Nonnull
-    public HItemBuilder appendLore(@Nonnull List<String> lines) {
+    public <T extends HItemBuilder> T appendLore(@Nonnull List<String> lines) {
         return this.appendLore(true, lines);
     }
 
@@ -280,7 +282,7 @@ public class HItemBuilder {
      * @return This class.
      */
     @Nonnull
-    public HItemBuilder lores(boolean colored, @Nonnull List<String> lore) {
+    public <T extends HItemBuilder> T lores(boolean colored, @Nonnull List<String> lore) {
         this.lore.clear();
         return this.appendLore(colored, lore);
     }
@@ -293,7 +295,7 @@ public class HItemBuilder {
      * @return This class.
      */
     @Nonnull
-    public HItemBuilder appendLore(boolean colored, @Nonnull String... lines) {
+    public <T extends HItemBuilder> T appendLore(boolean colored, @Nonnull String... lines) {
         return this.appendLore(colored, Arrays.asList(lines));
     }
 
@@ -305,14 +307,14 @@ public class HItemBuilder {
      * @return This class.
      */
     @Nonnull
-    public HItemBuilder appendLore(boolean colored, @Nonnull List<String> lines) {
+    public <T extends HItemBuilder> T appendLore(boolean colored, @Nonnull List<String> lines) {
         for (String _line : Objects.requireNonNull(lines, "lines cannot be null!")) {
             String line = Objects.requireNonNull(_line, "lore cannot be null!");
             if (colored) line = ColorUtil.colored(line);
             this.lore.add(line);
         }
 
-        return this;
+        return (T) this;
     }
 
     /**
@@ -331,9 +333,9 @@ public class HItemBuilder {
      * @return This class.
      */
     @Nonnull
-    public HItemBuilder amount(int amount) {
+    public <T extends HItemBuilder> T amount(int amount) {
         this.amount = amount;
-        return this;
+        return (T) this;
     }
 
 
@@ -353,9 +355,9 @@ public class HItemBuilder {
      * @return This class.
      */
     @Nonnull
-    public HItemBuilder durability(short durability) {
+    public <T extends HItemBuilder> T durability(short durability) {
         this.durability = durability;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -405,9 +407,9 @@ public class HItemBuilder {
      * @return This class.
      */
     @Nonnull
-    public HItemBuilder addEnchant(@Nonnull Enchantment enchantment, int level) {
+    public <T extends HItemBuilder> T addEnchant(@Nonnull Enchantment enchantment, int level) {
         this.enchantments.put(Objects.requireNonNull(enchantment, "enchantment cannot be null!"), level);
-        return this;
+        return (T) this;
     }
 
     /**
@@ -417,9 +419,9 @@ public class HItemBuilder {
      * @return This class.
      */
     @Nonnull
-    public HItemBuilder removeEnchant(@Nonnull Enchantment enchantment) {
+    public <T extends HItemBuilder> T removeEnchant(@Nonnull Enchantment enchantment) {
         this.enchantments.remove(Objects.requireNonNull(enchantment, "enchantment cannot be null!"));
-        return this;
+        return (T) this;
     }
 
 
@@ -450,10 +452,10 @@ public class HItemBuilder {
      * @return This class.
      */
     @Nonnull
-    public HItemBuilder addItemFlags(@Nonnull ItemFlag... flags) {
+    public <T extends HItemBuilder> T addItemFlags(@Nonnull ItemFlag... flags) {
         for (ItemFlag flag : Objects.requireNonNull(flags, "item flags cannot be null!"))
             this.flags.add(Objects.requireNonNull(flag, "item flag cannot be null!"));
-        return this;
+        return (T) this;
     }
 
     /**
@@ -463,10 +465,10 @@ public class HItemBuilder {
      * @return This class.
      */
     @Nonnull
-    public HItemBuilder removeItemFlags(@Nonnull ItemFlag... flags) {
+    public <T extends HItemBuilder> T removeItemFlags(@Nonnull ItemFlag... flags) {
         for (ItemFlag flag : Objects.requireNonNull(flags, "item flags cannot be null!"))
             this.flags.remove(Objects.requireNonNull(flag, "item flag cannot be null!"));
-        return this;
+        return (T) this;
     }
 
     /**
@@ -485,9 +487,9 @@ public class HItemBuilder {
      * @return This class.
      */
     @Nonnull
-    public HItemBuilder glow(boolean glow) {
+    public <T extends HItemBuilder> T glow(boolean glow) {
         this.glow = glow;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -505,9 +507,9 @@ public class HItemBuilder {
      * @param nbt NBT.
      */
     @Nonnull
-    public HItemBuilder nbt(@Nonnull String nbt) {
+    public <T extends HItemBuilder> T nbt(@Nonnull String nbt) {
         this.nbt = Objects.requireNonNull(nbt, "nbt cannot be null!");
-        return this;
+        return (T) this;
     }
 
     /**

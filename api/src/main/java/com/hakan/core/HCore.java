@@ -5,8 +5,8 @@ import com.hakan.core.command.HCommandHandler;
 import com.hakan.core.hologram.HHologram;
 import com.hakan.core.hologram.HHologramHandler;
 import com.hakan.core.item.HItemBuilder;
-import com.hakan.core.item.HSkullBuilder;
 import com.hakan.core.item.nbt.HNbtManager;
+import com.hakan.core.item.skull.HSkullBuilder;
 import com.hakan.core.listener.HListenerAdapter;
 import com.hakan.core.message.HMessageHandler;
 import com.hakan.core.message.bossbar.HBarColor;
@@ -832,10 +832,10 @@ public final class HCore {
     /**
      * Creates new item stack builder.
      *
-     * @return New instance of HItemBuilder.
+     * @return New instance of HSkullBuilder.
      */
     @Nonnull
-    public static HItemBuilder skullBuilder() {
+    public static HSkullBuilder skullBuilder() {
         return new HSkullBuilder();
     }
 
@@ -843,45 +843,55 @@ public final class HCore {
      * Creates new item stack builder.
      *
      * @param amount Amount.
-     * @return New instance of HItemBuilder.
+     * @return New instance of HSkullBuilder.
      */
     @Nonnull
-    public static HItemBuilder skullBuilder(int amount) {
+    public static HSkullBuilder skullBuilder(int amount) {
         return new HSkullBuilder(amount);
     }
 
     /**
      * Creates new item stack builder.
      *
-     * @param amount     Amount.
-     * @param durability Durability.
-     * @return New instance of HItemBuilder.
-     */
-    @Nonnull
-    public static HItemBuilder skullBuilder(int amount, short durability) {
-        return new HSkullBuilder(amount, durability);
-    }
-
-    /**
-     * Creates new item stack builder.
-     *
-     * @param itemStack Item stack.
-     * @return New instance of HItemBuilder.
-     */
-    @Nonnull
-    public static HItemBuilder skullBuilder(@Nonnull ItemStack itemStack) {
-        return new HSkullBuilder(itemStack);
-    }
-
-    /**
-     * Creates new item stack builder.
-     *
      * @param skullBuilder Skull builder.
-     * @return New instance of HItemBuilder.
+     * @return New instance of HSkullBuilder.
      */
     @Nonnull
-    public static HItemBuilder skullBuilder(@Nonnull HSkullBuilder skullBuilder) {
+    public static HSkullBuilder skullBuilder(@Nonnull HSkullBuilder skullBuilder) {
         return new HSkullBuilder(skullBuilder);
+    }
+
+    /**
+     * Creates new item stack builder.
+     *
+     * @param texture Texture of skull.
+     * @return New instance of HSkullBuilder.
+     */
+    @Nonnull
+    public static HSkullBuilder skullBuilder(@Nullable String texture) {
+        return new HSkullBuilder().texture(texture);
+    }
+
+    /**
+     * Creates new item stack builder.
+     *
+     * @param owner Owner of texture.
+     * @return New instance of HSkullBuilder.
+     */
+    @Nonnull
+    public static HSkullBuilder skullBuilderByPlayer(@Nullable String owner) {
+        return new HSkullBuilder().textureByPlayer(owner);
+    }
+
+    /**
+     * Creates new item stack builder.
+     *
+     * @param owner Owner of texture.
+     * @return New instance of HSkullBuilder.
+     */
+    @Nonnull
+    public static HSkullBuilder skullBuilderByPlayer(@Nullable Player owner) {
+        return new HSkullBuilder().textureByPlayer(owner);
     }
 
 
