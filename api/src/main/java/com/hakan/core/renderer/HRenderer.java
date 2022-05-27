@@ -298,7 +298,12 @@ public final class HRenderer {
         Player player = Bukkit.getPlayer(Objects.requireNonNull(uid, "uid cannot be null!"));
         if (player == null)
             return false;
-        else return !(this.calculateDistance(player.getLocation()) > this.radius);
+
+        double distance = this.calculateDistance(player.getLocation());
+        if (distance == -1)
+            return false;
+
+        return !(distance > this.radius);
     }
 
     /**
@@ -310,6 +315,10 @@ public final class HRenderer {
      */
     public double calculateDistance(@Nonnull Location target) {
         Objects.requireNonNull(target, "target location cannot be null!");
+        Objects.requireNonNull(target.getWorld(), "target world cannot be null!");
+
+        if (!target.getWorld().equals(this.location.getWorld()))
+            return -1;
 
         double xDis = Math.pow(target.getX() - this.location.getX(), 2);
         double zDis = Math.pow(target.getZ() - this.location.getZ(), 2);
