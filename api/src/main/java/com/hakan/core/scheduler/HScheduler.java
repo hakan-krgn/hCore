@@ -4,6 +4,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -16,13 +17,12 @@ import java.util.function.Function;
 public final class HScheduler {
 
     private final JavaPlugin plugin;
-
+    private final List<Function<BukkitRunnable, Boolean>> freezeFilters;
+    private final List<Function<BukkitRunnable, Boolean>> terminateFilters;
     private long after;
     private Long every;
+    private Long limiter;
     private boolean async;
-
-    private List<Function<BukkitRunnable, Boolean>> runFilters;
-    private List<Function<BukkitRunnable, Boolean>> terminateFilters;
 
     /**
      * Creates new instance of this class.
@@ -33,6 +33,8 @@ public final class HScheduler {
     public HScheduler(@Nonnull JavaPlugin plugin, boolean async) {
         this.plugin = Objects.requireNonNull(plugin, "plugin cannot be null!");
         this.async = async;
+        this.freezeFilters = new ArrayList<>();
+        this.terminateFilters = new ArrayList<>();
     }
 
     /**
@@ -53,6 +55,19 @@ public final class HScheduler {
     @Nonnull
     public HScheduler async(boolean async) {
         this.async = async;
+        return this;
+    }
+
+    /**
+     * Sets scheduler limit.
+     * If limit is set, scheduler will be
+     * terminated after limit is reached.
+     *
+     * @param limiter Limit.
+     * @return This class.
+     */
+    public HScheduler limit(long limiter) {
+        this.limiter = limiter;
         return this;
     }
 
@@ -108,25 +123,29 @@ public final class HScheduler {
 
     /**
      * Adds run filter.
+     * If filter returns true,
+     * scheduler will freeze itself.
      *
-     * @param runFilter Run filter.
+     * @param freezeFilter Freeze filter.
      * @return This class.
      */
     @Nonnull
-    public HScheduler runFilter(@Nonnull Function<BukkitRunnable, Boolean> runFilter) {
-        this.runFilters.add(Objects.requireNonNull(runFilter, "runFilter cannot be null!"));
+    public HScheduler freezeIf(@Nonnull Function<BukkitRunnable, Boolean> freezeFilter) {
+        this.freezeFilters.add(Objects.requireNonNull(freezeFilter, "freeze filter cannot be null!"));
         return this;
     }
 
     /**
      * Adds terminate filter.
+     * If this filter returns true,
+     * scheduler will be terminated.
      *
      * @param terminateFilter Terminate filter.
      * @return This class.
      */
     @Nonnull
-    public HScheduler terminateFilter(@Nonnull Function<BukkitRunnable, Boolean> terminateFilter) {
-        this.terminateFilters.add(Objects.requireNonNull(terminateFilter, "terminateFilter cannot be null!"));
+    public HScheduler terminateIf(@Nonnull Function<BukkitRunnable, Boolean> terminateFilter) {
+        this.terminateFilters.add(Objects.requireNonNull(terminateFilter, "terminate filter cannot be null!"));
         return this;
     }
 
@@ -153,14 +172,29 @@ public final class HScheduler {
         BukkitRunnable bukkitRunnable = new BukkitRunnable() {
             @Override
             public void run() {
-                for (Function<BukkitRunnable, Boolean> runFilter : runFilters)
-                    if (!runFilter.apply(this))
+                if (this.isCancelled())
+                    return;
+
+                for (Function<BukkitRunnable, Boolean> freezeFilter : freezeFilters) {
+                    if (freezeFilter.apply(this)) {
                         return;
-                for (Function<BukkitRunnable, Boolean> terminateFilter : terminateFilters)
-                    if (!terminateFilter.apply(this))
+                    }
+                }
+
+                for (Function<BukkitRunnable, Boolean> terminateFilter : terminateFilters) {
+                    if (terminateFilter.apply(this)) {
+                        this.cancel();
                         return;
+                    }
+                }
 
                 taskConsumer.accept(this);
+
+                if (limiter != null) {
+                    limiter--;
+                    if (limiter <= 0)
+                        this.cancel();
+                }
             }
         };
 
