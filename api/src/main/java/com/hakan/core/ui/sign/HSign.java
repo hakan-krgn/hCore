@@ -1,5 +1,7 @@
 package com.hakan.core.ui.sign;
 
+import com.hakan.core.HCore;
+import com.hakan.core.utils.ProtocolVersion;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -12,6 +14,9 @@ import java.util.function.Consumer;
  * and show sign to player.
  */
 public abstract class HSign {
+
+    protected static final int LOWEST_Y_AXIS = (HCore.getProtocolVersion().isNewerOrEqual(ProtocolVersion.v1_18_R1)) ? -64 : 0;
+
 
     protected Material type;
     protected String[] lines;
