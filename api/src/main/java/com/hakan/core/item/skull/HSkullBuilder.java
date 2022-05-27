@@ -1,7 +1,5 @@
 package com.hakan.core.item.skull;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.hakan.core.HCore;
 import com.hakan.core.item.HItemBuilder;
 import com.mojang.authlib.GameProfile;
@@ -14,9 +12,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.io.InputStreamReader;
 import java.lang.reflect.Field;
-import java.net.URL;
 import java.util.Base64;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -151,21 +147,9 @@ public class HSkullBuilder extends HItemBuilder {
 
                 if (this.ownerName != null) {
                     HSkullData skullData = HSkullData.findByPlayer(this.ownerName).orElse(null);
-                    if (skullData == null) {
-                        URL url_0 = new URL("https://api.mojang.com/users/profiles/minecraft/" + this.ownerName);
-                        InputStreamReader reader_0 = new InputStreamReader(url_0.openStream());
-                        String uuid = new JsonParser().parse(reader_0).getAsJsonObject().get("id").getAsString();
-
-                        URL url = new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid);
-                        InputStreamReader read = new InputStreamReader(url.openStream());
-                        JsonObject textureProperty = new JsonParser().parse(read).getAsJsonObject().get("properties").getAsJsonArray().get(0).getAsJsonObject();
-                        this.texture = textureProperty.get("value").getAsString();
-
-                        if (this.texture != null)
-                            HSkullData.register(this.ownerName, this.texture);
-                    } else {
-                        this.texture = skullData.getTexture();
-                    }
+                    if (skullData == null)
+                        skullData = HSkullData.register(this.ownerName);
+                    this.texture = skullData.getTexture();
                 }
 
                 if (this.texture != null) {

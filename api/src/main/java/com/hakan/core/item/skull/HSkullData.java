@@ -1,6 +1,12 @@
 package com.hakan.core.item.skull;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import javax.annotation.Nonnull;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -49,9 +55,35 @@ public final class HSkullData {
      */
     @Nonnull
     public static HSkullData register(@Nonnull String playerName, @Nonnull String texture) {
-        HSkullData hSkullData = new HSkullData(playerName, texture);
-        skullDataMap.put(playerName, hSkullData);
-        return hSkullData;
+        HSkullData skullData = new HSkullData(playerName, texture);
+        skullDataMap.put(playerName, skullData);
+        return skullData;
+    }
+
+    /**
+     * Registers the skull data by player name.
+     * <p>
+     * Gets the texture from mojang's
+     * website and saves it.
+     *
+     * @param playerName Player name.
+     * @return Skull data.
+     */
+    @Nonnull
+    public static HSkullData register(@Nonnull String playerName) {
+        try {
+            URL url_0 = new URL("https://api.mojang.com/users/profiles/minecraft/" + playerName);
+            InputStreamReader reader_0 = new InputStreamReader(url_0.openStream());
+            String uuid = new JsonParser().parse(reader_0).getAsJsonObject().get("id").getAsString();
+
+            URL url = new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid);
+            InputStreamReader read = new InputStreamReader(url.openStream());
+            JsonObject textureProperty = new JsonParser().parse(read).getAsJsonObject().get("properties").getAsJsonArray().get(0).getAsJsonObject();
+
+            return register(playerName, textureProperty.get("value").getAsString());
+        } catch (IOException e) {
+            throw new IllegalArgumentException("skull texture not found!");
+        }
     }
 
 
