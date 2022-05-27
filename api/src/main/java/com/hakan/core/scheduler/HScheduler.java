@@ -4,9 +4,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * HScheduler class.
@@ -14,9 +16,13 @@ import java.util.function.Consumer;
 public final class HScheduler {
 
     private final JavaPlugin plugin;
-    private boolean async;
+
     private long after;
     private Long every;
+    private boolean async;
+
+    private List<Function<BukkitRunnable, Boolean>> runFilters;
+    private List<Function<BukkitRunnable, Boolean>> terminateFilters;
 
     /**
      * Creates new instance of this class.
@@ -101,6 +107,30 @@ public final class HScheduler {
     }
 
     /**
+     * Adds run filter.
+     *
+     * @param runFilter Run filter.
+     * @return This class.
+     */
+    @Nonnull
+    public HScheduler runFilter(@Nonnull Function<BukkitRunnable, Boolean> runFilter) {
+        this.runFilters.add(Objects.requireNonNull(runFilter, "runFilter cannot be null!"));
+        return this;
+    }
+
+    /**
+     * Adds terminate filter.
+     *
+     * @param terminateFilter Terminate filter.
+     * @return This class.
+     */
+    @Nonnull
+    public HScheduler terminateFilter(@Nonnull Function<BukkitRunnable, Boolean> terminateFilter) {
+        this.terminateFilters.add(Objects.requireNonNull(terminateFilter, "terminateFilter cannot be null!"));
+        return this;
+    }
+
+    /**
      * Starts to scheduler.
      *
      * @param runnable Callback.
@@ -123,6 +153,13 @@ public final class HScheduler {
         BukkitRunnable bukkitRunnable = new BukkitRunnable() {
             @Override
             public void run() {
+                for (Function<BukkitRunnable, Boolean> runFilter : runFilters)
+                    if (!runFilter.apply(this))
+                        return;
+                for (Function<BukkitRunnable, Boolean> terminateFilter : terminateFilters)
+                    if (!terminateFilter.apply(this))
+                        return;
+
                 taskConsumer.accept(this);
             }
         };
