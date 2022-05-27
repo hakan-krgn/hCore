@@ -5,6 +5,7 @@ import com.hakan.core.command.HCommandHandler;
 import com.hakan.core.hologram.HHologram;
 import com.hakan.core.hologram.HHologramHandler;
 import com.hakan.core.item.HItemBuilder;
+import com.hakan.core.item.HSkullBuilder;
 import com.hakan.core.item.nbt.HNbtManager;
 import com.hakan.core.listener.HListenerAdapter;
 import com.hakan.core.message.HMessageHandler;
@@ -774,10 +775,10 @@ public final class HCore {
      * Creates new item stack builder.
      *
      * @param type Material.
-     * @return New instance of HItemStackBuilder.
+     * @return New instance of HItemBuilder.
      */
     @Nonnull
-    public static HItemBuilder createItemBuilder(Material type) {
+    public static HItemBuilder itemBuilder(@Nonnull Material type) {
         return new HItemBuilder(type);
     }
 
@@ -786,10 +787,10 @@ public final class HCore {
      *
      * @param type   Material.
      * @param amount Amount.
-     * @return New instance of HItemStackBuilder.
+     * @return New instance of HItemBuilder.
      */
     @Nonnull
-    public static HItemBuilder createItemBuilder(Material type, int amount) {
+    public static HItemBuilder itemBuilder(@Nonnull Material type, int amount) {
         return new HItemBuilder(type, amount);
     }
 
@@ -799,10 +800,10 @@ public final class HCore {
      * @param type       Material.
      * @param amount     Amount.
      * @param durability Durability.
-     * @return New instance of HItemStackBuilder.
+     * @return New instance of HItemBuilder.
      */
     @Nonnull
-    public static HItemBuilder createItemBuilder(Material type, int amount, short durability) {
+    public static HItemBuilder itemBuilder(@Nonnull Material type, int amount, short durability) {
         return new HItemBuilder(type, amount, durability);
     }
 
@@ -810,11 +811,77 @@ public final class HCore {
      * Creates new item stack builder.
      *
      * @param itemStack Item stack.
-     * @return New instance of HItemStackBuilder.
+     * @return New instance of HItemBuilder.
      */
     @Nonnull
-    public static HItemBuilder createItemBuilder(ItemStack itemStack) {
+    public static HItemBuilder itemBuilder(@Nonnull ItemStack itemStack) {
         return new HItemBuilder(itemStack);
+    }
+
+    /**
+     * Creates new item stack builder.
+     *
+     * @param itemBuilder Item builder.
+     * @return New instance of HItemBuilder.
+     */
+    @Nonnull
+    public static HItemBuilder itemBuilder(@Nonnull HItemBuilder itemBuilder) {
+        return new HItemBuilder(itemBuilder);
+    }
+
+    /**
+     * Creates new item stack builder.
+     *
+     * @return New instance of HItemBuilder.
+     */
+    @Nonnull
+    public static HItemBuilder skullBuilder() {
+        return new HSkullBuilder();
+    }
+
+    /**
+     * Creates new item stack builder.
+     *
+     * @param amount Amount.
+     * @return New instance of HItemBuilder.
+     */
+    @Nonnull
+    public static HItemBuilder skullBuilder(int amount) {
+        return new HSkullBuilder(amount);
+    }
+
+    /**
+     * Creates new item stack builder.
+     *
+     * @param amount     Amount.
+     * @param durability Durability.
+     * @return New instance of HItemBuilder.
+     */
+    @Nonnull
+    public static HItemBuilder skullBuilder(int amount, short durability) {
+        return new HSkullBuilder(amount, durability);
+    }
+
+    /**
+     * Creates new item stack builder.
+     *
+     * @param itemStack Item stack.
+     * @return New instance of HItemBuilder.
+     */
+    @Nonnull
+    public static HItemBuilder skullBuilder(@Nonnull ItemStack itemStack) {
+        return new HSkullBuilder(itemStack);
+    }
+
+    /**
+     * Creates new item stack builder.
+     *
+     * @param skullBuilder Skull builder.
+     * @return New instance of HItemBuilder.
+     */
+    @Nonnull
+    public static HItemBuilder skullBuilder(@Nonnull HSkullBuilder skullBuilder) {
+        return new HSkullBuilder(skullBuilder);
     }
 
 

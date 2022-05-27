@@ -35,6 +35,8 @@ public class HItemBuilder {
      */
     public static void initialize() {
         try {
+            HSkullBuilder.initialize();
+
             Constructor<?> cons = Class.forName("com.hakan.core.item.nbt.HNbtManager_" + HCore.getVersionString())
                     .getDeclaredConstructor();
             cons.setAccessible(true);
@@ -120,7 +122,7 @@ public class HItemBuilder {
      * @param durability Datavalue.
      */
     public HItemBuilder(@Nonnull Material type, int amount, short durability) {
-        this.type = type;
+        this.type = Objects.requireNonNull(type, "type cannot be null!");
         this.nbt = "{}";
         this.name = "";
         this.amount = amount;
@@ -137,6 +139,7 @@ public class HItemBuilder {
      * @param builder Item builder.
      */
     public HItemBuilder(@Nonnull HItemBuilder builder) {
+        Objects.requireNonNull(builder, "builder cannot be null!");
         this.type = builder.type;
         this.nbt = builder.nbt;
         this.name = builder.name;
