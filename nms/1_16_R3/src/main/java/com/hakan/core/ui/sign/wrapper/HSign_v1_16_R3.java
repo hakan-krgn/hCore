@@ -9,6 +9,7 @@ import net.minecraft.server.v1_16_R3.PacketPlayInUpdateSign;
 import net.minecraft.server.v1_16_R3.PacketPlayOutBlockChange;
 import net.minecraft.server.v1_16_R3.PacketPlayOutOpenSignEditor;
 import net.minecraft.server.v1_16_R3.TileEntitySign;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
@@ -37,7 +38,9 @@ public final class HSign_v1_16_R3 extends HSign {
     @Override
     public void open(@Nonnull Player player) {
         Objects.requireNonNull(player, "player cannot be null!");
-        BlockPosition blockPosition = new BlockPosition(player.getLocation().getBlockX(), 1, player.getLocation().getBlockZ());
+
+        Location location = player.getLocation();
+        BlockPosition blockPosition = new BlockPosition(location.getBlockX(), LOWEST_Y_AXIS + 1, location.getBlockZ());
 
         PacketPlayOutBlockChange packet = new PacketPlayOutBlockChange(((CraftWorld) player.getWorld()).getHandle(), blockPosition);
         packet.block = CraftMagicNumbers.getBlock(this.type).getBlockData();
