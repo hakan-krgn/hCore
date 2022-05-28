@@ -5,13 +5,13 @@
     <parent>
         <artifactId>hCore</artifactId>
         <groupId>com.hakan</groupId>
-        <version>0.3.2</version>
+        <version>0.3.3</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>nms</artifactId>
     <packaging>pom</packaging>
-    <version>0.3.2</version>
+    <version>0.3.3</version>
 
     <modules>
         <module>1_8_R3</module>
@@ -36,7 +36,7 @@
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>api</artifactId>
-            <version>0.3.2</version>
+            <version>0.3.3</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
