@@ -172,9 +172,6 @@ public final class HScheduler {
         BukkitRunnable bukkitRunnable = new BukkitRunnable() {
             @Override
             public void run() {
-                if (this.isCancelled())
-                    return;
-
                 for (Function<BukkitRunnable, Boolean> freezeFilter : freezeFilters) {
                     if (freezeFilter.apply(this)) {
                         return;
