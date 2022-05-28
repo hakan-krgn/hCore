@@ -47,18 +47,10 @@ public final class HNPCUtils_v1_10_R1 {
     public GameProfile createGameProfile(@Nonnull String name) {
         Objects.requireNonNull(name, "name cannot be null!");
 
-        CompletableFuture<GameProfile> completableFuture = CompletableFuture.supplyAsync(() -> {
-            GameProfile profile = new GameProfile(UUID.randomUUID(), name);
-            HNPCSkin skin = HNPCSkin.from(name);
-            profile.getProperties().put("textures", new Property("textures", skin.getTexture(), skin.getSignature()));
-            return profile;
-        });
-
-        try {
-            return completableFuture.get();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        GameProfile profile = new GameProfile(UUID.randomUUID(), name);
+        HNPCSkin skin = HNPCSkin.from(name);
+        profile.getProperties().put("textures", new Property("textures", skin.getTexture(), skin.getSignature()));
+        return profile;
     }
 
     /**
