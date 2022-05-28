@@ -128,6 +128,7 @@ public final class BaseCommandData {
     /**
      * Adds sub command.
      *
+     * @param subCommand SubCommandData class.
      * @return Instance of this class.
      */
     @Nonnull
@@ -140,6 +141,7 @@ public final class BaseCommandData {
     /**
      * Removes sub command.
      *
+     * @param subCommand SubCommandData class.
      * @return Instance of this class.
      */
     @Nonnull
@@ -152,6 +154,7 @@ public final class BaseCommandData {
     /**
      * Finds sub command by arguments.
      *
+     * @param subCommands Sub command args.
      * @return SubCommandData as Optional.
      */
     @Nonnull

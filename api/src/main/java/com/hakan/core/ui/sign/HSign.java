@@ -102,6 +102,7 @@ public abstract class HSign {
      *
      * @param player Player.
      * @param packet Packet.
+     * @param <T>    Packet type.
      */
     public abstract <T> void listen(@Nonnull Player player, @Nonnull T packet);
 }

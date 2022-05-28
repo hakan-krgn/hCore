@@ -20,14 +20,19 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+/**
+ * HYaml class to create
+ * and get yaml files.
+ */
 public final class HYaml {
 
     /**
      * Creates file and include resource to in it.
      *
-     * @param file         File
-     * @param resourceName resource from resources
-     * @return HYaml class
+     * @param plugin       Plugin instance.
+     * @param file         File.
+     * @param resourceName Resource from resources.
+     * @return HYaml class.
      */
     @Nonnull
     public static HYaml create(@Nonnull JavaPlugin plugin, @Nonnull File file, @Nonnull String resourceName) {
@@ -58,9 +63,10 @@ public final class HYaml {
     /**
      * Creates file and include resource to in it.
      *
-     * @param path         File url
-     * @param resourceName resource from resources
-     * @return HYaml class
+     * @param plugin       Plugin instance.
+     * @param path         File url.
+     * @param resourceName resource from resources.
+     * @return HYaml class.
      */
     @Nonnull
     public static HYaml create(@Nonnull JavaPlugin plugin, @Nonnull String path, @Nonnull String resourceName) {
@@ -172,7 +178,7 @@ public final class HYaml {
     /**
      * Deletes yml.
      *
-     * @return If yml removes successfully, returns true
+     * @return If yml removes successfully, returns true.
      */
     public boolean delete() {
         return this.file.delete();

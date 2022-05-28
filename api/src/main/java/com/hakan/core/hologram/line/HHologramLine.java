@@ -22,7 +22,8 @@ public final class HHologramLine {
     /**
      * Gets new instance of this class.
      *
-     * @param hHologram Instance of HHologram class.
+     * @param hHologram Hologram.
+     * @param text      Text of line.
      */
     public HHologramLine(@Nonnull HHologram hHologram, @Nonnull String text) {
         this.hHologram = Objects.requireNonNull(hHologram, "hHologram cannot be null!");

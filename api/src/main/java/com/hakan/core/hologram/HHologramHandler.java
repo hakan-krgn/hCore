@@ -14,6 +14,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * HHologramHandler class to handle
+ * all holograms.
+ */
 public final class HHologramHandler {
 
     private static final Map<String, HHologram> holograms = new HashMap<>();

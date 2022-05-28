@@ -263,7 +263,10 @@ public final class HCore {
     /**
      * Creates HInventory with ID.
      *
-     * @param id ID.
+     * @param id    ID.
+     * @param title Title.
+     * @param type  Inventory type.
+     * @param size  Size.
      * @return HInventory.
      */
     @Nonnull

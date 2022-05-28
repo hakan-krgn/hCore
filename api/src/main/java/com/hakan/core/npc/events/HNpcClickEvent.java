@@ -33,7 +33,9 @@ public final class HNpcClickEvent extends Event {
     /**
      * Creates new instance of this class.
      *
-     * @param npc HNPC class.
+     * @param npc    HNPC class.
+     * @param player Player.
+     * @param action Action.
      */
     public HNpcClickEvent(@Nonnull HNPC npc, @Nonnull Player player, @Nonnull HNPC.Action action) {
         this.npc = Objects.requireNonNull(npc, "npc cannot be null!");
