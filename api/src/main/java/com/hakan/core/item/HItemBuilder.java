@@ -186,6 +186,7 @@ public class HItemBuilder {
      * Sets type of item stack.
      *
      * @param type Material type.
+     * @param <T>  This class type.
      * @return This class.
      */
     @Nonnull
@@ -209,6 +210,7 @@ public class HItemBuilder {
      * Sets name of item stack.
      *
      * @param name Name of item stack.
+     * @param <T>  This class type.
      * @return This class.
      */
     @Nonnull
@@ -221,6 +223,7 @@ public class HItemBuilder {
      *
      * @param colored Name is colored.
      * @param name    Name of item stack.
+     * @param <T>     This class type.
      * @return This class.
      */
     @Nonnull
@@ -245,6 +248,7 @@ public class HItemBuilder {
      * Sets lore of item stack.
      *
      * @param lore Lore of item stack.
+     * @param <T>  This class type.
      * @return This class.
      */
     @Nonnull
@@ -256,6 +260,7 @@ public class HItemBuilder {
      * Adds lore to item stack.
      *
      * @param lines Lines to add.
+     * @param <T>   This class type.
      * @return This class.
      */
     @Nonnull
@@ -267,6 +272,7 @@ public class HItemBuilder {
      * Adds lore to item stack.
      *
      * @param lines Lines to add.
+     * @param <T>   This class type.
      * @return This class.
      */
     @Nonnull
@@ -278,7 +284,8 @@ public class HItemBuilder {
      * Sets lore of item stack.
      *
      * @param colored Lore is colored.
-     * @param lore    Lore of item stack
+     * @param lore    Lore of item stack.
+     * @param <T>     This class type.
      * @return This class.
      */
     @Nonnull
@@ -292,6 +299,7 @@ public class HItemBuilder {
      *
      * @param colored Lore is colored.
      * @param lines   Lines to add.
+     * @param <T>     This class type.
      * @return This class.
      */
     @Nonnull
@@ -304,6 +312,7 @@ public class HItemBuilder {
      *
      * @param colored Lore is colored.
      * @param lines   Lines to add.
+     * @param <T>     This class type.
      * @return This class.
      */
     @Nonnull
@@ -330,6 +339,7 @@ public class HItemBuilder {
      * Sets amount of item stack.
      *
      * @param amount Amount of item stack.
+     * @param <T>    This class type.
      * @return This class.
      */
     @Nonnull
@@ -352,6 +362,7 @@ public class HItemBuilder {
      * Sets durability of item stack.
      *
      * @param durability Durability of item stack.
+     * @param <T>        This class type.
      * @return This class.
      */
     @Nonnull
@@ -404,6 +415,7 @@ public class HItemBuilder {
      *
      * @param enchantment Enchantment.
      * @param level       Level.
+     * @param <T>         This class type.
      * @return This class.
      */
     @Nonnull
@@ -416,6 +428,7 @@ public class HItemBuilder {
      * Removes enchantment from item stack.
      *
      * @param enchantment Enchantment.
+     * @param <T>         This class type.
      * @return This class.
      */
     @Nonnull
@@ -449,6 +462,7 @@ public class HItemBuilder {
      * Adds item flags to item stack.
      *
      * @param flags Item flags.
+     * @param <T>   This class type.
      * @return This class.
      */
     @Nonnull
@@ -462,6 +476,7 @@ public class HItemBuilder {
      * Removes item flags from item stack.
      *
      * @param flags Item flags.
+     * @param <T>   This class type.
      * @return This class.
      */
     @Nonnull
@@ -484,6 +499,7 @@ public class HItemBuilder {
      * Sets glow of item stack.
      *
      * @param glow Glow.
+     * @param <T>  This class type.
      * @return This class.
      */
     @Nonnull
@@ -505,6 +521,8 @@ public class HItemBuilder {
      * Sets nbt of item stack.
      *
      * @param nbt NBT.
+     * @param <T> This class type.
+     * @return This class.
      */
     @Nonnull
     public <T extends HItemBuilder> T nbt(@Nonnull String nbt) {

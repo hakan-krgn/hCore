@@ -5,13 +5,13 @@
     <parent>
         <artifactId>hCore</artifactId>
         <groupId>com.hakan</groupId>
-        <version>0.3.1</version>
+        <version>0.3.2</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>bukkit</artifactId>
     <packaging>jar</packaging>
-    <version>0.3.1</version>
+    <version>0.3.2</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -41,14 +41,14 @@
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
-            <version>4.2.1</version>
+            <version>4.2.3</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
-            <version>3.12.10</version>
+            <version>3.12.11</version>
             <scope>compile</scope>
         </dependency>
 
@@ -69,7 +69,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.28</version>
+            <version>8.0.29</version>
             <scope>compile</scope>
             <exclusions>
                 <exclusion>
@@ -84,119 +84,119 @@
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>api</artifactId>
-            <version>0.3.1</version>
+            <version>0.3.2</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_8_R3</artifactId>
-            <version>0.3.1</version>
+            <version>0.3.2</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_9_R1</artifactId>
-            <version>0.3.1</version>
+            <version>0.3.2</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_9_R2</artifactId>
-            <version>0.3.1</version>
+            <version>0.3.2</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_10_R1</artifactId>
-            <version>0.3.1</version>
+            <version>0.3.2</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_11_R1</artifactId>
-            <version>0.3.1</version>
+            <version>0.3.2</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_12_R1</artifactId>
-            <version>0.3.1</version>
+            <version>0.3.2</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_13_R1</artifactId>
-            <version>0.3.1</version>
+            <version>0.3.2</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_13_R2</artifactId>
-            <version>0.3.1</version>
+            <version>0.3.2</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_14_R1</artifactId>
-            <version>0.3.1</version>
+            <version>0.3.2</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_15_R1</artifactId>
-            <version>0.3.1</version>
+            <version>0.3.2</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_16_R1</artifactId>
-            <version>0.3.1</version>
+            <version>0.3.2</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_16_R2</artifactId>
-            <version>0.3.1</version>
+            <version>0.3.2</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_16_R3</artifactId>
-            <version>0.3.1</version>
+            <version>0.3.2</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_17_R1</artifactId>
-            <version>0.3.1</version>
+            <version>0.3.2</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_18_R1</artifactId>
-            <version>0.3.1</version>
+            <version>0.3.2</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.hakan</groupId>
             <artifactId>1_18_R2</artifactId>
-            <version>0.3.1</version>
+            <version>0.3.2</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
@@ -216,4 +216,40 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>deployment</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>3.2.0</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.4.0</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

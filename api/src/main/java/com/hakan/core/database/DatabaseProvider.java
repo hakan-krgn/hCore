@@ -30,6 +30,8 @@ public interface DatabaseProvider<T extends DatabaseObject> {
     /**
      * Gets value from key and value.
      *
+     * @param key   Key.
+     * @param value Value.
      * @return Value.
      */
     @Nullable

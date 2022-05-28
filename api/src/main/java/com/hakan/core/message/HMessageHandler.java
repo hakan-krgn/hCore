@@ -17,6 +17,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * HMessageHandler class to send
+ * action bar, title and boss bar.
+ */
 public final class HMessageHandler {
 
     private static HActionBarHandler actionBarHandler;

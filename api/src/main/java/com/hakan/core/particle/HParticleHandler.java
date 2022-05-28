@@ -9,6 +9,10 @@ import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.Objects;
 
+/**
+ * HParticleHandler class to
+ * send particles to player.
+ */
 public final class HParticleHandler {
 
     private static HParticleWrapper wrapper;

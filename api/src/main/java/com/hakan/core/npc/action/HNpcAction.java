@@ -56,6 +56,9 @@ public final class HNpcAction {
     /**
      * Triggers when anyone
      * clicks the NPC.
+     *
+     * @param player Player.
+     * @param action Action.
      */
     public void onClick(@Nonnull Player player, @Nonnull HNPC.Action action) {
         Objects.requireNonNull(action, "action cannot be null!");

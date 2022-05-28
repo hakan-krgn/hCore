@@ -22,7 +22,11 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
-@SuppressWarnings("unchecked")
+/**
+ * HInventory class to create
+ * inventories easily.
+ */
+@SuppressWarnings({"unchecked"})
 public class HInventory {
 
     private final String id;
@@ -69,9 +73,9 @@ public class HInventory {
     }
 
     /**
-     * Gets bukkit inventory
+     * Gets bukkit inventory.
      *
-     * @return bukkit inventory
+     * @return bukkit inventory.
      */
     @Nonnull
     public final Inventory toInventory() {
@@ -89,9 +93,9 @@ public class HInventory {
     }
 
     /**
-     * Gets title of inventory
+     * Gets title of inventory.
      *
-     * @return Title of inventory
+     * @return Title of inventory.
      */
     @Nonnull
     public final String getTitle() {
@@ -99,9 +103,9 @@ public class HInventory {
     }
 
     /**
-     * Gets type of inventory
+     * Gets type of inventory.
      *
-     * @return enum from InventoryType
+     * @return enum from InventoryType.
      */
     @Nonnull
     public final InventoryType getInventoryType() {
@@ -109,29 +113,30 @@ public class HInventory {
     }
 
     /**
-     * Gets size of inventory
+     * Gets size of inventory.
      *
-     * @return Size of inventory
+     * @return Size of inventory.
      */
     public final int getSize() {
         return this.inventory.getSize() / 9;
     }
 
     /**
-     * Checks UI contains option
+     * Checks UI contains option.
      *
-     * @param option enum HInventory.Option
-     * @return If UI contains option, returns true
+     * @param option enum HInventory.Option.
+     * @return If UI contains option, returns true.
      */
     public final boolean hasOption(@Nonnull Option option) {
         return this.options.contains(Objects.requireNonNull(option, "option cannot be null!"));
     }
 
     /**
-     * Adds option to UI
+     * Adds option to UI.
      *
-     * @param option enum HInventory.Option
-     * @return instance of this class
+     * @param <T>    HInventory type.
+     * @param option enum HInventory.Option.
+     * @return instance of this class.
      */
     @Nonnull
     public final <T extends HInventory> T addOption(@Nonnull Option option) {
@@ -140,10 +145,11 @@ public class HInventory {
     }
 
     /**
-     * Removes option from UI
+     * Removes option from UI.
      *
-     * @param option enum HInventory.Option
-     * @return instance of this class
+     * @param <T>    HInventory type.
+     * @param option enum HInventory.Option.
+     * @return instance of this class.
      */
     @Nonnull
     public final <T extends HInventory> T removeOption(@Nonnull Option option) {
@@ -155,7 +161,7 @@ public class HInventory {
      * If you want to use pagination, you
      * need pagination instance.
      *
-     * @return Pagination instance
+     * @return Pagination instance.
      */
     @Nonnull
     public final Pagination getPagination() {
@@ -163,10 +169,10 @@ public class HInventory {
     }
 
     /**
-     * Finds clickable item from slot that used parameter
+     * Finds clickable item from slot that used parameter.
      *
-     * @param slot Sot
-     * @return Clickable item
+     * @param slot Slot.
+     * @return Clickable item.
      */
     @Nonnull
     public final Optional<ClickableItem> findItem(int slot) {
@@ -174,10 +180,10 @@ public class HInventory {
     }
 
     /**
-     * Gets clickable item from slot that used parameter
+     * Gets clickable item from slot that used parameter.
      *
-     * @param slot Sot
-     * @return Clickable item
+     * @param slot Slot.
+     * @return Clickable item.
      */
     @Nonnull
     public final ClickableItem getItem(int slot) {
@@ -185,21 +191,22 @@ public class HInventory {
     }
 
     /**
-     * Checks there is a clickable item at slot
+     * Checks there is a clickable item at slot.
      *
-     * @param slot Sot
-     * @return return if there is item in slot
+     * @param slot Slot.
+     * @return return if there is item in slot.
      */
     public final boolean hasItem(int slot) {
         return this.items.containsKey(slot);
     }
 
     /**
-     * Sets clickable item to slot
+     * Sets clickable item to slot.
      *
-     * @param slot          Slot
-     * @param clickableItem Clickable item
-     * @return instance of this class
+     * @param <T>           HInventory type.
+     * @param slot          Slot.
+     * @param clickableItem Clickable item.
+     * @return instance of this class.
      */
     @Nonnull
     public final <T extends HInventory> T setItem(int slot, @Nullable ClickableItem clickableItem) {
@@ -209,12 +216,13 @@ public class HInventory {
     }
 
     /**
-     * Sets clickable item to slot
+     * Sets clickable item to slot.
      *
-     * @param slot      Slot
-     * @param itemStack Itemstack
-     * @param consumer  What will happen when player click on item
-     * @return instance of this class
+     * @param <T>       HInventory type.
+     * @param slot      Slot.
+     * @param itemStack Itemstack.
+     * @param consumer  What will happen when player click on item.
+     * @return instance of this class.
      */
     @Nonnull
     public final <T extends HInventory> T setItem(int slot, @Nonnull ItemStack itemStack, @Nullable Consumer<InventoryClickEvent> consumer) {
@@ -222,11 +230,12 @@ public class HInventory {
     }
 
     /**
-     * Sets item to slot
+     * Sets item to slot.
      *
-     * @param slot      Slot
-     * @param itemStack Itemstack
-     * @return instance of this class
+     * @param <T>       HInventory type.
+     * @param slot      Slot.
+     * @param itemStack Itemstack.
+     * @return instance of this class.
      */
     @Nonnull
     public final <T extends HInventory> T setItem(int slot, @Nonnull ItemStack itemStack) {
@@ -234,10 +243,11 @@ public class HInventory {
     }
 
     /**
-     * Sets item to slot
+     * Sets item to slot.
      *
-     * @param page Page
-     * @return instance of this class
+     * @param <T>  HInventory type.
+     * @param page Page.
+     * @return instance of this class.
      */
     @Nonnull
     public final <T extends HInventory> T fillPage(@Nonnull Page page) {
@@ -246,10 +256,11 @@ public class HInventory {
     }
 
     /**
-     * Sets item to slot
+     * Sets item to slot.
      *
-     * @param pageNum Page number
-     * @return instance of this class
+     * @param <T>     HInventory type.
+     * @param pageNum Page number.
+     * @return instance of this class.
      */
     @Nonnull
     public final <T extends HInventory> T fillPage(int pageNum) {
@@ -258,10 +269,11 @@ public class HInventory {
     }
 
     /**
-     * Removes item from slot
+     * Removes item from slot.
      *
-     * @param slot Slot
-     * @return instance of this class
+     * @param <T>  HInventory type.
+     * @param slot Slot.
+     * @return instance of this class.
      */
     @Nonnull
     public final <T extends HInventory> T removeItem(int slot) {
@@ -271,11 +283,12 @@ public class HInventory {
     }
 
     /**
-     * Sets the slots with clickable item
+     * Sets the slots with clickable item.
      *
-     * @param clickableItem    ClickableItem object
-     * @param replaceWithItems If this param is true, it replaces all items with clickable item
-     * @return instance of this class
+     * @param <T>              HInventory type.
+     * @param clickableItem    ClickableItem object.
+     * @param replaceWithItems If this param is true, it replaces all items with clickable item.
+     * @return instance of this class.
      */
     @Nonnull
     public final <T extends HInventory> T fill(@Nullable ClickableItem clickableItem, boolean replaceWithItems) {
@@ -287,10 +300,11 @@ public class HInventory {
     }
 
     /**
-     * Sets all the slots with clickable item
+     * Sets all the slots with clickable item.
      *
-     * @param clickableItem clickable item
-     * @return instance of this class
+     * @param <T>           HInventory type.
+     * @param clickableItem clickable item.
+     * @return instance of this class.
      */
     @Nonnull
     public final <T extends HInventory> T fill(@Nullable ClickableItem clickableItem) {
@@ -298,10 +312,12 @@ public class HInventory {
     }
 
     /**
-     * Sets the slots with itemstack
+     * Sets the slots with itemstack.
      *
-     * @param itemStack        Itemstack that you want
-     * @param replaceWithItems If this param is true, it replaces all items with itemstack
+     * @param <T>              HInventory type.
+     * @param itemStack        Itemstack that you want.
+     * @param replaceWithItems If this param is true, it replaces all items with itemstack.
+     * @return instance of this class.
      */
     @Nonnull
     public final <T extends HInventory> T fill(@Nonnull ItemStack itemStack, boolean replaceWithItems) {
@@ -309,10 +325,11 @@ public class HInventory {
     }
 
     /**
-     * Sets all the slots with itemstack
+     * Sets all the slots with itemstack.
      *
-     * @param itemStack Itemstack that you want
-     * @return instance of this class
+     * @param <T>       HInventory type.
+     * @param itemStack Itemstack that you want.
+     * @return instance of this class.
      */
     @Nonnull
     public final <T extends HInventory> T fill(@Nonnull ItemStack itemStack) {
@@ -320,11 +337,12 @@ public class HInventory {
     }
 
     /**
-     * Sets the slots with material
+     * Sets the slots with material.
      *
-     * @param material         Item type that you want
-     * @param replaceWithItems If this param is true, it replaces all items with material
-     * @return instance of this class
+     * @param <T>              HInventory type.
+     * @param material         Item type that you want.
+     * @param replaceWithItems If this param is true, it replaces all items with material.
+     * @return instance of this class.
      */
     @Nonnull
     public final <T extends HInventory> T fillMaterial(@Nonnull Material material, boolean replaceWithItems) {
@@ -332,10 +350,11 @@ public class HInventory {
     }
 
     /**
-     * Sets all the slots with material
+     * Sets all the slots with material.
      *
-     * @param material Item type that you want
-     * @return instance of this class
+     * @param <T>      HInventory type.
+     * @param material Item type that you want.
+     * @return instance of this class.
      */
     @Nonnull
     public final <T extends HInventory> T fillMaterial(@Nonnull Material material) {
@@ -343,10 +362,11 @@ public class HInventory {
     }
 
     /**
-     * Sets the slots with air
+     * Sets the slots with air.
      *
-     * @param replaceWithItems If this param is true, it replaces all items with air
-     * @return instance of this class
+     * @param <T>              HInventory type.
+     * @param replaceWithItems If this param is true, it replaces all items with air.
+     * @return instance of this class.
      */
     @Nonnull
     public final <T extends HInventory> T fillAir(boolean replaceWithItems) {
@@ -354,9 +374,10 @@ public class HInventory {
     }
 
     /**
-     * Sets all the slots with air
+     * Sets all the slots with air.
      *
-     * @return instance of this class
+     * @param <T> HInventory type.
+     * @return instance of this class.
      */
     @Nonnull
     public final <T extends HInventory> T fillAir() {
@@ -364,10 +385,11 @@ public class HInventory {
     }
 
     /**
-     * Clears inventory
+     * Clears inventory.
      *
-     * @param replaceWithItems If this param is true, it replaces all items with null
-     * @return instance of this class
+     * @param <T>              HInventory type.
+     * @param replaceWithItems If this param is true, it replaces all items with null.
+     * @return instance of this class.
      */
     @Nonnull
     public final <T extends HInventory> T fillNull(boolean replaceWithItems) {
@@ -375,9 +397,10 @@ public class HInventory {
     }
 
     /**
-     * Clears inventory
+     * Clears inventory.
      *
-     * @return instance of this class
+     * @param <T> HInventory type.
+     * @return instance of this class.
      */
     @Nonnull
     public final <T extends HInventory> T fillNull() {
@@ -385,9 +408,11 @@ public class HInventory {
     }
 
     /**
-     * Reopens the inventory for player
+     * Reopens the inventory for player.
      *
-     * @return instance of this class
+     * @param player Player.
+     * @param <T>    HInventory type.
+     * @return instance of this class.
      */
     @Nonnull
     public final <T extends HInventory> T refresh(@Nonnull Player player) {
@@ -397,9 +422,11 @@ public class HInventory {
 
     /**
      * Open inventory to player also put player
-     * to hInventoryMap and triggers onOpen method
+     * to hInventoryMap and triggers onOpen method.
      *
-     * @return instance of this class
+     * @param player Player.
+     * @param <T>    HInventory type.
+     * @return instance of this class.
      */
     @Nonnull
     public final <T extends HInventory> T open(@Nonnull Player player) {
@@ -417,9 +444,11 @@ public class HInventory {
 
     /**
      * Close inventory of player also if UI is not locked
-     * removes from hInventoryMap and triggers onClose method
+     * removes from hInventoryMap and triggers onClose method.
      *
-     * @return instance of this class
+     * @param player Player.
+     * @param <T>    HInventory type.
+     * @return instance of this class.
      */
     @Nonnull
     public final <T extends HInventory> T close(@Nonnull Player player) {
@@ -440,6 +469,7 @@ public class HInventory {
      * This method run when inventory
      * opened to any player.
      *
+     * @param player     Player.
      * @param hInventory This class.
      */
     public void onOpen(@Nonnull HInventory hInventory, @Nonnull Player player) {
@@ -450,6 +480,7 @@ public class HInventory {
      * This method run when inventory
      * closed from any player.
      *
+     * @param player     Player.
      * @param hInventory This class.
      */
     public void onClose(@Nonnull HInventory hInventory, @Nonnull Player player) {
@@ -458,7 +489,7 @@ public class HInventory {
 
 
     /**
-     * Option enums for UI
+     * Option enums for UI.
      */
     public enum Option {
         CLOSABLE,

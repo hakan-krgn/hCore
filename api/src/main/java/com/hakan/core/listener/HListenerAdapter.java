@@ -129,6 +129,8 @@ public final class HListenerAdapter<T extends Event> implements Listener, EventE
 
     /**
      * Registers this listener to server.
+     *
+     * @return This class.
      */
     @Nonnull
     public HListenerAdapter<T> register() {
@@ -138,6 +140,8 @@ public final class HListenerAdapter<T extends Event> implements Listener, EventE
 
     /**
      * Unregisters this listener from server.
+     *
+     * @return This class.
      */
     @Nonnull
     public HListenerAdapter<T> unregister() {
