@@ -91,9 +91,21 @@ public class HSkullBuilder extends HItemBuilder {
      * @return instance of this class.
      */
     @Nonnull
-    public HSkullBuilder texture(@Nullable String texture) {
+    public HSkullBuilder shortTexture(@Nullable String texture) {
         String url = String.format("{textures:{SKIN:{url:\"%s\"}}}", "https://textures.minecraft.net/texture/" + texture);
         this.texture = new String(Base64.getEncoder().encode(url.getBytes()));
+        return this;
+    }
+
+    /**
+     * Sets texture of skull.
+     *
+     * @param texture skull texture.
+     * @return instance of this class.
+     */
+    @Nonnull
+    public HSkullBuilder texture(@Nullable String texture) {
+        this.texture = texture;
         return this;
     }
 

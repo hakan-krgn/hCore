@@ -128,10 +128,12 @@ public final class HNPC_v1_8_R3 extends HNPC {
         List<Player> players = super.renderer.getShownViewersAsPlayer();
 
         this.hide(players);
-        this.npc = this.utils.createNPC(skin, super.getLocation());
-        this.armorStand = this.utils.createNameHider(super.getLocation());
-        this.npc.passenger = this.armorStand;
-        HCore.syncScheduler().after(10).run(() -> this.show(players));
+        HCore.asyncScheduler().run(() -> {
+            this.npc = this.utils.createNPC(skin, super.getLocation());
+            this.armorStand = this.utils.createNameHider(super.getLocation());
+            this.npc.passenger = this.armorStand;
+            HCore.syncScheduler().after(10).run(() -> this.show(players));
+        });
 
         return this;
     }
