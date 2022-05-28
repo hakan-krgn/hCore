@@ -6,10 +6,13 @@ import com.google.gson.JsonParser;
 import javax.annotation.Nonnull;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Skull data class to
@@ -90,6 +93,7 @@ public final class HSkullData {
 
     private final String playerName;
     private final String texture;
+    private final String shortTexture;
 
     /**
      * Creates a new skull data.
@@ -100,7 +104,10 @@ public final class HSkullData {
     public HSkullData(@Nonnull String playerName, @Nonnull String texture) {
         this.playerName = Objects.requireNonNull(playerName, "player name cannot be null!");
         this.texture = Objects.requireNonNull(texture, "texture cannot be null!");
-        skullDataMap.put(playerName, this);
+
+        Matcher matcher = Pattern.compile("\"(http://textures\\.minecraft\\.net/texture/)(?<shortTexture>\\w+)\"")
+                .matcher(new String(Base64.getDecoder().decode(texture.getBytes())));
+        this.shortTexture = matcher.find() ? matcher.group("shortTexture") : "";
     }
 
     /**
@@ -121,5 +128,16 @@ public final class HSkullData {
     @Nonnull
     public String getTexture() {
         return this.texture;
+    }
+
+    /**
+     * Gets the short texture from
+     * decoded texture.
+     *
+     * @return Short texture.
+     */
+    @Nonnull
+    public String getShortTexture() {
+        return this.shortTexture;
     }
 }
