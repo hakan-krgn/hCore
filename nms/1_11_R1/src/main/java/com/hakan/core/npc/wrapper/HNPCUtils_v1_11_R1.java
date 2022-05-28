@@ -30,7 +30,6 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * HNPCUtils_v1_8_R3 class.
