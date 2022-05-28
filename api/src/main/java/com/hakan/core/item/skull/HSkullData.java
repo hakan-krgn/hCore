@@ -4,7 +4,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import javax.annotation.Nonnull;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.HashMap;
@@ -72,6 +71,8 @@ public final class HSkullData {
     @Nonnull
     public static HSkullData register(@Nonnull String playerName) {
         try {
+            Objects.requireNonNull(playerName, "player name cannot be null!");
+
             URL url_0 = new URL("https://api.mojang.com/users/profiles/minecraft/" + playerName);
             InputStreamReader reader_0 = new InputStreamReader(url_0.openStream());
             String uuid = new JsonParser().parse(reader_0).getAsJsonObject().get("id").getAsString();
@@ -81,8 +82,8 @@ public final class HSkullData {
             JsonObject textureProperty = new JsonParser().parse(read).getAsJsonObject().get("properties").getAsJsonArray().get(0).getAsJsonObject();
 
             return register(playerName, textureProperty.get("value").getAsString());
-        } catch (IOException e) {
-            throw new IllegalArgumentException("skull texture not found!");
+        } catch (Exception e) {
+            return new HSkullData("", "");
         }
     }
 
