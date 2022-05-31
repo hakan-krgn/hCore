@@ -11,7 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>api</artifactId>
     <packaging>jar</packaging>
-    <version>R</version>
+    <version>0.3.5</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
