@@ -2,7 +2,6 @@ package com.hakan.core.packet;
 
 import com.hakan.core.HCore;
 import com.hakan.core.packet.player.HPacketPlayer;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -21,28 +20,18 @@ import java.util.Optional;
  */
 public final class HPacketHandler {
 
-    private static Class<?> packetManagerClass;
     private static final Map<Player, HPacketPlayer> packetPlayers = new HashMap<>();
 
     /**
      * Initializes the packet system.
      */
     public static void initialize() {
-        try {
-            Class<?> clazz = Class.forName("com.hakan.core.packet.player.HPacketPlayer_" + HCore.getVersionString());
-            if (HPacketPlayer.class.isAssignableFrom(clazz))
-                HPacketHandler.packetManagerClass = clazz;
-
-            HCore.registerEvent(PlayerJoinEvent.class)
-                    .priority(EventPriority.LOWEST)
-                    .consume(event -> HPacketHandler.register(event.getPlayer()));
-            HCore.registerEvent(PlayerQuitEvent.class)
-                    .priority(EventPriority.LOWEST)
-                    .consume(event -> HPacketHandler.unregister(event.getPlayer()));
-        } catch (Exception e) {
-            Bukkit.getLogger().warning("Could not initialize packet system. Probably you are using an unsupported version(" + HCore.getVersionString() + ")");
-            e.printStackTrace();
-        }
+        HCore.registerEvent(PlayerJoinEvent.class)
+                .priority(EventPriority.LOWEST)
+                .consume(event -> HPacketHandler.register(event.getPlayer()));
+        HCore.registerEvent(PlayerQuitEvent.class)
+                .priority(EventPriority.LOWEST)
+                .consume(event -> HPacketHandler.unregister(event.getPlayer()));
     }
 
 
@@ -114,10 +103,11 @@ public final class HPacketHandler {
      * @param player Player.
      */
     public static void register(@Nonnull Player player) {
-        try {
-            Objects.requireNonNull(player, "player cannot be null!");
+        Objects.requireNonNull(player, "player cannot be null!");
 
-            HPacketPlayer packetPlayer = (HPacketPlayer) HPacketHandler.packetManagerClass.getConstructor(Player.class).newInstance(player);
+        try {
+            HPacketPlayer packetPlayer = (HPacketPlayer) Class.forName("com.hakan.core.packet.player.HPacketPlayer_" + HCore.getVersionString())
+                    .getConstructor(Player.class).newInstance(player);
             HPacketHandler.packetPlayers.put(player, packetPlayer);
 
             packetPlayer.register();
