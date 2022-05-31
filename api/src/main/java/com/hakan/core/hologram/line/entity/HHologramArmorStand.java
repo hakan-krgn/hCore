@@ -54,5 +54,4 @@ public interface HHologramArmorStand {
      * @param players Players who can't see line.
      */
     void hide(@Nonnull List<Player> players);
-
 }

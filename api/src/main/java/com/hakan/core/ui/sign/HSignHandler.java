@@ -2,7 +2,6 @@ package com.hakan.core.ui.sign;
 
 import com.hakan.core.HCore;
 import com.hakan.core.packet.event.PacketEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -21,31 +20,21 @@ import java.util.UUID;
  */
 public final class HSignHandler {
 
-    private static Class<?> signClass;
     private static final Map<UUID, HSign> signMap = new HashMap<>();
 
     /**
      * Initializes sign system.
      */
     public static void initialize() {
-        try {
-            Class<?> clazz = Class.forName("com.hakan.core.ui.sign.wrapper.HSign_" + HCore.getVersionString());
-            if (HSign.class.isAssignableFrom(clazz)) {
-                HSignHandler.signClass = clazz;
-            }
-
-            HCore.registerEvent(PacketEvent.class)
-                    .consume(event -> {
-                        if (!event.getPacket().toString().contains("PacketPlayInUpdateSign"))
-                            return;
-                        HSignHandler.findByPlayer(event.getPlayer())
-                                .ifPresent(hSign -> hSign.listen(event.getPlayer(), event.getPacket()));
-                    });
-        } catch (Exception e) {
-            Bukkit.getLogger().warning("Could not initialize sign system. Probably you are using an unsupported version. (" + HCore.getVersionString() + ")");
-            e.printStackTrace();
-        }
+        HCore.registerEvent(PacketEvent.class)
+                .consume(event -> {
+                    if (!event.getPacket().toString().contains("PacketPlayInUpdateSign"))
+                        return;
+                    HSignHandler.findByPlayer(event.getPlayer())
+                            .ifPresent(hSign -> hSign.listen(event.getPlayer(), event.getPacket()));
+                });
     }
+
 
     /**
      * Gets content as safe.
@@ -139,7 +128,6 @@ public final class HSignHandler {
      */
     @Nonnull
     public static HSign create(@Nonnull String... lines) {
-        Objects.requireNonNull(lines, "lines cannot be null!");
         try {
             return create(Material.valueOf("SIGN_POST"), lines);
         } catch (Exception e) {
@@ -160,7 +148,8 @@ public final class HSignHandler {
         Objects.requireNonNull(lines, "lines cannot be null!");
 
         try {
-            return (HSign) HSignHandler.signClass.getConstructor(Material.class, String[].class).newInstance(type, lines);
+            return (HSign) Class.forName("com.hakan.core.ui.sign.wrapper.HSign_" + HCore.getVersionString())
+                    .getConstructor(Material.class, String[].class).newInstance(type, lines);
         } catch (Exception e) {
             throw new NullPointerException(e.getMessage());
         }

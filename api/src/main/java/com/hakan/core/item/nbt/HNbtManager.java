@@ -49,5 +49,4 @@ public interface HNbtManager {
      */
     @Nonnull
     String get(@Nonnull ItemStack itemStack);
-
 }

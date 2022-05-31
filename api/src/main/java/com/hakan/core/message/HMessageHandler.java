@@ -31,15 +31,17 @@ public final class HMessageHandler {
      * Initializes message api.
      */
     public static void initialize() {
-        try {
-            String version = HCore.getVersionString();
+        String version = HCore.getVersionString();
 
-            HMessageHandler.actionBarHandler = (HActionBarHandler) Class.forName("com.hakan.core.message.actionbar.HActionBarHandler_" + version).getConstructor().newInstance();
-            HMessageHandler.titleHandler = (HTitleHandler) Class.forName("com.hakan.core.message.title.HTitleHandler_" + version).getConstructor().newInstance();
+        try {
+            HMessageHandler.actionBarHandler = (HActionBarHandler) Class.forName("com.hakan.core.message.actionbar.HActionBarHandler_" + version)
+                    .getConstructor().newInstance();
+            HMessageHandler.titleHandler = (HTitleHandler) Class.forName("com.hakan.core.message.title.HTitleHandler_" + version)
+                    .getConstructor().newInstance();
             HMessageHandler.bossBars = new ArrayList<>();
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Could not initialize message system. Probably you are using an unsupported version. (" + HCore.getVersionString() + ")");
+            System.out.println("Could not initialize message system. Probably you are using an unsupported version. (" + version + ")");
         }
     }
 
