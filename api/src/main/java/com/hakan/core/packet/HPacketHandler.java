@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * HPacketHandler class.
@@ -83,6 +84,28 @@ public final class HPacketHandler {
     @Nonnull
     public static Collection<HPacketPlayer> getValues() {
         return HPacketHandler.packetPlayers.values();
+    }
+
+    /**
+     * Finds packet player.
+     *
+     * @param player Player.
+     * @return Packet player.
+     */
+    @Nonnull
+    public static Optional<HPacketPlayer> findByPlayer(@Nonnull Player player) {
+        return Optional.ofNullable(HPacketHandler.packetPlayers.get(Objects.requireNonNull(player, "player cannot be null!")));
+    }
+
+    /**
+     * Gets packet player.
+     *
+     * @param player Player.
+     * @return Packet player.
+     */
+    @Nonnull
+    public static HPacketPlayer getByPlayer(@Nonnull Player player) {
+        return findByPlayer(player).orElseThrow(() -> new NullPointerException("there is no packet player for player: " + player));
     }
 
     /**

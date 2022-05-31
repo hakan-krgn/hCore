@@ -422,6 +422,16 @@ public final class HCore {
      */
 
     /**
+     * Sends packets to player.
+     *
+     * @param player  Player.
+     * @param packets Packets.
+     */
+    public static void sendPacket(@Nonnull Player player, @Nonnull Object... packets) {
+        HPacketHandler.findByPlayer(player).ifPresent(packetPlayer -> packetPlayer.send(packets));
+    }
+
+    /**
      * Sends packet to players
      *
      * @param player Player.
@@ -429,16 +439,6 @@ public final class HCore {
      */
     public static void sendPacket(@Nonnull Player player, @Nonnull Object packet) {
         HCore.sendPacket(player, new Object[]{packet});
-    }
-
-    /**
-     * Sends packets to player.
-     *
-     * @param player  Player.
-     * @param packets Packets.
-     */
-    public static void sendPacket(@Nonnull Player player, @Nonnull Object... packets) {
-        HPacketHandler.getContent().get(Objects.requireNonNull(player, "player cannot be null!")).send(packets);
     }
 
     /**
