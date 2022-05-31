@@ -36,9 +36,11 @@ public final class HPacketPlayer_v1_16_R1 extends HPacketPlayer {
     @Override
     public void send(@Nonnull Object... packets) {
         Objects.requireNonNull(packets, "packets cannot be null!");
-        for (Object packet : packets) {
+
+        if (!super.player.isOnline())
+            return;
+        for (Object packet : packets)
             this.connection.sendPacket((Packet<?>) packet);
-        }
     }
 
     /**
