@@ -17,7 +17,7 @@ from [here](https://github.com/hakan-krgn/hCore/wiki).
 - [`NPC`](https://github.com/hakan-krgn/hCore/wiki/NPC) - NPC system for creating and managing client-side NPCs.
 - [`Database`](https://github.com/hakan-krgn/hCore/wiki/Database) - Database implementation system for multi-database support.
 - [`Hologram`](https://github.com/hakan-krgn/hCore/wiki/Hologram) - Hologram system for creating and managing client-side holograms.
-- [`Scoreboard`](https://github.com/hakan-krgn/hCore/wiki/HScoreboard) - Scoreboard system for creating non-flicker scoreboards.
+- [`Scoreboard`](https://github.com/hakan-krgn/hCore/wiki/Scoreboard) - Scoreboard system for creating non-flicker scoreboards.
 - [`Message`](https://github.com/hakan-krgn/hCore/wiki/Message) - Message system to send title, action-bar or boss-bar to player.
 - [`Packet`](https://github.com/hakan-krgn/hCore/wiki/Packet) - Packet system to listen to the packet and send it to the player.
 - [`Event Subscriber`](https://github.com/hakan-krgn/hCore/wiki/EventSubscriber) - Event subscribe system to register listeners without any class.
@@ -27,9 +27,9 @@ from [here](https://github.com/hakan-krgn/hCore/wiki).
 - [`Inventory`](https://github.com/hakan-krgn/hCore/wiki/Inventory) - Inventory system for creating and opening special inventories for players.
 - [`Sign`](https://github.com/hakan-krgn/hCore/wiki/Sign) - Sign system for receiving input from the player.
 - [`WorldBorder`](https://github.com/hakan-krgn/hCore/wiki/WorldBorder) - WorldBorder system to display WorldBorder client-side.
-- [`ItemBuilder`](https://github.com/hakan-krgn/hCore/wiki/HItemBuilder) - HItemBuilder class for creating item stacks and manage stacks easily.
-- [`Yaml`](https://github.com/hakan-krgn/hCore/wiki/HYaml) - Basic yaml system for creating and manage YAMLs easily.
-- [`Spam`](https://github.com/hakan-krgn/hCore/wiki/HSpam) - Spam system to check if the given ID is spamming.
+- [`ItemBuilder`](https://github.com/hakan-krgn/hCore/wiki/ItemBuilder) - HItemBuilder class for creating item stacks and manage stacks easily.
+- [`Yaml`](https://github.com/hakan-krgn/hCore/wiki/Yaml) - Basic yaml system for creating and manage YAMLs easily.
+- [`Spam`](https://github.com/hakan-krgn/hCore/wiki/Spam) - Spam system to check if the given ID is spamming.
 
 ## How to add it to Maven or Gradle?
 
