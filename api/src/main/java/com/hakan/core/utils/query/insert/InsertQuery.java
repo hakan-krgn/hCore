@@ -53,7 +53,7 @@ public final class InsertQuery extends QueryBuilder {
         this.query.append(" (");
         this.query.append(String.join(", ", this.values.keySet()));
         this.query.append(") VALUES (N");
-        this.query.append(String.join(", ", this.values.values()));
+        this.query.append(String.join(", N", this.values.values()));
         this.query.append(")");
         return this.query.toString();
     }
