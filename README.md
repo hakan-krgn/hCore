@@ -17,6 +17,7 @@ from [here](https://github.com/hakan-krgn/hCore/wiki).
 - [`NPC`](https://github.com/hakan-krgn/hCore/wiki/NPC) - NPC system for creating and managing client-side NPCs.
 - [`Database`](https://github.com/hakan-krgn/hCore/wiki/Database) - Database implementation system for multi-database support.
 - [`Hologram`](https://github.com/hakan-krgn/hCore/wiki/Hologram) - Hologram system for creating and managing client-side holograms.
+- [`HScoreboard`](https://github.com/hakan-krgn/hCore/wiki/HScoreboard) - Scoreboard system for creating non-flicker scoreboards.
 - [`Message`](https://github.com/hakan-krgn/hCore/wiki/Message) - Message system to send title, action-bar or boss-bar to player.
 - [`Packet`](https://github.com/hakan-krgn/hCore/wiki/Packet) - Packet system to listen to the packet and send it to the player.
 - [`Event Subscriber`](https://github.com/hakan-krgn/hCore/wiki/EventSubscriber) - Event subscribe system to register listeners without any class.
