@@ -66,7 +66,7 @@ public final class UpdateQuery extends QueryBuilder {
     @Override
     public String build() {
         this.query.append("UPDATE ").append(this.table).append(" SET ");
-        this.values.forEach((k, v) -> this.query.append(k).append(" = ").append(v).append(", "));
+        this.values.forEach((k, v) -> this.query.append(k).append(" = N'").append(v).append("'").append(", "));
         this.query.delete(this.query.length() - 2, this.query.length());
 
         this.query.append(whereCriteria.getCriteriaQuery());
