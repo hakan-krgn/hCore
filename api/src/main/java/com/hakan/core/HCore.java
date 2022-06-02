@@ -2,6 +2,9 @@ package com.hakan.core;
 
 import com.hakan.core.command.HCommandAdapter;
 import com.hakan.core.command.HCommandHandler;
+import com.hakan.core.database.DatabaseHandler;
+import com.hakan.core.database.DatabaseObject;
+import com.hakan.core.database.DatabaseProvider;
 import com.hakan.core.hologram.HHologram;
 import com.hakan.core.hologram.HHologramHandler;
 import com.hakan.core.item.HItemBuilder;
@@ -1062,6 +1065,47 @@ public final class HCore {
     @Nullable
     public static HHologram deleteHologram(@Nonnull String id) {
         return HHologramHandler.delete(id);
+    }
+
+
+    /*
+    DATABASE
+     */
+
+    /**
+     * Registers database provider.
+     *
+     * @param objectClass Database object class.
+     * @param provider    Database provider.
+     * @param <T>         Database object class.
+     */
+    @Nonnull
+    public static <T extends DatabaseObject> DatabaseProvider<T> registerDatabaseProvider(@Nonnull Class<T> objectClass, @Nonnull DatabaseProvider<T> provider) {
+        return DatabaseHandler.registerProvider(objectClass, provider);
+    }
+
+    /**
+     * Finds database provider.
+     *
+     * @param objectClass Database object class.
+     * @param <T>         Database object class.
+     * @return Database provider.
+     */
+    @Nonnull
+    public static <T extends DatabaseObject> Optional<DatabaseProvider<T>> findDatabaseProvider(@Nonnull Class<T> objectClass) {
+        return DatabaseHandler.findProvider(objectClass);
+    }
+
+    /**
+     * Gets database provider.
+     *
+     * @param objectClass Database object class.
+     * @param <T>         Database object class.
+     * @return Database provider.
+     */
+    @Nonnull
+    public static <T extends DatabaseObject> DatabaseProvider<T> getDatabaseProvider(@Nonnull Class<T> objectClass) {
+        return DatabaseHandler.getProvider(objectClass);
     }
 
 
