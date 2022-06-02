@@ -57,6 +57,7 @@ public final class HScoreboard {
      */
     @Nonnull
     public static Optional<HScoreboard> findByPlayer(@Nonnull Player player) {
+        Objects.requireNonNull(player, "player cannot be null!");
         return HScoreboard.findByUID(player.getUniqueId());
     }
 
@@ -68,6 +69,7 @@ public final class HScoreboard {
      */
     @Nonnull
     public static HScoreboard getByPlayer(@Nonnull Player player) {
+        Objects.requireNonNull(player, "player cannot be null!");
         return HScoreboard.getByUID(player.getUniqueId());
     }
 
@@ -101,6 +103,7 @@ public final class HScoreboard {
      */
     @Nonnull
     public static HScoreboard create(@Nonnull Player player) {
+        Objects.requireNonNull(player, "player cannot be null!");
         return HScoreboard.create(player.getUniqueId());
     }
 

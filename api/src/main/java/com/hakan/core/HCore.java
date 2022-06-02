@@ -24,6 +24,7 @@ import com.hakan.core.packet.HPacketHandler;
 import com.hakan.core.particle.HParticle;
 import com.hakan.core.particle.HParticleHandler;
 import com.hakan.core.scheduler.HScheduler;
+import com.hakan.core.scoreboard.HScoreboard;
 import com.hakan.core.spam.HSpam;
 import com.hakan.core.ui.inventory.HInventory;
 import com.hakan.core.ui.inventory.HInventoryHandler;
@@ -671,6 +672,87 @@ public final class HCore {
      */
     public static HBossBar createBossBar(@Nonnull String title, @Nonnull HBarColor color, @Nonnull HBarStyle style) {
         return HMessageHandler.createBossBar(title, color, style);
+    }
+
+
+    /*
+    SCOREBOARD
+     */
+
+    /**
+     * Gets all scoreboards.
+     *
+     * @return Scoreboard list.
+     */
+    @Nonnull
+    public static Collection<HScoreboard> getScoreboardContent() {
+        return HScoreboard.getContent();
+    }
+
+    /**
+     * Finds a created scoreboard.
+     *
+     * @param player Scoreboard id that you want.
+     * @return Scoreboard from id.
+     */
+    @Nonnull
+    public static Optional<HScoreboard> findScoreboardByPlayer(@Nonnull Player player) {
+        return HScoreboard.findByPlayer(player);
+    }
+
+    /**
+     * Gets a created scoreboard.
+     *
+     * @param player Player.
+     * @return Scoreboard from id.
+     */
+    @Nonnull
+    public static HScoreboard getScoreboardByPlayer(@Nonnull Player player) {
+        return HScoreboard.getByPlayer(player);
+    }
+
+    /**
+     * Finds a created scoreboard.
+     *
+     * @param uid UID of player.
+     * @return Scoreboard from uid.
+     */
+    @Nonnull
+    public static Optional<HScoreboard> findScoreboardByUID(@Nonnull UUID uid) {
+        return HScoreboard.findByUID(uid);
+    }
+
+    /**
+     * Gets a created scoreboard.
+     *
+     * @param uid UID of player.
+     * @return Scoreboard from Uid.
+     */
+    @Nonnull
+    public static HScoreboard getScoreboardByUID(@Nonnull UUID uid) {
+        return HScoreboard.getByUID(uid);
+    }
+
+    /**
+     * Creates new Instance of this class.
+     *
+     * @param player Player.
+     * @return New instance of HScoreboard.
+     */
+    @Nonnull
+    public static HScoreboard createScoreboard(@Nonnull Player player) {
+        return HScoreboard.create(player);
+    }
+
+    /**
+     * Creates new Instance of this class.
+     *
+     * @param uid UID of player.
+     * @return New instance of HScoreboard.
+     */
+    @Nonnull
+    public static HScoreboard createScoreboard(@Nonnull UUID uid) {
+        return HScoreboard.create(uid);
     }
 
 
