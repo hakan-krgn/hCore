@@ -5,13 +5,13 @@
     <parent>
         <artifactId>nms</artifactId>
         <groupId>com.hakan</groupId>
-        <version>0.3.8</version>
+        <version>0.3.9</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>1_16_R1</artifactId>
     <packaging>jar</packaging>
-    <version>0.3.8</version>
+    <version>0.3.9</version>
 
     <properties>
         <maven.compiler.source>16</maven.compiler.source>
