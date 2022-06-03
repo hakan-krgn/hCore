@@ -33,11 +33,13 @@ public final class HSpam {
      */
     public static boolean spam(@Nonnull String id, long time) {
         if (spams.containsKey(id)) {
-            if (spams.get(id) - System.currentTimeMillis() <= 0) spams.remove(id);
-            return true;
+            if (spams.get(id) - System.currentTimeMillis() <= 0) {
+                spams.remove(id);
+                return false;
+            }
         } else {
             spams.put(id, System.currentTimeMillis() + time);
-            return false;
         }
+        return true;
     }
 }
