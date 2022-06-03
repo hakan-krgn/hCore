@@ -4,9 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.hakan.core.HCore;
 import com.hakan.core.npc.HNPC;
 import com.hakan.core.npc.HNPCHandler;
-import com.hakan.core.npc.listeners.HNpcClickListener_v1_18_R1;
 import com.hakan.core.npc.skin.HNPCSkin;
-import com.hakan.core.packet.event.PacketEvent;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.network.protocol.game.*;
 import net.minecraft.server.level.EntityPlayer;
@@ -20,6 +18,8 @@ import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * {@inheritDoc}
@@ -27,7 +27,6 @@ import java.util.*;
 public final class HNPC_v1_18_R1 extends HNPC {
 
     private final HNPCUtils_v1_18_R1 utils;
-    private final HNpcClickListener_v1_18_R1 listener;
     private EntityPlayer npc;
     private EntityArmorStand armorStand;
 
@@ -40,18 +39,18 @@ public final class HNPC_v1_18_R1 extends HNPC {
                          @Nonnull List<String> lines,
                          @Nonnull Set<UUID> viewers,
                          @Nonnull Map<EquipmentType, ItemStack> equipments,
+                         @Nonnull Consumer<HNPC> spawnConsumer,
+                         @Nonnull Consumer<HNPC> deleteConsumer,
+                         @Nonnull BiConsumer<Player, Action> clickBiConsumer,
                          boolean showEveryone) {
-        super(id, location, lines, viewers, equipments, showEveryone);
+        super(id, location, lines, viewers, equipments, spawnConsumer, deleteConsumer, clickBiConsumer, showEveryone);
         super.showEveryone(showEveryone);
 
         this.utils = new HNPCUtils_v1_18_R1();
-        this.listener = new HNpcClickListener_v1_18_R1(this);
 
         this.npc = this.utils.createNPC(skin, location);
         this.armorStand = this.utils.createNameHider(location);
         ((Entity) this.npc).au = ImmutableList.<Entity>builder().add(this.armorStand).build();
-
-        HCore.registerListeners(this.listener);
     }
 
     /**
@@ -186,6 +185,11 @@ public final class HNPC_v1_18_R1 extends HNPC {
         return this;
     }
 
+    @Override
+    public int getInternalEntityID() {
+        return getEntityPlayer().ae();
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -193,8 +197,9 @@ public final class HNPC_v1_18_R1 extends HNPC {
     @Override
     public HNPC delete() {
         HNPCHandler.getContent().remove(super.id);
-        PacketEvent.getHandlerList().unregister(this.listener);
-        super.action.onDelete();
+        HNPCHandler.getNpcIDByEntityID().remove(getInternalEntityID());
+
+        super.action.getDeleteConsumer().accept(this);
         super.hologram.delete();
         super.renderer.delete();
         super.dead = true;
