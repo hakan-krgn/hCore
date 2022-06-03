@@ -22,7 +22,8 @@ public class HNpcEventListener_v1_18_R2 implements HNpcEventListener {
             if (npc == null) return;
 
             Player player = event.getPlayer();
-            if (HCore.spam("hcore_npc_click_" + id + "_" + player.getUniqueId(), 3)) return;
+            if (HCore.spam("hcore_npc_click_" + id + "_" + player.getUniqueId(), npc.getAction().getClickDelay()))
+                return;
 
             if (event.getValue("b").getClass().getName().equals("net.minecraft.network.protocol.game.PacketPlayInUseEntity$1")) {
                 npc.getAction().getClickBiConsumer().accept(player, HNPC.Action.LEFT_CLICK);

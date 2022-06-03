@@ -24,7 +24,8 @@ public class HNpcEventListener_v1_16_R3 implements HNpcEventListener {
             if (npc == null) return;
 
             Player player = event.getPlayer();
-            if (HCore.spam("hcore_npc_click_" + id + "_" + player.getUniqueId(), 3)) return;
+            if (HCore.spam("hcore_npc_click_" + id + "_" + player.getUniqueId(), npc.getAction().getClickDelay()))
+                return;
 
             PacketPlayInUseEntity.EnumEntityUseAction useAction = packet.b();
             if (useAction.equals(PacketPlayInUseEntity.EnumEntityUseAction.ATTACK)) {
