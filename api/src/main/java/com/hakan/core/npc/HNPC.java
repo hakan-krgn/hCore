@@ -47,9 +47,10 @@ public abstract class HNPC {
                 @Nonnull Consumer<HNPC> spawnConsumer,
                 @Nonnull Consumer<HNPC> deleteConsumer,
                 @Nonnull BiConsumer<Player, HNPC.Action> clickBiConsumer,
+                long clickDelay,
                 boolean showEveryone) {
 
-        this.action = new HNpcAction(this, spawnConsumer, deleteConsumer, clickBiConsumer);
+        this.action = new HNpcAction(this, spawnConsumer, deleteConsumer, clickBiConsumer, clickDelay);
 
         this.id = Objects.requireNonNull(id, "id cannot be null!");
         this.hologram = HCore.createHologram("hcore_npc_hologram:" + id, location, viewers);

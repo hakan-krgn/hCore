@@ -30,6 +30,7 @@ public final class HNPCBuilder {
     private Consumer<HNPC> spawnConsumer;
     private Consumer<HNPC> deleteConsumer;
     private BiConsumer<Player, HNPC.Action> clickBiConsumer;
+    private long clickDelay;
 
 
     /**
@@ -183,8 +184,21 @@ public final class HNPCBuilder {
      */
     @Nonnull
     public HNPCBuilder onClick(BiConsumer<Player, HNPC.Action> action) {
+        return onClick(action, 3);
+    }
+
+    /**
+     * Sets click action of npc.
+     *
+     * @param action    action on click.
+     * @param delayInMS delay between clicks
+     * @return HNPCBuilder instance.
+     */
+    @Nonnull
+    public HNPCBuilder onClick(BiConsumer<Player, HNPC.Action> action, long delayInMS) {
         Objects.requireNonNull(action, "action cannot be null!");
         this.clickBiConsumer = action;
+        this.clickDelay = delayInMS <= 0 ? 3 : delayInMS;
         return this;
     }
 
@@ -289,6 +303,7 @@ public final class HNPCBuilder {
                     Consumer.class,
                     Consumer.class,
                     BiConsumer.class,
+                    long.class,
                     boolean.class);
             HNPC npc = (HNPC) constructor.newInstance(this.id,
                     this.skin,
@@ -299,6 +314,7 @@ public final class HNPCBuilder {
                     this.spawnConsumer,
                     this.deleteConsumer,
                     this.clickBiConsumer,
+                    this.clickDelay,
                     this.show);
 
             HNPCHandler.getContent().put(this.id, npc);

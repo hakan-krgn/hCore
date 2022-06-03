@@ -36,8 +36,9 @@ public final class HNPC_v1_13_R2 extends HNPC {
                          @Nonnull Consumer<HNPC> spawnConsumer,
                          @Nonnull Consumer<HNPC> deleteConsumer,
                          @Nonnull BiConsumer<Player, Action> clickBiConsumer,
+                         long clickDelay,
                          boolean showEveryone) {
-        super(id, location, lines, viewers, equipments, spawnConsumer, deleteConsumer, clickBiConsumer, showEveryone);
+        super(id, location, lines, viewers, equipments, spawnConsumer, deleteConsumer, clickBiConsumer, clickDelay, showEveryone);
         super.showEveryone(showEveryone);
 
         this.utils = new HNPCUtils_v1_13_R2();

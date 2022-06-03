@@ -19,6 +19,8 @@ public final class HNpcAction {
     private final Consumer<HNPC> spawnConsumer, deleteConsumer;
     private final BiConsumer<Player, HNPC.Action> clickBiConsumer;
 
+    private final long clickDelay;
+
     /**
      * HNpcAction constructor.
      *
@@ -26,8 +28,9 @@ public final class HNpcAction {
      * @param spawnConsumer
      * @param deleteConsumer
      * @param clickBiConsumer
+     * @param clickDelay
      */
-    public HNpcAction(@Nonnull HNPC hnpc, Consumer<HNPC> spawnConsumer, Consumer<HNPC> deleteConsumer, BiConsumer<Player, HNPC.Action> clickBiConsumer) {
+    public HNpcAction(@Nonnull HNPC hnpc, Consumer<HNPC> spawnConsumer, Consumer<HNPC> deleteConsumer, BiConsumer<Player, HNPC.Action> clickBiConsumer, long clickDelay) {
         this.hnpc = Objects.requireNonNull(hnpc, "HNPC object cannot be null!");
 
         this.spawnConsumer = spawnConsumer == null ? spawn -> {
@@ -36,6 +39,7 @@ public final class HNpcAction {
         } : deleteConsumer;
         this.clickBiConsumer = clickBiConsumer == null ? (player, action) -> {
         } : clickBiConsumer;
+        this.clickDelay = clickDelay;
     }
 
     /**
@@ -58,5 +62,9 @@ public final class HNpcAction {
 
     public Consumer<HNPC> getSpawnConsumer() {
         return spawnConsumer;
+    }
+
+    public long getClickDelay() {
+        return clickDelay;
     }
 }
