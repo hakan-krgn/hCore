@@ -4,11 +4,14 @@ import com.hakan.core.HCore;
 import com.hakan.core.npc.skin.HNPCSkin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Constructor;
 import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * HNPCBuilder class to build
@@ -23,6 +26,11 @@ public final class HNPCBuilder {
     private Set<UUID> viewers;
     private List<String> lines;
     private Map<HNPC.EquipmentType, ItemStack> equipments;
+
+    private Consumer<HNPC> spawnConsumer;
+    private Consumer<HNPC> deleteConsumer;
+    private BiConsumer<Player, HNPC.Action> clickBiConsumer;
+
 
     /**
      * Constructor to create builder.
@@ -168,6 +176,45 @@ public final class HNPCBuilder {
     }
 
     /**
+     * Sets click action of npc.
+     *
+     * @param action action on click.
+     * @return HNPCBuilder instance.
+     */
+    @Nonnull
+    public HNPCBuilder onClick(BiConsumer<Player, HNPC.Action> action) {
+        Objects.requireNonNull(action, "action cannot be null!");
+        this.clickBiConsumer = action;
+        return this;
+    }
+
+    /**
+     * Sets click action of npc.
+     *
+     * @param action action on spawn.
+     * @return HNPCBuilder instance.
+     */
+    @Nonnull
+    public HNPCBuilder onSpawn(Consumer<HNPC> action) {
+        Objects.requireNonNull(action, "action cannot be null!");
+        this.spawnConsumer = action;
+        return this;
+    }
+
+    /**
+     * Sets click action of npc.
+     *
+     * @param action action on delete.
+     * @return HNPCBuilder instance.
+     */
+    @Nonnull
+    public HNPCBuilder onDelete(Consumer<HNPC> action) {
+        Objects.requireNonNull(action, "action cannot be null!");
+        this.deleteConsumer = action;
+        return this;
+    }
+
+    /**
      * Sets skin of npc.
      *
      * @param skin Skin.
@@ -239,6 +286,9 @@ public final class HNPCBuilder {
                     List.class,
                     Set.class,
                     Map.class,
+                    Consumer.class,
+                    Consumer.class,
+                    BiConsumer.class,
                     boolean.class);
             HNPC npc = (HNPC) constructor.newInstance(this.id,
                     this.skin,
@@ -246,9 +296,13 @@ public final class HNPCBuilder {
                     this.lines,
                     this.viewers,
                     this.equipments,
+                    this.spawnConsumer,
+                    this.deleteConsumer,
+                    this.clickBiConsumer,
                     this.show);
 
             HNPCHandler.getContent().put(this.id, npc);
+            HNPCHandler.getNpcIDByEntityID().put(npc.getInternalEntityID(), npc.getId());
 
             return npc;
         } catch (Exception e) {

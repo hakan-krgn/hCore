@@ -1,14 +1,12 @@
 package com.hakan.core.npc.action;
 
 import com.hakan.core.npc.HNPC;
-import com.hakan.core.npc.events.HNpcClickEvent;
-import com.hakan.core.npc.events.HNpcDeleteEvent;
-import com.hakan.core.npc.events.HNpcSpawnEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * HNpcAction class to
@@ -18,13 +16,26 @@ public final class HNpcAction {
 
     private final HNPC hnpc;
 
+    private final Consumer<HNPC> spawnConsumer, deleteConsumer;
+    private final BiConsumer<Player, HNPC.Action> clickBiConsumer;
+
     /**
      * HNpcAction constructor.
      *
-     * @param hnpc HNPC object.
+     * @param hnpc            HNPC object.
+     * @param spawnConsumer
+     * @param deleteConsumer
+     * @param clickBiConsumer
      */
-    public HNpcAction(@Nonnull HNPC hnpc) {
+    public HNpcAction(@Nonnull HNPC hnpc, Consumer<HNPC> spawnConsumer, Consumer<HNPC> deleteConsumer, BiConsumer<Player, HNPC.Action> clickBiConsumer) {
         this.hnpc = Objects.requireNonNull(hnpc, "HNPC object cannot be null!");
+
+        this.spawnConsumer = spawnConsumer == null ? spawn -> {
+        } : spawnConsumer;
+        this.deleteConsumer = deleteConsumer == null ? delete -> {
+        } : deleteConsumer;
+        this.clickBiConsumer = clickBiConsumer == null ? (player, action) -> {
+        } : clickBiConsumer;
     }
 
     /**
@@ -37,32 +48,15 @@ public final class HNpcAction {
         return this.hnpc;
     }
 
-    /**
-     * Triggers when spawns the NPC.
-     */
-    public void onSpawn() {
-        HNpcSpawnEvent event = new HNpcSpawnEvent(this.hnpc);
-        Bukkit.getPluginManager().callEvent(event);
+    public BiConsumer<Player, HNPC.Action> getClickBiConsumer() {
+        return clickBiConsumer;
     }
 
-    /**
-     * Triggers when delete the NPC.
-     */
-    public void onDelete() {
-        HNpcDeleteEvent event = new HNpcDeleteEvent(this.hnpc);
-        Bukkit.getPluginManager().callEvent(event);
+    public Consumer<HNPC> getDeleteConsumer() {
+        return deleteConsumer;
     }
 
-    /**
-     * Triggers when anyone
-     * clicks the NPC.
-     *
-     * @param player Player.
-     * @param action Action.
-     */
-    public void onClick(@Nonnull Player player, @Nonnull HNPC.Action action) {
-        Objects.requireNonNull(action, "action cannot be null!");
-        HNpcClickEvent event = new HNpcClickEvent(this.hnpc, player, action);
-        Bukkit.getPluginManager().callEvent(event);
+    public Consumer<HNPC> getSpawnConsumer() {
+        return spawnConsumer;
     }
 }

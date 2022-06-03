@@ -9,14 +9,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * HNPC class to create and manages
@@ -48,8 +44,12 @@ public abstract class HNPC {
                 @Nonnull List<String> lines,
                 @Nonnull Set<UUID> viewers,
                 @Nonnull Map<EquipmentType, ItemStack> equipments,
+                @Nonnull Consumer<HNPC> spawnConsumer,
+                @Nonnull Consumer<HNPC> deleteConsumer,
+                @Nonnull BiConsumer<Player, HNPC.Action> clickBiConsumer,
                 boolean showEveryone) {
-        this.action = new HNpcAction(this);
+
+        this.action = new HNpcAction(this, spawnConsumer, deleteConsumer, clickBiConsumer);
 
         this.id = Objects.requireNonNull(id, "id cannot be null!");
         this.hologram = HCore.createHologram("hcore_npc_hologram:" + id, location, viewers);
@@ -63,7 +63,7 @@ public abstract class HNPC {
         this.hologram.showEveryone(showEveryone);
         this.renderer.showEveryone(showEveryone);
 
-        this.action.onSpawn();
+        this.action.getSpawnConsumer().accept(this);
     }
 
     /**
@@ -354,6 +354,13 @@ public abstract class HNPC {
     public abstract HNPC hide(@Nonnull List<Player> players);
 
     /**
+     * Get the entityID of the npc nms entity
+     *
+     * @return entity id
+     */
+    public abstract int getInternalEntityID();
+
+    /**
      * Deletes NPC.
      *
      * @return instance of this class.
@@ -361,12 +368,10 @@ public abstract class HNPC {
     @Nonnull
     public abstract HNPC delete();
 
-
     /**
      * Click types.
      */
     public enum Action {
-
         RIGHT_CLICK,
         LEFT_CLICK,
     }
