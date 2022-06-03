@@ -99,7 +99,7 @@ public final class HNPCUtils_v1_13_R1 {
      */
     @Nonnull
     public DataWatcher createDataWatcher(Entity entity) {
-        DataWatcher dataWatcher = new DataWatcher(entity);
+        DataWatcher dataWatcher = entity.getDataWatcher();
         dataWatcher.set(new DataWatcherObject<>(15, DataWatcherRegistry.a), (byte) 127);
         return dataWatcher;
     }
