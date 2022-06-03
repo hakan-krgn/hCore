@@ -51,10 +51,6 @@ public final class HNPC_v1_17_R1 extends HNPC {
         this.armorStand = this.utils.createNameHider(location);
         ((Entity) this.npc).at = ImmutableList.<Entity>builder().add(this.armorStand).build();
 
-        HCore.syncScheduler().after(20 * 3)
-                .run(() -> this.hide(super.renderer.getShownViewersAsPlayer()));
-        HCore.syncScheduler().after(20 * 4)
-                .run(() -> this.show(super.renderer.getShownViewersAsPlayer()));
         HCore.registerListeners(this.listener);
     }
 
