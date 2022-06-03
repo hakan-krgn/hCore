@@ -1,21 +1,14 @@
 package com.hakan.core.npc;
 
 import com.hakan.core.HCore;
+import com.hakan.core.npc.skin.HNPCSkin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * HNPCBuilder class to build
@@ -25,7 +18,7 @@ public final class HNPCBuilder {
 
     private final String id;
     private Boolean show;
-    private String skin;
+    private HNPCSkin skin;
     private Location location;
     private Set<UUID> viewers;
     private List<String> lines;
@@ -38,7 +31,7 @@ public final class HNPCBuilder {
      */
     public HNPCBuilder(@Nonnull String id) {
         this.id = Objects.requireNonNull(id, "id cannot be null!");
-        this.skin = "Steve";
+        this.skin = HNPCSkin.EMPTY;
         this.lines = new ArrayList<>();
         this.viewers = new HashSet<>();
         this.equipments = new HashMap<>();
@@ -181,9 +174,21 @@ public final class HNPCBuilder {
      * @return HNPCBuilder instance.
      */
     @Nonnull
-    public HNPCBuilder skin(@Nonnull String skin) {
+    public HNPCBuilder skin(@Nonnull HNPCSkin skin) {
         Objects.requireNonNull(skin, "skin cannot be null!");
         this.skin = skin;
+        return this;
+    }
+
+    /**
+     * Sets skin of npc.
+     *
+     * @param skin Skin.
+     * @return HNPCBuilder instance.
+     */
+    @Nonnull
+    public HNPCBuilder skin(@Nonnull String skin) {
+        HCore.asyncScheduler().run(() -> skin(HNPCSkin.from(skin)));
         return this;
     }
 
@@ -229,7 +234,7 @@ public final class HNPCBuilder {
             Class<?> wrapper = Class.forName("com.hakan.core.npc.wrapper.HNPC_" + HCore.getVersionString());
 
             Constructor<?> constructor = wrapper.getDeclaredConstructor(String.class,
-                    String.class,
+                    HNPCSkin.class,
                     Location.class,
                     List.class,
                     Set.class,
