@@ -16,6 +16,8 @@ import java.util.Objects;
  */
 public final class HNPCSkin {
 
+    public static final HNPCSkin EMPTY = new HNPCSkin("", "");
+
     /**
      * Gets skin of player.
      *

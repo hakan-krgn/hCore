@@ -12,6 +12,7 @@ import net.minecraft.network.syncher.DataWatcherRegistry;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.EntityPlayer;
 import net.minecraft.server.level.WorldServer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.decoration.EntityArmorStand;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -38,15 +39,14 @@ public final class HNPCUtils_v1_17_R1 {
     /**
      * Creates a GameProfile for the NPC.
      *
-     * @param name The name of the NPC.
+     * @param skin The name of the NPC.
      * @return The GameProfile.
      */
     @Nonnull
-    public GameProfile createGameProfile(@Nonnull String name) {
-        Objects.requireNonNull(name, "name cannot be null!");
+    public GameProfile createGameProfile(@Nonnull HNPCSkin skin) {
+        Objects.requireNonNull(skin, "skin cannot be null!");
 
-        GameProfile profile = new GameProfile(UUID.randomUUID(), name);
-        HNPCSkin skin = HNPCSkin.from(name);
+        GameProfile profile = new GameProfile(UUID.randomUUID(), UUID.randomUUID().toString().substring(0, 5));
         profile.getProperties().put("textures", new Property("textures", skin.getTexture(), skin.getSignature()));
         return profile;
     }
@@ -54,18 +54,18 @@ public final class HNPCUtils_v1_17_R1 {
     /**
      * Creates a new NPC entity.
      *
-     * @param name     The name of the NPC.
+     * @param skin     The name of the NPC.
      * @param location The location of the NPC.
      * @return The NPC entity.
      */
     @Nonnull
-    public EntityPlayer createNPC(@Nonnull String name, @Nonnull Location location) {
-        Objects.requireNonNull(name, "name cannot be null!");
+    public EntityPlayer createNPC(@Nonnull HNPCSkin skin, @Nonnull Location location) {
+        Objects.requireNonNull(skin, "skin cannot be null!");
         Objects.requireNonNull(location, "location cannot be null!");
 
         MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();
         WorldServer world = ((CraftWorld) location.getWorld()).getHandle();
-        GameProfile profile = this.createGameProfile(name);
+        GameProfile profile = this.createGameProfile(skin);
 
         EntityPlayer entityPlayer = new EntityPlayer(server, world, profile);
         entityPlayer.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
@@ -106,8 +106,8 @@ public final class HNPCUtils_v1_17_R1 {
      * @return Data watcher.
      */
     @Nonnull
-    public DataWatcher createDataWatcher() {
-        DataWatcher dataWatcher = new DataWatcher(null);
+    public DataWatcher createDataWatcher(Entity entity) {
+        DataWatcher dataWatcher = entity.getDataWatcher();
         dataWatcher.set(new DataWatcherObject<>(17, DataWatcherRegistry.a), (byte) 127);
         return dataWatcher;
     }

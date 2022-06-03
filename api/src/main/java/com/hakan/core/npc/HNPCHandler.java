@@ -1,18 +1,14 @@
 package com.hakan.core.npc;
 
 import com.hakan.core.HCore;
+import com.hakan.core.npc.events.HNpcEventListener;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityTargetEvent;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * HNPCHandler class to create
@@ -21,6 +17,8 @@ import java.util.Optional;
 public final class HNPCHandler {
 
     private static final Map<String, HNPC> npcList = new HashMap<>();
+    private static final Map<Integer, String> npcIDByEntityID = new HashMap<>();
+    private static HNpcEventListener HNpcEventListener;
 
     /**
      * Initializes the NPC system.
@@ -38,6 +36,14 @@ public final class HNPCHandler {
 
         HCore.asyncScheduler().every(10)
                 .run(() -> HNPCHandler.npcList.values().forEach(hnpc -> hnpc.renderer.render()));
+
+        try {
+            HNpcEventListener = (HNpcEventListener) Class.forName("com.hakan.core.npc.listeners.HNpcEventListener_" + HCore.getVersionString()).getConstructor().newInstance();
+            Bukkit.getPluginManager().registerEvents(HNpcEventListener, HCore.getInstance());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -48,6 +54,16 @@ public final class HNPCHandler {
     @Nonnull
     public static Map<String, HNPC> getContentSafe() {
         return new HashMap<>(HNPCHandler.npcList);
+    }
+
+    /**
+     * Gets content.
+     *
+     * @return npcIDByEntityID map.
+     */
+    @Nonnull
+    public static Map<Integer, String> getNpcIDByEntityID() {
+        return HNPCHandler.npcIDByEntityID;
     }
 
     /**
