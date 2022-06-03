@@ -46,10 +46,6 @@ public final class HNPC_v1_14_R1 extends HNPC {
         this.npc.passengers.clear();
         this.npc.passengers.add(this.armorStand);
 
-        HCore.syncScheduler().after(20 * 3)
-                .run(() -> this.hide(super.renderer.getShownViewersAsPlayer()));
-        HCore.syncScheduler().after(20 * 4)
-                .run(() -> this.show(super.renderer.getShownViewersAsPlayer()));
         HCore.registerListeners(this.listener);
     }
 
