@@ -1,21 +1,17 @@
 package com.hakan.core.npc;
 
 import com.hakan.core.HCore;
+import com.hakan.core.npc.skin.HNPCSkin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * HNPCBuilder class to build
@@ -25,11 +21,17 @@ public final class HNPCBuilder {
 
     private final String id;
     private Boolean show;
-    private String skin;
+    private HNPCSkin skin;
     private Location location;
     private Set<UUID> viewers;
     private List<String> lines;
     private Map<HNPC.EquipmentType, ItemStack> equipments;
+
+    private Consumer<HNPC> spawnConsumer;
+    private Consumer<HNPC> deleteConsumer;
+    private BiConsumer<Player, HNPC.Action> clickBiConsumer;
+    private long clickDelay;
+
 
     /**
      * Constructor to create builder.
@@ -38,7 +40,7 @@ public final class HNPCBuilder {
      */
     public HNPCBuilder(@Nonnull String id) {
         this.id = Objects.requireNonNull(id, "id cannot be null!");
-        this.skin = "Steve";
+        this.skin = HNPCSkin.EMPTY;
         this.lines = new ArrayList<>();
         this.viewers = new HashSet<>();
         this.equipments = new HashMap<>();
@@ -175,6 +177,71 @@ public final class HNPCBuilder {
     }
 
     /**
+     * Sets click action of npc.
+     *
+     * @param action action on click.
+     * @return HNPCBuilder instance.
+     */
+    @Nonnull
+    public HNPCBuilder onClick(BiConsumer<Player, HNPC.Action> action) {
+        return onClick(action, 3);
+    }
+
+    /**
+     * Sets click action of npc.
+     *
+     * @param action    action on click.
+     * @param delayInMS delay between clicks
+     * @return HNPCBuilder instance.
+     */
+    @Nonnull
+    public HNPCBuilder onClick(BiConsumer<Player, HNPC.Action> action, long delayInMS) {
+        Objects.requireNonNull(action, "action cannot be null!");
+        this.clickBiConsumer = action;
+        this.clickDelay = delayInMS <= 0 ? 3 : delayInMS;
+        return this;
+    }
+
+    /**
+     * Sets click action of npc.
+     *
+     * @param action action on spawn.
+     * @return HNPCBuilder instance.
+     */
+    @Nonnull
+    public HNPCBuilder onSpawn(Consumer<HNPC> action) {
+        Objects.requireNonNull(action, "action cannot be null!");
+        this.spawnConsumer = action;
+        return this;
+    }
+
+    /**
+     * Sets click action of npc.
+     *
+     * @param action action on delete.
+     * @return HNPCBuilder instance.
+     */
+    @Nonnull
+    public HNPCBuilder onDelete(Consumer<HNPC> action) {
+        Objects.requireNonNull(action, "action cannot be null!");
+        this.deleteConsumer = action;
+        return this;
+    }
+
+    /**
+     * Sets skin of npc.
+     *
+     * @param skin Skin.
+     * @return HNPCBuilder instance.
+     */
+    @Nonnull
+    public HNPCBuilder skin(@Nonnull HNPCSkin skin) {
+        Objects.requireNonNull(skin, "skin cannot be null!");
+        this.skin = skin;
+        return this;
+    }
+
+    /**
      * Sets skin of npc.
      *
      * @param skin Skin.
@@ -182,8 +249,7 @@ public final class HNPCBuilder {
      */
     @Nonnull
     public HNPCBuilder skin(@Nonnull String skin) {
-        Objects.requireNonNull(skin, "skin cannot be null!");
-        this.skin = skin;
+        HCore.asyncScheduler().run(() -> skin(HNPCSkin.from(skin)));
         return this;
     }
 
@@ -229,11 +295,15 @@ public final class HNPCBuilder {
             Class<?> wrapper = Class.forName("com.hakan.core.npc.wrapper.HNPC_" + HCore.getVersionString());
 
             Constructor<?> constructor = wrapper.getDeclaredConstructor(String.class,
-                    String.class,
+                    HNPCSkin.class,
                     Location.class,
                     List.class,
                     Set.class,
                     Map.class,
+                    Consumer.class,
+                    Consumer.class,
+                    BiConsumer.class,
+                    long.class,
                     boolean.class);
             HNPC npc = (HNPC) constructor.newInstance(this.id,
                     this.skin,
@@ -241,9 +311,14 @@ public final class HNPCBuilder {
                     this.lines,
                     this.viewers,
                     this.equipments,
+                    this.spawnConsumer,
+                    this.deleteConsumer,
+                    this.clickBiConsumer,
+                    this.clickDelay,
                     this.show);
 
             HNPCHandler.getContent().put(this.id, npc);
+            HNPCHandler.getNpcIDByEntityID().put(npc.getInternalEntityID(), npc.getId());
 
             return npc;
         } catch (Exception e) {

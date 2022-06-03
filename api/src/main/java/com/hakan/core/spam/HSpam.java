@@ -1,11 +1,9 @@
 package com.hakan.core.spam;
 
-import com.hakan.core.HCore;
-
 import javax.annotation.Nonnull;
 import java.time.Duration;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * HSpam class to check
@@ -13,7 +11,7 @@ import java.util.Set;
  */
 public final class HSpam {
 
-    private static final Set<String> spams = new HashSet<>();
+    private static final Map<String, Long> spams = new HashMap<>();
 
     /**
      * Checks if id is spamming.
@@ -34,12 +32,12 @@ public final class HSpam {
      * @return True if spamming.
      */
     public static boolean spam(@Nonnull String id, long time) {
-        if (!HSpam.spams.contains(id)) {
-            HSpam.spams.add(id);
-            HCore.syncScheduler().after(time / 50)
-                    .run(() -> HSpam.spams.remove(id));
+        if (spams.containsKey(id)) {
+            if (spams.get(id) - System.currentTimeMillis() <= 0) spams.remove(id);
+            return true;
+        } else {
+            spams.put(id, System.currentTimeMillis() + time);
             return false;
         }
-        return true;
     }
 }
