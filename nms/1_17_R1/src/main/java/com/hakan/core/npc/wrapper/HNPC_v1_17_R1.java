@@ -11,6 +11,7 @@ import net.minecraft.server.level.EntityPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EnumItemSlot;
 import net.minecraft.world.entity.decoration.EntityArmorStand;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_17_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
@@ -111,17 +112,30 @@ public final class HNPC_v1_17_R1 extends HNPC {
     @Nonnull
     @Override
     public HNPC setSkin(@Nonnull String skin) {
-        Objects.requireNonNull(skin, "skin cannot be null!");
+        if (Bukkit.isPrimaryThread()) HCore.asyncScheduler().run(() -> setSkin(HNPCSkin.from(skin)));
+        else setSkin(HNPCSkin.from(skin));
 
-        List<Player> players = super.renderer.getShownViewersAsPlayer();
-        this.hide(players);
+        return this;
+    }
 
-        HCore.asyncScheduler().run(() -> {
-            this.npc = this.utils.createNPC(HNPCSkin.from(skin), super.getLocation());
+    /**
+     * {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public HNPC setSkin(@Nonnull HNPCSkin skin) {
+        if (Bukkit.isPrimaryThread()) HCore.asyncScheduler().run(() -> setSkin(skin));
+        else {
+            Objects.requireNonNull(skin, "skin cannot be null!");
+
+            List<Player> players = super.renderer.getShownViewersAsPlayer();
+            this.hide(players);
+
+            this.npc = this.utils.createNPC(skin, super.getLocation());
             this.armorStand = this.utils.createNameHider(super.getLocation());
             ((Entity) this.npc).at = ImmutableList.<Entity>builder().add(this.armorStand).build();
             HCore.syncScheduler().after(10).run(() -> this.show(players));
-        });
+        }
 
         return this;
     }

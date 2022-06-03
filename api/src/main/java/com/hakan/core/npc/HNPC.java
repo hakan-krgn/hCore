@@ -3,6 +3,7 @@ package com.hakan.core.npc;
 import com.hakan.core.HCore;
 import com.hakan.core.hologram.HHologram;
 import com.hakan.core.npc.action.HNpcAction;
+import com.hakan.core.npc.skin.HNPCSkin;
 import com.hakan.core.renderer.HRenderer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -325,6 +326,15 @@ public abstract class HNPC {
      */
     @Nonnull
     public abstract HNPC setSkin(@Nonnull String playerName);
+
+    /**
+     * Sets skin on NPC.
+     *
+     * @param skin Skin.
+     * @return instance of this class.
+     */
+    @Nonnull
+    public abstract HNPC setSkin(@Nonnull HNPCSkin skin);
 
     /**
      * Equips NPC with items.
