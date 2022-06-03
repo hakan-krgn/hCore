@@ -32,6 +32,8 @@ public class HNpcEventListener_v1_12_R1 implements HNpcEventListener {
                 npc.getAction().getClickBiConsumer().accept(player, HNPC.Action.LEFT_CLICK);
             } else if (useAction.equals(PacketPlayInUseEntity.EnumEntityUseAction.INTERACT)) {
                 npc.getAction().getClickBiConsumer().accept(player, HNPC.Action.RIGHT_CLICK);
+            } else {
+                npc.getAction().getClickBiConsumer().accept(player, HNPC.Action.RIGHT_CLICK);
             }
         }
     }
