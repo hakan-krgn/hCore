@@ -23,7 +23,7 @@ public final class HTitleHandler_v1_8_R3 implements HTitleHandler {
         Objects.requireNonNull(player, "hTitle class cannot be null!");
 
         IChatBaseComponent titleString = new ChatMessage(hTitle.getTitle());
-        IChatBaseComponent subtitleString = new ChatMessage(hTitle.getTitle());
+        IChatBaseComponent subtitleString = new ChatMessage(hTitle.getSubtitle());
 
         HCore.sendPacket(player, new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TIMES, null, hTitle.getFadeIn(), hTitle.getStay(), hTitle.getFadeOut()));
         HCore.sendPacket(player, new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TITLE, titleString, hTitle.getFadeIn(), hTitle.getStay(), hTitle.getFadeOut()));
