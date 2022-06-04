@@ -10,7 +10,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -45,13 +51,9 @@ public abstract class HNPC {
                 @Nonnull List<String> lines,
                 @Nonnull Set<UUID> viewers,
                 @Nonnull Map<EquipmentType, ItemStack> equipments,
-                @Nonnull Consumer<HNPC> spawnConsumer,
-                @Nonnull Consumer<HNPC> deleteConsumer,
-                @Nonnull BiConsumer<Player, HNPC.Action> clickBiConsumer,
-                long clickDelay,
                 boolean showEveryone) {
 
-        this.action = new HNpcAction(this, spawnConsumer, deleteConsumer, clickBiConsumer, clickDelay);
+        this.action = new HNpcAction(this);
 
         this.id = Objects.requireNonNull(id, "id cannot be null!");
         this.hologram = HCore.createHologram("hcore_npc_hologram:" + id, location, viewers);
@@ -65,7 +67,7 @@ public abstract class HNPC {
         this.hologram.showEveryone(showEveryone);
         this.renderer.showEveryone(showEveryone);
 
-        this.action.getSpawnConsumer().accept(this);
+        this.action.onSpawn();
     }
 
     /**
@@ -261,6 +263,39 @@ public abstract class HNPC {
     }
 
     /**
+     * This consumer will run when NPC is spawned.
+     *
+     * @param spawnConsumer Consumer.
+     */
+    @Nonnull
+    public final HNPC whenSpawned(@Nonnull Consumer<HNPC> spawnConsumer) {
+        this.action.whenSpawned(spawnConsumer);
+        return this;
+    }
+
+    /**
+     * This consumer will run when NPC is deleted.
+     *
+     * @param deleteConsumer Consumer.
+     */
+    @Nonnull
+    public final HNPC whenDeleted(@Nonnull Consumer<HNPC> deleteConsumer) {
+        this.action.whenDeleted(deleteConsumer);
+        return this;
+    }
+
+    /**
+     * This consumer will run when NPC is clicked by player.
+     *
+     * @param clickConsumer Consumer.
+     */
+    @Nonnull
+    public final HNPC whenClicked(@Nonnull BiConsumer<Player, HNPC.Action> clickConsumer) {
+        this.action.whenClicked(clickConsumer);
+        return this;
+    }
+
+    /**
      * Gets items as safe.
      *
      * @return Slot and ItemStack map.
@@ -300,20 +335,27 @@ public abstract class HNPC {
 
 
     /**
+     * Get the id of nms entity.
+     *
+     * @return Entity id.
+     */
+    public abstract int getEntityID();
+
+    /**
      * Moves NPC.
      *
      * @param to    Destination location.
      * @param speed Speed.
-     * @return instance of this class.
+     * @return Instance of this class.
      */
     @Nonnull
     public abstract HNPC walk(@Nonnull Location to, double speed);
 
     /**
-     * Updates location.
+     * Sets location.
      *
      * @param location Location.
-     * @return instance of this class.
+     * @return Instance of this class.
      */
     @Nonnull
     public abstract HNPC setLocation(@Nonnull Location location);
@@ -321,17 +363,8 @@ public abstract class HNPC {
     /**
      * Sets skin on NPC.
      *
-     * @param playerName Skin username.
-     * @return instance of this class.
-     */
-    @Nonnull
-    public abstract HNPC setSkin(@Nonnull String playerName);
-
-    /**
-     * Sets skin on NPC.
-     *
      * @param skin Skin.
-     * @return instance of this class.
+     * @return Instance of this class.
      */
     @Nonnull
     public abstract HNPC setSkin(@Nonnull HNPCSkin skin);
@@ -341,7 +374,7 @@ public abstract class HNPC {
      *
      * @param slotType  Slot type. Ex: HAND_ITEM, LEGGINGS,
      * @param itemStack Item.
-     * @return instance of this class.
+     * @return Instance of this class.
      */
     @Nonnull
     public abstract HNPC setEquipment(@Nonnull EquipmentType slotType, @Nonnull ItemStack itemStack);
@@ -350,7 +383,7 @@ public abstract class HNPC {
      * Who sees NPC?
      *
      * @param players Player list.
-     * @return instance of this class.
+     * @return Instance of this class.
      */
     @Nonnull
     public abstract HNPC show(@Nonnull List<Player> players);
@@ -359,25 +392,19 @@ public abstract class HNPC {
      * From whom should this NPC be hidden?
      *
      * @param players Player list.
-     * @return instance of this class.
+     * @return Instance of this class.
      */
     @Nonnull
     public abstract HNPC hide(@Nonnull List<Player> players);
 
     /**
-     * Get the entityID of the npc nms entity
-     *
-     * @return entity id
-     */
-    public abstract int getInternalEntityID();
-
-    /**
      * Deletes NPC.
      *
-     * @return instance of this class.
+     * @return Instance of this class.
      */
     @Nonnull
     public abstract HNPC delete();
+
 
     /**
      * Click types.
@@ -386,7 +413,6 @@ public abstract class HNPC {
         RIGHT_CLICK,
         LEFT_CLICK,
     }
-
 
     /**
      * HNPC slot types.

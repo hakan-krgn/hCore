@@ -12,7 +12,6 @@ import net.minecraft.network.syncher.DataWatcherRegistry;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.EntityPlayer;
 import net.minecraft.server.level.WorldServer;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.decoration.EntityArmorStand;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -69,8 +68,8 @@ public final class HNPCUtils_v1_18_R1 {
 
         EntityPlayer entityPlayer = new EntityPlayer(server, world, profile);
         entityPlayer.a(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
-        entityPlayer.persistentInvisibility = false; //set invinsiblity to true
-        entityPlayer.b(5, true); //set invinsiblity to true
+        entityPlayer.persistentInvisibility = false; //set invisibility to true
+        entityPlayer.b(5, true); //set invisibility to true
         entityPlayer.c(77.21f); //sets health to 77.21f
 
         return entityPlayer;
@@ -90,8 +89,8 @@ public final class HNPCUtils_v1_18_R1 {
         WorldServer world = ((CraftWorld) location.getWorld()).getHandle();
 
         EntityArmorStand armorStand = new EntityArmorStand(world, 0, 0, 0);
-        armorStand.persistentInvisibility = true; //set invinsiblity to true
-        armorStand.b(5, true); //set invinsiblity to true
+        armorStand.persistentInvisibility = true; //set invisibility to true
+        armorStand.b(5, true); //set invisibility to true
         armorStand.n(false); //set custom name visibility to true
         armorStand.t(true); //set marker to true
         armorStand.r(false); //set arms to false
@@ -109,8 +108,8 @@ public final class HNPCUtils_v1_18_R1 {
      * @return Data watcher.
      */
     @Nonnull
-    public DataWatcher createDataWatcher(Entity entity) {
-        DataWatcher dataWatcher = new DataWatcher(entity);
+    public DataWatcher createDataWatcher() {
+        DataWatcher dataWatcher = new DataWatcher(null);
         dataWatcher.a(new DataWatcherObject<>(17, DataWatcherRegistry.a), (byte) 127);
         return dataWatcher;
     }

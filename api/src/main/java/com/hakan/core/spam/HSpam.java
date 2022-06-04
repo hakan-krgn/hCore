@@ -1,9 +1,12 @@
 package com.hakan.core.spam;
 
+import com.hakan.core.HCore;
+
 import javax.annotation.Nonnull;
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * HSpam class to check
@@ -11,7 +14,7 @@ import java.util.Map;
  */
 public final class HSpam {
 
-    private static final Map<String, Long> spams = new HashMap<>();
+    private static final Set<String> spams = new HashSet<>();
 
     /**
      * Checks if id is spamming.
@@ -28,16 +31,28 @@ public final class HSpam {
      * Checks if id is spamming.
      *
      * @param id   The id to check.
+     * @param time Time.
+     * @param unit Time unit.
+     * @return True if spamming.
+     */
+    public static boolean spam(@Nonnull String id, int time, @Nonnull TimeUnit unit) {
+        return HSpam.spam(id, unit.toMillis(time));
+    }
+
+    /**
+     * Checks if id is spamming.
+     *
+     * @param id   The id to check.
      * @param time The time in milliseconds.
      * @return True if spamming.
      */
     public static boolean spam(@Nonnull String id, long time) {
-        if (spams.containsKey(id)) {
-            if (spams.get(id) - System.currentTimeMillis() <= 0) spams.remove(id);
-            return true;
-        } else {
-            spams.put(id, System.currentTimeMillis() + time);
+        if (!HSpam.spams.contains(id)) {
+            HSpam.spams.add(id);
+            HCore.syncScheduler().after(time / 50)
+                    .run(() -> HSpam.spams.remove(id));
             return false;
         }
+        return true;
     }
 }

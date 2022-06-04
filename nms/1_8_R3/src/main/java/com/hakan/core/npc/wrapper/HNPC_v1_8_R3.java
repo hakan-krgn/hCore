@@ -4,17 +4,29 @@ import com.hakan.core.HCore;
 import com.hakan.core.npc.HNPC;
 import com.hakan.core.npc.HNPCHandler;
 import com.hakan.core.npc.skin.HNPCSkin;
-import net.minecraft.server.v1_8_R3.*;
-import org.bukkit.Bukkit;
+import net.minecraft.server.v1_8_R3.EntityArmorStand;
+import net.minecraft.server.v1_8_R3.EntityPlayer;
+import net.minecraft.server.v1_8_R3.PacketPlayOutAttachEntity;
+import net.minecraft.server.v1_8_R3.PacketPlayOutEntity;
+import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
+import net.minecraft.server.v1_8_R3.PacketPlayOutEntityEquipment;
+import net.minecraft.server.v1_8_R3.PacketPlayOutEntityHeadRotation;
+import net.minecraft.server.v1_8_R3.PacketPlayOutEntityMetadata;
+import net.minecraft.server.v1_8_R3.PacketPlayOutEntityTeleport;
+import net.minecraft.server.v1_8_R3.PacketPlayOutNamedEntitySpawn;
+import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerInfo;
+import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntityLiving;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
-import java.util.*;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * {@inheritDoc}
@@ -34,12 +46,8 @@ public final class HNPC_v1_8_R3 extends HNPC {
                         @Nonnull List<String> lines,
                         @Nonnull Set<UUID> viewers,
                         @Nonnull Map<EquipmentType, ItemStack> equipments,
-                        @Nonnull Consumer<HNPC> spawnConsumer,
-                        @Nonnull Consumer<HNPC> deleteConsumer,
-                        @Nonnull BiConsumer<Player, Action> clickBiConsumer,
-                        long clickDelay,
                         boolean showEveryone) {
-        super(id, location, lines, viewers, equipments, spawnConsumer, deleteConsumer, clickBiConsumer, clickDelay, showEveryone);
+        super(id, location, lines, viewers, equipments, showEveryone);
         super.showEveryone(showEveryone);
 
         this.utils = new HNPCUtils_v1_8_R3();
@@ -50,13 +58,11 @@ public final class HNPC_v1_8_R3 extends HNPC {
     }
 
     /**
-     * Gets nms entity of player.
-     *
-     * @return NMS entity of player.
+     * {@inheritDoc}
      */
-    @Nonnull
-    public EntityPlayer getEntityPlayer() {
-        return this.npc;
+    @Override
+    public int getEntityID() {
+        return this.npc.getId();
     }
 
     /**
@@ -105,31 +111,16 @@ public final class HNPC_v1_8_R3 extends HNPC {
      */
     @Nonnull
     @Override
-    public HNPC setSkin(@Nonnull String skin) {
-        if (Bukkit.isPrimaryThread()) HCore.asyncScheduler().run(() -> setSkin(HNPCSkin.from(skin)));
-        else setSkin(HNPCSkin.from(skin));
-
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Nonnull
-    @Override
     public HNPC setSkin(@Nonnull HNPCSkin skin) {
-        if (Bukkit.isPrimaryThread()) HCore.asyncScheduler().run(() -> setSkin(skin));
-        else {
-            Objects.requireNonNull(skin, "skin cannot be null!");
+        Objects.requireNonNull(skin, "skin cannot be null!");
 
-            List<Player> players = super.renderer.getShownViewersAsPlayer();
-            this.hide(players);
+        List<Player> players = super.renderer.getShownViewersAsPlayer();
 
-            this.npc = this.utils.createNPC(skin, super.getLocation());
-            this.armorStand = this.utils.createNameHider(super.getLocation());
-            this.npc.passenger = this.armorStand;
-            HCore.syncScheduler().after(10).run(() -> this.show(players));
-        }
+        this.hide(players);
+        this.npc = this.utils.createNPC(skin, super.getLocation());
+        this.armorStand = this.utils.createNameHider(super.getLocation());
+        this.npc.passenger = this.armorStand;
+        HCore.syncScheduler().after(20).run(() -> this.show(players));
 
         return this;
     }
@@ -170,15 +161,11 @@ public final class HNPC_v1_8_R3 extends HNPC {
         super.equipments.forEach((key, value) -> HCore.sendPacket(players,
                 new PacketPlayOutEntityEquipment(this.npc.getId(), key.getSlot(), CraftItemStack.asNMSCopy(value))));
 
-        HCore.sendPacket(players, new PacketPlayOutEntityMetadata(this.npc.getId(), this.utils.createDataWatcher(npc), true));
-        HCore.asyncScheduler().after(5).run(() -> HCore.sendPacket(players, new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, this.npc)));
+        HCore.asyncScheduler().after(5)
+                .run(() -> HCore.sendPacket(players, new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, this.npc)));
+        HCore.sendPacket(players, new PacketPlayOutEntityMetadata(this.npc.getId(), this.utils.createDataWatcher(), true));
 
         return this.setLocation(super.getLocation());
-    }
-
-    @Override
-    public int getInternalEntityID() {
-        return getEntityPlayer().getId();
     }
 
     /**
@@ -202,9 +189,8 @@ public final class HNPC_v1_8_R3 extends HNPC {
     @Override
     public HNPC delete() {
         HNPCHandler.getContent().remove(super.id);
-        HNPCHandler.getNpcIDByEntityID().remove(getInternalEntityID());
 
-        super.action.getDeleteConsumer().accept(this);
+        super.action.onDelete();
         super.hologram.delete();
         super.renderer.delete();
         super.dead = true;

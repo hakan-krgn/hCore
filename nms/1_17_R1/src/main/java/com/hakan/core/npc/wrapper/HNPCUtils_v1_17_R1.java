@@ -12,7 +12,6 @@ import net.minecraft.network.syncher.DataWatcherRegistry;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.EntityPlayer;
 import net.minecraft.server.level.WorldServer;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.decoration.EntityArmorStand;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -106,8 +105,8 @@ public final class HNPCUtils_v1_17_R1 {
      * @return Data watcher.
      */
     @Nonnull
-    public DataWatcher createDataWatcher(Entity entity) {
-        DataWatcher dataWatcher = entity.getDataWatcher();
+    public DataWatcher createDataWatcher() {
+        DataWatcher dataWatcher = new DataWatcher(null);
         dataWatcher.set(new DataWatcherObject<>(17, DataWatcherRegistry.a), (byte) 127);
         return dataWatcher;
     }

@@ -5,7 +5,15 @@ import com.hakan.core.npc.HNPC;
 import com.hakan.core.npc.skin.HNPCSkin;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import net.minecraft.server.v1_13_R2.*;
+import net.minecraft.server.v1_13_R2.DataWatcher;
+import net.minecraft.server.v1_13_R2.DataWatcherObject;
+import net.minecraft.server.v1_13_R2.DataWatcherRegistry;
+import net.minecraft.server.v1_13_R2.EntityArmorStand;
+import net.minecraft.server.v1_13_R2.EntityPlayer;
+import net.minecraft.server.v1_13_R2.MinecraftServer;
+import net.minecraft.server.v1_13_R2.PacketPlayOutEntityDestroy;
+import net.minecraft.server.v1_13_R2.PlayerInteractManager;
+import net.minecraft.server.v1_13_R2.WorldServer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -98,8 +106,8 @@ public final class HNPCUtils_v1_13_R2 {
      * @return Data watcher.
      */
     @Nonnull
-    public DataWatcher createDataWatcher(Entity entity) {
-        DataWatcher dataWatcher = entity.getDataWatcher();
+    public DataWatcher createDataWatcher() {
+        DataWatcher dataWatcher = new DataWatcher(null);
         dataWatcher.set(new DataWatcherObject<>(15, DataWatcherRegistry.a), (byte) 127);
         return dataWatcher;
     }
