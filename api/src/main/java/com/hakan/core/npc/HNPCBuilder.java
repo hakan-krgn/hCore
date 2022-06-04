@@ -9,7 +9,15 @@ import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Constructor;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -27,10 +35,10 @@ public final class HNPCBuilder {
     private List<String> lines;
     private Map<HNPC.EquipmentType, ItemStack> equipments;
 
+    private long clickDelay;
     private Consumer<HNPC> spawnConsumer;
     private Consumer<HNPC> deleteConsumer;
-    private BiConsumer<Player, HNPC.Action> clickBiConsumer;
-    private long clickDelay;
+    private BiConsumer<Player, HNPC.Action> clickConsumer;
 
 
     /**
@@ -183,22 +191,21 @@ public final class HNPCBuilder {
      * @return HNPCBuilder instance.
      */
     @Nonnull
-    public HNPCBuilder onClick(BiConsumer<Player, HNPC.Action> action) {
-        return onClick(action, 3);
+    public HNPCBuilder whenClicked(@Nonnull BiConsumer<Player, HNPC.Action> action) {
+        return this.whenClicked(action, 3);
     }
 
     /**
      * Sets click action of npc.
      *
-     * @param action    action on click.
-     * @param delayInMS delay between clicks
+     * @param action action on click.
+     * @param delay  delay between clicks.
      * @return HNPCBuilder instance.
      */
     @Nonnull
-    public HNPCBuilder onClick(BiConsumer<Player, HNPC.Action> action, long delayInMS) {
-        Objects.requireNonNull(action, "action cannot be null!");
-        this.clickBiConsumer = action;
-        this.clickDelay = delayInMS <= 0 ? 3 : delayInMS;
+    public HNPCBuilder whenClicked(@Nonnull BiConsumer<Player, HNPC.Action> action, long delay) {
+        this.clickConsumer = Objects.requireNonNull(action, "action cannot be null!");
+        this.clickDelay = Math.max(0, delay);
         return this;
     }
 
@@ -209,9 +216,8 @@ public final class HNPCBuilder {
      * @return HNPCBuilder instance.
      */
     @Nonnull
-    public HNPCBuilder onSpawn(Consumer<HNPC> action) {
-        Objects.requireNonNull(action, "action cannot be null!");
-        this.spawnConsumer = action;
+    public HNPCBuilder whenSpawned(@Nonnull Consumer<HNPC> action) {
+        this.spawnConsumer = Objects.requireNonNull(action, "action cannot be null!");
         return this;
     }
 
@@ -222,9 +228,8 @@ public final class HNPCBuilder {
      * @return HNPCBuilder instance.
      */
     @Nonnull
-    public HNPCBuilder onDelete(Consumer<HNPC> action) {
-        Objects.requireNonNull(action, "action cannot be null!");
-        this.deleteConsumer = action;
+    public HNPCBuilder whenDeleted(@Nonnull Consumer<HNPC> action) {
+        this.deleteConsumer = Objects.requireNonNull(action, "action cannot be null!");
         return this;
     }
 
@@ -236,8 +241,7 @@ public final class HNPCBuilder {
      */
     @Nonnull
     public HNPCBuilder skin(@Nonnull HNPCSkin skin) {
-        Objects.requireNonNull(skin, "skin cannot be null!");
-        this.skin = skin;
+        this.skin = Objects.requireNonNull(skin, "skin cannot be null!");
         return this;
     }
 
@@ -249,8 +253,8 @@ public final class HNPCBuilder {
      */
     @Nonnull
     public HNPCBuilder skin(@Nonnull String skin) {
-        HCore.asyncScheduler().run(() -> skin(HNPCSkin.from(skin)));
-        return this;
+        Objects.requireNonNull(skin, "skin cannot be null!");
+        return this.skin(HNPCSkin.from(skin));
     }
 
     /**
@@ -300,10 +304,6 @@ public final class HNPCBuilder {
                     List.class,
                     Set.class,
                     Map.class,
-                    Consumer.class,
-                    Consumer.class,
-                    BiConsumer.class,
-                    long.class,
                     boolean.class);
             HNPC npc = (HNPC) constructor.newInstance(this.id,
                     this.skin,
@@ -311,15 +311,14 @@ public final class HNPCBuilder {
                     this.lines,
                     this.viewers,
                     this.equipments,
-                    this.spawnConsumer,
-                    this.deleteConsumer,
-                    this.clickBiConsumer,
-                    this.clickDelay,
                     this.show);
 
-            HNPCHandler.getContent().put(this.id, npc);
-            HNPCHandler.getNpcIDByEntityID().put(npc.getInternalEntityID(), npc.getId());
+            npc.whenClicked(this.clickConsumer)
+                    .whenSpawned(this.spawnConsumer)
+                    .whenDeleted(this.deleteConsumer)
+                    .getAction().setClickDelay(this.clickDelay);
 
+            HNPCHandler.getContent().put(this.id, npc);
             return npc;
         } catch (Exception e) {
             throw new RuntimeException("Failed to build NPC!", e);

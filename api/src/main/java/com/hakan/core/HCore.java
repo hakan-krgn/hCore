@@ -58,6 +58,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Main class of this core.
@@ -823,6 +824,28 @@ public final class HCore {
     }
 
     /**
+     * Finds a created npc.
+     *
+     * @param id NPC id that you want.
+     * @return NPC from id.
+     */
+    @Nonnull
+    public static Optional<HNPC> findNpcByEntityID(int id) {
+        return HNPCHandler.findByEntityID(id);
+    }
+
+    /**
+     * Gets a created npc.
+     *
+     * @param id NPC id that you want.
+     * @return NPC from id.
+     */
+    @Nonnull
+    public static HNPC getNpcByEntityID(int id) {
+        return HNPCHandler.getByEntityID(id);
+    }
+
+    /**
      * Deletes a npc with given id.
      *
      * @param id NPC id.
@@ -1204,6 +1227,18 @@ public final class HCore {
      */
     public static boolean spam(@Nonnull String id, @Nonnull Duration duration) {
         return HSpam.spam(id, duration);
+    }
+
+    /**
+     * Checks if id is spamming.
+     *
+     * @param id   The id to check.
+     * @param time Time.
+     * @param unit Time unit.
+     * @return True if spamming.
+     */
+    public static boolean spam(@Nonnull String id, int time, @Nonnull TimeUnit unit) {
+        return HSpam.spam(id, unit.toMillis(time));
     }
 
     /**
