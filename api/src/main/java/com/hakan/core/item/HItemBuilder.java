@@ -4,6 +4,7 @@ import com.hakan.core.HCore;
 import com.hakan.core.item.nbt.HNbtManager;
 import com.hakan.core.item.skull.HSkullBuilder;
 import com.hakan.core.utils.ColorUtil;
+import com.hakan.core.utils.ProtocolVersion;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -13,6 +14,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import javax.annotation.Nonnull;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -93,6 +95,7 @@ public class HItemBuilder {
     private int amount;
     private short durability;
     private boolean glow;
+    private boolean unbreakable;
     private List<String> lore;
     private Set<ItemFlag> flags;
     private Map<Enchantment, Integer> enchantments;
@@ -130,6 +133,7 @@ public class HItemBuilder {
         this.amount = amount;
         this.durability = durability;
         this.glow = false;
+        this.unbreakable = false;
         this.lore = new ArrayList<>();
         this.flags = new HashSet<>();
         this.enchantments = new HashMap<>();
@@ -148,6 +152,7 @@ public class HItemBuilder {
         this.amount = builder.amount;
         this.durability = builder.durability;
         this.glow = builder.glow;
+        this.unbreakable = builder.unbreakable;
         this.lore = new ArrayList<>(builder.lore);
         this.flags = new HashSet<>(builder.flags);
         this.enchantments = new HashMap<>(builder.enchantments);
@@ -169,6 +174,7 @@ public class HItemBuilder {
             this.lore = meta.hasLore() ? meta.getLore() : new ArrayList<>();
             this.enchantments = meta.hasEnchants() ? meta.getEnchants() : new HashMap<>();
             this.glow = meta.hasEnchants() && meta.getEnchants().containsKey(glowEnchantment);
+            this.unbreakable = meta.isUnbreakable();
         }
     }
 
@@ -531,6 +537,19 @@ public class HItemBuilder {
     }
 
     /**
+     * Sets unbreakability of item stack.
+     *
+     * @param unbreakable Unbreakability.
+     * @param <T>         This class type.
+     * @return This class.
+     */
+    @Nonnull
+    public <T extends HItemBuilder> T unbreakable(boolean unbreakable) {
+        this.unbreakable = unbreakable;
+        return (T) this;
+    }
+
+    /**
      * Checks item stack has item meta.
      *
      * @return If item stack has item meta, returns true.
@@ -552,6 +571,26 @@ public class HItemBuilder {
         ItemMeta meta = stack.getItemMeta();
 
         if (meta != null) {
+            if (this.unbreakable) {
+                if (HCore.getProtocolVersion().isOlder(ProtocolVersion.v1_11_R1)) {
+                    try {
+                        Method method = meta.getClass().getDeclaredMethod("spigot");
+                        method.setAccessible(true);
+                        Object spigot = method.invoke(meta);
+                        method.setAccessible(false);
+
+                        Method setUnbreakable = spigot.getClass().getDeclaredMethod("setUnbreakable", boolean.class);
+                        setUnbreakable.setAccessible(true);
+                        setUnbreakable.invoke(spigot, true);
+                        setUnbreakable.setAccessible(false);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    meta.setUnbreakable(true);
+                }
+            }
+
             meta.setDisplayName(this.name);
             meta.setLore(this.lore);
             this.flags.forEach(meta::addItemFlags);
