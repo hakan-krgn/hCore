@@ -1,8 +1,8 @@
 package com.hakan.core.ui.sign.wrapper;
 
 import com.hakan.core.HCore;
+import com.hakan.core.ui.GUIHandler;
 import com.hakan.core.ui.sign.HSign;
-import com.hakan.core.ui.sign.HSignHandler;
 import net.minecraft.server.v1_8_R3.BlockPosition;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.PacketPlayInUpdateSign;
@@ -28,46 +28,43 @@ public final class HSign_v1_8_R3 extends HSign {
     /**
      * {@inheritDoc}
      */
-    public HSign_v1_8_R3(@Nonnull Material type, @Nonnull String... lines) {
-        super(type, lines);
+    public HSign_v1_8_R3(@Nonnull Player player, @Nonnull Material type, @Nonnull String... lines) {
+        super(player, type, lines);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void open(@Nonnull Player player) {
-        Objects.requireNonNull(player, "player cannot be null!");
-
-        Location location = player.getLocation();
+    public void open() {
+        Location location = super.player.getLocation();
         BlockPosition blockPosition = new BlockPosition(location.getBlockX(), LOWEST_Y_AXIS + 1, location.getBlockZ());
 
-        PacketPlayOutBlockChange packet = new PacketPlayOutBlockChange(((CraftWorld) player.getWorld()).getHandle(), blockPosition);
+        PacketPlayOutBlockChange packet = new PacketPlayOutBlockChange(((CraftWorld) super.player.getWorld()).getHandle(), blockPosition);
         packet.block = CraftMagicNumbers.getBlock(this.type).getBlockData();
-        HCore.sendPacket(player, packet);
+        HCore.sendPacket(super.player, packet);
 
         IChatBaseComponent[] components = CraftSign.sanitizeLines(this.lines);
         TileEntitySign sign = new TileEntitySign();
         sign.a(blockPosition);
         System.arraycopy(components, 0, sign.lines, 0, sign.lines.length);
 
-        HCore.sendPacket(player, sign.getUpdatePacket());
-        HCore.sendPacket(player, new PacketPlayOutOpenSignEditor(blockPosition));
+        HCore.sendPacket(super.player, sign.getUpdatePacket());
+        HCore.sendPacket(super.player, new PacketPlayOutOpenSignEditor(blockPosition));
 
-        HSignHandler.getContent().put(player.getUniqueId(), this);
+        GUIHandler.getContent().put(super.player.getUniqueId(), this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T> void listen(@Nonnull Player player, @Nonnull T packet) {
-        Objects.requireNonNull(player, "player cannot be null!");
+    public <T> void listen(@Nonnull T packet) {
         Objects.requireNonNull(packet, "packet cannot be null!");
         PacketPlayInUpdateSign packetPlayInUpdateSign = (PacketPlayInUpdateSign) packet;
 
         BlockPosition position = packetPlayInUpdateSign.a();
-        Block block = player.getWorld().getBlockAt(position.getX(), position.getY(), position.getZ());
+        Block block = super.player.getWorld().getBlockAt(position.getX(), position.getY(), position.getZ());
         block.setType(block.getType());
 
         IChatBaseComponent[] b = packetPlayInUpdateSign.b();
@@ -79,6 +76,6 @@ public final class HSign_v1_8_R3 extends HSign {
         if (this.consumer != null)
             this.consumer.accept(lines);
 
-        HSignHandler.getContent().remove(player.getUniqueId());
+        GUIHandler.getContent().remove(super.player.getUniqueId());
     }
 }

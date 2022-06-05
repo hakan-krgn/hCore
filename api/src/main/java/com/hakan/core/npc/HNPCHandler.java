@@ -1,6 +1,7 @@
 package com.hakan.core.npc;
 
 import com.hakan.core.HCore;
+import com.hakan.core.npc.builder.HNPCBuilder;
 import com.hakan.core.npc.listeners.HNpcClickListener;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
@@ -143,7 +144,7 @@ public final class HNPCHandler {
      * @return HNPCBuilder instance.
      */
     @Nonnull
-    public static HNPCBuilder build(@Nonnull String id) {
+    public static HNPCBuilder npcBuilder(@Nonnull String id) {
         return new HNPCBuilder(id);
     }
 

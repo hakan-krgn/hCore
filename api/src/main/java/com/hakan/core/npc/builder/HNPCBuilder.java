@@ -1,6 +1,8 @@
-package com.hakan.core.npc;
+package com.hakan.core.npc.builder;
 
 import com.hakan.core.HCore;
+import com.hakan.core.npc.HNPC;
+import com.hakan.core.npc.HNPCHandler;
 import com.hakan.core.npc.skin.HNPCSkin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -313,10 +315,13 @@ public final class HNPCBuilder {
                     this.equipments,
                     this.show);
 
-            npc.whenClicked(this.clickConsumer)
-                    .whenSpawned(this.spawnConsumer)
-                    .whenDeleted(this.deleteConsumer)
-                    .getAction().setClickDelay(this.clickDelay);
+            if (this.clickConsumer != null)
+                npc.whenClicked(this.clickConsumer);
+            if (this.spawnConsumer != null)
+                npc.whenSpawned(this.spawnConsumer);
+            if (this.deleteConsumer != null)
+                npc.whenDeleted(this.deleteConsumer);
+            npc.getAction().setClickDelay(this.clickDelay);
 
             HNPCHandler.getContent().put(this.id, npc);
             return npc;

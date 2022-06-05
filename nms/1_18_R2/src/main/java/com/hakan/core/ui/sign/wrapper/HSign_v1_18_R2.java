@@ -1,8 +1,8 @@
 package com.hakan.core.ui.sign.wrapper;
 
 import com.hakan.core.HCore;
+import com.hakan.core.ui.GUIHandler;
 import com.hakan.core.ui.sign.HSign;
-import com.hakan.core.ui.sign.HSignHandler;
 import net.minecraft.core.BlockPosition;
 import net.minecraft.network.chat.IChatBaseComponent;
 import net.minecraft.network.protocol.game.PacketPlayInUpdateSign;
@@ -27,47 +27,44 @@ public final class HSign_v1_18_R2 extends HSign {
     /**
      * {@inheritDoc}
      */
-    public HSign_v1_18_R2(@Nonnull Material type, @Nonnull String... lines) {
-        super(type, lines);
+    public HSign_v1_18_R2(@Nonnull Player player, @Nonnull Material type, @Nonnull String... lines) {
+        super(player, type, lines);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void open(@Nonnull Player player) {
-        Objects.requireNonNull(player, "player cannot be null!");
-
-        Location location = player.getLocation();
+    public void open() {
+        Location location = super.player.getLocation();
         BlockPosition blockPosition = new BlockPosition(location.getBlockX(), LOWEST_Y_AXIS + 1, location.getBlockZ());
 
-        HCore.sendPacket(player, new PacketPlayOutBlockChange(blockPosition, Blocks.cg.n()));
+        HCore.sendPacket(super.player, new PacketPlayOutBlockChange(blockPosition, Blocks.cg.n()));
 
         IChatBaseComponent[] components = CraftSign.sanitizeLines(this.lines);
         TileEntitySign sign = new TileEntitySign(new BlockPosition(blockPosition.u(), blockPosition.v(), blockPosition.w()), Blocks.cg.n());
         System.arraycopy(components, 0, sign.d, 0, sign.d.length);
-        HCore.sendPacket(player, sign.c());
+        HCore.sendPacket(super.player, sign.c());
 
-        HCore.sendPacket(player, new PacketPlayOutOpenSignEditor(blockPosition));
-        HSignHandler.getContent().put(player.getUniqueId(), this);
+        HCore.sendPacket(super.player, new PacketPlayOutOpenSignEditor(blockPosition));
+        GUIHandler.getContent().put(super.player.getUniqueId(), this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T> void listen(@Nonnull Player player, @Nonnull T packet) {
-        Objects.requireNonNull(player, "player cannot be null!");
+    public <T> void listen(@Nonnull T packet) {
         Objects.requireNonNull(packet, "packet cannot be null!");
         PacketPlayInUpdateSign packetPlayInUpdateSign = (PacketPlayInUpdateSign) packet;
 
         BlockPosition position = packetPlayInUpdateSign.b();
-        Block block = player.getWorld().getBlockAt(position.u(), position.v(), position.w());
+        Block block = super.player.getWorld().getBlockAt(position.u(), position.v(), position.w());
         block.setType(block.getType());
 
         if (this.consumer != null)
             this.consumer.accept(packetPlayInUpdateSign.c());
 
-        HSignHandler.getContent().remove(player.getUniqueId());
+        GUIHandler.getContent().remove(super.player.getUniqueId());
     }
 }
