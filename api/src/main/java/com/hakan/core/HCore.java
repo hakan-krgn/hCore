@@ -18,19 +18,23 @@ import com.hakan.core.message.bossbar.HBarStyle;
 import com.hakan.core.message.bossbar.HBossBar;
 import com.hakan.core.message.title.HTitle;
 import com.hakan.core.npc.HNPC;
-import com.hakan.core.npc.HNPCBuilder;
 import com.hakan.core.npc.HNPCHandler;
+import com.hakan.core.npc.builder.HNPCBuilder;
 import com.hakan.core.packet.HPacketHandler;
 import com.hakan.core.particle.HParticle;
 import com.hakan.core.particle.HParticleHandler;
 import com.hakan.core.scheduler.HScheduler;
 import com.hakan.core.scoreboard.HScoreboard;
+import com.hakan.core.scoreboard.HScoreboardHandler;
 import com.hakan.core.spam.HSpam;
+import com.hakan.core.ui.GUI;
+import com.hakan.core.ui.GUIHandler;
+import com.hakan.core.ui.anvil.HAnvil;
+import com.hakan.core.ui.anvil.builder.HAnvilBuilder;
 import com.hakan.core.ui.inventory.HInventory;
-import com.hakan.core.ui.inventory.HInventoryHandler;
 import com.hakan.core.ui.inventory.builder.HInventoryBuilder;
 import com.hakan.core.ui.sign.HSign;
-import com.hakan.core.ui.sign.HSignHandler;
+import com.hakan.core.ui.sign.builder.HSignBuilder;
 import com.hakan.core.utils.ProtocolVersion;
 import com.hakan.core.utils.Serializer;
 import com.hakan.core.utils.hooks.Metrics;
@@ -43,7 +47,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -94,14 +97,14 @@ public final class HCore {
 
         Metrics.initialize(plugin);
         HPacketHandler.initialize();
-        HSignHandler.initialize();
         HWorldBorderHandler.initialize();
-        HInventoryHandler.initialize();
+        GUIHandler.initialize();
         HNPCHandler.initialize();
         HItemBuilder.initialize();
         HMessageHandler.initialize();
         HParticleHandler.initialize();
         HHologramHandler.initialize();
+        HScoreboardHandler.initialize();
     }
 
 
@@ -167,7 +170,7 @@ public final class HCore {
 
 
     /*
-    INVENTORY API
+    UI API
      */
 
     /**
@@ -176,8 +179,8 @@ public final class HCore {
      * @return Content.
      */
     @Nonnull
-    public static Map<UUID, HInventory> getInventoryContentSafe() {
-        return HInventoryHandler.getContentSafe();
+    public static Map<UUID, GUI> getGUIContentSafe() {
+        return GUIHandler.getContentSafe();
     }
 
     /**
@@ -186,8 +189,82 @@ public final class HCore {
      * @return Content.
      */
     @Nonnull
-    public static Map<UUID, HInventory> getInventoryContent() {
-        return HInventoryHandler.getContent();
+    public static Map<UUID, GUI> getGUIContent() {
+        return GUIHandler.getContent();
+    }
+
+    /**
+     * Gets values as safe.
+     *
+     * @return Values.
+     */
+    @Nonnull
+    public static Collection<GUI> getGUIValuesSafe() {
+        return GUIHandler.getValuesSafe();
+    }
+
+    /**
+     * Gets values.
+     *
+     * @return Values.
+     */
+    @Nonnull
+    public static Collection<GUI> getGUIValues() {
+        return GUIHandler.getValues();
+    }
+
+    /**
+     * Finds HInventory by player.
+     *
+     * @param player Player.
+     * @return HInventory as optional.
+     */
+    @Nonnull
+    public static Optional<GUI> findGUIByPlayer(@Nonnull Player player) {
+        return GUIHandler.findByPlayer(player);
+    }
+
+    /**
+     * Gets HInventory by player.
+     *
+     * @param player Player.
+     * @return HInventory.
+     */
+    @Nonnull
+    public static GUI getGUIByPlayer(@Nonnull Player player) {
+        return GUIHandler.getByPlayer(player);
+    }
+
+    /**
+     * Finds HInventory by UID.
+     *
+     * @param uid Player UID.
+     * @return HInventory as optional.
+     */
+    @Nonnull
+    public static Optional<GUI> findGUIByUID(@Nonnull UUID uid) {
+        return GUIHandler.findByUID(uid);
+    }
+
+    /**
+     * Gets HInventory by UID.
+     *
+     * @param uid Player UId.
+     * @return HInventory.
+     */
+    @Nonnull
+    public static GUI getGUIByUID(@Nonnull UUID uid) {
+        return GUIHandler.getByUID(uid);
+    }
+
+    /**
+     * Gets content.
+     *
+     * @return Content.
+     */
+    @Nonnull
+    public static Map<UUID, HInventory> getInventoryContentSafe() {
+        return GUIHandler.getInventoryContentSafe();
     }
 
     /**
@@ -197,17 +274,7 @@ public final class HCore {
      */
     @Nonnull
     public static Collection<HInventory> getInventoryValuesSafe() {
-        return HInventoryHandler.getValuesSafe();
-    }
-
-    /**
-     * Gets values.
-     *
-     * @return Values.
-     */
-    @Nonnull
-    public static Collection<HInventory> getInventoryValues() {
-        return HInventoryHandler.getValues();
+        return GUIHandler.getInventoryValuesSafe();
     }
 
     /**
@@ -218,7 +285,7 @@ public final class HCore {
      */
     @Nonnull
     public static Optional<HInventory> findInventoryByPlayer(@Nonnull Player player) {
-        return HInventoryHandler.findByPlayer(player);
+        return GUIHandler.findInventoryByPlayer(player);
     }
 
     /**
@@ -229,7 +296,7 @@ public final class HCore {
      */
     @Nonnull
     public static HInventory getInventoryByPlayer(@Nonnull Player player) {
-        return HInventoryHandler.getByPlayer(player);
+        return GUIHandler.getInventoryByPlayer(player);
     }
 
     /**
@@ -240,7 +307,7 @@ public final class HCore {
      */
     @Nonnull
     public static Optional<HInventory> findInventoryByUID(@Nonnull UUID uid) {
-        return HInventoryHandler.findByUID(uid);
+        return GUIHandler.findInventoryByUID(uid);
     }
 
     /**
@@ -251,7 +318,7 @@ public final class HCore {
      */
     @Nonnull
     public static HInventory getInventoryByUID(@Nonnull UUID uid) {
-        return HInventoryHandler.getByUID(uid);
+        return GUIHandler.getInventoryByUID(uid);
     }
 
     /**
@@ -261,28 +328,9 @@ public final class HCore {
      * @return HInventoryBuilder.
      */
     @Nonnull
-    public static HInventoryBuilder buildInventory(@Nonnull String id) {
-        return HInventoryHandler.builder(id);
+    public static HInventoryBuilder inventoryBuilder(@Nonnull String id) {
+        return GUIHandler.inventoryBuilder(id);
     }
-
-    /**
-     * Creates HInventory with ID.
-     *
-     * @param id    ID.
-     * @param title Title.
-     * @param type  Inventory type.
-     * @param size  Size.
-     * @return HInventory.
-     */
-    @Nonnull
-    public static HInventory createInventory(@Nonnull String id, @Nonnull String title, @Nonnull InventoryType type, int size) {
-        return HInventoryHandler.builder(id).title(title).type(type).size(size).build();
-    }
-
-
-    /*
-    SIGN
-     */
 
     /**
      * Gets content as safe.
@@ -291,17 +339,7 @@ public final class HCore {
      */
     @Nonnull
     public static Map<UUID, HSign> getSignContentSafe() {
-        return HSignHandler.getContentSafe();
-    }
-
-    /**
-     * Gets content.
-     *
-     * @return Content
-     */
-    @Nonnull
-    public static Map<UUID, HSign> getSignContent() {
-        return HSignHandler.getContent();
+        return GUIHandler.getSignContentSafe();
     }
 
     /**
@@ -311,17 +349,7 @@ public final class HCore {
      */
     @Nonnull
     public static Collection<HSign> getSignValuesSafe() {
-        return HSignHandler.getValuesSafe();
-    }
-
-    /**
-     * Gets values.
-     *
-     * @return Values.
-     */
-    @Nonnull
-    public static Collection<HSign> getSignValues() {
-        return HSignHandler.getValues();
+        return GUIHandler.getSignValuesSafe();
     }
 
     /**
@@ -332,7 +360,7 @@ public final class HCore {
      */
     @Nonnull
     public static Optional<HSign> findSignByPlayer(@Nonnull Player player) {
-        return HSignHandler.findByPlayer(player);
+        return GUIHandler.findSignByPlayer(player);
     }
 
     /**
@@ -343,7 +371,7 @@ public final class HCore {
      */
     @Nonnull
     public static HSign getSignByPlayer(@Nonnull Player player) {
-        return HSignHandler.getByPlayer(player);
+        return GUIHandler.getSignByPlayer(player);
     }
 
     /**
@@ -354,7 +382,7 @@ public final class HCore {
      */
     @Nonnull
     public static Optional<HSign> findSignByUID(@Nonnull UUID uid) {
-        return HSignHandler.findByUID(uid);
+        return GUIHandler.findSignByUID(uid);
     }
 
     /**
@@ -365,19 +393,93 @@ public final class HCore {
      */
     @Nonnull
     public static HSign getSignByUID(@Nonnull UUID uid) {
-        return HSignHandler.getByUID(uid);
+        return GUIHandler.getSignByUID(uid);
     }
 
     /**
-     * Creates HSign.
+     * Creates sign builder.
      *
-     * @param type  Sign type as Material.
-     * @param lines Lines of sign.
-     * @return Created HSign.
+     * @param player Player.
+     * @return HSignBuilder.
      */
     @Nonnull
-    public static HSign createSign(@Nonnull Material type, @Nonnull String... lines) {
-        return HSignHandler.create(type, lines);
+    public static HSignBuilder signBuilder(@Nonnull Player player) {
+        return new HSignBuilder(player);
+    }
+
+    /**
+     * Gets content as safe.
+     *
+     * @return Content.
+     */
+    @Nonnull
+    public static Map<UUID, HAnvil> getAnvilContentSafe() {
+        return GUIHandler.getAnvilContentSafe();
+    }
+
+    /**
+     * Gets values as safe.
+     *
+     * @return Values.
+     */
+    @Nonnull
+    public static Collection<HAnvil> getAnvilValuesSafe() {
+        return GUIHandler.getAnvilValuesSafe();
+    }
+
+    /**
+     * Finds HSign by player.
+     *
+     * @param player Player.
+     * @return HSign as optional.
+     */
+    @Nonnull
+    public static Optional<HAnvil> findAnvilByPlayer(@Nonnull Player player) {
+        return GUIHandler.findAnvilByPlayer(player);
+    }
+
+    /**
+     * Gets HSign by player.
+     *
+     * @param player Player.
+     * @return HSign.
+     */
+    @Nonnull
+    public static HAnvil getAnvilByPlayer(@Nonnull Player player) {
+        return GUIHandler.getAnvilByPlayer(player);
+    }
+
+    /**
+     * Finds HSign by player UID.
+     *
+     * @param uid Player UID.
+     * @return HSign as optional.
+     */
+    @Nonnull
+    public static Optional<HAnvil> findAnvilByUID(@Nonnull UUID uid) {
+        return GUIHandler.findAnvilByUID(uid);
+    }
+
+    /**
+     * Gets HSign by player UID.
+     *
+     * @param uid Player UID.
+     * @return HSign.
+     */
+    @Nonnull
+    public static HAnvil getAnvilByUID(@Nonnull UUID uid) {
+        return GUIHandler.getAnvilByUID(uid);
+    }
+
+    /**
+     * Creates sign builder.
+     *
+     * @param player Player.
+     * @return HSignBuilder.
+     */
+    @Nonnull
+    public static HAnvilBuilder anvilBuilder(@Nonnull Player player) {
+        return GUIHandler.anvilBuilder(player);
     }
 
 
@@ -681,79 +783,109 @@ public final class HCore {
      */
 
     /**
+     * Gets scoreboard map as safe.
+     *
+     * @return Scoreboard map.
+     */
+    @Nonnull
+    public static Map<UUID, HScoreboard> getScoreboardContentSafe() {
+        return HScoreboardHandler.getContentSafe();
+    }
+
+    /**
+     * Gets scoreboard map.
+     *
+     * @return Scoreboard map.
+     */
+    @Nonnull
+    public static Map<UUID, HScoreboard> getScoreboardContent() {
+        return HScoreboardHandler.getContent();
+    }
+
+    /**
+     * Gets all scoreboards as safe.
+     *
+     * @return Scoreboard list.
+     */
+    @Nonnull
+    public static Collection<HScoreboard> getScoreboardValuesSafe() {
+        return HScoreboardHandler.getValuesSafe();
+    }
+
+    /**
      * Gets all scoreboards.
      *
      * @return Scoreboard list.
      */
     @Nonnull
-    public static Collection<HScoreboard> getScoreboardContent() {
-        return HScoreboard.getContent();
+    public static Collection<HScoreboard> getScoreboardValues() {
+        return HScoreboardHandler.getValues();
     }
 
     /**
-     * Finds a created scoreboard.
+     * Finds a created scoreboard
      *
-     * @param player Scoreboard id that you want.
-     * @return Scoreboard from id.
+     * @param player scoreboard id that you want
+     * @return scoreboard from id
      */
     @Nonnull
     public static Optional<HScoreboard> findScoreboardByPlayer(@Nonnull Player player) {
-        return HScoreboard.findByPlayer(player);
+        return HScoreboardHandler.findByPlayer(player);
     }
 
     /**
-     * Gets a created scoreboard.
+     * Gets a created scoreboard
      *
      * @param player Player.
-     * @return Scoreboard from id.
+     * @return scoreboard from id
      */
     @Nonnull
     public static HScoreboard getScoreboardByPlayer(@Nonnull Player player) {
-        return HScoreboard.getByPlayer(player);
+        return HScoreboardHandler.getByPlayer(player);
     }
 
     /**
-     * Finds a created scoreboard.
+     * Finds a created scoreboard
      *
      * @param uid UID of player.
-     * @return Scoreboard from uid.
+     * @return scoreboard from id
      */
     @Nonnull
     public static Optional<HScoreboard> findScoreboardByUID(@Nonnull UUID uid) {
-        return HScoreboard.findByUID(uid);
+        return HScoreboardHandler.findByUID(uid);
     }
 
     /**
-     * Gets a created scoreboard.
+     * Gets a created scoreboard
      *
      * @param uid UID of player.
-     * @return Scoreboard from Uid.
+     * @return scoreboard from id
      */
     @Nonnull
     public static HScoreboard getScoreboardByUID(@Nonnull UUID uid) {
-        return HScoreboard.getByUID(uid);
+        return HScoreboardHandler.getByUID(uid);
     }
 
     /**
      * Creates new Instance of this class.
      *
-     * @param player Player.
-     * @return New instance of HScoreboard.
+     * @param player player
+     * @return new instance of HScoreboard
      */
     @Nonnull
     public static HScoreboard createScoreboard(@Nonnull Player player) {
-        return HScoreboard.create(player);
+        return HScoreboardHandler.create(player);
     }
 
     /**
      * Creates new Instance of this class.
      *
-     * @param uid UID of player.
-     * @return New instance of HScoreboard.
+     * @param uid UID of player
+     * @return new instance of HScoreboard
      */
     @Nonnull
     public static HScoreboard createScoreboard(@Nonnull UUID uid) {
-        return HScoreboard.create(uid);
+        return HScoreboardHandler.create(uid);
     }
 
 
@@ -863,8 +995,8 @@ public final class HCore {
      * @return HNPCBuilder instance.
      */
     @Nonnull
-    public static HNPCBuilder buildNpc(@Nonnull String id) {
-        return HNPCHandler.build(id);
+    public static HNPCBuilder npcBuilder(@Nonnull String id) {
+        return HNPCHandler.npcBuilder(id);
     }
 
 

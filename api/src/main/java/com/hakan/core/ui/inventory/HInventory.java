@@ -1,5 +1,7 @@
 package com.hakan.core.ui.inventory;
 
+import com.hakan.core.ui.GUI;
+import com.hakan.core.ui.GUIHandler;
 import com.hakan.core.ui.inventory.item.ClickableItem;
 import com.hakan.core.ui.inventory.pagination.Page;
 import com.hakan.core.ui.inventory.pagination.Pagination;
@@ -27,15 +29,16 @@ import java.util.stream.IntStream;
  * inventories easily.
  */
 @SuppressWarnings({"unchecked"})
-public class HInventory {
+public class HInventory implements GUI {
 
     private final String id;
     private final String title;
     private final Inventory inventory;
     protected final Pagination pagination;
-
     private final Set<Option> options;
     private final Map<Integer, ClickableItem> items;
+    private Consumer<Player> openConsumer;
+    private Consumer<Player> closeConsumer;
 
     /**
      * Creates new instance of this class.
@@ -416,7 +419,7 @@ public class HInventory {
      */
     @Nonnull
     public final <T extends HInventory> T refresh(@Nonnull Player player) {
-        this.onOpen(this, Objects.requireNonNull(player, "player cannot be null!"));
+        this.onOpen(Objects.requireNonNull(player, "player cannot be null!"));
         return (T) this;
     }
 
@@ -425,21 +428,16 @@ public class HInventory {
      * to hInventoryMap and triggers onOpen method.
      *
      * @param player Player.
-     * @param <T>    HInventory type.
-     * @return instance of this class.
      */
-    @Nonnull
-    public final <T extends HInventory> T open(@Nonnull Player player) {
-        HInventory hInventory = HInventoryHandler.findByPlayer(Objects.requireNonNull(player, "player cannot be null!")).orElse(null);
+    public final void open(@Nonnull Player player) {
+        HInventory hInventory = GUIHandler.findInventoryByPlayer(Objects.requireNonNull(player, "player cannot be null!")).orElse(null);
 
-        this.onOpen(this, player);
+        this.onOpen(player);
 
         if (hInventory == null || !hInventory.equals(this)) {
             player.openInventory(this.inventory);
-            HInventoryHandler.getContent().put(player.getUniqueId(), this);
+            GUIHandler.getContent().put(player.getUniqueId(), this);
         }
-
-        return (T) this;
     }
 
     /**
@@ -447,11 +445,8 @@ public class HInventory {
      * removes from hInventoryMap and triggers onClose method.
      *
      * @param player Player.
-     * @param <T>    HInventory type.
-     * @return instance of this class.
      */
-    @Nonnull
-    public final <T extends HInventory> T close(@Nonnull Player player) {
+    public final void close(@Nonnull Player player) {
         Objects.requireNonNull(player, "player cannot be null!");
 
         if (this.hasOption(Option.CLOSABLE)) {
@@ -461,30 +456,46 @@ public class HInventory {
             player.closeInventory();
             this.removeOption(Option.CLOSABLE);
         }
+    }
 
-        return (T) this;
+    /**
+     * Called when player opens the inventory.
+     *
+     * @param consumer Consumer.
+     */
+    public void whenOpened(@Nonnull Consumer<Player> consumer) {
+        this.openConsumer = Objects.requireNonNull(consumer, "consumer cannot be null!");
+    }
+
+    /**
+     * Called when player closes the inventory.
+     *
+     * @param consumer Consumer.
+     */
+    public void whenClosed(@Nonnull Consumer<Player> consumer) {
+        this.closeConsumer = Objects.requireNonNull(consumer, "consumer cannot be null!");
     }
 
     /**
      * This method run when inventory
      * opened to any player.
      *
-     * @param player     Player.
-     * @param hInventory This class.
+     * @param player Player.
      */
-    public void onOpen(@Nonnull HInventory hInventory, @Nonnull Player player) {
-
+    protected void onOpen(@Nonnull Player player) {
+        if (this.openConsumer != null)
+            this.openConsumer.accept(player);
     }
 
     /**
      * This method run when inventory
      * closed from any player.
      *
-     * @param player     Player.
-     * @param hInventory This class.
+     * @param player Player.
      */
-    public void onClose(@Nonnull HInventory hInventory, @Nonnull Player player) {
-
+    protected void onClose(@Nonnull Player player) {
+        if (this.closeConsumer != null)
+            this.closeConsumer.accept(player);
     }
 
 

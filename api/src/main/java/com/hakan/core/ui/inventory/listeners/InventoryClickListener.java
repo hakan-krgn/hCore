@@ -1,7 +1,7 @@
 package com.hakan.core.ui.inventory.listeners;
 
+import com.hakan.core.ui.GUIHandler;
 import com.hakan.core.ui.inventory.HInventory;
-import com.hakan.core.ui.inventory.HInventoryHandler;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -32,7 +32,7 @@ public final class InventoryClickListener implements Listener {
         }
 
         Player player = (Player) event.getWhoClicked();
-        HInventoryHandler.findByPlayer(player).ifPresent(hInventory -> {
+        GUIHandler.findInventoryByPlayer(player).ifPresent(hInventory -> {
             if (event.getClickedInventory() == null) {
                 event.setCancelled(true);
                 return;

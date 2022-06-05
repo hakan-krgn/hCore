@@ -1,6 +1,7 @@
 package com.hakan.core.ui.sign;
 
 import com.hakan.core.HCore;
+import com.hakan.core.ui.GUI;
 import com.hakan.core.utils.ProtocolVersion;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -13,11 +14,12 @@ import java.util.function.Consumer;
  * HSign class to manage
  * and show sign to player.
  */
-public abstract class HSign {
+public abstract class HSign implements GUI {
 
     protected static final int LOWEST_Y_AXIS = (HCore.getProtocolVersion().isNewerOrEqual(ProtocolVersion.v1_18_R1)) ? -64 : 0;
 
 
+    protected final Player player;
     protected Material type;
     protected String[] lines;
     protected Consumer<String[]> consumer;
@@ -25,10 +27,12 @@ public abstract class HSign {
     /**
      * Creates new instance of this class.
      *
-     * @param type  Type of sign.
-     * @param lines Lines of sign.
+     * @param player Player.
+     * @param type   Type of sign.
+     * @param lines  Lines of sign.
      */
-    public HSign(@Nonnull Material type, @Nonnull String... lines) {
+    public HSign(@Nonnull Player player, @Nonnull Material type, @Nonnull String... lines) {
+        this.player = Objects.requireNonNull(player, "player cannot be null!");
         this.type = Objects.requireNonNull(type, "type cannot be null!");
         this.lines = Objects.requireNonNull(lines, "lines cannot be null!");
     }
@@ -84,25 +88,23 @@ public abstract class HSign {
      * @return This class.
      */
     @Nonnull
-    public final HSign onComplete(@Nonnull Consumer<String[]> consumer) {
+    public final HSign whenInputReceived(@Nonnull Consumer<String[]> consumer) {
         this.consumer = Objects.requireNonNull(consumer, "complete consumer cannot be null!");
         return this;
     }
 
+
     /**
-     * Opens the sign to player.
-     *
-     * @param player Player.
+     * Opens the gui to player.
      */
-    public abstract void open(@Nonnull Player player);
+    public abstract void open();
 
     /**
      * Listens player packet if
      * packet is a sign packet.
      *
-     * @param player Player.
-     * @param packet Packet.
      * @param <T>    Packet type.
+     * @param packet Packet.
      */
-    public abstract <T> void listen(@Nonnull Player player, @Nonnull T packet);
+    public abstract <T> void listen(@Nonnull T packet);
 }

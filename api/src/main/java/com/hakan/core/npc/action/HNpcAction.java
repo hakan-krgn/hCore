@@ -71,7 +71,7 @@ public final class HNpcAction {
      * @param spawnConsumer Consumer.
      */
     public void whenSpawned(@Nonnull Consumer<HNPC> spawnConsumer) {
-        this.spawnConsumer = spawnConsumer;
+        this.spawnConsumer = Objects.requireNonNull(spawnConsumer, "spawn consumer cannot be null!");
     }
 
     /**
@@ -80,7 +80,7 @@ public final class HNpcAction {
      * @param deleteConsumer Consumer.
      */
     public void whenDeleted(@Nonnull Consumer<HNPC> deleteConsumer) {
-        this.deleteConsumer = deleteConsumer;
+        this.deleteConsumer = Objects.requireNonNull(deleteConsumer, "delete consumer cannot be null!");
     }
 
     /**
@@ -89,7 +89,7 @@ public final class HNpcAction {
      * @param clickConsumer Consumer.
      */
     public void whenClicked(@Nonnull BiConsumer<Player, HNPC.Action> clickConsumer) {
-        this.clickConsumer = clickConsumer;
+        this.clickConsumer = Objects.requireNonNull(clickConsumer, "click consumer cannot be null!");
     }
 
     /**
