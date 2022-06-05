@@ -15,6 +15,7 @@ import java.util.function.Consumer;
  * HAnvil is a class that
  * handles Anvil GUI.
  */
+@SuppressWarnings({"UnusedReturnValue"})
 public abstract class HAnvil implements GUI {
 
     protected final Player player;
@@ -101,6 +102,7 @@ public abstract class HAnvil implements GUI {
     /**
      * Sets if GUI is closable.
      */
+    @Nonnull
     public final HAnvil setClosable(boolean closable) {
         this.closable = closable;
         return this;
@@ -111,6 +113,7 @@ public abstract class HAnvil implements GUI {
      *
      * @param openRunnable Callback.
      */
+    @Nonnull
     public final HAnvil whenOpened(@Nonnull Runnable openRunnable) {
         this.openRunnable = Objects.requireNonNull(openRunnable, "open callback cannot be null!");
         return this;
@@ -122,6 +125,7 @@ public abstract class HAnvil implements GUI {
      *
      * @param inputConsumer Callback.
      */
+    @Nonnull
     public final HAnvil whenInputReceived(@Nonnull Consumer<String> inputConsumer) {
         this.inputConsumer = Objects.requireNonNull(inputConsumer, "input callback cannot be null!");
         return this;
@@ -132,6 +136,7 @@ public abstract class HAnvil implements GUI {
      *
      * @param closeRunnable Callback.
      */
+    @Nonnull
     public final HAnvil whenClosed(@Nonnull Runnable closeRunnable) {
         this.closeRunnable = Objects.requireNonNull(closeRunnable, "close callback cannot be null!");
         return this;
@@ -142,6 +147,7 @@ public abstract class HAnvil implements GUI {
      *
      * @return Instance of HAnvil.
      */
+    @Nonnull
     public final HAnvil open() {
         return this.open(true);
     }
@@ -151,6 +157,7 @@ public abstract class HAnvil implements GUI {
      *
      * @return Cloned GUI.
      */
+    @Nonnull
     @Override
     public final HAnvil clone() {
         return GUIHandler.anvilBuilder(this.player)
@@ -169,6 +176,7 @@ public abstract class HAnvil implements GUI {
     /**
      * Gets as bukkit inventory.
      */
+    @Nonnull
     public abstract Inventory toInventory();
 
     /**
