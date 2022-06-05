@@ -48,6 +48,7 @@ public class HAnvil_v1_8_R3 extends HAnvil {
     /**
      * {@inheritDoc}
      */
+    @Nonnull
     @Override
     public Inventory toInventory() {
         return this.container.getBukkitView().getTopInventory();
