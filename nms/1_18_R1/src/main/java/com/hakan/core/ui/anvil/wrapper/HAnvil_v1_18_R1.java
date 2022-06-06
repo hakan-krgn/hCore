@@ -4,6 +4,7 @@ import com.hakan.core.HCore;
 import com.hakan.core.ui.GUIHandler;
 import com.hakan.core.ui.anvil.HAnvil;
 import net.minecraft.core.BlockPosition;
+import net.minecraft.network.chat.ChatComponentText;
 import net.minecraft.network.chat.ChatMessage;
 import net.minecraft.network.protocol.game.PacketPlayOutCloseWindow;
 import net.minecraft.network.protocol.game.PacketPlayOutOpenWindow;
@@ -41,8 +42,8 @@ public class HAnvil_v1_18_R1 extends HAnvil {
                            @Nullable ItemStack rightItem) {
         super(player, title, text, leftItem, rightItem);
         this.entityPlayer = ((CraftPlayer) player).getHandle();
-        this.container = new AnvilContainer(this.entityPlayer);
         this.nextContainerId = this.entityPlayer.nextContainerCounter();
+        this.container = new AnvilContainer(this.entityPlayer);
     }
 
     /**
@@ -104,12 +105,12 @@ public class HAnvil_v1_18_R1 extends HAnvil {
         public AnvilContainer(@Nonnull EntityHuman entityhuman) {
             super(nextContainerId, entityhuman.fq(), ContainerAccess.a(entityhuman.t, new BlockPosition(0, 0, 0)));
             super.checkReachable = false;
-            super.setTitle(new ChatMessage(title));
+            super.setTitle(new ChatComponentText(title));
         }
 
         @Override
-        public void d() {
-            super.d();
+        public void l() {
+            super.l();
             super.w.a(0);
         }
 

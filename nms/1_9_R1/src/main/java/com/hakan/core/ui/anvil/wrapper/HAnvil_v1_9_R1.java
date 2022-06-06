@@ -40,8 +40,8 @@ public class HAnvil_v1_9_R1 extends HAnvil {
                           @Nullable ItemStack rightItem) {
         super(player, title, text, leftItem, rightItem);
         this.entityPlayer = ((CraftPlayer) player).getHandle();
-        this.container = new AnvilContainer(this.entityPlayer);
         this.nextContainerId = this.entityPlayer.nextContainerCounter();
+        this.container = new AnvilContainer(this.entityPlayer);
     }
 
     /**

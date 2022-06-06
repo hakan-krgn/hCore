@@ -4,7 +4,7 @@ import com.hakan.core.HCore;
 import com.hakan.core.ui.GUIHandler;
 import com.hakan.core.ui.anvil.HAnvil;
 import net.minecraft.server.v1_16_R2.BlockPosition;
-import net.minecraft.server.v1_16_R2.ChatMessage;
+import net.minecraft.server.v1_16_R2.ChatComponentText;
 import net.minecraft.server.v1_16_R2.ContainerAccess;
 import net.minecraft.server.v1_16_R2.ContainerAnvil;
 import net.minecraft.server.v1_16_R2.Containers;
@@ -43,8 +43,8 @@ public class HAnvil_v1_16_R2 extends HAnvil {
                            @Nullable ItemStack rightItem) {
         super(player, title, text, leftItem, rightItem);
         this.entityPlayer = ((CraftPlayer) player).getHandle();
-        this.container = new AnvilContainer(this.entityPlayer);
         this.nextContainerId = this.entityPlayer.nextContainerCounter();
+        this.container = new AnvilContainer(this.entityPlayer);
     }
 
     /**
@@ -69,7 +69,7 @@ public class HAnvil_v1_16_R2 extends HAnvil {
         if (this.rightItem != null)
             this.container.setItem(1, CraftItemStack.asNMSCopy(super.rightItem));
 
-        HCore.sendPacket(super.player, new PacketPlayOutOpenWindow(this.nextContainerId, Containers.ANVIL, new ChatMessage(super.title)));
+        HCore.sendPacket(super.player, new PacketPlayOutOpenWindow(this.nextContainerId, Containers.ANVIL, new ChatComponentText(super.title)));
         this.container.levelCost.set(0);
         this.container.addSlotListener(this.entityPlayer);
         this.entityPlayer.activeContainer = this.container;
@@ -106,12 +106,12 @@ public class HAnvil_v1_16_R2 extends HAnvil {
         public AnvilContainer(@Nonnull EntityHuman entityhuman) {
             super(nextContainerId, entityhuman.inventory, ContainerAccess.at(entityhuman.world, new BlockPosition(0, 0, 0)));
             super.checkReachable = false;
-            super.setTitle(new ChatMessage(title));
+            super.setTitle(new ChatComponentText(title));
         }
 
         @Override
-        public void d() {
-            super.d();
+        public void e() {
+            super.e();
             super.levelCost.set(0);
         }
 
