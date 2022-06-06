@@ -108,7 +108,7 @@ public final class HNPCUtils_v1_13_R2 {
     @Nonnull
     public DataWatcher createDataWatcher(EntityPlayer npc) {
         DataWatcher dataWatcher = npc.getDataWatcher();
-        dataWatcher.set(new DataWatcherObject<>(15, DataWatcherRegistry.a), (byte) 127);
+        dataWatcher.set(new DataWatcherObject<>(13, DataWatcherRegistry.a), (byte) 127);
         return dataWatcher;
     }
 
