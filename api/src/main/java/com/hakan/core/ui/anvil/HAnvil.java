@@ -5,6 +5,7 @@ import com.hakan.core.ui.GUIHandler;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -48,6 +49,12 @@ public abstract class HAnvil implements GUI {
         this.leftItem = Objects.requireNonNull(leftItem, "leftItem cannot be null!");
         this.rightItem = rightItem;
         this.closable = true;
+
+        ItemMeta meta = this.leftItem.getItemMeta();
+        if (meta != null) {
+            meta.setDisplayName(this.text);
+            this.leftItem.setItemMeta(meta);
+        }
     }
 
     /**

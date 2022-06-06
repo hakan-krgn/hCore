@@ -4,7 +4,7 @@ import com.hakan.core.HCore;
 import com.hakan.core.ui.GUIHandler;
 import com.hakan.core.ui.anvil.HAnvil;
 import net.minecraft.core.BlockPosition;
-import net.minecraft.network.chat.ChatMessage;
+import net.minecraft.network.chat.ChatComponentText;
 import net.minecraft.network.protocol.game.PacketPlayOutCloseWindow;
 import net.minecraft.network.protocol.game.PacketPlayOutOpenWindow;
 import net.minecraft.server.level.EntityPlayer;
@@ -41,8 +41,8 @@ public class HAnvil_v1_17_R1 extends HAnvil {
                            @Nullable ItemStack rightItem) {
         super(player, title, text, leftItem, rightItem);
         this.entityPlayer = ((CraftPlayer) player).getHandle();
-        this.container = new AnvilContainer(this.entityPlayer);
         this.nextContainerId = this.entityPlayer.nextContainerCounter();
+        this.container = new AnvilContainer(this.entityPlayer);
     }
 
     /**
@@ -67,7 +67,7 @@ public class HAnvil_v1_17_R1 extends HAnvil {
         if (this.rightItem != null)
             this.container.getBukkitView().setItem(1, super.rightItem);
 
-        HCore.sendPacket(super.player, new PacketPlayOutOpenWindow(this.nextContainerId, Containers.h, new ChatMessage(super.title)));
+        HCore.sendPacket(super.player, new PacketPlayOutOpenWindow(this.nextContainerId, Containers.h, new ChatComponentText(super.title)));
         this.container.w.set(0);
         this.entityPlayer.initMenu(this.container);
         this.entityPlayer.bV = this.container;
@@ -104,12 +104,12 @@ public class HAnvil_v1_17_R1 extends HAnvil {
         public AnvilContainer(@Nonnull EntityHuman entityhuman) {
             super(nextContainerId, entityhuman.getInventory(), ContainerAccess.at(entityhuman.t, new BlockPosition(0, 0, 0)));
             super.checkReachable = false;
-            super.setTitle(new ChatMessage(title));
+            super.setTitle(new ChatComponentText(title));
         }
 
         @Override
-        public void d() {
-            super.d();
+        public void i() {
+            super.i();
             super.w.set(0);
         }
 

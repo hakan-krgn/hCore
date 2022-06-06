@@ -27,16 +27,18 @@ public final class AnvilCloseListener implements Listener {
 
         GUIHandler.findAnvilByPlayer(player).ifPresent(hAnvil -> {
             if (hAnvil.isClosable()) {
-                try {
-                    Field field = HAnvil.class.getDeclaredField("closeRunnable");
-                    field.setAccessible(true);
-                    Runnable closeRunnable = (Runnable) field.get(hAnvil);
-                    if (closeRunnable != null)
-                        closeRunnable.run();
-                    field.setAccessible(false);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                HCore.syncScheduler().after(1).run(() -> {
+                    try {
+                        Field field = HAnvil.class.getDeclaredField("closeRunnable");
+                        field.setAccessible(true);
+                        Runnable closeRunnable = (Runnable) field.get(hAnvil);
+                        if (closeRunnable != null)
+                            closeRunnable.run();
+                        field.setAccessible(false);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
 
                 GUIHandler.getContent().remove(player.getUniqueId());
                 player.updateInventory();
