@@ -173,7 +173,7 @@ public final class HNPC_v1_17_R1 extends HNPC {
 
         HCore.asyncScheduler().after(5)
                 .run(() -> HCore.sendPacket(players, new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.e, this.npc)));
-        HCore.sendPacket(players, new PacketPlayOutEntityMetadata(this.npc.getId(), this.utils.createDataWatcher(), true));
+        HCore.sendPacket(players, new PacketPlayOutEntityMetadata(this.npc.getId(), this.utils.createDataWatcher(this.npc), true));
 
         return this.setLocation(super.getLocation());
     }

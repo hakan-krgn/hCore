@@ -38,7 +38,7 @@ public final class HNPCUtils_v1_17_R1 {
     /**
      * Creates a GameProfile for the NPC.
      *
-     * @param skin The name of the NPC.
+     * @param skin The skin of the NPC.
      * @return The GameProfile.
      */
     @Nonnull
@@ -105,8 +105,8 @@ public final class HNPCUtils_v1_17_R1 {
      * @return Data watcher.
      */
     @Nonnull
-    public DataWatcher createDataWatcher() {
-        DataWatcher dataWatcher = new DataWatcher(null);
+    public DataWatcher createDataWatcher(EntityPlayer npc) {
+        DataWatcher dataWatcher = npc.getDataWatcher();
         dataWatcher.set(new DataWatcherObject<>(17, DataWatcherRegistry.a), (byte) 127);
         return dataWatcher;
     }
