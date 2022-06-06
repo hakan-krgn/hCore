@@ -38,7 +38,7 @@ public final class HNPCUtils_v1_18_R2 {
     /**
      * Creates a GameProfile for the NPC.
      *
-     * @param skin The name of the NPC.
+     * @param skin The skin of the NPC.
      * @return The GameProfile.
      */
     @Nonnull
