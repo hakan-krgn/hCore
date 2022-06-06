@@ -3,16 +3,16 @@ package com.hakan.core.ui.anvil.wrapper;
 import com.hakan.core.HCore;
 import com.hakan.core.ui.GUIHandler;
 import com.hakan.core.ui.anvil.HAnvil;
-import net.minecraft.server.v1_8_R3.BlockPosition;
-import net.minecraft.server.v1_8_R3.Blocks;
-import net.minecraft.server.v1_8_R3.ChatMessage;
-import net.minecraft.server.v1_8_R3.ContainerAnvil;
-import net.minecraft.server.v1_8_R3.EntityHuman;
-import net.minecraft.server.v1_8_R3.EntityPlayer;
-import net.minecraft.server.v1_8_R3.PacketPlayOutCloseWindow;
-import net.minecraft.server.v1_8_R3.PacketPlayOutOpenWindow;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
+import net.minecraft.server.v1_10_R1.BlockPosition;
+import net.minecraft.server.v1_10_R1.Blocks;
+import net.minecraft.server.v1_10_R1.ChatMessage;
+import net.minecraft.server.v1_10_R1.ContainerAnvil;
+import net.minecraft.server.v1_10_R1.EntityHuman;
+import net.minecraft.server.v1_10_R1.EntityPlayer;
+import net.minecraft.server.v1_10_R1.PacketPlayOutCloseWindow;
+import net.minecraft.server.v1_10_R1.PacketPlayOutOpenWindow;
+import org.bukkit.craftbukkit.v1_10_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_10_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 /**
  * {@inheritDoc}
  */
-public class HAnvil_v1_8_R3 extends HAnvil {
+public class HAnvil_v1_10_R1 extends HAnvil {
 
     private final EntityPlayer entityPlayer;
     private final AnvilContainer container;
@@ -33,11 +33,11 @@ public class HAnvil_v1_8_R3 extends HAnvil {
     /**
      * {@inheritDoc}
      */
-    public HAnvil_v1_8_R3(@Nonnull Player player,
-                          @Nonnull String title,
-                          @Nonnull String text,
-                          @Nonnull ItemStack leftItem,
-                          @Nullable ItemStack rightItem) {
+    public HAnvil_v1_10_R1(@Nonnull Player player,
+                           @Nonnull String title,
+                           @Nonnull String text,
+                           @Nonnull ItemStack leftItem,
+                           @Nullable ItemStack rightItem) {
         super(player, title, text, leftItem, rightItem);
         this.entityPlayer = ((CraftPlayer) player).getHandle();
         this.container = new AnvilContainer(this.entityPlayer);
