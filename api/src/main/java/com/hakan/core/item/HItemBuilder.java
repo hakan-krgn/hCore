@@ -574,7 +574,7 @@ public class HItemBuilder {
             if (this.unbreakable) {
                 if (HCore.getProtocolVersion().isOlder(ProtocolVersion.v1_11_R1)) {
                     try {
-                        Method method = meta.getClass().getDeclaredMethod("spigot");
+                        Method method = ItemMeta.class.getDeclaredMethod("spigot");
                         method.setAccessible(true);
                         Object spigot = method.invoke(meta);
                         method.setAccessible(false);

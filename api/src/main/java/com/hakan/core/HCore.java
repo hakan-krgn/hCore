@@ -97,7 +97,6 @@ public final class HCore {
 
         Metrics.initialize(plugin);
         HPacketHandler.initialize();
-        HWorldBorderHandler.initialize();
         GUIHandler.initialize();
         HNPCHandler.initialize();
         HItemBuilder.initialize();
@@ -105,6 +104,7 @@ public final class HCore {
         HParticleHandler.initialize();
         HHologramHandler.initialize();
         HScoreboardHandler.initialize();
+        HWorldBorderHandler.initialize();
     }
 
 
