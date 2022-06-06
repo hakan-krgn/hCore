@@ -24,11 +24,11 @@ public final class HNpcClickListener_v1_15_R1 extends HNpcClickListener {
         HNPCHandler.findByEntityID(id).ifPresent(npc -> {
             PacketPlayInUseEntity.EnumEntityUseAction useAction = packet.b();
             if (useAction.equals(PacketPlayInUseEntity.EnumEntityUseAction.ATTACK)) {
-                npc.getAction().onClick(event.getPlayer(), HNPC.Action.LEFT_CLICK);
+                npc.getAction().onClick(player, HNPC.Action.LEFT_CLICK);
             } else if (useAction.equals(PacketPlayInUseEntity.EnumEntityUseAction.INTERACT)) {
-                npc.getAction().onClick(event.getPlayer(), HNPC.Action.RIGHT_CLICK);
+                npc.getAction().onClick(player, HNPC.Action.RIGHT_CLICK);
             } else {
-                npc.getAction().onClick(event.getPlayer(), HNPC.Action.RIGHT_CLICK);
+                npc.getAction().onClick(player, HNPC.Action.RIGHT_CLICK);
             }
         });
     }

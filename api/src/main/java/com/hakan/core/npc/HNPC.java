@@ -60,8 +60,7 @@ public abstract class HNPC {
         this.equipments = Objects.requireNonNull(equipments, "equipments cannot be null!");
 
         this.renderer = new HRenderer(location, 30, viewers,
-                this::show, this::hide,
-                renderer -> this.hide(renderer.getShownViewersAsPlayer()));
+                this::show, this::hide, renderer -> this.hide(renderer.getShownViewersAsPlayer()));
 
         this.hologram.addLines(Objects.requireNonNull(lines, "lines cannot be null!"));
         this.hologram.showEveryone(showEveryone);

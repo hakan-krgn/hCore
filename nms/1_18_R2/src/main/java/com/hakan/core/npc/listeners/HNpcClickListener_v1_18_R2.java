@@ -21,9 +21,9 @@ public final class HNpcClickListener_v1_18_R2 extends HNpcClickListener {
 
         HNPCHandler.findByEntityID(id).ifPresent(npc -> {
             if (event.getValue("b").getClass().getName().equals("net.minecraft.network.protocol.game.PacketPlayInUseEntity$1")) {
-                npc.getAction().onClick(event.getPlayer(), HNPC.Action.LEFT_CLICK);
+                npc.getAction().onClick(player, HNPC.Action.LEFT_CLICK);
             } else {
-                npc.getAction().onClick(event.getPlayer(), HNPC.Action.RIGHT_CLICK);
+                npc.getAction().onClick(player, HNPC.Action.RIGHT_CLICK);
             }
         });
     }

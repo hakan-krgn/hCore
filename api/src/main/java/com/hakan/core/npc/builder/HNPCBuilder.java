@@ -194,7 +194,7 @@ public final class HNPCBuilder {
      */
     @Nonnull
     public HNPCBuilder whenClicked(@Nonnull BiConsumer<Player, HNPC.Action> action) {
-        return this.whenClicked(action, 3);
+        return this.whenClicked(action, 20);
     }
 
     /**

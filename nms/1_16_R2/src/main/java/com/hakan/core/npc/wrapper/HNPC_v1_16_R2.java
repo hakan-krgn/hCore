@@ -59,6 +59,11 @@ public final class HNPC_v1_16_R2 extends HNPC {
         this.armorStand = this.utils.createNameHider(location);
         this.npc.passengers.clear();
         this.npc.passengers.add(this.armorStand);
+
+        HCore.syncScheduler().after(20)
+                .run(() -> this.hide(super.renderer.getShownViewersAsPlayer()));
+        HCore.syncScheduler().after(25)
+                .run(() -> this.show(super.renderer.getShownViewersAsPlayer()));
     }
 
     /**
@@ -157,6 +162,7 @@ public final class HNPC_v1_16_R2 extends HNPC {
         HCore.sendPacket(Objects.requireNonNull(players, "players cannot be null!"),
                 new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, this.npc),
                 new PacketPlayOutNamedEntitySpawn(this.npc),
+                new PacketPlayOutEntityMetadata(this.npc.getId(), this.utils.createDataWatcher(this.npc), true),
 
                 new PacketPlayOutSpawnEntityLiving(this.armorStand),
                 new PacketPlayOutEntityMetadata(this.armorStand.getId(), this.armorStand.getDataWatcher(), true),
@@ -172,8 +178,6 @@ public final class HNPC_v1_16_R2 extends HNPC {
 
         HCore.asyncScheduler().after(5)
                 .run(() -> HCore.sendPacket(players, new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, this.npc)));
-        HCore.sendPacket(players, new PacketPlayOutEntityMetadata(this.npc.getId(), this.utils.createDataWatcher(this.npc), true));
-
         return this.setLocation(super.getLocation());
     }
 
