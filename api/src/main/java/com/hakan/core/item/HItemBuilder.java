@@ -174,7 +174,7 @@ public class HItemBuilder {
             this.lore = meta.hasLore() ? meta.getLore() : new ArrayList<>();
             this.enchantments = meta.hasEnchants() ? meta.getEnchants() : new HashMap<>();
             this.glow = meta.hasEnchants() && meta.getEnchants().containsKey(glowEnchantment);
-            this.unbreakable = meta.isUnbreakable();
+            this.unbreakable = false;
         }
     }
 
