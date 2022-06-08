@@ -3,7 +3,7 @@ package com.hakan.core.item.nbt;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.nbt.MojangsonParser;
 import net.minecraft.nbt.NBTTagCompound;
-import org.bukkit.craftbukkit.v1_18_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -23,10 +23,7 @@ public class HNbtManager_v1_19_R1 implements HNbtManager {
 
         net.minecraft.world.item.ItemStack nmsCopy = CraftItemStack.asNMSCopy(itemStack);
 
-        if (nmsCopy.t() == null)
-            nmsCopy.c(new NBTTagCompound());
-
-        nmsCopy.t().a(key, value);
+        nmsCopy.v().a(key, value);
         return CraftItemStack.asBukkitCopy(nmsCopy);
     }
 
@@ -41,10 +38,7 @@ public class HNbtManager_v1_19_R1 implements HNbtManager {
 
         net.minecraft.world.item.ItemStack nmsCopy = CraftItemStack.asNMSCopy(itemStack);
 
-        if (nmsCopy.t() == null)
-            nmsCopy.c(new NBTTagCompound());
-
-        nmsCopy.t().a(this.parse(nbt));
+        nmsCopy.v().a(this.parse(nbt));
         return CraftItemStack.asBukkitCopy(nmsCopy);
     }
 
@@ -59,10 +53,7 @@ public class HNbtManager_v1_19_R1 implements HNbtManager {
 
         net.minecraft.world.item.ItemStack nmsCopy = CraftItemStack.asNMSCopy(itemStack);
 
-        if (nmsCopy.t() == null)
-            nmsCopy.c(new NBTTagCompound());
-
-        NBTTagCompound nbtTagCompound = nmsCopy.t();
+        NBTTagCompound nbtTagCompound = nmsCopy.v();
         return nbtTagCompound.e(key) ? nbtTagCompound.l(key) : "{}";
     }
 
@@ -75,11 +66,7 @@ public class HNbtManager_v1_19_R1 implements HNbtManager {
         Objects.requireNonNull(itemStack, "itemStack cannot be null");
 
         net.minecraft.world.item.ItemStack nmsCopy = CraftItemStack.asNMSCopy(itemStack);
-
-        if (nmsCopy.t() == null)
-            nmsCopy.c(new NBTTagCompound());
-
-        return nmsCopy.t().toString();
+        return nmsCopy.v().toString();
     }
 
     private NBTTagCompound parse(String nbt) {

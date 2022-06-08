@@ -5,12 +5,12 @@ import com.hakan.core.hologram.HHologram;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityDestroy;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityMetadata;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityTeleport;
-import net.minecraft.network.protocol.game.PacketPlayOutSpawnEntityLiving;
+import net.minecraft.network.protocol.game.PacketPlayOutSpawnEntity;
 import net.minecraft.world.entity.decoration.EntityArmorStand;
 import net.minecraft.world.level.World;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_18_R2.util.CraftChatMessage;
+import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_19_R1.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
@@ -50,7 +50,7 @@ public final class HHologramArmorStand_v1_19_R1 implements HHologramArmorStand {
     @Nonnull
     @Override
     public String getText() {
-        return Objects.requireNonNull(this.armorStand.Z()).a();
+        return Objects.requireNonNull(this.armorStand.Z()).getString();
     }
 
     /**
@@ -93,7 +93,7 @@ public final class HHologramArmorStand_v1_19_R1 implements HHologramArmorStand {
     @Override
     public void show(@Nonnull List<Player> players) {
         HCore.sendPacket(Objects.requireNonNull(players, "players cannot be null"),
-                new PacketPlayOutSpawnEntityLiving(this.armorStand),
+                new PacketPlayOutSpawnEntity(this.armorStand),
                 new PacketPlayOutEntityMetadata(this.armorStand.ae(), this.armorStand.ai(), true),
                 new PacketPlayOutEntityTeleport(this.armorStand));
     }

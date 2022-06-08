@@ -6,7 +6,7 @@ import net.minecraft.core.particles.ParticleParam;
 import net.minecraft.network.protocol.game.PacketPlayOutWorldParticles;
 import org.bukkit.Location;
 import org.bukkit.Particle;
-import org.bukkit.craftbukkit.v1_18_R2.CraftParticle;
+import org.bukkit.craftbukkit.v1_19_R1.CraftParticle;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;

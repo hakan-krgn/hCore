@@ -5,7 +5,7 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
-import org.bukkit.craftbukkit.v1_18_R2.boss.CraftBossBar;
+import org.bukkit.craftbukkit.v1_19_R1.boss.CraftBossBar;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
