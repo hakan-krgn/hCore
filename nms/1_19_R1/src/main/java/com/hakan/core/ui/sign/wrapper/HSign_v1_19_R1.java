@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.entity.TileEntitySign;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_18_R2.block.CraftSign;
+import org.bukkit.craftbukkit.v1_19_R1.block.CraftSign;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
@@ -39,10 +39,10 @@ public final class HSign_v1_19_R1 extends HSign {
         Location location = super.player.getLocation();
         BlockPosition blockPosition = new BlockPosition(location.getBlockX(), LOWEST_Y_AXIS + 1, location.getBlockZ());
 
-        HCore.sendPacket(super.player, new PacketPlayOutBlockChange(blockPosition, Blocks.cg.n()));
+        HCore.sendPacket(super.player, new PacketPlayOutBlockChange(blockPosition, Blocks.cp.m()));
 
         IChatBaseComponent[] components = CraftSign.sanitizeLines(this.lines);
-        TileEntitySign sign = new TileEntitySign(new BlockPosition(blockPosition.u(), blockPosition.v(), blockPosition.w()), Blocks.cg.n());
+        TileEntitySign sign = new TileEntitySign(new BlockPosition(blockPosition.u(), blockPosition.v(), blockPosition.w()), Blocks.cp.m());
         System.arraycopy(components, 0, sign.d, 0, sign.d.length);
         HCore.sendPacket(super.player, sign.c());
 

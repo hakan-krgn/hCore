@@ -15,13 +15,13 @@ import net.minecraft.network.protocol.game.PacketPlayOutEntityTeleport;
 import net.minecraft.network.protocol.game.PacketPlayOutMount;
 import net.minecraft.network.protocol.game.PacketPlayOutNamedEntitySpawn;
 import net.minecraft.network.protocol.game.PacketPlayOutPlayerInfo;
-import net.minecraft.network.protocol.game.PacketPlayOutSpawnEntityLiving;
+import net.minecraft.network.protocol.game.PacketPlayOutSpawnEntity;
 import net.minecraft.server.level.EntityPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EnumItemSlot;
 import net.minecraft.world.entity.decoration.EntityArmorStand;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_18_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -101,7 +101,7 @@ public final class HNPC_v1_19_R1 extends HNPC {
         Objects.requireNonNull(location, "location cannot be null!");
 
         this.npc.a(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
-        super.hologram.setLocation(location.clone().add(0, this.npc.cy() + (this.hologram.getLines().size() * 0.125), 0));
+        super.hologram.setLocation(location.clone().add(0, this.npc.cB() + (this.hologram.getLines().size() * 0.125), 0));
         super.renderer.setLocation(location);
 
         double imp = 256f / 360f;
@@ -164,7 +164,7 @@ public final class HNPC_v1_19_R1 extends HNPC {
                 new PacketPlayOutNamedEntitySpawn(this.npc),
                 new PacketPlayOutEntityMetadata(this.npc.ae(), this.utils.createDataWatcher(), true),
 
-                new PacketPlayOutSpawnEntityLiving(this.armorStand),
+                new PacketPlayOutSpawnEntity(this.armorStand),
                 new PacketPlayOutEntityMetadata(this.armorStand.ae(), this.armorStand.ai(), true),
                 new PacketPlayOutEntityTeleport(this.armorStand),
                 new PacketPlayOutMount(this.npc)

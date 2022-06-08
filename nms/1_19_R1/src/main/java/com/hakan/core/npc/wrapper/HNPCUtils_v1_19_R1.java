@@ -19,8 +19,8 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
-import org.bukkit.craftbukkit.v1_18_R2.CraftServer;
-import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_19_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
@@ -66,7 +66,7 @@ public final class HNPCUtils_v1_19_R1 {
         WorldServer world = ((CraftWorld) location.getWorld()).getHandle();
         GameProfile profile = this.createGameProfile(skin);
 
-        EntityPlayer entityPlayer = new EntityPlayer(server, world, profile);
+        EntityPlayer entityPlayer = new EntityPlayer(server, world, profile, null);
         entityPlayer.a(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
         entityPlayer.persistentInvisibility = false; //set invisibility to true
         entityPlayer.b(5, true); //set invisibility to true

@@ -8,7 +8,7 @@ import io.netty.channel.ChannelPromise;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.server.network.PlayerConnection;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_18_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
@@ -49,7 +49,7 @@ public final class HPacketPlayer_v1_19_R1 extends HPacketPlayer {
     @Override
     public void register() {
         try {
-            this.pipeline = this.connection.a.m.pipeline().addBefore("packet_handler", CHANNEL, new ChannelDuplexHandler() {
+            this.pipeline = this.connection.b.m.pipeline().addBefore("packet_handler", CHANNEL, new ChannelDuplexHandler() {
                 @Override
                 public void channelRead(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
                     AtomicBoolean status = new AtomicBoolean(false);
