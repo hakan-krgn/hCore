@@ -49,7 +49,7 @@ public final class HPacketPlayer_v1_12_R1 extends HPacketPlayer {
     @Override
     public void register() {
         try {
-            this.pipeline = this.connection.networkManager.channel.pipeline().addBefore("packet_handler", CHANNEL, new ChannelDuplexHandler() {
+            this.pipeline = this.connection.networkManager.channel.pipeline().addBefore("packet_handler", CHANNEL + super.player.getUniqueId(), new ChannelDuplexHandler() {
                 @Override
                 public void channelRead(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
                     AtomicBoolean status = new AtomicBoolean(false);
