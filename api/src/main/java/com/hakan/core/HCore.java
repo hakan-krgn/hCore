@@ -47,6 +47,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -105,6 +106,14 @@ public final class HCore {
         HHologramHandler.initialize();
         HScoreboardHandler.initialize();
         HWorldBorderHandler.initialize();
+
+        HCore.registerEvent(PlayerCommandPreprocessEvent.class)
+                .consume(event -> {
+                    Player player = event.getPlayer();
+                    HCore.signBuilder(player).lines("deneme", "sa", "as", "test").build()
+                            .whenInputReceived(input -> player.sendMessage("input: " + input[0]))
+                            .open();
+                });
     }
 
 

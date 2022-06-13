@@ -3,7 +3,6 @@ package com.hakan.core.ui.sign;
 import com.hakan.core.HCore;
 import com.hakan.core.ui.GUI;
 import com.hakan.core.utils.ProtocolVersion;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
@@ -20,7 +19,7 @@ public abstract class HSign implements GUI {
 
 
     protected final Player player;
-    protected Material type;
+    protected HSignType type;
     protected String[] lines;
     protected Consumer<String[]> consumer;
 
@@ -31,7 +30,7 @@ public abstract class HSign implements GUI {
      * @param type   Type of sign.
      * @param lines  Lines of sign.
      */
-    public HSign(@Nonnull Player player, @Nonnull Material type, @Nonnull String... lines) {
+    public HSign(@Nonnull Player player, @Nonnull HSignType type, @Nonnull String... lines) {
         this.player = Objects.requireNonNull(player, "player cannot be null!");
         this.type = Objects.requireNonNull(type, "type cannot be null!");
         this.lines = Objects.requireNonNull(lines, "lines cannot be null!");
@@ -43,7 +42,7 @@ public abstract class HSign implements GUI {
      * @return Type of sign.
      */
     @Nonnull
-    public final Material getType() {
+    public final HSignType getType() {
         return this.type;
     }
 
@@ -54,7 +53,7 @@ public abstract class HSign implements GUI {
      * @return This class.
      */
     @Nonnull
-    public final HSign setType(@Nonnull Material type) {
+    public final HSign setType(@Nonnull HSignType type) {
         this.type = Objects.requireNonNull(type, "type cannot be null!");
         return this;
     }

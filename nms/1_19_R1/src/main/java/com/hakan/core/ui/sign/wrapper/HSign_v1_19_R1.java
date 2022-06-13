@@ -3,21 +3,21 @@ package com.hakan.core.ui.sign.wrapper;
 import com.hakan.core.HCore;
 import com.hakan.core.ui.GUIHandler;
 import com.hakan.core.ui.sign.HSign;
+import com.hakan.core.ui.sign.HSignType;
 import net.minecraft.core.BlockPosition;
 import net.minecraft.network.chat.IChatBaseComponent;
 import net.minecraft.network.protocol.game.PacketPlayInUpdateSign;
 import net.minecraft.network.protocol.game.PacketPlayOutBlockChange;
 import net.minecraft.network.protocol.game.PacketPlayOutOpenSignEditor;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.TileEntitySign;
+import net.minecraft.world.level.block.state.IBlockData;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_19_R1.block.CraftSign;
+import org.bukkit.craftbukkit.v1_19_R1.util.CraftMagicNumbers;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
 
 /**
  * {@inheritDoc}
@@ -27,7 +27,7 @@ public final class HSign_v1_19_R1 extends HSign {
     /**
      * {@inheritDoc}
      */
-    public HSign_v1_19_R1(@Nonnull Player player, @Nonnull Material type, @Nonnull String... lines) {
+    public HSign_v1_19_R1(@Nonnull Player player, @Nonnull HSignType type, @Nonnull String... lines) {
         super(player, type, lines);
     }
 
@@ -38,12 +38,15 @@ public final class HSign_v1_19_R1 extends HSign {
     public void open() {
         Location location = super.player.getLocation();
         BlockPosition blockPosition = new BlockPosition(location.getBlockX(), LOWEST_Y_AXIS + 1, location.getBlockZ());
+        System.out.println(super.type.asMaterial());
+        IBlockData data = CraftMagicNumbers.getBlock(super.type.asMaterial()).m();
 
-        HCore.sendPacket(super.player, new PacketPlayOutBlockChange(blockPosition, Blocks.cp.m()));
+        HCore.sendPacket(super.player, new PacketPlayOutBlockChange(blockPosition, data));
 
-        IChatBaseComponent[] components = CraftSign.sanitizeLines(this.lines);
-        TileEntitySign sign = new TileEntitySign(new BlockPosition(blockPosition.u(), blockPosition.v(), blockPosition.w()), Blocks.cp.m());
-        System.arraycopy(components, 0, sign.d, 0, sign.d.length);
+        IChatBaseComponent[] components = CraftSign.sanitizeLines(super.lines);
+        TileEntitySign sign = new TileEntitySign(blockPosition, data);
+        for (int i = 0, stringsLength = super.lines.length; i < stringsLength; i++)
+            sign.a(i, components[i]);
         HCore.sendPacket(super.player, sign.c());
 
         HCore.sendPacket(super.player, new PacketPlayOutOpenSignEditor(blockPosition));
@@ -55,7 +58,6 @@ public final class HSign_v1_19_R1 extends HSign {
      */
     @Override
     public <T> void listen(@Nonnull T packet) {
-        Objects.requireNonNull(packet, "packet cannot be null!");
         PacketPlayInUpdateSign packetPlayInUpdateSign = (PacketPlayInUpdateSign) packet;
 
         BlockPosition position = packetPlayInUpdateSign.b();
