@@ -47,10 +47,9 @@ public final class HSign_v1_8_R3 extends HSign {
         TileEntitySign sign = new TileEntitySign();
         sign.a(blockPosition);
         System.arraycopy(components, 0, sign.lines, 0, sign.lines.length);
-
         HCore.sendPacket(super.player, sign.getUpdatePacket());
-        HCore.sendPacket(super.player, new PacketPlayOutOpenSignEditor(blockPosition));
 
+        HCore.sendPacket(super.player, new PacketPlayOutOpenSignEditor(blockPosition));
         GUIHandler.getContent().put(super.player.getUniqueId(), this);
     }
 
@@ -63,13 +62,14 @@ public final class HSign_v1_8_R3 extends HSign {
 
         BlockPosition position = packetPlayInUpdateSign.a();
         Block block = super.player.getWorld().getBlockAt(position.getX(), position.getY(), position.getZ());
-        block.setType(block.getType());
+        PacketPlayOutBlockChange packetPlayOutBlockChange = new PacketPlayOutBlockChange(((CraftWorld) super.player.getWorld()).getHandle(), position);
+        packetPlayOutBlockChange.block = CraftMagicNumbers.getBlock(block.getType()).getBlockData();
+        HCore.sendPacket(super.player, packetPlayOutBlockChange);
 
         IChatBaseComponent[] b = packetPlayInUpdateSign.b();
         String[] lines = new String[b.length];
-        for (int i = 0; i < b.length; i++) {
+        for (int i = 0; i < b.length; i++)
             lines[i] = b[i].getText();
-        }
 
         if (this.consumer != null)
             this.consumer.accept(lines);

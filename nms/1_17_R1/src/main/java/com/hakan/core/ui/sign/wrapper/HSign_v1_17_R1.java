@@ -60,7 +60,8 @@ public final class HSign_v1_17_R1 extends HSign {
 
         BlockPosition position = packetPlayInUpdateSign.b();
         Block block = super.player.getWorld().getBlockAt(position.getX(), position.getY(), position.getZ());
-        block.setType(block.getType());
+        IBlockData data = CraftMagicNumbers.getBlock(block.getType()).getBlockData();
+        HCore.sendPacket(super.player, new PacketPlayOutBlockChange(position, data));
 
         if (this.consumer != null)
             this.consumer.accept(packetPlayInUpdateSign.c());
