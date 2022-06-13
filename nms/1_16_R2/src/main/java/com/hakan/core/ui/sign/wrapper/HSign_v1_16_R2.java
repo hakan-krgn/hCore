@@ -5,6 +5,7 @@ import com.hakan.core.ui.GUIHandler;
 import com.hakan.core.ui.sign.HSign;
 import com.hakan.core.ui.sign.HSignType;
 import net.minecraft.server.v1_16_R2.BlockPosition;
+import net.minecraft.server.v1_16_R2.IBlockData;
 import net.minecraft.server.v1_16_R2.IChatBaseComponent;
 import net.minecraft.server.v1_16_R2.PacketPlayInUpdateSign;
 import net.minecraft.server.v1_16_R2.PacketPlayOutBlockChange;
@@ -63,7 +64,8 @@ public final class HSign_v1_16_R2 extends HSign {
 
         BlockPosition position = packetPlayInUpdateSign.b();
         Block block = super.player.getWorld().getBlockAt(position.getX(), position.getY(), position.getZ());
-        block.setType(block.getType());
+        IBlockData data = CraftMagicNumbers.getBlock(block.getType()).getBlockData();
+        HCore.sendPacket(super.player, new PacketPlayOutBlockChange(position, data));
 
         if (this.consumer != null)
             this.consumer.accept(packetPlayInUpdateSign.c());

@@ -11,6 +11,7 @@ import net.minecraft.network.protocol.game.PacketPlayOutBlockChange;
 import net.minecraft.network.protocol.game.PacketPlayOutOpenSignEditor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.TileEntitySign;
+import net.minecraft.world.level.block.state.IBlockData;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_18_R1.block.CraftSign;
@@ -59,7 +60,8 @@ public final class HSign_v1_18_R1 extends HSign {
 
         BlockPosition position = packetPlayInUpdateSign.b();
         Block block = super.player.getWorld().getBlockAt(position.u(), position.v(), position.w());
-        block.setType(block.getType());
+        IBlockData data = CraftMagicNumbers.getBlock(block.getType()).n();
+        HCore.sendPacket(super.player, new PacketPlayOutBlockChange(position, data));
 
         if (this.consumer != null)
             this.consumer.accept(packetPlayInUpdateSign.c());
