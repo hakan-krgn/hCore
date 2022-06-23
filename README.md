@@ -17,6 +17,7 @@ from [here](https://github.com/hakan-krgn/hCore/wiki).
 * [@osmanfurkan115](https://github.com/osmanfurkan115)
 * [@imBuzz](https://github.com/imBuzz)
 * [@Alpho320](https://github.com/Alpho320)
+* [@rin-17](https://github.com/rin-17)
 
 ## Features
 
