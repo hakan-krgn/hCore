@@ -6,10 +6,17 @@ from [here](https://github.com/hakan-krgn/hCore/wiki).
 
 ## Developers
 
-- [@hakan-krgn](https://github.com/hakan-krgn) Discord: Hakan#2584
-- [@furkanbalci0](https://github.com/furkanbalci0)
-- [@rin-17](https://github.com/rin-17)
-- [@osmanfurkan115](https://github.com/osmanfurkan115)
+### Founder:
+* [@hakan-krgn](https://github.com/hakan-krgn) Discord: Hakan#2584
+
+### Wiki:
+* [@rin-17](https://github.com/rin-17)
+
+### Contributors:
+* [@furkanbalci0](https://github.com/furkanbalci0)
+* [@osmanfurkan115](https://github.com/osmanfurkan115)
+* [@imBuzz](https://github.com/imBuzz)
+* [@Alpho320](https://github.com/Alpho320)
 
 ## Features
 
