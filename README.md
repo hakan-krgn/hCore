@@ -6,7 +6,7 @@ from [here](https://github.com/hakan-krgn/hCore/wiki).
 
 ## Developers
 
-### Founder:
+### Owner:
 * [@hakan-krgn](https://github.com/hakan-krgn) Discord: Hakan#2584
 
 ### Wiki:
