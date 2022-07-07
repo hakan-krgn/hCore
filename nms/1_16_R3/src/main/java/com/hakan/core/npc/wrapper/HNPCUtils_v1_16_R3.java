@@ -1,7 +1,6 @@
 package com.hakan.core.npc.wrapper;
 
 import com.hakan.core.HCore;
-import com.hakan.core.npc.HNPC;
 import com.hakan.core.npc.skin.HNPCSkin;
 import com.hakan.core.utils.Validate;
 import com.mojang.authlib.GameProfile;
@@ -9,7 +8,6 @@ import com.mojang.authlib.properties.Property;
 import net.minecraft.server.v1_16_R3.DataWatcher;
 import net.minecraft.server.v1_16_R3.DataWatcherObject;
 import net.minecraft.server.v1_16_R3.DataWatcherRegistry;
-import net.minecraft.server.v1_16_R3.EntityArmorStand;
 import net.minecraft.server.v1_16_R3.EntityPlayer;
 import net.minecraft.server.v1_16_R3.MinecraftServer;
 import net.minecraft.server.v1_16_R3.PacketPlayOutEntityDestroy;
@@ -36,19 +34,15 @@ import java.util.UUID;
  */
 public final class HNPCUtils_v1_16_R3 {
 
-    /**
-     * Creates a GameProfile for the NPC.
-     *
-     * @param skin The skin of the NPC.
-     * @return The GameProfile.
-     */
-    @Nonnull
-    public GameProfile createGameProfile(@Nonnull HNPCSkin skin) {
-        Validate.notNull(skin, "skin cannot be null!");
+    private final HNPC_v1_16_R3 npc;
 
-        GameProfile profile = new GameProfile(UUID.randomUUID(), UUID.randomUUID().toString().substring(0, 5));
-        profile.getProperties().put("textures", new Property("textures", skin.getTexture(), skin.getSignature()));
-        return profile;
+    /**
+     * Creates a new HNPCUtils_v1_16_R3 instance.
+     *
+     * @param npc The NPC.
+     */
+    public HNPCUtils_v1_16_R3(HNPC_v1_16_R3 npc) {
+        this.npc = npc;
     }
 
     /**
@@ -65,7 +59,9 @@ public final class HNPCUtils_v1_16_R3 {
 
         MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();
         WorldServer world = ((CraftWorld) location.getWorld()).getHandle();
-        GameProfile profile = this.createGameProfile(skin);
+
+        GameProfile profile = new GameProfile(UUID.randomUUID(), this.npc.getId());
+        profile.getProperties().put("textures", new Property("textures", skin.getTexture(), skin.getSignature()));
 
         EntityPlayer entityPlayer = new EntityPlayer(server, world, profile, new PlayerInteractManager(world));
         entityPlayer.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
@@ -73,31 +69,6 @@ public final class HNPCUtils_v1_16_R3 {
         entityPlayer.setHealth(77.21f);
 
         return entityPlayer;
-    }
-
-    /**
-     * Creates an armor stand to
-     * hide name of NPC.
-     *
-     * @param location The location of armor stand.
-     * @return Armor stand.
-     */
-    @Nonnull
-    public EntityArmorStand createNameHider(@Nonnull Location location) {
-        Validate.notNull(location, "location cannot be null!");
-
-        WorldServer world = ((CraftWorld) location.getWorld()).getHandle();
-
-        EntityArmorStand armorStand = new EntityArmorStand(world, 0, 0, 0);
-        armorStand.setMarker(true);
-        armorStand.setArms(false);
-        armorStand.setBasePlate(false);
-        armorStand.setNoGravity(true);
-        armorStand.setInvisible(true);
-        armorStand.setSmall(true);
-        armorStand.setCustomNameVisible(false);
-
-        return armorStand;
     }
 
     /**
@@ -118,12 +89,11 @@ public final class HNPCUtils_v1_16_R3 {
      * villager then make target of zombie to
      * villager and teleport NPC to zombie every tick.
      *
-     * @param npc      The NPC.
      * @param to       The location.
      * @param speed    The speed of the NPC.
      * @param callback The callback when the walking over.
      */
-    public void walk(@Nonnull HNPC npc, @Nonnull Location to, double speed, @Nonnull Runnable callback) {
+    public void walk(@Nonnull Location to, double speed, @Nonnull Runnable callback) {
         Validate.notNull(npc, "NPC cannot be null!");
         Validate.notNull(to, "location cannot be null!");
         Validate.notNull(callback, "callback cannot be null!");
@@ -170,16 +140,16 @@ public final class HNPCUtils_v1_16_R3 {
                     if (zombie.getTarget() == null || !zombie.getTarget().equals(villager))
                         zombie.setTarget(villager);
 
-                    if (zombieLocation.distance(to) < 1 || npc.isDead()) {
+                    if (zombieLocation.distance(to) < 1 || this.npc.isDead()) {
                         zombie.remove();
                         villager.remove();
-                        npc.setLocation(to);
+                        this.npc.setLocation(to);
                         callback.run();
                         task.cancel();
                         return;
                     }
 
-                    npc.setLocation(zombieLocation);
+                    this.npc.setLocation(zombieLocation);
                 });
     }
 }
