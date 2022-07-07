@@ -1,10 +1,10 @@
 package com.hakan.core.packet.player;
 
+import com.hakan.core.utils.Validate;
 import io.netty.channel.ChannelPipeline;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
 
 /**
  * HPacketPlayer class to send
@@ -24,7 +24,7 @@ public abstract class HPacketPlayer {
      * @param player Player.
      */
     public HPacketPlayer(@Nonnull Player player) {
-        this.player = Objects.requireNonNull(player, "player cannot be null!");
+        this.player = Validate.notNull(player, "player cannot be null!");
     }
 
     /**

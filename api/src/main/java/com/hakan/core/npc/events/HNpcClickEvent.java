@@ -1,12 +1,12 @@
 package com.hakan.core.npc.events;
 
 import com.hakan.core.npc.HNPC;
+import com.hakan.core.utils.Validate;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
 
 /**
  * HNpcClickEvent class.
@@ -38,9 +38,9 @@ public final class HNpcClickEvent extends Event {
      * @param action Action.
      */
     public HNpcClickEvent(@Nonnull HNPC npc, @Nonnull Player player, @Nonnull HNPC.Action action) {
-        this.npc = Objects.requireNonNull(npc, "npc cannot be null!");
-        this.player = Objects.requireNonNull(player, "player cannot be null!");
-        this.action = Objects.requireNonNull(action, "action cannot be null!");
+        this.npc = Validate.notNull(npc, "npc cannot be null!");
+        this.player = Validate.notNull(player, "player cannot be null!");
+        this.action = Validate.notNull(action, "action cannot be null!");
     }
 
     /**

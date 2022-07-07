@@ -1,12 +1,13 @@
 package com.hakan.core.proxy.server;
 
+import com.hakan.core.proxy.server.utils.Validate;
+
 import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.ServerSocket;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -71,7 +72,7 @@ public class ServerListener {
      */
     @Nonnull
     public final Optional<SocketConnection> findClientByName(@Nonnull String client) {
-        Objects.requireNonNull(client, "client name cannot be null");
+        Validate.notNull(client, "client name cannot be null");
         return Optional.ofNullable(this.clients.get(client));
     }
 
@@ -83,7 +84,7 @@ public class ServerListener {
      */
     @Nonnull
     public final SocketConnection getClientByName(@Nonnull String client) {
-        Objects.requireNonNull(client, "client name cannot be null");
+        Validate.notNull(client, "client name cannot be null");
         return this.findClientByName(client).orElseThrow(() -> new IllegalArgumentException("client not found with name: " + client));
     }
 
@@ -95,7 +96,7 @@ public class ServerListener {
      */
     @Nonnull
     public final Optional<SocketConnection> findClientByIP(@Nonnull String ip) {
-        Objects.requireNonNull(ip, "ip name cannot be null");
+        Validate.notNull(ip, "ip name cannot be null");
         return this.clients.values().stream().filter(c -> c.getIP().equals(ip)).findFirst();
     }
 
@@ -107,7 +108,7 @@ public class ServerListener {
      */
     @Nonnull
     public final SocketConnection getClientByIP(@Nonnull String ip) {
-        Objects.requireNonNull(ip, "ip name cannot be null");
+        Validate.notNull(ip, "ip name cannot be null");
         return this.findClientByIP(ip).orElseThrow(() -> new IllegalArgumentException("client not found with ip: " + ip));
     }
 
@@ -118,7 +119,7 @@ public class ServerListener {
      * @param message The message.
      */
     public final void send(@Nonnull SocketConnection client, @Nonnull String message) {
-        Objects.requireNonNull(client, "client cannot be null").send(message);
+        Validate.notNull(client, "client cannot be null").send(message);
     }
 
     /**
@@ -138,7 +139,7 @@ public class ServerListener {
      * @param serializable The object.
      */
     public final void send(@Nonnull SocketConnection client, @Nonnull Serializable serializable) {
-        Objects.requireNonNull(client, "client cannot be null").send(serializable);
+        Validate.notNull(client, "client cannot be null").send(serializable);
     }
 
     /**
@@ -175,7 +176,7 @@ public class ServerListener {
      * @param consumer The consumer.
      */
     public void whenConnected(@Nonnull Consumer<SocketConnection> consumer) {
-        this.connectConsumer = Objects.requireNonNull(consumer, "consumer cannot be null");
+        this.connectConsumer = Validate.notNull(consumer, "consumer cannot be null");
     }
 
     /**
@@ -184,7 +185,7 @@ public class ServerListener {
      * @param consumer The consumer.
      */
     public void whenDisconnected(@Nonnull Consumer<SocketConnection> consumer) {
-        this.disconnectConsumer = Objects.requireNonNull(consumer, "consumer cannot be null");
+        this.disconnectConsumer = Validate.notNull(consumer, "consumer cannot be null");
     }
 
     /**
@@ -194,7 +195,7 @@ public class ServerListener {
      * @param consumer The consumer.
      */
     public void whenMessageReceived(@Nonnull BiConsumer<SocketConnection, String> consumer) {
-        this.messageConsumer = Objects.requireNonNull(consumer, "consumer cannot be null");
+        this.messageConsumer = Validate.notNull(consumer, "consumer cannot be null");
     }
 
     /**
@@ -204,7 +205,7 @@ public class ServerListener {
      * @param consumer The consumer.
      */
     public void whenObjectReceived(@Nonnull BiConsumer<SocketConnection, Serializable> consumer) {
-        this.objectConsumer = Objects.requireNonNull(consumer, "consumer cannot be null");
+        this.objectConsumer = Validate.notNull(consumer, "consumer cannot be null");
     }
 
     /**
@@ -213,7 +214,7 @@ public class ServerListener {
      * @param client The client.
      */
     public final void register(@Nonnull SocketConnection client) {
-        Objects.requireNonNull(client, "client cannot be null");
+        Validate.notNull(client, "client cannot be null");
         this.clients.put(client.getName(), client);
 
         if (this.connectConsumer != null)
@@ -226,7 +227,7 @@ public class ServerListener {
      * @param client The client.
      */
     public final void unregister(@Nonnull SocketConnection client) {
-        Objects.requireNonNull(client, "client cannot be null");
+        Validate.notNull(client, "client cannot be null");
         this.clients.remove(client.getName());
 
         if (this.disconnectConsumer != null)

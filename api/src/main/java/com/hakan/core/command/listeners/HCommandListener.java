@@ -3,6 +3,7 @@ package com.hakan.core.command.listeners;
 import com.hakan.core.command.HCommandAdapter;
 import com.hakan.core.command.executors.base.BaseCommandData;
 import com.hakan.core.command.executors.sub.SubCommandData;
+import com.hakan.core.utils.Validate;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
@@ -14,7 +15,6 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -32,7 +32,7 @@ public final class HCommandListener extends BukkitCommand {
                 baseCommandData.getDescription(),
                 baseCommandData.getUsage(),
                 Arrays.asList(baseCommandData.getAliases()));
-        this.baseCommandData = Objects.requireNonNull(baseCommandData, "baseCommandData cannot be null!");
+        this.baseCommandData = Validate.notNull(baseCommandData, "baseCommandData cannot be null!");
     }
 
     /**

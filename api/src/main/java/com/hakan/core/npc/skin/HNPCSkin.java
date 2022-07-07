@@ -2,13 +2,13 @@ package com.hakan.core.npc.skin;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.hakan.core.utils.Validate;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.Objects;
 
 /**
  * HNPCSkin class to handle
@@ -26,7 +26,7 @@ public final class HNPCSkin {
      */
     @Nonnull
     public static HNPCSkin from(@Nonnull Player player) {
-        Objects.requireNonNull(player, "player cannot be null!");
+        Validate.notNull(player, "player cannot be null!");
         return from(player.getName());
     }
 
@@ -39,7 +39,7 @@ public final class HNPCSkin {
     @Nonnull
     public static HNPCSkin from(@Nonnull String playerName) {
         try {
-            Objects.requireNonNull(playerName, "player name cannot be null!");
+            Validate.notNull(playerName, "player name cannot be null!");
 
             URL url_0 = new URL("https://api.mojang.com/users/profiles/minecraft/" + playerName);
             InputStreamReader reader_0 = new InputStreamReader(url_0.openStream());
@@ -68,8 +68,8 @@ public final class HNPCSkin {
      * @param signature Signature.
      */
     public HNPCSkin(@Nonnull String texture, @Nonnull String signature) {
-        this.texture = Objects.requireNonNull(texture, "texture cannot be null!");
-        this.signature = Objects.requireNonNull(signature, "signature cannot be null!");
+        this.texture = Validate.notNull(texture, "texture cannot be null!");
+        this.signature = Validate.notNull(signature, "signature cannot be null!");
     }
 
     /**

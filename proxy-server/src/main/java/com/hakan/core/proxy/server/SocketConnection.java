@@ -1,6 +1,7 @@
 package com.hakan.core.proxy.server;
 
 import com.hakan.core.proxy.server.utils.Serializer;
+import com.hakan.core.proxy.server.utils.Validate;
 
 import javax.annotation.Nonnull;
 import java.io.DataInputStream;
@@ -8,7 +9,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.Socket;
-import java.util.Objects;
 
 /**
  * SocketConnection class to
@@ -25,8 +25,8 @@ public final class SocketConnection {
      * @throws IOException If an I/O error occurs.
      */
     static void register(@Nonnull Socket socket, @Nonnull ServerListener listener) throws IOException {
-        Objects.requireNonNull(socket, "socket cannot be null");
-        Objects.requireNonNull(listener, "listener cannot be null");
+        Validate.notNull(socket, "socket cannot be null");
+        Validate.notNull(listener, "listener cannot be null");
 
         SocketConnection client = new SocketConnection(socket, listener);
 
@@ -58,8 +58,8 @@ public final class SocketConnection {
      * @throws IOException If an I/O error occurs.
      */
     private SocketConnection(@Nonnull Socket socket, @Nonnull ServerListener listener) throws IOException {
-        this.socket = Objects.requireNonNull(socket, "socket cannot be null");
-        this.listener = Objects.requireNonNull(listener, "listener cannot be null");
+        this.socket = Validate.notNull(socket, "socket cannot be null");
+        this.listener = Validate.notNull(listener, "listener cannot be null");
         this.inputStream = new DataInputStream(socket.getInputStream());
         this.outputStream = new DataOutputStream(socket.getOutputStream());
         this.name = this.inputStream.readUTF();
@@ -122,7 +122,7 @@ public final class SocketConnection {
      */
     public void send(@Nonnull String message) {
         try {
-            Objects.requireNonNull(message, "message cannot be null");
+            Validate.notNull(message, "message cannot be null");
             this.outputStream.writeUTF("message:" + message);
         } catch (Exception e) {
             e.printStackTrace();
@@ -137,7 +137,7 @@ public final class SocketConnection {
      */
     public void send(@Nonnull Serializable serializable) {
         try {
-            Objects.requireNonNull(serializable, "serializable object cannot be null");
+            Validate.notNull(serializable, "serializable object cannot be null");
             this.outputStream.writeUTF("object:" + Serializer.serialize(serializable));
         } catch (Exception e) {
             e.printStackTrace();

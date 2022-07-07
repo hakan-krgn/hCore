@@ -1,6 +1,7 @@
 package com.hakan.core.hologram;
 
 import com.hakan.core.HCore;
+import com.hakan.core.utils.Validate;
 import org.bukkit.Location;
 
 import javax.annotation.Nonnull;
@@ -9,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -78,7 +78,7 @@ public final class HHologramHandler {
      */
     @Nonnull
     public static Optional<HHologram> findByID(@Nonnull String id) {
-        return Optional.ofNullable(HHologramHandler.holograms.get(Objects.requireNonNull(id, "id cannot be null!")));
+        return Optional.ofNullable(HHologramHandler.holograms.get(Validate.notNull(id, "id cannot be null!")));
     }
 
     /**
@@ -102,8 +102,8 @@ public final class HHologramHandler {
      */
     @Nonnull
     public static HHologram create(@Nonnull String id, @Nonnull Location location, @Nullable Set<UUID> players) {
-        Objects.requireNonNull(id, "id cannot be null");
-        Objects.requireNonNull(location, "location cannot be null");
+        Validate.notNull(id, "id cannot be null");
+        Validate.notNull(location, "location cannot be null");
 
         HHologramHandler.delete(id);
 
@@ -132,7 +132,7 @@ public final class HHologramHandler {
      */
     @Nullable
     public static HHologram delete(@Nonnull String id) {
-        Objects.requireNonNull(id, "id cannot be null");
+        Validate.notNull(id, "id cannot be null");
 
         HHologram oldHologram = HHologramHandler.holograms.get(id);
         if (oldHologram != null)

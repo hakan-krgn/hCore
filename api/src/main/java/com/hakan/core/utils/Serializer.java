@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Base64;
-import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -27,7 +26,7 @@ public final class Serializer {
     @Nonnull
     public synchronized static Optional<String> serializeSafe(@Nonnull Object object) {
         try {
-            Objects.requireNonNull(object, "object cannot be null!");
+            Validate.notNull(object, "object cannot be null!");
 
             ByteArrayOutputStream io = new ByteArrayOutputStream();
             BukkitObjectOutputStream os = new BukkitObjectOutputStream(io);
@@ -64,8 +63,8 @@ public final class Serializer {
     @Nonnull
     public synchronized static <T> Optional<T> deserializeSafe(@Nonnull String serializedText, @Nonnull Class<T> clazz) {
         try {
-            Objects.requireNonNull(serializedText, "serializeText cannot be null!");
-            Objects.requireNonNull(clazz, "object type cannot be null!");
+            Validate.notNull(serializedText, "serializeText cannot be null!");
+            Validate.notNull(clazz, "object type cannot be null!");
 
             byte[] decoded_object = Base64.getDecoder().decode(serializedText);
 

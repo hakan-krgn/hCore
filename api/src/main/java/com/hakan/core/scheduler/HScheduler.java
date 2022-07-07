@@ -1,12 +1,12 @@
 package com.hakan.core.scheduler;
 
+import com.hakan.core.utils.Validate;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -31,7 +31,7 @@ public final class HScheduler {
      * @param async  Async.
      */
     public HScheduler(@Nonnull JavaPlugin plugin, boolean async) {
-        this.plugin = Objects.requireNonNull(plugin, "plugin cannot be null!");
+        this.plugin = Validate.notNull(plugin, "plugin cannot be null!");
         this.async = async;
         this.freezeFilters = new ArrayList<>();
         this.terminateFilters = new ArrayList<>();
@@ -131,7 +131,7 @@ public final class HScheduler {
      */
     @Nonnull
     public HScheduler freezeIf(@Nonnull Function<BukkitRunnable, Boolean> freezeFilter) {
-        this.freezeFilters.add(Objects.requireNonNull(freezeFilter, "freeze filter cannot be null!"));
+        this.freezeFilters.add(Validate.notNull(freezeFilter, "freeze filter cannot be null!"));
         return this;
     }
 
@@ -145,7 +145,7 @@ public final class HScheduler {
      */
     @Nonnull
     public HScheduler terminateIf(@Nonnull Function<BukkitRunnable, Boolean> terminateFilter) {
-        this.terminateFilters.add(Objects.requireNonNull(terminateFilter, "terminate filter cannot be null!"));
+        this.terminateFilters.add(Validate.notNull(terminateFilter, "terminate filter cannot be null!"));
         return this;
     }
 
@@ -156,7 +156,7 @@ public final class HScheduler {
      * @return Bukkit task id.
      */
     public synchronized int run(@Nonnull Runnable runnable) {
-        Objects.requireNonNull(runnable, "runnable cannot be null!");
+        Validate.notNull(runnable, "runnable cannot be null!");
         return this.run(consumer -> runnable.run());
     }
 
@@ -167,7 +167,7 @@ public final class HScheduler {
      * @return Bukkit task id.
      */
     public synchronized int run(@Nonnull Consumer<BukkitRunnable> taskConsumer) {
-        Objects.requireNonNull(taskConsumer, "task consumer cannot be null!");
+        Validate.notNull(taskConsumer, "task consumer cannot be null!");
 
         BukkitRunnable bukkitRunnable = new BukkitRunnable() {
             @Override

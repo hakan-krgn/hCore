@@ -3,6 +3,7 @@ package com.hakan.core.hologram;
 import com.hakan.core.HCore;
 import com.hakan.core.hologram.line.HHologramLine;
 import com.hakan.core.renderer.HRenderer;
+import com.hakan.core.utils.Validate;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -11,7 +12,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -35,9 +35,9 @@ public final class HHologram {
      * @param playerList List of player who can see hologram.
      */
     HHologram(@Nonnull String id, @Nonnull Location location, @Nonnull Set<UUID> playerList) {
-        Objects.requireNonNull(id, "id cannot be null!");
-        Objects.requireNonNull(location, "location cannot be null!");
-        Objects.requireNonNull(playerList, "player list cannot be null!");
+        Validate.notNull(id, "id cannot be null!");
+        Validate.notNull(location, "location cannot be null!");
+        Validate.notNull(playerList, "player list cannot be null!");
 
         this.id = id;
         this.lines = new LinkedList<>();
@@ -55,8 +55,8 @@ public final class HHologram {
      * @param location Hologram location.
      */
     HHologram(@Nonnull String id, @Nonnull Location location) {
-        Objects.requireNonNull(id);
-        Objects.requireNonNull(location);
+        Validate.notNull(id);
+        Validate.notNull(location);
 
         this.id = id;
         this.lines = new LinkedList<>();
@@ -136,7 +136,7 @@ public final class HHologram {
      */
     @Nonnull
     public HHologram setRenderer(@Nonnull HRenderer renderer) {
-        this.renderer = Objects.requireNonNull(renderer, "renderer cannot be null!");
+        this.renderer = Validate.notNull(renderer, "renderer cannot be null!");
         return this;
     }
 
@@ -208,7 +208,7 @@ public final class HHologram {
      */
     @Nonnull
     public HHologram addViewer(@Nonnull Collection<Player> players) {
-        Objects.requireNonNull(players, "players cannot be null");
+        Validate.notNull(players, "players cannot be null");
         players.forEach(player -> this.renderer.addViewer(player.getUniqueId()));
         return this;
     }
@@ -221,7 +221,7 @@ public final class HHologram {
      */
     @Nonnull
     public HHologram addViewer(@Nonnull Player... players) {
-        Objects.requireNonNull(players, "players cannot be null");
+        Validate.notNull(players, "players cannot be null");
         Arrays.asList(players).forEach(this.renderer::addViewer);
         return this;
     }
@@ -234,7 +234,7 @@ public final class HHologram {
      */
     @Nonnull
     public HHologram addViewerByUID(@Nonnull Collection<UUID> uids) {
-        Objects.requireNonNull(uids, "uuids cannot be null");
+        Validate.notNull(uids, "uuids cannot be null");
         uids.forEach(this.renderer::addViewer);
         return this;
     }
@@ -247,7 +247,7 @@ public final class HHologram {
      */
     @Nonnull
     public HHologram addViewerByUID(@Nonnull UUID... uids) {
-        Objects.requireNonNull(uids, "uuids cannot be null");
+        Validate.notNull(uids, "uuids cannot be null");
         Arrays.asList(uids).forEach(this.renderer::addViewer);
         return this;
     }
@@ -260,7 +260,7 @@ public final class HHologram {
      */
     @Nonnull
     public HHologram removeViewer(@Nonnull Collection<Player> players) {
-        Objects.requireNonNull(players, "players cannot be null");
+        Validate.notNull(players, "players cannot be null");
         players.forEach(player -> this.renderer.removeViewer(player.getUniqueId()));
         return this;
     }
@@ -273,7 +273,7 @@ public final class HHologram {
      */
     @Nonnull
     public HHologram removeViewer(@Nonnull Player... players) {
-        Objects.requireNonNull(players, "players cannot be null");
+        Validate.notNull(players, "players cannot be null");
         Arrays.asList(players).forEach(this.renderer::removeViewer);
         return this;
     }
@@ -286,7 +286,7 @@ public final class HHologram {
      */
     @Nonnull
     public HHologram removeViewerByUID(@Nonnull Collection<UUID> uids) {
-        Objects.requireNonNull(uids, "players cannot be null");
+        Validate.notNull(uids, "players cannot be null");
         uids.forEach(this.renderer::removeViewer);
         return this;
     }
@@ -299,7 +299,7 @@ public final class HHologram {
      */
     @Nonnull
     public HHologram removeViewerByUID(@Nonnull UUID... uids) {
-        Objects.requireNonNull(uids, "players cannot be null");
+        Validate.notNull(uids, "players cannot be null");
         Arrays.asList(uids).forEach(this.renderer::removeViewer);
         return this;
     }
@@ -312,7 +312,7 @@ public final class HHologram {
      */
     @Nonnull
     public HHologram setLocation(@Nonnull Location location) {
-        Objects.requireNonNull(location, "location cannot be null");
+        Validate.notNull(location, "location cannot be null");
         Location loc = location.clone().add(0, (this.lineDistance / 2) * (this.lines.size() + 2), 0);
         this.renderer.setLocation(location);
         this.lines.forEach(hHologramLine -> hHologramLine.setLocation(loc.subtract(0, this.lineDistance, 0)));
@@ -327,7 +327,7 @@ public final class HHologram {
      */
     @Nonnull
     public HHologram addLines(@Nonnull HHologramLine... hHologramLine) {
-        Objects.requireNonNull(hHologramLine, "hHologramLine cannot be null");
+        Validate.notNull(hHologramLine, "hHologramLine cannot be null");
         Arrays.asList(hHologramLine).forEach(this::addLine);
         return this;
     }
@@ -340,7 +340,7 @@ public final class HHologram {
      */
     @Nonnull
     public HHologram addLines(@Nonnull Collection<String> texts) {
-        Objects.requireNonNull(texts, "texts cannot be null");
+        Validate.notNull(texts, "texts cannot be null");
         texts.forEach(this::addLine);
         return this;
     }
@@ -353,7 +353,7 @@ public final class HHologram {
      */
     @Nonnull
     public HHologram addLines(@Nonnull String... texts) {
-        Objects.requireNonNull(texts, "texts cannot be null");
+        Validate.notNull(texts, "texts cannot be null");
         Arrays.asList(texts).forEach(this::addLine);
         return this;
     }
@@ -366,7 +366,7 @@ public final class HHologram {
      */
     @Nonnull
     public HHologram addLine(@Nonnull HHologramLine hHologramLine) {
-        Objects.requireNonNull(hHologramLine, "hHologramLine cannot be null");
+        Validate.notNull(hHologramLine, "hHologramLine cannot be null");
 
         this.lines.add(hHologramLine);
         this.setLocation(this.getLocation());
@@ -394,7 +394,7 @@ public final class HHologram {
      */
     @Nonnull
     public HHologram removeLines(@Nonnull Collection<Integer> indexes) {
-        Objects.requireNonNull(indexes, "indexes cannot be null");
+        Validate.notNull(indexes, "indexes cannot be null");
         indexes.forEach(this::removeLine);
         return this;
     }
@@ -447,7 +447,7 @@ public final class HHologram {
      */
     @Nonnull
     public HHologram setLine(int row, @Nonnull String text) {
-        Objects.requireNonNull(text, "text cannot be null");
+        Validate.notNull(text, "text cannot be null");
         this.getLine(row).setText(text);
         return this;
     }

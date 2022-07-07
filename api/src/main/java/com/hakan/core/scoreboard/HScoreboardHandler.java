@@ -1,6 +1,7 @@
 package com.hakan.core.scoreboard;
 
 import com.hakan.core.HCore;
+import com.hakan.core.utils.Validate;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -9,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -75,7 +75,7 @@ public class HScoreboardHandler {
      */
     @Nonnull
     public static Optional<HScoreboard> findByPlayer(@Nonnull Player player) {
-        Objects.requireNonNull(player, "player cannot be null!");
+        Validate.notNull(player, "player cannot be null!");
         return HScoreboardHandler.findByUID(player.getUniqueId());
     }
 
@@ -87,7 +87,7 @@ public class HScoreboardHandler {
      */
     @Nonnull
     public static HScoreboard getByPlayer(@Nonnull Player player) {
-        Objects.requireNonNull(player, "player cannot be null!");
+        Validate.notNull(player, "player cannot be null!");
         return HScoreboardHandler.getByUID(player.getUniqueId());
     }
 
@@ -99,7 +99,7 @@ public class HScoreboardHandler {
      */
     @Nonnull
     public static Optional<HScoreboard> findByUID(@Nonnull UUID uid) {
-        return Optional.ofNullable(HScoreboardHandler.scoreboards.get(Objects.requireNonNull(uid, "uid cannot be null")));
+        return Optional.ofNullable(HScoreboardHandler.scoreboards.get(Validate.notNull(uid, "uid cannot be null")));
     }
 
     /**
@@ -121,7 +121,7 @@ public class HScoreboardHandler {
      */
     @Nonnull
     public static HScoreboard create(@Nonnull Player player) {
-        Objects.requireNonNull(player, "player cannot be null!");
+        Validate.notNull(player, "player cannot be null!");
         return HScoreboardHandler.create(player.getUniqueId());
     }
 
@@ -133,7 +133,7 @@ public class HScoreboardHandler {
      */
     @Nonnull
     public static HScoreboard create(@Nonnull UUID uid) {
-        Objects.requireNonNull(uid, "uid cannot be null");
+        Validate.notNull(uid, "uid cannot be null");
         HScoreboardHandler.findByUID(uid).ifPresent(HScoreboard::delete);
 
         HScoreboard hScoreboard = new HScoreboard(uid);

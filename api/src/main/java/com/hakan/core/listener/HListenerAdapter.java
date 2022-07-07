@@ -1,6 +1,7 @@
 package com.hakan.core.listener;
 
 import com.hakan.core.HCore;
+import com.hakan.core.utils.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
@@ -11,7 +12,6 @@ import org.bukkit.plugin.EventExecutor;
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -39,7 +39,7 @@ public final class HListenerAdapter<T extends Event> implements Listener, EventE
      * @param eventClass Event class.
      */
     public HListenerAdapter(@Nonnull Class<T> eventClass) {
-        this.eventClass = Objects.requireNonNull(eventClass, "eventClass cannot be null!");
+        this.eventClass = Validate.notNull(eventClass, "eventClass cannot be null!");
         this.filters = new ArrayList<>();
         this.priority = EventPriority.NORMAL;
         this.limit = -10;
@@ -54,7 +54,7 @@ public final class HListenerAdapter<T extends Event> implements Listener, EventE
      */
     @Nonnull
     public HListenerAdapter<T> priority(@Nonnull EventPriority priority) {
-        this.priority = Objects.requireNonNull(priority, "priority cannot be null!");
+        this.priority = Validate.notNull(priority, "priority cannot be null!");
         return this;
     }
 
@@ -66,7 +66,7 @@ public final class HListenerAdapter<T extends Event> implements Listener, EventE
      */
     @Nonnull
     public HListenerAdapter<T> filter(@Nonnull Function<T, Boolean> filter) {
-        this.filters.add(Objects.requireNonNull(filter, "filter cannot be null!"));
+        this.filters.add(Validate.notNull(filter, "filter cannot be null!"));
         return this;
     }
 
@@ -93,7 +93,7 @@ public final class HListenerAdapter<T extends Event> implements Listener, EventE
      */
     @Nonnull
     public HListenerAdapter<T> expire(int duration, @Nonnull TimeUnit unit) {
-        Objects.requireNonNull(unit, "time unit cannot be null!");
+        Validate.notNull(unit, "time unit cannot be null!");
         HCore.syncScheduler().after(duration, unit)
                 .run(this::unregister);
         return this;
@@ -109,7 +109,7 @@ public final class HListenerAdapter<T extends Event> implements Listener, EventE
      */
     @Nonnull
     public HListenerAdapter<T> consume(@Nonnull Consumer<T> consumer) {
-        this.consumer = Objects.requireNonNull(consumer, "consumer cannot be null!");
+        this.consumer = Validate.notNull(consumer, "consumer cannot be null!");
         return this;
     }
 
@@ -123,7 +123,7 @@ public final class HListenerAdapter<T extends Event> implements Listener, EventE
      */
     @Nonnull
     public HListenerAdapter<T> consumeAsync(@Nonnull Consumer<T> consumer) {
-        this.consumerAsync = Objects.requireNonNull(consumer, "consumer cannot be null!");
+        this.consumerAsync = Validate.notNull(consumer, "consumer cannot be null!");
         return this;
     }
 

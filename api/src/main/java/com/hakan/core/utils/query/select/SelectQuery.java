@@ -1,5 +1,6 @@
 package com.hakan.core.utils.query.select;
 
+import com.hakan.core.utils.Validate;
 import com.hakan.core.utils.query.QueryBuilder;
 import com.hakan.core.utils.query.criteria.order.OrderCriteria;
 import com.hakan.core.utils.query.criteria.order.OrderType;
@@ -8,7 +9,6 @@ import com.hakan.core.utils.query.criteria.where.WhereCriteria;
 import javax.annotation.Nonnull;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Query builder for
@@ -52,7 +52,7 @@ public final class SelectQuery extends QueryBuilder {
      */
     @Nonnull
     public SelectQuery from(@Nonnull String column) {
-        Objects.requireNonNull(column, "column cannot be null!");
+        Validate.notNull(column, "column cannot be null!");
 
         String columnReplaced = column.replace(column, "`" + column + "`");
         this.values.add(columnReplaced);

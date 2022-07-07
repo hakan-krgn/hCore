@@ -5,11 +5,11 @@ import com.hakan.core.npc.HNPC;
 import com.hakan.core.npc.events.HNpcClickEvent;
 import com.hakan.core.npc.events.HNpcDeleteEvent;
 import com.hakan.core.npc.events.HNpcSpawnEvent;
+import com.hakan.core.utils.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -34,7 +34,7 @@ public final class HNpcAction {
      * @param hnpc HNPC object.
      */
     public HNpcAction(@Nonnull HNPC hnpc) {
-        this.hnpc = Objects.requireNonNull(hnpc, "HNPC object cannot be null!");
+        this.hnpc = Validate.notNull(hnpc, "HNPC object cannot be null!");
     }
 
     /**
@@ -71,7 +71,7 @@ public final class HNpcAction {
      * @param spawnConsumer Consumer.
      */
     public void whenSpawned(@Nonnull Consumer<HNPC> spawnConsumer) {
-        this.spawnConsumer = Objects.requireNonNull(spawnConsumer, "spawn consumer cannot be null!");
+        this.spawnConsumer = Validate.notNull(spawnConsumer, "spawn consumer cannot be null!");
     }
 
     /**
@@ -80,7 +80,7 @@ public final class HNpcAction {
      * @param deleteConsumer Consumer.
      */
     public void whenDeleted(@Nonnull Consumer<HNPC> deleteConsumer) {
-        this.deleteConsumer = Objects.requireNonNull(deleteConsumer, "delete consumer cannot be null!");
+        this.deleteConsumer = Validate.notNull(deleteConsumer, "delete consumer cannot be null!");
     }
 
     /**
@@ -89,7 +89,7 @@ public final class HNpcAction {
      * @param clickConsumer Consumer.
      */
     public void whenClicked(@Nonnull BiConsumer<Player, HNPC.Action> clickConsumer) {
-        this.clickConsumer = Objects.requireNonNull(clickConsumer, "click consumer cannot be null!");
+        this.clickConsumer = Validate.notNull(clickConsumer, "click consumer cannot be null!");
     }
 
     /**
@@ -121,8 +121,8 @@ public final class HNpcAction {
      * @param action Action.
      */
     public void onClick(@Nonnull Player player, @Nonnull HNPC.Action action) {
-        Objects.requireNonNull(player, "player cannot be null!");
-        Objects.requireNonNull(action, "action cannot be null!");
+        Validate.notNull(player, "player cannot be null!");
+        Validate.notNull(action, "action cannot be null!");
 
         if (HCore.spam(String.format(SPAM_ID, this.hnpc.getId(), player.getUniqueId()), this.clickDelay))
             return;

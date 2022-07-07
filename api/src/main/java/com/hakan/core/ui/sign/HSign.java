@@ -3,10 +3,10 @@ package com.hakan.core.ui.sign;
 import com.hakan.core.HCore;
 import com.hakan.core.ui.GUI;
 import com.hakan.core.utils.ProtocolVersion;
+import com.hakan.core.utils.Validate;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
@@ -31,9 +31,9 @@ public abstract class HSign implements GUI {
      * @param lines  Lines of sign.
      */
     public HSign(@Nonnull Player player, @Nonnull HSignType type, @Nonnull String... lines) {
-        this.player = Objects.requireNonNull(player, "player cannot be null!");
-        this.type = Objects.requireNonNull(type, "type cannot be null!");
-        this.lines = Objects.requireNonNull(lines, "lines cannot be null!");
+        this.player = Validate.notNull(player, "player cannot be null!");
+        this.type = Validate.notNull(type, "type cannot be null!");
+        this.lines = Validate.notNull(lines, "lines cannot be null!");
     }
 
     /**
@@ -54,7 +54,7 @@ public abstract class HSign implements GUI {
      */
     @Nonnull
     public final HSign setType(@Nonnull HSignType type) {
-        this.type = Objects.requireNonNull(type, "type cannot be null!");
+        this.type = Validate.notNull(type, "type cannot be null!");
         return this;
     }
 
@@ -76,7 +76,7 @@ public abstract class HSign implements GUI {
      */
     @Nonnull
     public final HSign setLines(@Nonnull String[] lines) {
-        this.lines = Objects.requireNonNull(lines, "lines cannot be null!");
+        this.lines = Validate.notNull(lines, "lines cannot be null!");
         return this;
     }
 
@@ -88,7 +88,7 @@ public abstract class HSign implements GUI {
      */
     @Nonnull
     public final HSign whenInputReceived(@Nonnull Consumer<String[]> consumer) {
-        this.consumer = Objects.requireNonNull(consumer, "complete consumer cannot be null!");
+        this.consumer = Validate.notNull(consumer, "complete consumer cannot be null!");
         return this;
     }
 

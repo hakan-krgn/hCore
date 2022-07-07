@@ -3,7 +3,6 @@ package com.hakan.core.utils;
 import javax.annotation.Nonnull;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Objects;
 
 /**
  * TimeUtil class to format dates.
@@ -42,8 +41,8 @@ public final class TimeUtil {
      */
     @Nonnull
     public static String formatDate(@Nonnull Date date, @Nonnull String pattern) {
-        Objects.requireNonNull(date, "date cannot be null!");
-        Objects.requireNonNull(pattern, "pattern cannot be null!");
+        Validate.notNull(date, "date cannot be null!");
+        Validate.notNull(pattern, "pattern cannot be null!");
 
         SimpleDateFormat formatter = new SimpleDateFormat(pattern);
         return formatter.format(date);
@@ -58,7 +57,7 @@ public final class TimeUtil {
      */
     @Nonnull
     public static String formatTime(long time, @Nonnull String pattern) {
-        Objects.requireNonNull(pattern, "pattern cannot be null!");
+        Validate.notNull(pattern, "pattern cannot be null!");
 
         long days = time / 86400000;
         long hours = (time % 86400000) / 3600000;

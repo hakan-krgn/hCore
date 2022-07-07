@@ -2,6 +2,7 @@ package com.hakan.core.hologram.line.entity;
 
 import com.hakan.core.HCore;
 import com.hakan.core.hologram.HHologram;
+import com.hakan.core.utils.Validate;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityDestroy;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityMetadata;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityTeleport;
@@ -15,7 +16,6 @@ import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * {@inheritDoc}
@@ -29,8 +29,8 @@ public final class HHologramArmorStand_v1_19_R1 implements HHologramArmorStand {
      * {@inheritDoc}
      */
     private HHologramArmorStand_v1_19_R1(@Nonnull HHologram hHologram, @Nonnull Location location) {
-        World world = ((CraftWorld) Objects.requireNonNull(location.getWorld())).getHandle();
-        this.hologram = Objects.requireNonNull(hHologram, "hologram class cannot be null!");
+        World world = ((CraftWorld) Validate.notNull(location.getWorld())).getHandle();
+        this.hologram = Validate.notNull(hHologram, "hologram class cannot be null!");
         this.armorStand = new EntityArmorStand(world, location.getX(), location.getY(), location.getZ());
 
         this.armorStand.persistentInvisibility = true; //set invisibility to true
@@ -50,7 +50,7 @@ public final class HHologramArmorStand_v1_19_R1 implements HHologramArmorStand {
     @Nonnull
     @Override
     public String getText() {
-        return Objects.requireNonNull(this.armorStand.Z()).getString();
+        return Validate.notNull(this.armorStand.Z()).getString();
     }
 
     /**
@@ -58,7 +58,7 @@ public final class HHologramArmorStand_v1_19_R1 implements HHologramArmorStand {
      */
     @Override
     public void setText(@Nonnull String text) {
-        this.armorStand.b(CraftChatMessage.fromStringOrNull(Objects.requireNonNull(text, "text cannot be null!")));
+        this.armorStand.b(CraftChatMessage.fromStringOrNull(Validate.notNull(text, "text cannot be null!")));
         HCore.sendPacket(this.hologram.getRenderer().getShownViewersAsPlayer(),
                 new PacketPlayOutEntityMetadata(this.armorStand.ae(), this.armorStand.ai(), true));
     }
@@ -77,9 +77,9 @@ public final class HHologramArmorStand_v1_19_R1 implements HHologramArmorStand {
      */
     @Override
     public void setLocation(@Nonnull Location location) {
-        Objects.requireNonNull(location, "location cannot be null");
+        Validate.notNull(location, "location cannot be null");
 
-        World world = ((CraftWorld) Objects.requireNonNull(location.getWorld())).getHandle();
+        World world = ((CraftWorld) Validate.notNull(location.getWorld())).getHandle();
         if (!world.equals(this.armorStand.s)) this.armorStand.s = world;
         this.armorStand.a(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 
@@ -92,7 +92,7 @@ public final class HHologramArmorStand_v1_19_R1 implements HHologramArmorStand {
      */
     @Override
     public void show(@Nonnull List<Player> players) {
-        HCore.sendPacket(Objects.requireNonNull(players, "players cannot be null"),
+        HCore.sendPacket(Validate.notNull(players, "players cannot be null"),
                 new PacketPlayOutSpawnEntity(this.armorStand),
                 new PacketPlayOutEntityMetadata(this.armorStand.ae(), this.armorStand.ai(), true),
                 new PacketPlayOutEntityTeleport(this.armorStand));
@@ -103,7 +103,7 @@ public final class HHologramArmorStand_v1_19_R1 implements HHologramArmorStand {
      */
     @Override
     public void hide(@Nonnull List<Player> players) {
-        HCore.sendPacket(Objects.requireNonNull(players, "players cannot be null"),
+        HCore.sendPacket(Validate.notNull(players, "players cannot be null"),
                 new PacketPlayOutEntityDestroy(this.armorStand.ae()));
     }
 }

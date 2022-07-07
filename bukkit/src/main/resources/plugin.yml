@@ -1,5 +1,5 @@
 name: 'hCore'
 author: 'Hakan (Hakan#2584)'
 version: ${project.version}
-api-version: 1.18
+api-version: 1.13
 main: com.hakan.core.Bootstrap

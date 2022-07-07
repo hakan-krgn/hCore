@@ -2,6 +2,7 @@ package com.hakan.core.packet;
 
 import com.hakan.core.HCore;
 import com.hakan.core.packet.player.HPacketPlayer;
+import com.hakan.core.utils.Validate;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -12,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -83,7 +83,7 @@ public final class HPacketHandler {
      */
     @Nonnull
     public static Optional<HPacketPlayer> findByPlayer(@Nonnull Player player) {
-        return Optional.ofNullable(HPacketHandler.packetPlayers.get(Objects.requireNonNull(player, "player cannot be null!")));
+        return Optional.ofNullable(HPacketHandler.packetPlayers.get(Validate.notNull(player, "player cannot be null!")));
     }
 
     /**
@@ -103,7 +103,7 @@ public final class HPacketHandler {
      * @param player Player.
      */
     public static void register(@Nonnull Player player) {
-        Objects.requireNonNull(player, "player cannot be null!");
+        Validate.notNull(player, "player cannot be null!");
 
         try {
             HPacketPlayer packetPlayer = (HPacketPlayer) Class.forName("com.hakan.core.packet.player.HPacketPlayer_" + HCore.getVersionString())
@@ -122,7 +122,7 @@ public final class HPacketHandler {
      * @param player Player.
      */
     public static void unregister(@Nonnull Player player) {
-        Objects.requireNonNull(player, "player cannot be null!");
+        Validate.notNull(player, "player cannot be null!");
         HPacketPlayer packetPlayer = HPacketHandler.packetPlayers.remove(player);
         if (packetPlayer != null)
             packetPlayer.unregister();

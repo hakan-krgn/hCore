@@ -4,6 +4,7 @@ import com.hakan.core.HCore;
 import com.hakan.core.npc.HNPC;
 import com.hakan.core.npc.HNPCHandler;
 import com.hakan.core.npc.skin.HNPCSkin;
+import com.hakan.core.utils.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -17,7 +18,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.BiConsumer;
@@ -49,7 +49,7 @@ public final class HNPCBuilder {
      * @param id NPC id.
      */
     public HNPCBuilder(@Nonnull String id) {
-        this.id = Objects.requireNonNull(id, "id cannot be null!");
+        this.id = Validate.notNull(id, "id cannot be null!");
         this.skin = HNPCSkin.EMPTY;
         this.lines = new ArrayList<>();
         this.viewers = new HashSet<>();
@@ -77,7 +77,7 @@ public final class HNPCBuilder {
      */
     @Nonnull
     public HNPCBuilder viewers(@Nonnull UUID... viewers) {
-        Objects.requireNonNull(viewers, "viewers cannot be null!");
+        Validate.notNull(viewers, "viewers cannot be null!");
         this.viewers = new HashSet<>(Arrays.asList(viewers));
         return this;
     }
@@ -90,7 +90,7 @@ public final class HNPCBuilder {
      */
     @Nonnull
     public HNPCBuilder viewers(@Nonnull Set<UUID> viewers) {
-        Objects.requireNonNull(viewers, "viewers cannot be null!");
+        Validate.notNull(viewers, "viewers cannot be null!");
         this.viewers = viewers;
         return this;
     }
@@ -103,7 +103,7 @@ public final class HNPCBuilder {
      */
     @Nonnull
     public HNPCBuilder addViewers(@Nonnull UUID... viewers) {
-        Objects.requireNonNull(viewers, "viewers cannot be null!");
+        Validate.notNull(viewers, "viewers cannot be null!");
         this.viewers.addAll(Arrays.asList(viewers));
         return this;
     }
@@ -116,7 +116,7 @@ public final class HNPCBuilder {
      */
     @Nonnull
     public HNPCBuilder addViewers(@Nonnull Set<UUID> viewers) {
-        Objects.requireNonNull(viewers, "viewers cannot be null!");
+        Validate.notNull(viewers, "viewers cannot be null!");
         this.viewers.addAll(viewers);
         return this;
     }
@@ -129,7 +129,7 @@ public final class HNPCBuilder {
      */
     @Nonnull
     public HNPCBuilder lines(@Nonnull List<String> lines) {
-        Objects.requireNonNull(lines, "lines cannot be null!");
+        Validate.notNull(lines, "lines cannot be null!");
         this.lines = lines;
         return this;
     }
@@ -142,7 +142,7 @@ public final class HNPCBuilder {
      */
     @Nonnull
     public HNPCBuilder lines(@Nonnull String... lines) {
-        Objects.requireNonNull(lines, "lines cannot be null!");
+        Validate.notNull(lines, "lines cannot be null!");
         this.lines = Arrays.asList(lines);
         return this;
     }
@@ -155,7 +155,7 @@ public final class HNPCBuilder {
      */
     @Nonnull
     public HNPCBuilder appendLines(@Nonnull List<String> lines) {
-        Objects.requireNonNull(lines, "lines cannot be null!");
+        Validate.notNull(lines, "lines cannot be null!");
         this.lines.addAll(lines);
         return this;
     }
@@ -168,7 +168,7 @@ public final class HNPCBuilder {
      */
     @Nonnull
     public HNPCBuilder appendLines(@Nonnull String... lines) {
-        Objects.requireNonNull(lines, "lines cannot be null!");
+        Validate.notNull(lines, "lines cannot be null!");
         this.lines.addAll(Arrays.asList(lines));
         return this;
     }
@@ -181,7 +181,7 @@ public final class HNPCBuilder {
      */
     @Nonnull
     public HNPCBuilder location(@Nonnull Location location) {
-        Objects.requireNonNull(location, "location cannot be null!");
+        Validate.notNull(location, "location cannot be null!");
         this.location = location;
         return this;
     }
@@ -206,7 +206,7 @@ public final class HNPCBuilder {
      */
     @Nonnull
     public HNPCBuilder whenClicked(@Nonnull BiConsumer<Player, HNPC.Action> action, long delay) {
-        this.clickConsumer = Objects.requireNonNull(action, "action cannot be null!");
+        this.clickConsumer = Validate.notNull(action, "action cannot be null!");
         this.clickDelay = Math.max(0, delay);
         return this;
     }
@@ -219,7 +219,7 @@ public final class HNPCBuilder {
      */
     @Nonnull
     public HNPCBuilder whenSpawned(@Nonnull Consumer<HNPC> action) {
-        this.spawnConsumer = Objects.requireNonNull(action, "action cannot be null!");
+        this.spawnConsumer = Validate.notNull(action, "action cannot be null!");
         return this;
     }
 
@@ -231,7 +231,7 @@ public final class HNPCBuilder {
      */
     @Nonnull
     public HNPCBuilder whenDeleted(@Nonnull Consumer<HNPC> action) {
-        this.deleteConsumer = Objects.requireNonNull(action, "action cannot be null!");
+        this.deleteConsumer = Validate.notNull(action, "action cannot be null!");
         return this;
     }
 
@@ -243,7 +243,7 @@ public final class HNPCBuilder {
      */
     @Nonnull
     public HNPCBuilder skin(@Nonnull HNPCSkin skin) {
-        this.skin = Objects.requireNonNull(skin, "skin cannot be null!");
+        this.skin = Validate.notNull(skin, "skin cannot be null!");
         return this;
     }
 
@@ -255,7 +255,7 @@ public final class HNPCBuilder {
      */
     @Nonnull
     public HNPCBuilder skin(@Nonnull String skin) {
-        Objects.requireNonNull(skin, "skin cannot be null!");
+        Validate.notNull(skin, "skin cannot be null!");
         return this.skin(HNPCSkin.from(skin));
     }
 
@@ -268,8 +268,8 @@ public final class HNPCBuilder {
      */
     @Nonnull
     public HNPCBuilder equipment(@Nonnull HNPC.EquipmentType type, @Nonnull ItemStack item) {
-        Objects.requireNonNull(type, "type cannot be null!");
-        Objects.requireNonNull(item, "item cannot be null!");
+        Validate.notNull(type, "type cannot be null!");
+        Validate.notNull(item, "item cannot be null!");
         this.equipments.put(type, item);
         return this;
     }
@@ -282,7 +282,7 @@ public final class HNPCBuilder {
      */
     @Nonnull
     public HNPCBuilder equipments(@Nonnull Map<HNPC.EquipmentType, ItemStack> equipments) {
-        Objects.requireNonNull(equipments, "equipments cannot be null!");
+        Validate.notNull(equipments, "equipments cannot be null!");
         this.equipments = equipments;
         return this;
     }
