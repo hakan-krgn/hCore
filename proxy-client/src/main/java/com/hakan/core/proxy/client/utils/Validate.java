@@ -3,7 +3,7 @@ package com.hakan.core.proxy.client.utils;
 /**
  * Validate class to validate objects.
  */
-public class Validate {
+public final class Validate {
 
     /**
      * Checks if the object is null.
