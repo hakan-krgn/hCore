@@ -1,6 +1,5 @@
 package com.hakan.core.npc.builder;
 
-import com.hakan.core.HCore;
 import com.hakan.core.npc.HNPC;
 import com.hakan.core.npc.HNPCHandler;
 import com.hakan.core.npc.skin.HNPCSkin;
@@ -11,7 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -297,36 +295,18 @@ public final class HNPCBuilder {
         if (this.show == null)
             this.show = (this.viewers.size() > 0);
 
-        try {
-            Class<?> wrapper = Class.forName("com.hakan.core.npc.wrapper.HNPC_" + HCore.getVersionString());
+        HNPC npc = new HNPC(this.id, this.location, this.lines, this.viewers, this.equipments, this.show);
+        npc.setSkin(this.skin);
 
-            Constructor<?> constructor = wrapper.getDeclaredConstructor(String.class,
-                    HNPCSkin.class,
-                    Location.class,
-                    List.class,
-                    Set.class,
-                    Map.class,
-                    boolean.class);
-            HNPC npc = (HNPC) constructor.newInstance(this.id,
-                    this.skin,
-                    this.location,
-                    this.lines,
-                    this.viewers,
-                    this.equipments,
-                    this.show);
+        if (this.clickConsumer != null)
+            npc.whenClicked(this.clickConsumer);
+        if (this.spawnConsumer != null)
+            npc.whenSpawned(this.spawnConsumer);
+        if (this.deleteConsumer != null)
+            npc.whenDeleted(this.deleteConsumer);
+        npc.getAction().setClickDelay(this.clickDelay);
 
-            if (this.clickConsumer != null)
-                npc.whenClicked(this.clickConsumer);
-            if (this.spawnConsumer != null)
-                npc.whenSpawned(this.spawnConsumer);
-            if (this.deleteConsumer != null)
-                npc.whenDeleted(this.deleteConsumer);
-            npc.getAction().setClickDelay(this.clickDelay);
-
-            HNPCHandler.getContent().put(this.id, npc);
-            return npc;
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to build NPC!", e);
-        }
+        HNPCHandler.getContent().put(this.id, npc);
+        return npc;
     }
 }
