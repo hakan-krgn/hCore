@@ -83,6 +83,20 @@
 
         <dependency>
             <groupId>com.hakan</groupId>
+            <artifactId>proxy-client</artifactId>
+            <version>0.4.8</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.hakan</groupId>
+            <artifactId>proxy-server</artifactId>
+            <version>0.4.8</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.hakan</groupId>
             <artifactId>1_8_R3</artifactId>
             <version>0.4.8</version>
             <scope>compile</scope>
