@@ -1,11 +1,11 @@
 package com.hakan.core.utils.query.insert;
 
+import com.hakan.core.utils.Validate;
 import com.hakan.core.utils.query.QueryBuilder;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Query builder for
@@ -34,8 +34,8 @@ public final class InsertQuery extends QueryBuilder {
      */
     @Nonnull
     public InsertQuery value(@Nonnull String column, @Nonnull Object value) {
-        Objects.requireNonNull(column, "column name cannot be null!");
-        Objects.requireNonNull(value, "value name cannot be null!");
+        Validate.notNull(column, "column name cannot be null!");
+        Validate.notNull(value, "value name cannot be null!");
 
         String columnReplaced = column.replace(column, "`" + column + "`");
         String valueReplaced = value.toString().replace("'", "''");

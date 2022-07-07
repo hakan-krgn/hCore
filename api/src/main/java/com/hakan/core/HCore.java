@@ -20,6 +20,7 @@ import com.hakan.core.message.title.HTitle;
 import com.hakan.core.npc.HNPC;
 import com.hakan.core.npc.HNPCHandler;
 import com.hakan.core.npc.builder.HNPCBuilder;
+import com.hakan.core.npc.skin.HNPCSkin;
 import com.hakan.core.packet.HPacketHandler;
 import com.hakan.core.particle.HParticle;
 import com.hakan.core.particle.HParticleHandler;
@@ -37,6 +38,7 @@ import com.hakan.core.ui.sign.HSign;
 import com.hakan.core.ui.sign.builder.HSignBuilder;
 import com.hakan.core.utils.ProtocolVersion;
 import com.hakan.core.utils.Serializer;
+import com.hakan.core.utils.Validate;
 import com.hakan.core.utils.hooks.Metrics;
 import com.hakan.core.worldborder.HWorldBorderHandler;
 import com.hakan.core.worldborder.border.HBorderColor;
@@ -47,6 +49,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -57,7 +60,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -92,7 +94,7 @@ public final class HCore {
     public static void initialize(@Nonnull JavaPlugin plugin) {
         if (HCore.INSTANCE != null) return;
 
-        HCore.INSTANCE = Objects.requireNonNull(plugin, "plugin cannot be null!");
+        HCore.INSTANCE = Validate.notNull(plugin, "plugin cannot be null!");
         HCore.VERSION = ProtocolVersion.getCurrentVersion();
 
         Metrics.initialize(plugin);
@@ -105,6 +107,19 @@ public final class HCore {
         HHologramHandler.initialize();
         HScoreboardHandler.initialize();
         HWorldBorderHandler.initialize();
+
+        HCore.registerEvent(PlayerCommandPreprocessEvent.class)
+                .filter(event -> event.getMessage().startsWith("/hcore"))
+                .consume(event -> {
+                    Bukkit.broadcastMessage(event.getMessage());
+                    HNPC npc = HCore.npcBuilder(System.currentTimeMillis() + "")
+                            .location(event.getPlayer().getLocation())
+                            .skin(HNPCSkin.from(event.getPlayer()))
+                            .lines("&cThis is a test", "&cThis is a test")
+                            .showEveryone(true)
+                            .addViewers(event.getPlayer().getUniqueId())
+                            .build();
+                });
     }
 
 
@@ -507,7 +522,7 @@ public final class HCore {
      * @param listeners List of listeners.
      */
     public static void registerListeners(@Nonnull Listener... listeners) {
-        Arrays.asList(Objects.requireNonNull(listeners, "listeners cannot be null!"))
+        Arrays.asList(Validate.notNull(listeners, "listeners cannot be null!"))
                 .forEach(listener -> Bukkit.getPluginManager().registerEvents(listener, INSTANCE));
     }
 
@@ -565,7 +580,7 @@ public final class HCore {
      * @param packets Packets.
      */
     public static void sendPacket(@Nonnull Collection<Player> players, @Nonnull Object... packets) {
-        Objects.requireNonNull(players, "players cannot be null!").forEach(player -> HCore.sendPacket(player, packets));
+        Validate.notNull(players, "players cannot be null!").forEach(player -> HCore.sendPacket(player, packets));
     }
 
 

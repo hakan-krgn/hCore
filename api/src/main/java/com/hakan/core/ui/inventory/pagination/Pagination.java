@@ -2,6 +2,7 @@ package com.hakan.core.ui.inventory.pagination;
 
 import com.hakan.core.ui.inventory.HInventory;
 import com.hakan.core.ui.inventory.item.ClickableItem;
+import com.hakan.core.utils.Validate;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -9,7 +10,6 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -32,7 +32,7 @@ public final class Pagination {
      * @param inventory Parent inventory.
      */
     public Pagination(@Nonnull HInventory inventory) {
-        this.inventory = Objects.requireNonNull(inventory, "inventory cannot be null!");
+        this.inventory = Validate.notNull(inventory, "inventory cannot be null!");
         this.currentPage = 0;
         this.slots = new ArrayList<>();
         this.items = new ArrayList<>();
@@ -76,7 +76,7 @@ public final class Pagination {
      * @param clickableItems Clickable item list
      */
     public void setItems(@Nonnull List<ClickableItem> clickableItems) {
-        this.items = Objects.requireNonNull(clickableItems, "clickable items cannot be null!");
+        this.items = Validate.notNull(clickableItems, "clickable items cannot be null!");
         this.pages = this.createPages();
     }
 
@@ -106,7 +106,7 @@ public final class Pagination {
      * @param ints Slots.
      */
     public void setSlots(@Nonnull List<Integer> ints) {
-        this.slots = Objects.requireNonNull(ints, "slots cannot be null!");
+        this.slots = Validate.notNull(ints, "slots cannot be null!");
         this.pages = this.createPages();
     }
 
@@ -157,7 +157,7 @@ public final class Pagination {
      * @param page Page.
      */
     public void setCurrentPage(@Nonnull Page page) {
-        this.currentPage = Objects.requireNonNull(page, "page cannot be null!").getNumber();
+        this.currentPage = Validate.notNull(page, "page cannot be null!").getNumber();
         page.getItems().forEach(this.inventory::setItem);
     }
 

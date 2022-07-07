@@ -1,5 +1,6 @@
 package com.hakan.core.renderer;
 
+import com.hakan.core.utils.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -8,7 +9,6 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -47,11 +47,11 @@ public final class HRenderer {
                      @Nonnull Consumer<List<Player>> showConsumer,
                      @Nonnull Consumer<List<Player>> hideConsumer,
                      @Nonnull Consumer<HRenderer> deleteConsumer) {
-        this.location = Objects.requireNonNull(location, "location cannot be null!");
-        this.viewers = Objects.requireNonNull(viewers, "viewers cannot be null!");
-        this.showConsumer = Objects.requireNonNull(showConsumer, "show consumer cannot be null!");
-        this.hideConsumer = Objects.requireNonNull(hideConsumer, "hide consumer cannot be null!");
-        this.deleteConsumer = Objects.requireNonNull(deleteConsumer, "delete consumer cannot be null!");
+        this.location = Validate.notNull(location, "location cannot be null!");
+        this.viewers = Validate.notNull(viewers, "viewers cannot be null!");
+        this.showConsumer = Validate.notNull(showConsumer, "show consumer cannot be null!");
+        this.hideConsumer = Validate.notNull(hideConsumer, "hide consumer cannot be null!");
+        this.deleteConsumer = Validate.notNull(deleteConsumer, "delete consumer cannot be null!");
         this.radius = radius;
         this.shownViewers = new HashSet<>();
         this.showEveryone = false;
@@ -159,7 +159,7 @@ public final class HRenderer {
      */
     @Nonnull
     public HRenderer setLocation(@Nonnull Location location) {
-        this.location = Objects.requireNonNull(location, "location cannot be null!");
+        this.location = Validate.notNull(location, "location cannot be null!");
         return this;
     }
 
@@ -206,7 +206,7 @@ public final class HRenderer {
      */
     @Nonnull
     public HRenderer setViewers(@Nonnull Set<UUID> viewers) {
-        this.viewers = Objects.requireNonNull(viewers, "viewers cannot be null!");
+        this.viewers = Validate.notNull(viewers, "viewers cannot be null!");
         return this;
     }
 
@@ -219,7 +219,7 @@ public final class HRenderer {
     @Nonnull
     public HRenderer setViewers(@Nonnull List<Player> viewers) {
         this.viewers.clear();
-        Objects.requireNonNull(viewers, "viewers cannot be null!")
+        Validate.notNull(viewers, "viewers cannot be null!")
                 .forEach(this::addViewer);
         return this;
     }
@@ -232,7 +232,7 @@ public final class HRenderer {
      */
     @Nonnull
     public HRenderer addViewer(@Nonnull UUID uid) {
-        this.viewers.add(Objects.requireNonNull(uid, "uid cannot be null!"));
+        this.viewers.add(Validate.notNull(uid, "uid cannot be null!"));
         return this;
     }
 
@@ -244,7 +244,7 @@ public final class HRenderer {
      */
     @Nonnull
     public HRenderer removeViewer(@Nonnull UUID uid) {
-        this.viewers.remove(Objects.requireNonNull(uid, "uid cannot be null!"));
+        this.viewers.remove(Validate.notNull(uid, "uid cannot be null!"));
         return this;
     }
 
@@ -256,7 +256,7 @@ public final class HRenderer {
      */
     @Nonnull
     public HRenderer addViewer(@Nonnull Player player) {
-        return this.addViewer(Objects.requireNonNull(player, "player cannot be null!").getUniqueId());
+        return this.addViewer(Validate.notNull(player, "player cannot be null!").getUniqueId());
     }
 
     /**
@@ -267,7 +267,7 @@ public final class HRenderer {
      */
     @Nonnull
     public HRenderer removeViewer(@Nonnull Player player) {
-        return this.removeViewer(Objects.requireNonNull(player, "player cannot be null!").getUniqueId());
+        return this.removeViewer(Validate.notNull(player, "player cannot be null!").getUniqueId());
     }
 
     /**
@@ -295,7 +295,7 @@ public final class HRenderer {
      * @return If player can see the location, returns true.
      */
     public boolean canSee(@Nonnull UUID uid) {
-        Player player = Bukkit.getPlayer(Objects.requireNonNull(uid, "uid cannot be null!"));
+        Player player = Bukkit.getPlayer(Validate.notNull(uid, "uid cannot be null!"));
         if (player == null)
             return false;
 
@@ -314,8 +314,8 @@ public final class HRenderer {
      * @return Distance as double.
      */
     public double calculateDistance(@Nonnull Location target) {
-        Objects.requireNonNull(target, "target location cannot be null!");
-        Objects.requireNonNull(target.getWorld(), "target world cannot be null!");
+        Validate.notNull(target, "target location cannot be null!");
+        Validate.notNull(target.getWorld(), "target world cannot be null!");
 
         if (!target.getWorld().equals(this.location.getWorld()))
             return -1;

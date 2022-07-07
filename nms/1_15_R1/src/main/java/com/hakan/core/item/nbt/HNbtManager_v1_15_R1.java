@@ -1,5 +1,6 @@
 package com.hakan.core.item.nbt;
 
+import com.hakan.core.utils.Validate;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.server.v1_15_R1.MojangsonParser;
 import net.minecraft.server.v1_15_R1.NBTTagCompound;
@@ -7,7 +8,6 @@ import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
 
 public class HNbtManager_v1_15_R1 implements HNbtManager {
 
@@ -17,9 +17,9 @@ public class HNbtManager_v1_15_R1 implements HNbtManager {
     @Nonnull
     @Override
     public ItemStack set(@Nonnull ItemStack itemStack, @Nonnull String key, @Nonnull String value) {
-        Objects.requireNonNull(itemStack, "itemStack cannot be null");
-        Objects.requireNonNull(key, "key cannot be null");
-        Objects.requireNonNull(value, "value cannot be null");
+        Validate.notNull(itemStack, "itemStack cannot be null");
+        Validate.notNull(key, "key cannot be null");
+        Validate.notNull(value, "value cannot be null");
 
         net.minecraft.server.v1_15_R1.ItemStack nmsCopy = CraftItemStack.asNMSCopy(itemStack);
 
@@ -36,8 +36,8 @@ public class HNbtManager_v1_15_R1 implements HNbtManager {
     @Nonnull
     @Override
     public ItemStack set(@Nonnull ItemStack itemStack, @Nonnull String nbt) {
-        Objects.requireNonNull(itemStack, "itemStack cannot be null");
-        Objects.requireNonNull(nbt, "nbt cannot be null");
+        Validate.notNull(itemStack, "itemStack cannot be null");
+        Validate.notNull(nbt, "nbt cannot be null");
 
         net.minecraft.server.v1_15_R1.ItemStack nmsCopy = CraftItemStack.asNMSCopy(itemStack);
 
@@ -54,8 +54,8 @@ public class HNbtManager_v1_15_R1 implements HNbtManager {
     @Nonnull
     @Override
     public String get(@Nonnull ItemStack itemStack, @Nonnull String key) {
-        Objects.requireNonNull(itemStack, "itemStack cannot be null");
-        Objects.requireNonNull(key, "key cannot be null");
+        Validate.notNull(itemStack, "itemStack cannot be null");
+        Validate.notNull(key, "key cannot be null");
 
         net.minecraft.server.v1_15_R1.ItemStack nmsCopy = CraftItemStack.asNMSCopy(itemStack);
 
@@ -72,7 +72,7 @@ public class HNbtManager_v1_15_R1 implements HNbtManager {
     @Nonnull
     @Override
     public String get(@Nonnull ItemStack itemStack) {
-        Objects.requireNonNull(itemStack, "itemStack cannot be null");
+        Validate.notNull(itemStack, "itemStack cannot be null");
 
         net.minecraft.server.v1_15_R1.ItemStack nmsCopy = CraftItemStack.asNMSCopy(itemStack);
 

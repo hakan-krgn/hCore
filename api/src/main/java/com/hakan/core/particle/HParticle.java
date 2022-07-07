@@ -1,10 +1,10 @@
 package com.hakan.core.particle;
 
+import com.hakan.core.utils.Validate;
 import org.bukkit.Color;
 import org.bukkit.util.Vector;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
 
 /**
  * HParticle class.
@@ -27,9 +27,9 @@ public final class HParticle {
      * @param color        Particle Color.
      */
     public HParticle(@Nonnull String particleName, int amount, double speed, @Nonnull Vector offset, @Nonnull Color color) {
-        this.particleName = Objects.requireNonNull(particleName, "particle name cannot be null!");
-        this.offset = Objects.requireNonNull(offset, "offset cannot be null!");
-        this.color = Objects.requireNonNull(color, "color cannot be null!");
+        this.particleName = Validate.notNull(particleName, "particle name cannot be null!");
+        this.offset = Validate.notNull(offset, "offset cannot be null!");
+        this.color = Validate.notNull(color, "color cannot be null!");
         this.amount = amount;
         this.speed = speed;
     }
@@ -103,7 +103,7 @@ public final class HParticle {
      * @param particleName Particle name.
      */
     public void setParticleName(@Nonnull String particleName) {
-        this.particleName = Objects.requireNonNull(particleName, "particle name cannot be null!");
+        this.particleName = Validate.notNull(particleName, "particle name cannot be null!");
     }
 
     /**
@@ -122,7 +122,7 @@ public final class HParticle {
      * @param offset Offset.
      */
     public void setOffset(@Nonnull Vector offset) {
-        this.offset = Objects.requireNonNull(offset, "offset cannot be null!");
+        this.offset = Validate.notNull(offset, "offset cannot be null!");
     }
 
     /**
@@ -141,7 +141,7 @@ public final class HParticle {
      * @param color Color.
      */
     public void setColor(@Nonnull Color color) {
-        this.color = Objects.requireNonNull(color, "color cannot be null!");
+        this.color = Validate.notNull(color, "color cannot be null!");
     }
 
     /**

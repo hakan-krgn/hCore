@@ -1,11 +1,11 @@
 package com.hakan.core.ui.inventory.item;
 
+import com.hakan.core.utils.Validate;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
@@ -23,7 +23,7 @@ public final class ClickableItem {
      * @param click Click consumer.
      */
     public ClickableItem(@Nonnull ItemStack item, @Nullable Consumer<InventoryClickEvent> click) {
-        this.item = Objects.requireNonNull(item, "item cannot be null!");
+        this.item = Validate.notNull(item, "item cannot be null!");
         this.click = click;
     }
 

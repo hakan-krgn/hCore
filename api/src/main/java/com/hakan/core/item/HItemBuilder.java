@@ -5,6 +5,7 @@ import com.hakan.core.item.nbt.HNbtManager;
 import com.hakan.core.item.skull.HSkullBuilder;
 import com.hakan.core.utils.ColorUtil;
 import com.hakan.core.utils.ProtocolVersion;
+import com.hakan.core.utils.Validate;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -21,7 +22,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -127,7 +127,7 @@ public class HItemBuilder {
      * @param durability Datavalue.
      */
     public HItemBuilder(@Nonnull Material type, int amount, short durability) {
-        this.type = Objects.requireNonNull(type, "type cannot be null!");
+        this.type = Validate.notNull(type, "type cannot be null!");
         this.nbt = "{}";
         this.name = "";
         this.amount = amount;
@@ -145,7 +145,7 @@ public class HItemBuilder {
      * @param builder Item builder.
      */
     public HItemBuilder(@Nonnull HItemBuilder builder) {
-        Objects.requireNonNull(builder, "builder cannot be null!");
+        Validate.notNull(builder, "builder cannot be null!");
         this.type = builder.type;
         this.nbt = builder.nbt;
         this.name = builder.name;
@@ -197,7 +197,7 @@ public class HItemBuilder {
      */
     @Nonnull
     public <T extends HItemBuilder> T type(@Nonnull Material type) {
-        this.type = Objects.requireNonNull(type, "type cannot be null!");
+        this.type = Validate.notNull(type, "type cannot be null!");
         return (T) this;
     }
 
@@ -234,7 +234,7 @@ public class HItemBuilder {
      */
     @Nonnull
     public <T extends HItemBuilder> T name(boolean colored, @Nonnull String name) {
-        this.name = Objects.requireNonNull(name, "name cannot be null!");
+        this.name = Validate.notNull(name, "name cannot be null!");
         if (colored) this.name = ColorUtil.colored(this.name);
         return (T) this;
     }
@@ -323,8 +323,8 @@ public class HItemBuilder {
      */
     @Nonnull
     public <T extends HItemBuilder> T appendLore(boolean colored, @Nonnull List<String> lines) {
-        for (String _line : Objects.requireNonNull(lines, "lines cannot be null!")) {
-            String line = Objects.requireNonNull(_line, "lore cannot be null!");
+        for (String _line : Validate.notNull(lines, "lines cannot be null!")) {
+            String line = Validate.notNull(_line, "lore cannot be null!");
             if (colored) line = ColorUtil.colored(line);
             this.lore.add(line);
         }
@@ -393,7 +393,7 @@ public class HItemBuilder {
      * @return This class.
      */
     public boolean hasEnchant(@Nonnull Enchantment enchantment) {
-        return this.enchantments.containsKey(Objects.requireNonNull(enchantment, "enchantment cannot be null!"));
+        return this.enchantments.containsKey(Validate.notNull(enchantment, "enchantment cannot be null!"));
     }
 
     /**
@@ -413,7 +413,7 @@ public class HItemBuilder {
      * @return Level of enchantment.
      */
     public int getEnchantLevel(@Nonnull Enchantment enchantment) {
-        return this.enchantments.get(Objects.requireNonNull(enchantment, "enchantment cannot be null!"));
+        return this.enchantments.get(Validate.notNull(enchantment, "enchantment cannot be null!"));
     }
 
     /**
@@ -426,7 +426,7 @@ public class HItemBuilder {
      */
     @Nonnull
     public <T extends HItemBuilder> T addEnchant(@Nonnull Enchantment enchantment, int level) {
-        this.enchantments.put(Objects.requireNonNull(enchantment, "enchantment cannot be null!"), level);
+        this.enchantments.put(Validate.notNull(enchantment, "enchantment cannot be null!"), level);
         return (T) this;
     }
 
@@ -439,7 +439,7 @@ public class HItemBuilder {
      */
     @Nonnull
     public <T extends HItemBuilder> T removeEnchant(@Nonnull Enchantment enchantment) {
-        this.enchantments.remove(Objects.requireNonNull(enchantment, "enchantment cannot be null!"));
+        this.enchantments.remove(Validate.notNull(enchantment, "enchantment cannot be null!"));
         return (T) this;
     }
 
@@ -451,7 +451,7 @@ public class HItemBuilder {
      * @return If item stack has flag, returns true.
      */
     public boolean hasItemFlag(@Nonnull ItemFlag flag) {
-        return this.flags.contains(Objects.requireNonNull(flag, "item flag cannot be null!"));
+        return this.flags.contains(Validate.notNull(flag, "item flag cannot be null!"));
     }
 
     /**
@@ -473,8 +473,8 @@ public class HItemBuilder {
      */
     @Nonnull
     public <T extends HItemBuilder> T addItemFlags(@Nonnull ItemFlag... flags) {
-        for (ItemFlag flag : Objects.requireNonNull(flags, "item flags cannot be null!"))
-            this.flags.add(Objects.requireNonNull(flag, "item flag cannot be null!"));
+        for (ItemFlag flag : Validate.notNull(flags, "item flags cannot be null!"))
+            this.flags.add(Validate.notNull(flag, "item flag cannot be null!"));
         return (T) this;
     }
 
@@ -487,8 +487,8 @@ public class HItemBuilder {
      */
     @Nonnull
     public <T extends HItemBuilder> T removeItemFlags(@Nonnull ItemFlag... flags) {
-        for (ItemFlag flag : Objects.requireNonNull(flags, "item flags cannot be null!"))
-            this.flags.remove(Objects.requireNonNull(flag, "item flag cannot be null!"));
+        for (ItemFlag flag : Validate.notNull(flags, "item flags cannot be null!"))
+            this.flags.remove(Validate.notNull(flag, "item flag cannot be null!"));
         return (T) this;
     }
 
@@ -532,7 +532,7 @@ public class HItemBuilder {
      */
     @Nonnull
     public <T extends HItemBuilder> T nbt(@Nonnull String nbt) {
-        this.nbt = Objects.requireNonNull(nbt, "nbt cannot be null!");
+        this.nbt = Validate.notNull(nbt, "nbt cannot be null!");
         return (T) this;
     }
 

@@ -1,6 +1,7 @@
 package com.hakan.core.scoreboard;
 
 import com.hakan.core.HCore;
+import com.hakan.core.utils.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -11,7 +12,6 @@ import org.bukkit.scoreboard.Team;
 import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -37,7 +37,7 @@ public final class HScoreboard {
      * @param uid UID of player
      */
     HScoreboard(@Nonnull UUID uid) {
-        this.uid = Objects.requireNonNull(uid, "uuid cannot be null");
+        this.uid = Validate.notNull(uid, "uuid cannot be null");
         this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         this.objective = this.scoreboard.registerNewObjective("board", "dummy");
         this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);
@@ -102,7 +102,7 @@ public final class HScoreboard {
      */
     @Nonnull
     public HScoreboard setTitle(@Nonnull String title) {
-        this.title = Objects.requireNonNull(title, "title cannot be null");
+        this.title = Validate.notNull(title, "title cannot be null");
         this.objective.setDisplayName(title);
         return this;
     }
@@ -148,7 +148,7 @@ public final class HScoreboard {
      */
     @Nonnull
     public HScoreboard setLine(int line, @Nonnull String text) {
-        Objects.requireNonNull(text, "text cannot be null");
+        Validate.notNull(text, "text cannot be null");
         this.getTeam(line).setPrefix(text);
         return this;
     }
@@ -161,7 +161,7 @@ public final class HScoreboard {
      */
     @Nonnull
     public HScoreboard setLines(@Nonnull List<String> lines) {
-        Objects.requireNonNull(lines, "lines cannot be null");
+        Validate.notNull(lines, "lines cannot be null");
         for (int i = 1; i <= 16; i++)
             if (lines.size() >= i) this.setLine(i, lines.get(i - 1));
             else this.removeLine(i);
@@ -207,7 +207,7 @@ public final class HScoreboard {
      */
     @Nonnull
     public HScoreboard expire(int time, @Nonnull TimeUnit timeUnit) {
-        Objects.requireNonNull(timeUnit, "time unit cannot be null");
+        Validate.notNull(timeUnit, "time unit cannot be null");
         HCore.syncScheduler().after(time, timeUnit)
                 .run(this::delete);
         return this;
@@ -236,7 +236,7 @@ public final class HScoreboard {
      */
     @Nonnull
     public HScoreboard update(@Nonnull Consumer<HScoreboard> consumer) {
-        Objects.requireNonNull(consumer, "consumer cannot be null");
+        Validate.notNull(consumer, "consumer cannot be null");
 
         if (this.updateInterval > 0 && this.isExist()) {
             consumer.accept(this);

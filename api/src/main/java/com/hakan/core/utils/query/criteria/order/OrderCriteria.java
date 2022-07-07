@@ -1,12 +1,12 @@
 package com.hakan.core.utils.query.criteria.order;
 
+import com.hakan.core.utils.Validate;
 import com.hakan.core.utils.query.criteria.QueryCriteria;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Order criteria class.
@@ -31,8 +31,8 @@ public final class OrderCriteria extends QueryCriteria {
      */
     @Nonnull
     public OrderCriteria add(@Nonnull OrderType orderType, @Nonnull String... columns) {
-        Objects.requireNonNull(orderType, "orderType cannot be null!");
-        Objects.requireNonNull(columns, "columns cannot be null!");
+        Validate.notNull(orderType, "orderType cannot be null!");
+        Validate.notNull(columns, "columns cannot be null!");
 
         Arrays.asList(columns).forEach(column -> this.orderBy.put(column, orderType));
         return this;

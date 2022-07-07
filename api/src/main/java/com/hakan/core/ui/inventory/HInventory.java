@@ -5,6 +5,7 @@ import com.hakan.core.ui.GUIHandler;
 import com.hakan.core.ui.inventory.item.ClickableItem;
 import com.hakan.core.ui.inventory.pagination.Page;
 import com.hakan.core.ui.inventory.pagination.Pagination;
+import com.hakan.core.utils.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -18,7 +19,6 @@ import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -131,7 +131,7 @@ public class HInventory implements GUI {
      * @return If UI contains option, returns true.
      */
     public final boolean hasOption(@Nonnull Option option) {
-        return this.options.contains(Objects.requireNonNull(option, "option cannot be null!"));
+        return this.options.contains(Validate.notNull(option, "option cannot be null!"));
     }
 
     /**
@@ -143,7 +143,7 @@ public class HInventory implements GUI {
      */
     @Nonnull
     public final <T extends HInventory> T addOption(@Nonnull Option option) {
-        this.options.add(Objects.requireNonNull(option, "option cannot be null!"));
+        this.options.add(Validate.notNull(option, "option cannot be null!"));
         return (T) this;
     }
 
@@ -156,7 +156,7 @@ public class HInventory implements GUI {
      */
     @Nonnull
     public final <T extends HInventory> T removeOption(@Nonnull Option option) {
-        this.options.remove(Objects.requireNonNull(option, "option cannot be null!"));
+        this.options.remove(Validate.notNull(option, "option cannot be null!"));
         return (T) this;
     }
 
@@ -254,7 +254,7 @@ public class HInventory implements GUI {
      */
     @Nonnull
     public final <T extends HInventory> T fillPage(@Nonnull Page page) {
-        this.pagination.setCurrentPage(Objects.requireNonNull(page, "page cannot be null!").getNumber());
+        this.pagination.setCurrentPage(Validate.notNull(page, "page cannot be null!").getNumber());
         return (T) this;
     }
 
@@ -349,7 +349,7 @@ public class HInventory implements GUI {
      */
     @Nonnull
     public final <T extends HInventory> T fillMaterial(@Nonnull Material material, boolean replaceWithItems) {
-        return this.fill(new ItemStack(Objects.requireNonNull(material, "material cannot be null!")), replaceWithItems);
+        return this.fill(new ItemStack(Validate.notNull(material, "material cannot be null!")), replaceWithItems);
     }
 
     /**
@@ -419,7 +419,7 @@ public class HInventory implements GUI {
      */
     @Nonnull
     public final <T extends HInventory> T refresh(@Nonnull Player player) {
-        this.onOpen(Objects.requireNonNull(player, "player cannot be null!"));
+        this.onOpen(Validate.notNull(player, "player cannot be null!"));
         return (T) this;
     }
 
@@ -430,7 +430,7 @@ public class HInventory implements GUI {
      * @param player Player.
      */
     public final void open(@Nonnull Player player) {
-        HInventory hInventory = GUIHandler.findInventoryByPlayer(Objects.requireNonNull(player, "player cannot be null!")).orElse(null);
+        HInventory hInventory = GUIHandler.findInventoryByPlayer(Validate.notNull(player, "player cannot be null!")).orElse(null);
 
         this.onOpen(player);
 
@@ -447,7 +447,7 @@ public class HInventory implements GUI {
      * @param player Player.
      */
     public final void close(@Nonnull Player player) {
-        Objects.requireNonNull(player, "player cannot be null!");
+        Validate.notNull(player, "player cannot be null!");
 
         if (this.hasOption(Option.CLOSABLE)) {
             player.closeInventory();
@@ -464,7 +464,7 @@ public class HInventory implements GUI {
      * @param consumer Consumer.
      */
     public void whenOpened(@Nonnull Consumer<Player> consumer) {
-        this.openConsumer = Objects.requireNonNull(consumer, "consumer cannot be null!");
+        this.openConsumer = Validate.notNull(consumer, "consumer cannot be null!");
     }
 
     /**
@@ -473,7 +473,7 @@ public class HInventory implements GUI {
      * @param consumer Consumer.
      */
     public void whenClosed(@Nonnull Consumer<Player> consumer) {
-        this.closeConsumer = Objects.requireNonNull(consumer, "consumer cannot be null!");
+        this.closeConsumer = Validate.notNull(consumer, "consumer cannot be null!");
     }
 
     /**

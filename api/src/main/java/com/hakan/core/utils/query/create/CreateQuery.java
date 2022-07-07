@@ -1,11 +1,11 @@
 package com.hakan.core.utils.query.create;
 
+import com.hakan.core.utils.Validate;
 import com.hakan.core.utils.query.QueryBuilder;
 
 import javax.annotation.Nonnull;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Query builder for
@@ -34,8 +34,8 @@ public final class CreateQuery extends QueryBuilder {
      */
     @Nonnull
     public CreateQuery value(@Nonnull String column, @Nonnull String type) {
-        Objects.requireNonNull(column, "column name cannot be null!");
-        Objects.requireNonNull(type, "type name cannot be null!");
+        Validate.notNull(column, "column name cannot be null!");
+        Validate.notNull(type, "type name cannot be null!");
 
         this.values.put(column, type);
         return this;

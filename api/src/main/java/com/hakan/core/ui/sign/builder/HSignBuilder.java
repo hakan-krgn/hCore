@@ -3,10 +3,10 @@ package com.hakan.core.ui.sign.builder;
 import com.hakan.core.HCore;
 import com.hakan.core.ui.sign.HSign;
 import com.hakan.core.ui.sign.HSignType;
+import com.hakan.core.utils.Validate;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
 
 /**
  * HSignBuilder class to build HSign.
@@ -34,7 +34,7 @@ public final class HSignBuilder {
      */
     @Nonnull
     public HSignBuilder player(@Nonnull Player player) {
-        this.player = Objects.requireNonNull(player, "type cannot be null!");
+        this.player = Validate.notNull(player, "type cannot be null!");
         return this;
     }
 
@@ -46,7 +46,7 @@ public final class HSignBuilder {
      */
     @Nonnull
     public HSignBuilder type(@Nonnull HSignType type) {
-        this.type = Objects.requireNonNull(type, "type cannot be null!");
+        this.type = Validate.notNull(type, "type cannot be null!");
         return this;
     }
 
@@ -58,7 +58,7 @@ public final class HSignBuilder {
      */
     @Nonnull
     public HSignBuilder lines(@Nonnull String... lines) {
-        Objects.requireNonNull(lines, "lines cannot be null!");
+        Validate.notNull(lines, "lines cannot be null!");
         if (lines.length != 4)
             throw new IllegalArgumentException("lines length must be 4!");
 

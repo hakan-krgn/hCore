@@ -1,7 +1,8 @@
 package com.hakan.core.utils.query;
 
+import com.hakan.core.utils.Validate;
+
 import javax.annotation.Nonnull;
-import java.util.Objects;
 
 /**
  * Query builder class.
@@ -17,7 +18,7 @@ public abstract class QueryBuilder {
      * @param table the table name.
      */
     public QueryBuilder(@Nonnull String table) {
-        this.table = Objects.requireNonNull(table, "table name cannot be null!");
+        this.table = Validate.notNull(table, "table name cannot be null!");
         this.query = new StringBuilder();
     }
 

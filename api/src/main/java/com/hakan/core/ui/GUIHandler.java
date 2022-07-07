@@ -12,6 +12,7 @@ import com.hakan.core.ui.inventory.listeners.InventoryClickListener;
 import com.hakan.core.ui.inventory.listeners.InventoryCloseListener;
 import com.hakan.core.ui.sign.HSign;
 import com.hakan.core.ui.sign.builder.HSignBuilder;
+import com.hakan.core.utils.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -23,7 +24,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -158,7 +158,7 @@ public final class GUIHandler {
      */
     @Nonnull
     public static Optional<GUI> findByUID(@Nonnull UUID uid) {
-        return Optional.ofNullable(GUIHandler.guiMap.get(Objects.requireNonNull(uid, "UID cannot be null!")));
+        return Optional.ofNullable(GUIHandler.guiMap.get(Validate.notNull(uid, "UID cannot be null!")));
     }
 
     /**
@@ -235,7 +235,7 @@ public final class GUIHandler {
      */
     @Nonnull
     public static Optional<HInventory> findInventoryByUID(@Nonnull UUID uid) {
-        GUI gui = GUIHandler.guiMap.get(Objects.requireNonNull(uid, "UID cannot be null!"));
+        GUI gui = GUIHandler.guiMap.get(Validate.notNull(uid, "UID cannot be null!"));
         return (gui instanceof HInventory) ? Optional.of((HInventory) gui) : Optional.empty();
     }
 
@@ -324,7 +324,7 @@ public final class GUIHandler {
      */
     @Nonnull
     public static Optional<HSign> findSignByUID(@Nonnull UUID uid) {
-        GUI gui = GUIHandler.guiMap.get(Objects.requireNonNull(uid, "UID cannot be null!"));
+        GUI gui = GUIHandler.guiMap.get(Validate.notNull(uid, "UID cannot be null!"));
         return (gui instanceof HSign) ? Optional.of((HSign) gui) : Optional.empty();
     }
 
@@ -413,7 +413,7 @@ public final class GUIHandler {
      */
     @Nonnull
     public static Optional<HAnvil> findAnvilByUID(@Nonnull UUID uid) {
-        GUI gui = GUIHandler.guiMap.get(Objects.requireNonNull(uid, "UID cannot be null!"));
+        GUI gui = GUIHandler.guiMap.get(Validate.notNull(uid, "UID cannot be null!"));
         return (gui instanceof HAnvil) ? Optional.of((HAnvil) gui) : Optional.empty();
     }
 

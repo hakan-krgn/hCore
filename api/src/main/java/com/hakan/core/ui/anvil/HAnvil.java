@@ -2,6 +2,7 @@ package com.hakan.core.ui.anvil;
 
 import com.hakan.core.ui.GUI;
 import com.hakan.core.ui.GUIHandler;
+import com.hakan.core.utils.Validate;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -9,7 +10,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
@@ -43,10 +43,10 @@ public abstract class HAnvil implements GUI {
                   @Nonnull String text,
                   @Nonnull ItemStack leftItem,
                   @Nullable ItemStack rightItem) {
-        this.player = Objects.requireNonNull(player, "player cannot be null!");
-        this.title = Objects.requireNonNull(title, "title cannot be null!");
-        this.text = Objects.requireNonNull(text, "text cannot be null!");
-        this.leftItem = Objects.requireNonNull(leftItem, "leftItem cannot be null!");
+        this.player = Validate.notNull(player, "player cannot be null!");
+        this.title = Validate.notNull(title, "title cannot be null!");
+        this.text = Validate.notNull(text, "text cannot be null!");
+        this.leftItem = Validate.notNull(leftItem, "leftItem cannot be null!");
         this.rightItem = rightItem;
         this.closable = true;
 
@@ -122,7 +122,7 @@ public abstract class HAnvil implements GUI {
      */
     @Nonnull
     public final HAnvil whenOpened(@Nonnull Runnable openRunnable) {
-        this.openRunnable = Objects.requireNonNull(openRunnable, "open callback cannot be null!");
+        this.openRunnable = Validate.notNull(openRunnable, "open callback cannot be null!");
         return this;
     }
 
@@ -134,7 +134,7 @@ public abstract class HAnvil implements GUI {
      */
     @Nonnull
     public final HAnvil whenInputReceived(@Nonnull Consumer<String> inputConsumer) {
-        this.inputConsumer = Objects.requireNonNull(inputConsumer, "input callback cannot be null!");
+        this.inputConsumer = Validate.notNull(inputConsumer, "input callback cannot be null!");
         return this;
     }
 
@@ -145,7 +145,7 @@ public abstract class HAnvil implements GUI {
      */
     @Nonnull
     public final HAnvil whenClosed(@Nonnull Runnable closeRunnable) {
-        this.closeRunnable = Objects.requireNonNull(closeRunnable, "close callback cannot be null!");
+        this.closeRunnable = Validate.notNull(closeRunnable, "close callback cannot be null!");
         return this;
     }
 

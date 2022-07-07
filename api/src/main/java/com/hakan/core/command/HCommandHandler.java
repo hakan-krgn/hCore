@@ -4,10 +4,10 @@ import com.hakan.core.command.executors.base.BaseCommand;
 import com.hakan.core.command.executors.base.BaseCommandData;
 import com.hakan.core.command.executors.sub.SubCommand;
 import com.hakan.core.command.executors.sub.SubCommandData;
+import com.hakan.core.utils.Validate;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Method;
-import java.util.Objects;
 
 /**
  * HCommandHandler class to register
@@ -21,7 +21,7 @@ public final class HCommandHandler {
      * @param adapters List of command adapters.
      */
     public static void register(@Nonnull HCommandAdapter... adapters) {
-        Objects.requireNonNull(adapters, "adapters cannot be null!");
+        Validate.notNull(adapters, "adapters cannot be null!");
 
         for (HCommandAdapter adapter : adapters) {
             BaseCommand baseCommand = adapter.getClass().getAnnotation(BaseCommand.class);

@@ -3,12 +3,12 @@ package com.hakan.core.hologram.line;
 import com.hakan.core.hologram.HHologram;
 import com.hakan.core.hologram.line.entity.HHologramArmorStand;
 import com.hakan.core.hologram.util.HHologramUtils;
+import com.hakan.core.utils.Validate;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Hologram line abstract class.
@@ -26,9 +26,9 @@ public final class HHologramLine {
      * @param text      Text of line.
      */
     public HHologramLine(@Nonnull HHologram hHologram, @Nonnull String text) {
-        this.hHologram = Objects.requireNonNull(hHologram, "hHologram cannot be null!");
+        this.hHologram = Validate.notNull(hHologram, "hHologram cannot be null!");
         this.armorStand = HHologramUtils.createHologramArmorStand(hHologram);
-        this.armorStand.setText(Objects.requireNonNull(text, "text cannot be null!"));
+        this.armorStand.setText(Validate.notNull(text, "text cannot be null!"));
     }
 
     /**
@@ -59,7 +59,7 @@ public final class HHologramLine {
      */
     @Nonnull
     public HHologramLine setText(@Nonnull String text) {
-        this.armorStand.setText(Objects.requireNonNull(text, "text cannot be null!"));
+        this.armorStand.setText(Validate.notNull(text, "text cannot be null!"));
         return this;
     }
 
@@ -81,7 +81,7 @@ public final class HHologramLine {
      */
     @Nonnull
     public HHologramLine setLocation(@Nonnull Location location) {
-        this.armorStand.setLocation(Objects.requireNonNull(location, "location cannot be null!"));
+        this.armorStand.setLocation(Validate.notNull(location, "location cannot be null!"));
         return this;
     }
 
@@ -93,7 +93,7 @@ public final class HHologramLine {
      */
     @Nonnull
     public HHologramLine show(@Nonnull List<Player> players) {
-        this.armorStand.show(Objects.requireNonNull(players, "players cannot be null!"));
+        this.armorStand.show(Validate.notNull(players, "players cannot be null!"));
         return this;
     }
 
@@ -105,7 +105,7 @@ public final class HHologramLine {
      */
     @Nonnull
     public HHologramLine hide(@Nonnull List<Player> players) {
-        this.armorStand.hide(Objects.requireNonNull(players, "players cannot be null!"));
+        this.armorStand.hide(Validate.notNull(players, "players cannot be null!"));
         return this;
     }
 }

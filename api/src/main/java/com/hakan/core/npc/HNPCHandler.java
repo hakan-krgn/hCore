@@ -3,6 +3,7 @@ package com.hakan.core.npc;
 import com.hakan.core.HCore;
 import com.hakan.core.npc.builder.HNPCBuilder;
 import com.hakan.core.npc.listeners.HNpcClickListener;
+import com.hakan.core.utils.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -13,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -98,7 +98,7 @@ public final class HNPCHandler {
      */
     @Nonnull
     public static Optional<HNPC> findByID(@Nonnull String id) {
-        return Optional.ofNullable(HNPCHandler.npcList.get(Objects.requireNonNull(id, "id cannot be null!")));
+        return Optional.ofNullable(HNPCHandler.npcList.get(Validate.notNull(id, "id cannot be null!")));
     }
 
     /**
@@ -156,7 +156,7 @@ public final class HNPCHandler {
      */
     @Nonnull
     public static HNPC delete(@Nonnull String id) {
-        HNPC npc = HNPCHandler.getByID(Objects.requireNonNull(id, "id cannot be null!"));
+        HNPC npc = HNPCHandler.getByID(Validate.notNull(id, "id cannot be null!"));
         return npc.delete();
     }
 }

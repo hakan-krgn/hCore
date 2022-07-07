@@ -1,12 +1,12 @@
 package com.hakan.core.ui.inventory.builder;
 
 import com.hakan.core.ui.inventory.HInventory;
+import com.hakan.core.utils.Validate;
 import org.bukkit.event.inventory.InventoryType;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -27,7 +27,7 @@ public final class HInventoryBuilder {
      * @param id ID.
      */
     public HInventoryBuilder(@Nonnull String id) {
-        this.id = Objects.requireNonNull(id, "id cannot be null!");
+        this.id = Validate.notNull(id, "id cannot be null!");
         this.options(HInventory.Option.values());
     }
 
@@ -39,7 +39,7 @@ public final class HInventoryBuilder {
      */
     @Nonnull
     public HInventoryBuilder id(@Nonnull String id) {
-        this.id = Objects.requireNonNull(id, "id cannot be null!");
+        this.id = Validate.notNull(id, "id cannot be null!");
         return this;
     }
 
@@ -51,7 +51,7 @@ public final class HInventoryBuilder {
      */
     @Nonnull
     public HInventoryBuilder title(@Nonnull String title) {
-        this.title = Objects.requireNonNull(title, "title cannot be null!");
+        this.title = Validate.notNull(title, "title cannot be null!");
         return this;
     }
 
@@ -63,7 +63,7 @@ public final class HInventoryBuilder {
      */
     @Nonnull
     public HInventoryBuilder type(@Nonnull InventoryType type) {
-        this.type = Objects.requireNonNull(type, "inventory type cannot be null!");
+        this.type = Validate.notNull(type, "inventory type cannot be null!");
         return this;
     }
 
@@ -87,7 +87,7 @@ public final class HInventoryBuilder {
      */
     @Nonnull
     public HInventoryBuilder options(@Nonnull Set<HInventory.Option> options) {
-        this.options = Objects.requireNonNull(options, "options cannot be null!");
+        this.options = Validate.notNull(options, "options cannot be null!");
         return this;
     }
 
@@ -99,7 +99,7 @@ public final class HInventoryBuilder {
      */
     @Nonnull
     public HInventoryBuilder options(@Nonnull HInventory.Option... options) {
-        this.options = new HashSet<>(Arrays.asList(Objects.requireNonNull(options, "options cannot be null!")));
+        this.options = new HashSet<>(Arrays.asList(Validate.notNull(options, "options cannot be null!")));
         return this;
     }
 
@@ -111,7 +111,7 @@ public final class HInventoryBuilder {
      */
     @Nonnull
     public HInventoryBuilder addOption(@Nonnull HInventory.Option option) {
-        this.options.add(Objects.requireNonNull(option, "option cannot be null!"));
+        this.options.add(Validate.notNull(option, "option cannot be null!"));
         return this;
     }
 
@@ -123,7 +123,7 @@ public final class HInventoryBuilder {
      */
     @Nonnull
     public HInventoryBuilder removeOption(@Nonnull HInventory.Option option) {
-        this.options.remove(Objects.requireNonNull(option, "option cannot be null!"));
+        this.options.remove(Validate.notNull(option, "option cannot be null!"));
         return this;
     }
 

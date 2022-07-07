@@ -1,5 +1,6 @@
 package com.hakan.core.packet.event;
 
+import com.hakan.core.utils.Validate;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -7,7 +8,6 @@ import org.bukkit.event.HandlerList;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
-import java.util.Objects;
 
 /**
  * Packet custom event class
@@ -42,9 +42,9 @@ public final class PacketEvent extends Event implements Cancellable {
      * @param type   Packet type.
      */
     public PacketEvent(@Nonnull Player player, @Nonnull Object packet, @Nonnull Type type) {
-        this.player = Objects.requireNonNull(player, "player cannot be null!");
-        this.packet = Objects.requireNonNull(packet, "packet cannot be null!");
-        this.type = Objects.requireNonNull(type, "packet type cannot be null!");
+        this.player = Validate.notNull(player, "player cannot be null!");
+        this.packet = Validate.notNull(packet, "packet cannot be null!");
+        this.type = Validate.notNull(type, "packet type cannot be null!");
     }
 
     /**
@@ -86,7 +86,7 @@ public final class PacketEvent extends Event implements Cancellable {
      */
     @Nonnull
     public <T> T getPacket(@Nonnull Class<T> clazz) {
-        return Objects.requireNonNull(clazz, "packet class cannot be null!").cast(this.packet);
+        return Validate.notNull(clazz, "packet class cannot be null!").cast(this.packet);
     }
 
     /**
@@ -128,7 +128,7 @@ public final class PacketEvent extends Event implements Cancellable {
      */
     @Nonnull
     public <T> T getValue(@Nonnull String fieldName) {
-        Objects.requireNonNull(fieldName, "field cannot be null!");
+        Validate.notNull(fieldName, "field cannot be null!");
 
         try {
             Field field = this.packet.getClass().getDeclaredField(fieldName);
@@ -156,8 +156,8 @@ public final class PacketEvent extends Event implements Cancellable {
      */
     @Nonnull
     public <T> T getValue(@Nonnull String fieldName, @Nonnull Class<T> clazz) {
-        Objects.requireNonNull(clazz, "class cannot be null!");
-        Objects.requireNonNull(fieldName, "field cannot be null!");
+        Validate.notNull(clazz, "class cannot be null!");
+        Validate.notNull(fieldName, "field cannot be null!");
 
         try {
             Field field = this.packet.getClass().getDeclaredField(fieldName);

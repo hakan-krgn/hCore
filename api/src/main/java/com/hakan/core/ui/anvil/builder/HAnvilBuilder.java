@@ -2,13 +2,13 @@ package com.hakan.core.ui.anvil.builder;
 
 import com.hakan.core.HCore;
 import com.hakan.core.ui.anvil.HAnvil;
+import com.hakan.core.utils.Validate;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
@@ -33,7 +33,7 @@ public final class HAnvilBuilder {
      * @param player Player.
      */
     public HAnvilBuilder(@Nonnull Player player) {
-        this.player = Objects.requireNonNull(player, "player cannot be null!");
+        this.player = Validate.notNull(player, "player cannot be null!");
         this.title = "";
         this.text = "";
         this.leftItem = new ItemStack(Material.DIAMOND);
@@ -48,7 +48,7 @@ public final class HAnvilBuilder {
      * @return This class.
      */
     public HAnvilBuilder player(@Nonnull Player player) {
-        this.player = Objects.requireNonNull(player, "player cannot be null!");
+        this.player = Validate.notNull(player, "player cannot be null!");
         return this;
     }
 
@@ -59,7 +59,7 @@ public final class HAnvilBuilder {
      * @return This class.
      */
     public HAnvilBuilder title(@Nonnull String title) {
-        this.title = Objects.requireNonNull(title, "title cannot be null!");
+        this.title = Validate.notNull(title, "title cannot be null!");
         return this;
     }
 
@@ -70,7 +70,7 @@ public final class HAnvilBuilder {
      * @return This class.
      */
     public HAnvilBuilder text(@Nonnull String text) {
-        this.text = Objects.requireNonNull(text, "text cannot be null!");
+        this.text = Validate.notNull(text, "text cannot be null!");
         return this;
     }
 
@@ -81,7 +81,7 @@ public final class HAnvilBuilder {
      * @return This class.
      */
     public HAnvilBuilder leftItem(@Nonnull ItemStack leftItem) {
-        this.leftItem = Objects.requireNonNull(leftItem, "leftItem cannot be null!");
+        this.leftItem = Validate.notNull(leftItem, "leftItem cannot be null!");
         return this;
     }
 
@@ -114,7 +114,7 @@ public final class HAnvilBuilder {
      * @return This class.
      */
     public HAnvilBuilder whenOpened(@Nonnull Runnable openRunnable) {
-        this.openRunnable = Objects.requireNonNull(openRunnable, "open callback cannot be null!");
+        this.openRunnable = Validate.notNull(openRunnable, "open callback cannot be null!");
         return this;
     }
 
@@ -126,7 +126,7 @@ public final class HAnvilBuilder {
      * @return This class.
      */
     public HAnvilBuilder whenInputReceived(@Nonnull Consumer<String> inputConsumer) {
-        this.inputConsumer = Objects.requireNonNull(inputConsumer, "input callback cannot be null!");
+        this.inputConsumer = Validate.notNull(inputConsumer, "input callback cannot be null!");
         return this;
     }
 
@@ -137,7 +137,7 @@ public final class HAnvilBuilder {
      * @return This class.
      */
     public HAnvilBuilder whenClosed(@Nonnull Runnable closeRunnable) {
-        this.closeRunnable = Objects.requireNonNull(closeRunnable, "close callback cannot be null!");
+        this.closeRunnable = Validate.notNull(closeRunnable, "close callback cannot be null!");
         return this;
     }
 

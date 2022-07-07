@@ -2,6 +2,7 @@ package com.hakan.core.item.skull;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.hakan.core.utils.Validate;
 
 import javax.annotation.Nonnull;
 import java.io.InputStreamReader;
@@ -9,7 +10,6 @@ import java.net.URL;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,7 +32,7 @@ public final class HSkullData {
      */
     @Nonnull
     public static Optional<HSkullData> findByPlayer(@Nonnull String playerName) {
-        Objects.requireNonNull(playerName, "player name cannot be null!");
+        Validate.notNull(playerName, "player name cannot be null!");
         return Optional.ofNullable(skullDataMap.get(playerName));
     }
 
@@ -74,7 +74,7 @@ public final class HSkullData {
     @Nonnull
     public static HSkullData register(@Nonnull String playerName) {
         try {
-            Objects.requireNonNull(playerName, "player name cannot be null!");
+            Validate.notNull(playerName, "player name cannot be null!");
 
             URL url_0 = new URL("https://api.mojang.com/users/profiles/minecraft/" + playerName);
             InputStreamReader reader_0 = new InputStreamReader(url_0.openStream());
@@ -102,8 +102,8 @@ public final class HSkullData {
      * @param texture    Texture.
      */
     public HSkullData(@Nonnull String playerName, @Nonnull String texture) {
-        this.playerName = Objects.requireNonNull(playerName, "player name cannot be null!");
-        this.texture = Objects.requireNonNull(texture, "texture cannot be null!");
+        this.playerName = Validate.notNull(playerName, "player name cannot be null!");
+        this.texture = Validate.notNull(texture, "texture cannot be null!");
 
         Matcher matcher = Pattern.compile("\"(http://textures\\.minecraft\\.net/texture/)(?<shortTexture>\\w+)\"")
                 .matcher(new String(Base64.getDecoder().decode(texture.getBytes())));

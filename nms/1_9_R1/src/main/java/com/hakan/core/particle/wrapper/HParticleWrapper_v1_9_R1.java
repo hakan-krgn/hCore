@@ -2,13 +2,13 @@ package com.hakan.core.particle.wrapper;
 
 import com.hakan.core.HCore;
 import com.hakan.core.particle.HParticle;
+import com.hakan.core.utils.Validate;
 import net.minecraft.server.v1_9_R1.EnumParticle;
 import net.minecraft.server.v1_9_R1.PacketPlayOutWorldParticles;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
 
 /**
  * {@inheritDoc}
@@ -20,9 +20,9 @@ public final class HParticleWrapper_v1_9_R1 implements HParticleWrapper {
      */
     @Override
     public void play(@Nonnull Player player, @Nonnull Location location, @Nonnull HParticle hParticle) {
-        Objects.requireNonNull(player, "player cannot be null!");
-        Objects.requireNonNull(location, "location cannot be null!");
-        Objects.requireNonNull(hParticle, "hParticle class cannot be null!");
+        Validate.notNull(player, "player cannot be null!");
+        Validate.notNull(location, "location cannot be null!");
+        Validate.notNull(hParticle, "hParticle class cannot be null!");
 
         EnumParticle enumParticle = null;
         try {
@@ -36,7 +36,7 @@ public final class HParticleWrapper_v1_9_R1 implements HParticleWrapper {
             }
         }
 
-        Objects.requireNonNull(enumParticle, "Particle not found!");
+        Validate.notNull(enumParticle, "Particle not found!");
         HCore.sendPacket(player, new PacketPlayOutWorldParticles(enumParticle, false, (float) location.getX(), (float) location.getY(), (float) location.getZ(), (float) hParticle.getOffset().getX(), (float) hParticle.getOffset().getY(), (float) hParticle.getOffset().getZ(), (float) hParticle.getSpeed(), hParticle.getAmount()));
     }
 }

@@ -5,7 +5,6 @@ import org.bukkit.ChatColor;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,7 +24,7 @@ public final class ColorUtil {
      */
     @Nonnull
     public static String colored(@Nonnull String message) {
-        Objects.requireNonNull(message, "message cannot be null!");
+        Validate.notNull(message, "message cannot be null!");
 
         if (HCore.getProtocolVersion().isNewerOrEqual(ProtocolVersion.v1_16_R1)) {
             Matcher matcher = HEX_PATTERN.matcher(message);
@@ -47,7 +46,7 @@ public final class ColorUtil {
      */
     @Nonnull
     public static String color(@Nonnull String hex) {
-        Objects.requireNonNull(hex, "hex color code cannot be null!");
+        Validate.notNull(hex, "hex color code cannot be null!");
         return colored(hex);
     }
 
@@ -86,7 +85,7 @@ public final class ColorUtil {
      */
     @Nonnull
     public static String color(@Nonnull Color color) {
-        Objects.requireNonNull(color, "color cannot be null!");
+        Validate.notNull(color, "color cannot be null!");
         String hex = String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
         return color(hex);
     }

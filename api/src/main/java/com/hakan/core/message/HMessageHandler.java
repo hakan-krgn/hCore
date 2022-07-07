@@ -8,13 +8,13 @@ import com.hakan.core.message.bossbar.HBarStyle;
 import com.hakan.core.message.bossbar.HBossBar;
 import com.hakan.core.message.title.HTitle;
 import com.hakan.core.message.title.HTitleHandler;
+import com.hakan.core.utils.Validate;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -57,7 +57,7 @@ public final class HMessageHandler {
      * @param hTitle HTitle class.
      */
     public static void sendTitle(@Nonnull Player player, @Nonnull HTitle hTitle) {
-        HMessageHandler.titleHandler.send(Objects.requireNonNull(player, "player cannot be null!"), Objects.requireNonNull(hTitle, "hTitle cannot be null!"));
+        HMessageHandler.titleHandler.send(Validate.notNull(player, "player cannot be null!"), Validate.notNull(hTitle, "hTitle cannot be null!"));
     }
 
     /**
@@ -92,7 +92,7 @@ public final class HMessageHandler {
      * @param hTitle  HTitle class.
      */
     public static void sendTitle(@Nonnull Collection<Player> players, @Nonnull HTitle hTitle) {
-        Objects.requireNonNull(players, "players cannot be null!").forEach(player -> HMessageHandler.sendTitle(player, hTitle));
+        Validate.notNull(players, "players cannot be null!").forEach(player -> HMessageHandler.sendTitle(player, hTitle));
     }
 
     /**
@@ -132,7 +132,7 @@ public final class HMessageHandler {
      * @param text   Text.
      */
     public static void sendActionBar(@Nonnull Player player, @Nonnull String text) {
-        HMessageHandler.actionBarHandler.send(Objects.requireNonNull(player, "player cannot be null!"), Objects.requireNonNull(text, "text cannot be null!"));
+        HMessageHandler.actionBarHandler.send(Validate.notNull(player, "player cannot be null!"), Validate.notNull(text, "text cannot be null!"));
     }
 
     /**
@@ -178,7 +178,7 @@ public final class HMessageHandler {
      */
     @Nonnull
     public static List<HBossBar> getBossBarsByPlayer(@Nonnull Player player) {
-        Objects.requireNonNull(player, "player cannot be null!");
+        Validate.notNull(player, "player cannot be null!");
 
         List<HBossBar> bossBars = new ArrayList<>();
         for (HBossBar bossBar : HMessageHandler.bossBars)
@@ -195,7 +195,7 @@ public final class HMessageHandler {
      */
     @Nonnull
     public static Optional<HBossBar> findFirstBossBarByPlayer(@Nonnull Player player) {
-        Objects.requireNonNull(player, "player cannot be null!");
+        Validate.notNull(player, "player cannot be null!");
 
         for (HBossBar bossBar : HMessageHandler.bossBars)
             if (bossBar.getPlayers().contains(player))
@@ -221,7 +221,7 @@ public final class HMessageHandler {
      * @param hBossBar Bossbar.
      */
     public static void deleteBossBar(@Nonnull HBossBar hBossBar) {
-        Objects.requireNonNull(hBossBar, "hBossBar cannot be null!");
+        Validate.notNull(hBossBar, "hBossBar cannot be null!");
 
         HMessageHandler.bossBars.remove(hBossBar);
         hBossBar.removeAll();
@@ -238,10 +238,10 @@ public final class HMessageHandler {
      */
     @Nonnull
     public static HBossBar createBossBar(@Nonnull String title, @Nonnull HBarColor color, @Nonnull HBarStyle style, @Nonnull HBarFlag... flags) {
-        Objects.requireNonNull(title, "title cannot be null!");
-        Objects.requireNonNull(color, "color cannot be null!");
-        Objects.requireNonNull(style, "style cannot be null!");
-        Objects.requireNonNull(flags, "flags cannot be null!");
+        Validate.notNull(title, "title cannot be null!");
+        Validate.notNull(color, "color cannot be null!");
+        Validate.notNull(style, "style cannot be null!");
+        Validate.notNull(flags, "flags cannot be null!");
 
         try {
             String version = HCore.getVersionString();

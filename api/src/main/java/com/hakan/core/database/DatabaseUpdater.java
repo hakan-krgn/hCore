@@ -1,11 +1,11 @@
 package com.hakan.core.database;
 
 import com.hakan.core.HCore;
+import com.hakan.core.utils.Validate;
 import org.bukkit.Bukkit;
 
 import javax.annotation.Nonnull;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -27,7 +27,7 @@ public final class DatabaseUpdater<T extends DatabaseObject> {
      * @param provider The provider to use.
      */
     public DatabaseUpdater(@Nonnull DatabaseProvider<T> provider) {
-        this.provider = Objects.requireNonNull(provider, "provider cannot be null!");
+        this.provider = Validate.notNull(provider, "provider cannot be null!");
         this.needUpdates = new HashSet<>();
     }
 
@@ -40,7 +40,7 @@ public final class DatabaseUpdater<T extends DatabaseObject> {
      * @param unit  Time unit.
      */
     public void updateEvery(boolean async, int time, @Nonnull TimeUnit unit) {
-        Objects.requireNonNull(unit, "unit cannot be null!");
+        Validate.notNull(unit, "unit cannot be null!");
 
         if (this.taskId != -1)
             Bukkit.getScheduler().cancelTask(this.taskId);
@@ -95,7 +95,7 @@ public final class DatabaseUpdater<T extends DatabaseObject> {
      * @param t The object to add.
      */
     public void add(@Nonnull T t) {
-        this.needUpdates.add(Objects.requireNonNull(t, "object cannot be null!"));
+        this.needUpdates.add(Validate.notNull(t, "object cannot be null!"));
     }
 
     /**
@@ -104,7 +104,7 @@ public final class DatabaseUpdater<T extends DatabaseObject> {
      * @param t The object to remove.
      */
     public void remove(@Nonnull T t) {
-        this.needUpdates.add(Objects.requireNonNull(t, "object cannot be null!"));
+        this.needUpdates.add(Validate.notNull(t, "object cannot be null!"));
     }
 
     /**

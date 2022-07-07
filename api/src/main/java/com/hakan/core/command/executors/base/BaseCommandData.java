@@ -4,6 +4,7 @@ import com.hakan.core.command.HCommandAdapter;
 import com.hakan.core.command.executors.sub.SubCommandData;
 import com.hakan.core.command.listeners.HCommandListener;
 import com.hakan.core.command.utils.CommandUtils;
+import com.hakan.core.utils.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
@@ -16,7 +17,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -42,8 +42,8 @@ public final class BaseCommandData {
      * @param baseCommand Annotation.
      */
     public BaseCommandData(@Nonnull HCommandAdapter adapter, @Nonnull BaseCommand baseCommand) {
-        Objects.requireNonNull(adapter, "adapter cannot be null!");
-        Objects.requireNonNull(baseCommand, "baseCommand cannot be null!");
+        Validate.notNull(adapter, "adapter cannot be null!");
+        Validate.notNull(baseCommand, "baseCommand cannot be null!");
 
         this.adapter = adapter;
         this.name = baseCommand.name();
@@ -133,7 +133,7 @@ public final class BaseCommandData {
      */
     @Nonnull
     public BaseCommandData addSubCommand(@Nonnull SubCommandData subCommand) {
-        this.subCommands.add(Objects.requireNonNull(subCommand, "subCommand cannot be null!"));
+        this.subCommands.add(Validate.notNull(subCommand, "subCommand cannot be null!"));
         Collections.sort(this.subCommands);
         return this;
     }
@@ -146,7 +146,7 @@ public final class BaseCommandData {
      */
     @Nonnull
     public BaseCommandData removeSubCommand(@Nonnull SubCommandData subCommand) {
-        this.subCommands.remove(Objects.requireNonNull(subCommand, "subCommand cannot be null!"));
+        this.subCommands.remove(Validate.notNull(subCommand, "subCommand cannot be null!"));
         Collections.sort(this.subCommands);
         return this;
     }
@@ -159,7 +159,7 @@ public final class BaseCommandData {
      */
     @Nonnull
     public Optional<SubCommandData> findSubCommand(@Nonnull String[] subCommands) {
-        Objects.requireNonNull(subCommands, "subCommands cannot be null!");
+        Validate.notNull(subCommands, "subCommands cannot be null!");
 
         for (SubCommandData subCommandData : this.subCommands) {
             String[] commands = subCommandData.getArgs();

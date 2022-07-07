@@ -1,8 +1,9 @@
 package com.hakan.core.command.executors.sub;
 
+import com.hakan.core.utils.Validate;
+
 import javax.annotation.Nonnull;
 import java.lang.reflect.Method;
-import java.util.Objects;
 
 /**
  * SubCommandData class to get datas of
@@ -22,8 +23,8 @@ public final class SubCommandData implements Comparable<SubCommandData> {
      * @param subCommand Annotation.
      */
     public SubCommandData(@Nonnull Method method, @Nonnull SubCommand subCommand) {
-        Objects.requireNonNull(method, "method cannot be null!");
-        Objects.requireNonNull(subCommand, "subCommand cannot be null!");
+        Validate.notNull(method, "method cannot be null!");
+        Validate.notNull(subCommand, "subCommand cannot be null!");
 
         this.method = method;
         this.args = subCommand.args();

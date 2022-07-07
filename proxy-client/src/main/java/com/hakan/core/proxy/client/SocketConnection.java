@@ -1,6 +1,7 @@
 package com.hakan.core.proxy.client;
 
 import com.hakan.core.proxy.client.utils.Serializer;
+import com.hakan.core.proxy.client.utils.Validate;
 
 import javax.annotation.Nonnull;
 import java.io.DataInputStream;
@@ -8,7 +9,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.Socket;
-import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
@@ -30,8 +30,8 @@ public final class SocketConnection {
     @Nonnull
     public static SocketConnection create(@Nonnull String name, @Nonnull String ip, int port) {
         try {
-            Objects.requireNonNull(name, "name cannot be null");
-            Objects.requireNonNull(ip, "ip cannot be null");
+            Validate.notNull(name, "name cannot be null");
+            Validate.notNull(ip, "ip cannot be null");
 
             SocketConnection socket = new SocketConnection(new Socket(ip, port));
             socket.outputStream.writeUTF(name);
@@ -65,7 +65,7 @@ public final class SocketConnection {
      * @throws IOException If an I/O error occurs.
      */
     private SocketConnection(@Nonnull Socket socket) throws IOException {
-        this.socket = Objects.requireNonNull(socket, "socket cannot be null");
+        this.socket = Validate.notNull(socket, "socket cannot be null");
         this.inputStream = new DataInputStream(socket.getInputStream());
         this.outputStream = new DataOutputStream(socket.getOutputStream());
     }
@@ -117,7 +117,7 @@ public final class SocketConnection {
      * @param consumer The consumer to call.
      */
     public void whenMessageReceived(@Nonnull Consumer<String> consumer) {
-        this.messageConsumer = Objects.requireNonNull(consumer, "consumer cannot be null");
+        this.messageConsumer = Validate.notNull(consumer, "consumer cannot be null");
     }
 
     /**
@@ -127,7 +127,7 @@ public final class SocketConnection {
      * @param consumer The consumer to call.
      */
     public void whenObjectReceived(@Nonnull Consumer<Serializable> consumer) {
-        this.objectConsumer = Objects.requireNonNull(consumer, "consumer cannot be null");
+        this.objectConsumer = Validate.notNull(consumer, "consumer cannot be null");
     }
 
     /**
@@ -137,7 +137,7 @@ public final class SocketConnection {
      * @param runnable The runnable to call.
      */
     public void whenDisconnected(@Nonnull Runnable runnable) {
-        this.disconnectRunnable = Objects.requireNonNull(runnable, "runnable cannot be null");
+        this.disconnectRunnable = Validate.notNull(runnable, "runnable cannot be null");
     }
 
     /**
@@ -147,7 +147,7 @@ public final class SocketConnection {
      */
     public void send(@Nonnull String message) {
         try {
-            Objects.requireNonNull(message, "message cannot be null");
+            Validate.notNull(message, "message cannot be null");
             this.outputStream.writeUTF("message:" + message);
         } catch (Exception e) {
             e.printStackTrace();
@@ -162,7 +162,7 @@ public final class SocketConnection {
      */
     public void send(@Nonnull Serializable serializable) {
         try {
-            Objects.requireNonNull(serializable, "serializable object cannot be null");
+            Validate.notNull(serializable, "serializable object cannot be null");
             this.outputStream.writeUTF("object:" + Serializer.serialize(serializable));
         } catch (Exception e) {
             e.printStackTrace();
@@ -177,7 +177,7 @@ public final class SocketConnection {
      */
     public void publish(@Nonnull String message) {
         try {
-            Objects.requireNonNull(message, "message cannot be null");
+            Validate.notNull(message, "message cannot be null");
             this.outputStream.writeUTF("publish_message:" + message);
         } catch (Exception e) {
             e.printStackTrace();
@@ -192,7 +192,7 @@ public final class SocketConnection {
      */
     public void publish(@Nonnull Serializable serializable) {
         try {
-            Objects.requireNonNull(serializable, "serializable object cannot be null");
+            Validate.notNull(serializable, "serializable object cannot be null");
             this.outputStream.writeUTF("publish_object:" + Serializer.serialize(serializable));
         } catch (Exception e) {
             e.printStackTrace();

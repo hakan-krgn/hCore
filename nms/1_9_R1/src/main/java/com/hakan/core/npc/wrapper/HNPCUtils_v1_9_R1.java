@@ -3,6 +3,7 @@ package com.hakan.core.npc.wrapper;
 import com.hakan.core.HCore;
 import com.hakan.core.npc.HNPC;
 import com.hakan.core.npc.skin.HNPCSkin;
+import com.hakan.core.utils.Validate;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import net.minecraft.server.v1_9_R1.DataWatcher;
@@ -32,7 +33,6 @@ import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -48,7 +48,7 @@ public final class HNPCUtils_v1_9_R1 {
      */
     @Nonnull
     public GameProfile createGameProfile(@Nonnull HNPCSkin skin) {
-        Objects.requireNonNull(skin, "name cannot be null!");
+        Validate.notNull(skin, "name cannot be null!");
 
         GameProfile profile = new GameProfile(UUID.randomUUID(), UUID.randomUUID().toString().substring(0, 5));
         profile.getProperties().put("textures", new Property("textures", skin.getTexture(), skin.getSignature()));
@@ -64,8 +64,8 @@ public final class HNPCUtils_v1_9_R1 {
      */
     @Nonnull
     public EntityPlayer createNPC(@Nonnull HNPCSkin skin, @Nonnull Location location) {
-        Objects.requireNonNull(skin, "name cannot be null!");
-        Objects.requireNonNull(location, "location cannot be null!");
+        Validate.notNull(skin, "name cannot be null!");
+        Validate.notNull(location, "location cannot be null!");
 
         MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();
         WorldServer world = ((CraftWorld) location.getWorld()).getHandle();
@@ -88,7 +88,7 @@ public final class HNPCUtils_v1_9_R1 {
      */
     @Nonnull
     public EntityArmorStand createNameHider(@Nonnull Location location) {
-        Objects.requireNonNull(location, "location cannot be null!");
+        Validate.notNull(location, "location cannot be null!");
 
         WorldServer world = ((CraftWorld) location.getWorld()).getHandle();
 
@@ -128,9 +128,9 @@ public final class HNPCUtils_v1_9_R1 {
      * @param callback The callback when the walking over.
      */
     public void walk(@Nonnull HNPC npc, @Nonnull Location to, double speed, @Nonnull Runnable callback) {
-        Objects.requireNonNull(npc, "NPC cannot be null!");
-        Objects.requireNonNull(to, "location cannot be null!");
-        Objects.requireNonNull(callback, "callback cannot be null!");
+        Validate.notNull(npc, "NPC cannot be null!");
+        Validate.notNull(to, "location cannot be null!");
+        Validate.notNull(callback, "callback cannot be null!");
 
         Location from = npc.getLocation();
         World toWorld = to.getWorld();

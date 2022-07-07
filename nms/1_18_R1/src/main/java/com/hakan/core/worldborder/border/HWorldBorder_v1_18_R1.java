@@ -1,6 +1,7 @@
 package com.hakan.core.worldborder.border;
 
 import com.hakan.core.HCore;
+import com.hakan.core.utils.Validate;
 import com.hakan.core.worldborder.HWorldBorderHandler;
 import net.minecraft.network.protocol.game.ClientboundInitializeBorderPacket;
 import net.minecraft.network.protocol.game.ClientboundSetBorderCenterPacket;
@@ -16,7 +17,6 @@ import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -31,7 +31,7 @@ public final class HWorldBorder_v1_18_R1 extends WorldBorder implements HWorldBo
      * {@inheritDoc}
      */
     public HWorldBorder_v1_18_R1(@Nonnull Location location, double size, double damageAmount, double damageBuffer, int warningDistance, int warningTime, @Nonnull HBorderColor color) {
-        this.color = Objects.requireNonNull(color, "border color cannot be null!");
+        this.color = Validate.notNull(color, "border color cannot be null!");
         this.shownViewers = new HashSet<>();
         super.world = ((CraftWorld) location.getWorld()).getHandle();
         this.setCenter(location);
@@ -48,7 +48,7 @@ public final class HWorldBorder_v1_18_R1 extends WorldBorder implements HWorldBo
      */
     @Override
     public void show(@Nonnull Player player) {
-        this.shownViewers.add(Objects.requireNonNull(player, "player cannot be null!"));
+        this.shownViewers.add(Validate.notNull(player, "player cannot be null!"));
 
         HCore.sendPacket(player, new ClientboundSetBorderLerpSizePacket(this));
         HCore.sendPacket(player, new ClientboundSetBorderCenterPacket(this));
@@ -71,7 +71,7 @@ public final class HWorldBorder_v1_18_R1 extends WorldBorder implements HWorldBo
      */
     @Override
     public void hide(@Nonnull Player player) {
-        this.shownViewers.remove(Objects.requireNonNull(player, "player cannot be null!"));
+        this.shownViewers.remove(Validate.notNull(player, "player cannot be null!"));
         super.c(0, 0);
         super.a(Long.MAX_VALUE);
         HCore.sendPacket(player, new ClientboundSetBorderCenterPacket(this));
@@ -119,7 +119,7 @@ public final class HWorldBorder_v1_18_R1 extends WorldBorder implements HWorldBo
      */
     @Override
     public void setCenter(@Nonnull Location location) {
-        Objects.requireNonNull(location, "location cannot be null!");
+        Validate.notNull(location, "location cannot be null!");
         super.c(location.getX(), location.getZ());
     }
 
@@ -137,7 +137,7 @@ public final class HWorldBorder_v1_18_R1 extends WorldBorder implements HWorldBo
      */
     @Override
     public void setColor(@Nonnull HBorderColor hBorderColor) {
-        this.color = Objects.requireNonNull(hBorderColor, "border color cannot be null!");
+        this.color = Validate.notNull(hBorderColor, "border color cannot be null!");
     }
 
     /**

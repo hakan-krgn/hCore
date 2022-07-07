@@ -1,11 +1,11 @@
 package com.hakan.core.npc.events;
 
 import com.hakan.core.npc.HNPC;
+import com.hakan.core.utils.Validate;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
 
 /**
  * HNpcSpawnEvent class.
@@ -33,7 +33,7 @@ public final class HNpcSpawnEvent extends Event {
      * @param npc HNPC class.
      */
     public HNpcSpawnEvent(@Nonnull HNPC npc) {
-        this.npc = Objects.requireNonNull(npc, "npc cannot be null!");
+        this.npc = Validate.notNull(npc, "npc cannot be null!");
     }
 
     /**

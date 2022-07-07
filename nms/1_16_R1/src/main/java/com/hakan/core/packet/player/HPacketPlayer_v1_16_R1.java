@@ -2,6 +2,7 @@ package com.hakan.core.packet.player;
 
 import com.hakan.core.HCore;
 import com.hakan.core.packet.event.PacketEvent;
+import com.hakan.core.utils.Validate;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
@@ -12,7 +13,6 @@ import org.bukkit.craftbukkit.v1_16_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -35,7 +35,7 @@ public final class HPacketPlayer_v1_16_R1 extends HPacketPlayer {
      */
     @Override
     public void send(@Nonnull Object... packets) {
-        Objects.requireNonNull(packets, "packets cannot be null!");
+        Validate.notNull(packets, "packets cannot be null!");
 
         if (!super.player.isOnline())
             return;

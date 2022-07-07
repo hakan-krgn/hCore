@@ -1,6 +1,7 @@
 package com.hakan.core.worldborder;
 
 import com.hakan.core.HCore;
+import com.hakan.core.utils.Validate;
 import com.hakan.core.worldborder.border.HBorderColor;
 import com.hakan.core.worldborder.border.HWorldBorder;
 import com.hakan.core.worldborder.listeners.HBorderPlayerActionListeners;
@@ -13,7 +14,6 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -68,7 +68,7 @@ public final class HWorldBorderHandler {
      */
     @Nonnull
     public static Optional<HWorldBorder> findByPlayer(@Nonnull Player player) {
-        Objects.requireNonNull(player, "player cannot be null!");
+        Validate.notNull(player, "player cannot be null!");
         for (HWorldBorder hWorldBorder : HWorldBorderHandler.borders)
             if (hWorldBorder.getShownViewers().contains(player))
                 return Optional.of(hWorldBorder);
@@ -100,8 +100,8 @@ public final class HWorldBorderHandler {
      */
     @Nonnull
     public static HWorldBorder create(@Nonnull Location location, double size, double damageAmount, double damageBuffer, int warningDistance, int warningTime, @Nonnull HBorderColor color) {
-        Objects.requireNonNull(location, "location cannot be null!");
-        Objects.requireNonNull(color, "border color cannot be null!");
+        Validate.notNull(location, "location cannot be null!");
+        Validate.notNull(color, "border color cannot be null!");
 
         try {
             HWorldBorder hWorldBorder = (HWorldBorder) Class.forName("com.hakan.core.worldborder.border.HWorldBorder_" + HCore.getVersionString())

@@ -5,6 +5,7 @@ import com.hakan.core.hologram.HHologram;
 import com.hakan.core.npc.action.HNpcAction;
 import com.hakan.core.npc.skin.HNPCSkin;
 import com.hakan.core.renderer.HRenderer;
+import com.hakan.core.utils.Validate;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -14,7 +15,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -55,14 +55,14 @@ public abstract class HNPC {
 
         this.action = new HNpcAction(this);
 
-        this.id = Objects.requireNonNull(id, "id cannot be null!");
+        this.id = Validate.notNull(id, "id cannot be null!");
         this.hologram = HCore.createHologram("hcore_npc_hologram:" + id, location, viewers);
-        this.equipments = Objects.requireNonNull(equipments, "equipments cannot be null!");
+        this.equipments = Validate.notNull(equipments, "equipments cannot be null!");
 
         this.renderer = new HRenderer(location, 30, viewers,
                 this::show, this::hide, renderer -> this.hide(renderer.getShownViewersAsPlayer()));
 
-        this.hologram.addLines(Objects.requireNonNull(lines, "lines cannot be null!"));
+        this.hologram.addLines(Validate.notNull(lines, "lines cannot be null!"));
         this.hologram.showEveryone(showEveryone);
         this.renderer.showEveryone(showEveryone);
 
@@ -151,7 +151,7 @@ public abstract class HNPC {
      */
     @Nonnull
     public final HNPC expire(int expire, @Nonnull TimeUnit timeUnit) {
-        Objects.requireNonNull(timeUnit, "time unit cannot be null!");
+        Validate.notNull(timeUnit, "time unit cannot be null!");
         HCore.syncScheduler().after(expire, timeUnit)
                 .run(this::delete);
         return this;
@@ -165,7 +165,7 @@ public abstract class HNPC {
      */
     @Nonnull
     public final HNPC addViewer(@Nonnull List<Player> players) {
-        Objects.requireNonNull(players, "players cannot be null!");
+        Validate.notNull(players, "players cannot be null!");
         this.hologram.addViewer(players);
         players.forEach(player -> this.renderer.addViewer(player));
         return this;
@@ -179,7 +179,7 @@ public abstract class HNPC {
      */
     @Nonnull
     public final HNPC addViewer(@Nonnull Player... players) {
-        Objects.requireNonNull(players, "players cannot be null!");
+        Validate.notNull(players, "players cannot be null!");
         return this.addViewer(Arrays.asList(players));
     }
 
@@ -191,7 +191,7 @@ public abstract class HNPC {
      */
     @Nonnull
     public final HNPC addViewerByUID(@Nonnull List<UUID> uids) {
-        Objects.requireNonNull(uids, "uids cannot be null!");
+        Validate.notNull(uids, "uids cannot be null!");
         this.hologram.addViewerByUID(uids);
         uids.forEach(uid -> this.renderer.addViewer(uid));
         return this;
@@ -205,7 +205,7 @@ public abstract class HNPC {
      */
     @Nonnull
     public final HNPC addViewerByUID(@Nonnull UUID... uids) {
-        Objects.requireNonNull(uids, "uids cannot be null!");
+        Validate.notNull(uids, "uids cannot be null!");
         return this.addViewerByUID(Arrays.asList(uids));
     }
 
@@ -217,7 +217,7 @@ public abstract class HNPC {
      */
     @Nonnull
     public final HNPC removeViewer(@Nonnull List<Player> players) {
-        Objects.requireNonNull(players, "players cannot be null!");
+        Validate.notNull(players, "players cannot be null!");
         this.hologram.removeViewer(players);
         players.forEach(player -> this.renderer.removeViewer(player));
         return this;
@@ -231,7 +231,7 @@ public abstract class HNPC {
      */
     @Nonnull
     public final HNPC removeViewer(@Nonnull Player... players) {
-        Objects.requireNonNull(players, "players cannot be null!");
+        Validate.notNull(players, "players cannot be null!");
         return this.removeViewer(Arrays.asList(players));
     }
 
@@ -243,7 +243,7 @@ public abstract class HNPC {
      */
     @Nonnull
     public final HNPC removeViewerByUID(@Nonnull List<UUID> uids) {
-        Objects.requireNonNull(uids, "uids cannot be null!");
+        Validate.notNull(uids, "uids cannot be null!");
         this.hologram.removeViewerByUID(uids);
         uids.forEach(uid -> this.renderer.removeViewer(uid));
         return this;
@@ -257,7 +257,7 @@ public abstract class HNPC {
      */
     @Nonnull
     public final HNPC removeViewerByUID(@Nonnull UUID... uids) {
-        Objects.requireNonNull(uids, "uids cannot be null!");
+        Validate.notNull(uids, "uids cannot be null!");
         return this.removeViewerByUID(Arrays.asList(uids));
     }
 

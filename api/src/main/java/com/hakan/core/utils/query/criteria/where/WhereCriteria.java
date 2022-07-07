@@ -1,11 +1,11 @@
 package com.hakan.core.utils.query.criteria.where;
 
+import com.hakan.core.utils.Validate;
 import com.hakan.core.utils.query.criteria.QueryCriteria;
 
 import javax.annotation.Nonnull;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Where criteria class.
@@ -30,8 +30,8 @@ public final class WhereCriteria extends QueryCriteria {
      */
     @Nonnull
     public WhereCriteria add(@Nonnull String column, @Nonnull Object value) {
-        Objects.requireNonNull(column, "column cannot be null!");
-        Objects.requireNonNull(value, "value cannot be null!");
+        Validate.notNull(column, "column cannot be null!");
+        Validate.notNull(value, "value cannot be null!");
 
         String columnReplaced = column.replace(column, "`" + column + "`");
         String valueReplaced = value.toString().replace("'", "''");

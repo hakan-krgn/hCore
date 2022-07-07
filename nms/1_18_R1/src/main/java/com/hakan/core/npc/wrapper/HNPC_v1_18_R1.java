@@ -5,6 +5,7 @@ import com.hakan.core.HCore;
 import com.hakan.core.npc.HNPC;
 import com.hakan.core.npc.HNPCHandler;
 import com.hakan.core.npc.skin.HNPCSkin;
+import com.hakan.core.utils.Validate;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.network.protocol.game.PacketPlayOutEntity;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityDestroy;
@@ -29,7 +30,6 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -81,7 +81,7 @@ public final class HNPC_v1_18_R1 extends HNPC {
     @Nonnull
     @Override
     public HNPC walk(@Nonnull Location to, double speed) {
-        Objects.requireNonNull(to, "to location cannot be null!");
+        Validate.notNull(to, "to location cannot be null!");
 
         if (this.walking)
             throw new IllegalStateException("NPC is already walking!");
@@ -98,7 +98,7 @@ public final class HNPC_v1_18_R1 extends HNPC {
     @Nonnull
     @Override
     public HNPC setLocation(@Nonnull Location location) {
-        Objects.requireNonNull(location, "location cannot be null!");
+        Validate.notNull(location, "location cannot be null!");
 
         this.npc.a(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
         super.hologram.setLocation(location.clone().add(0, this.npc.cy() + (this.hologram.getLines().size() * 0.125), 0));
@@ -122,7 +122,7 @@ public final class HNPC_v1_18_R1 extends HNPC {
     @Nonnull
     @Override
     public HNPC setSkin(@Nonnull HNPCSkin skin) {
-        Objects.requireNonNull(skin, "skin cannot be null!");
+        Validate.notNull(skin, "skin cannot be null!");
 
         List<Player> players = super.renderer.getShownViewersAsPlayer();
 
@@ -141,8 +141,8 @@ public final class HNPC_v1_18_R1 extends HNPC {
     @Nonnull
     @Override
     public HNPC setEquipment(@Nonnull EquipmentType equipment, @Nonnull ItemStack itemStack) {
-        Objects.requireNonNull(equipment, "equipment type cannot be null!");
-        Objects.requireNonNull(itemStack, "itemStack type cannot be null!");
+        Validate.notNull(equipment, "equipment type cannot be null!");
+        Validate.notNull(itemStack, "itemStack type cannot be null!");
 
         super.equipments.put(equipment, itemStack);
 
@@ -159,7 +159,7 @@ public final class HNPC_v1_18_R1 extends HNPC {
     @Nonnull
     @Override
     public HNPC show(@Nonnull List<Player> players) {
-        HCore.sendPacket(Objects.requireNonNull(players, "players cannot be null!"),
+        HCore.sendPacket(Validate.notNull(players, "players cannot be null!"),
                 new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.a, this.npc),
                 new PacketPlayOutNamedEntitySpawn(this.npc),
                 new PacketPlayOutEntityMetadata(this.npc.ae(), this.utils.createDataWatcher(), true),
@@ -187,7 +187,7 @@ public final class HNPC_v1_18_R1 extends HNPC {
     @Nonnull
     @Override
     public HNPC hide(@Nonnull List<Player> players) {
-        Objects.requireNonNull(players, "players cannot be null!");
+        Validate.notNull(players, "players cannot be null!");
 
         HCore.sendPacket(players,
                 new PacketPlayOutEntityDestroy(this.npc.ae(), this.armorStand.ae()));

@@ -1,7 +1,8 @@
 package com.hakan.core.message.title;
 
+import com.hakan.core.utils.Validate;
+
 import javax.annotation.Nonnull;
-import java.util.Objects;
 
 /**
  * HTitle class to send
@@ -25,8 +26,8 @@ public final class HTitle {
      * @param fadeout  Fade out time as tick.
      */
     public HTitle(@Nonnull String title, @Nonnull String subtitle, int stay, int fadein, int fadeout) {
-        this.title = Objects.requireNonNull(title, "title cannot be null!");
-        this.subtitle = Objects.requireNonNull(subtitle, "subtitle cannot be null!");
+        this.title = Validate.notNull(title, "title cannot be null!");
+        this.subtitle = Validate.notNull(subtitle, "subtitle cannot be null!");
         this.stay = stay;
         this.fadein = fadein;
         this.fadeout = fadeout;
@@ -69,7 +70,7 @@ public final class HTitle {
      * @param title Title.
      */
     public void setTitle(@Nonnull String title) {
-        this.title = Objects.requireNonNull(title, "title cannot be null!");
+        this.title = Validate.notNull(title, "title cannot be null!");
     }
 
     /**
@@ -88,7 +89,7 @@ public final class HTitle {
      * @param subtitle Subtitle.
      */
     public void setSubtitle(@Nonnull String subtitle) {
-        this.subtitle = Objects.requireNonNull(subtitle, "sub title cannot be null!");
+        this.subtitle = Validate.notNull(subtitle, "sub title cannot be null!");
     }
 
     /**

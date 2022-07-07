@@ -3,7 +3,6 @@ package com.hakan.core.utils;
 import org.bukkit.Bukkit;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
 
 /**
  * ProtocolVersion class to get the current
@@ -55,7 +54,7 @@ public enum ProtocolVersion {
      * @param key The protocol version key.
      */
     ProtocolVersion(@Nonnull String key) {
-        this.key = Objects.requireNonNull(key, "key cannot be null!");
+        this.key = Validate.notNull(key, "key cannot be null!");
     }
 
     /**
@@ -75,7 +74,7 @@ public enum ProtocolVersion {
      * @return True if the protocol version is newer or equal to the given version.
      */
     public boolean isNewer(@Nonnull ProtocolVersion version) {
-        Objects.requireNonNull(version, "version cannot be null!");
+        Validate.notNull(version, "version cannot be null!");
         return this.ordinal() > version.ordinal();
     }
 
@@ -86,7 +85,7 @@ public enum ProtocolVersion {
      * @return True if the protocol version is older or equal to the given version.
      */
     public boolean isNewerOrEqual(@Nonnull ProtocolVersion version) {
-        Objects.requireNonNull(version, "version cannot be null!");
+        Validate.notNull(version, "version cannot be null!");
         return this.ordinal() >= version.ordinal();
     }
 
@@ -97,7 +96,7 @@ public enum ProtocolVersion {
      * @return True if the protocol version is older or equal to the given version.
      */
     public boolean isOlder(@Nonnull ProtocolVersion version) {
-        Objects.requireNonNull(version, "version cannot be null!");
+        Validate.notNull(version, "version cannot be null!");
         return this.ordinal() < version.ordinal();
     }
 
@@ -108,7 +107,7 @@ public enum ProtocolVersion {
      * @return True if the protocol version is older or equal to the given version.
      */
     public boolean isOlderOrEqual(@Nonnull ProtocolVersion version) {
-        Objects.requireNonNull(version, "version cannot be null!");
+        Validate.notNull(version, "version cannot be null!");
         return this.ordinal() <= version.ordinal();
     }
 }
