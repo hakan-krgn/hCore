@@ -1,6 +1,6 @@
 package com.hakan.core.proxy.client;
 
-import com.hakan.core.utils.Serializer;
+import com.hakan.core.proxy.client.utils.Serializer;
 
 import javax.annotation.Nonnull;
 import java.io.DataInputStream;
