@@ -22,7 +22,7 @@ public final class HNpcUtils {
     @Nonnull
     public static HNpcEntity createEntity(HNPC hnpc) {
         try {
-            Class<?> wrapper = Class.forName("com.hakan.core.npc.wrapper.HNpcEntity_" + HCore.getVersionString());
+            Class<?> wrapper = Class.forName("com.hakan.core.npc.entity.HNpcEntity_" + HCore.getVersionString());
             Constructor<?> constructor = wrapper.getDeclaredConstructor(HNPC.class);
             return (HNpcEntity) constructor.newInstance(hnpc);
         } catch (Exception e) {
