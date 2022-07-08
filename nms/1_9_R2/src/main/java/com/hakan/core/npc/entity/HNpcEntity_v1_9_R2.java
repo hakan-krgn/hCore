@@ -50,7 +50,10 @@ public final class HNpcEntity_v1_9_R2 implements HNpcEntity {
      * @param npc HNPC instance.
      * @return nms player.
      */
-    private static EntityPlayer createEntityPlayer(HNPC npc) {
+    @Nonnull
+    private static EntityPlayer createEntityPlayer(@Nonnull HNPC npc) {
+        Validate.notNull(npc, "npc cannot be null");
+        
         HNpcSkin skin = npc.getSkin();
         Location location = npc.getLocation();
         WorldServer world = ((CraftWorld) npc.getWorld()).getHandle();
