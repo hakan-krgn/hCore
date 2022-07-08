@@ -85,7 +85,8 @@ public final class HNpcEntity_v1_14_R1 implements HNpcEntity {
         this.scoreboard = new ScoreboardTeam(new Scoreboard(), hnpc.getID());
         this.scoreboard.setNameTagVisibility(ScoreboardTeamBase.EnumNameTagVisibility.NEVER);
         this.scoreboard.getPlayerNameSet().add(this.nmsPlayer.getName());
-        this.updateSkin();
+        HCore.syncScheduler().after(20).run(this::updateSkin);
+        HCore.syncScheduler().after(25).run(this::updateSkin);
     }
 
     /**

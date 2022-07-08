@@ -82,7 +82,8 @@ public final class HNpcEntity_v1_8_R3 implements HNpcEntity {
         this.scoreboard = new ScoreboardTeam(new Scoreboard(), hnpc.getID());
         this.scoreboard.setNameTagVisibility(ScoreboardTeamBase.EnumNameTagVisibility.NEVER);
         this.scoreboard.getPlayerNameSet().add(this.nmsPlayer.getName());
-        this.updateSkin();
+        HCore.syncScheduler().after(20).run(this::updateSkin);
+        HCore.syncScheduler().after(25).run(this::updateSkin);
     }
 
     /**
@@ -152,7 +153,7 @@ public final class HNpcEntity_v1_8_R3 implements HNpcEntity {
     @Override
     public void show(@Nonnull List<Player> players) {
         DataWatcher dataWatcher = this.nmsPlayer.getDataWatcher();
-        dataWatcher.a(10, (byte) 127);
+        dataWatcher.watch(10, (byte) 127);
 
         players.forEach(player -> this.scoreboard.getPlayerNameSet().add(player.getName()));
         HCore.sendPacket(players,

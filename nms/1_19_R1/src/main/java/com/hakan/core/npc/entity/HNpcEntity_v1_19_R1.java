@@ -87,7 +87,8 @@ public final class HNpcEntity_v1_19_R1 implements HNpcEntity {
         this.scoreboard = new ScoreboardTeam(new Scoreboard(), hnpc.getID());
         this.scoreboard.a(ScoreboardTeamBase.EnumNameTagVisibility.b);
         this.scoreboard.g().add(hnpc.getID());
-        this.updateSkin();
+        HCore.syncScheduler().after(20).run(this::updateSkin);
+        HCore.syncScheduler().after(25).run(this::updateSkin);
     }
 
     /**
