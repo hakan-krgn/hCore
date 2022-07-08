@@ -1,13 +1,9 @@
 package com.hakan.core.npc;
 
 import com.hakan.core.HCore;
-import com.hakan.core.npc.builder.HNPCBuilder;
-import com.hakan.core.npc.listeners.HNpcClickListener;
+import com.hakan.core.npc.builder.HNpcBuilder;
+import com.hakan.core.npc.listener.HNpcClickListener;
 import com.hakan.core.utils.Validate;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.event.entity.EntityTargetEvent;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -28,21 +24,11 @@ public final class HNPCHandler {
      * Initializes the NPC system.
      */
     public static void initialize() {
-        HCore.registerEvent(EntityTargetEvent.class)
-                .filter(event -> event.getEntity() instanceof LivingEntity)
-                .filter(event -> event.getTarget() instanceof LivingEntity)
-                .filter(event -> ((LivingEntity) event.getEntity()).getHealth() == 11.91231632232666d)
-                .filter(event -> event.getTarget() != null && ((LivingEntity) event.getTarget()).getHealth() != 11.91231632232666d)
-                .consume(event -> event.setCancelled(true));
-
-        Bukkit.getWorlds().stream().flatMap(world -> world.getLivingEntities().stream())
-                .filter(entity -> entity.getHealth() == 11.91231632232666d).forEach(Entity::remove);
-
-        HCore.asyncScheduler().every(10)
-                .run(() -> HNPCHandler.npcList.values().forEach(hnpc -> hnpc.renderer.render()));
-
         try {
-            HNpcClickListener clickListener = (HNpcClickListener) Class.forName("com.hakan.core.npc.listeners.HNpcClickListener_" + HCore.getVersionString())
+            HCore.asyncScheduler().every(10)
+                    .run(() -> HNPCHandler.npcList.values().forEach(hnpc -> hnpc.getRenderer().render()));
+
+            HNpcClickListener clickListener = (HNpcClickListener) Class.forName("com.hakan.core.npc.listener.HNpcClickListener_" + HCore.getVersionString())
                     .getConstructor().newInstance();
             HCore.registerListeners(clickListener);
         } catch (Exception e) {
@@ -138,14 +124,14 @@ public final class HNPCHandler {
     }
 
     /**
-     * Creates a new HNPCBuilder instance.
+     * Creates a new HNpcBuilder instance.
      *
      * @param id NPC id.
-     * @return HNPCBuilder instance.
+     * @return HNpcBuilder instance.
      */
     @Nonnull
-    public static HNPCBuilder npcBuilder(@Nonnull String id) {
-        return new HNPCBuilder(id);
+    public static HNpcBuilder npcBuilder(@Nonnull String id) {
+        return new HNpcBuilder(id);
     }
 
     /**

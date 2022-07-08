@@ -16,7 +16,7 @@ import java.util.function.Consumer;
  * ServerListener class to
  * handle client connections.
  */
-public class ServerListener {
+public final class ServerListener {
 
     private final Map<String, SocketConnection> clients;
     private Consumer<SocketConnection> connectConsumer;
@@ -40,7 +40,7 @@ public class ServerListener {
      * @return The clients.
      */
     @Nonnull
-    public final Map<String, SocketConnection> getClients() {
+    public Map<String, SocketConnection> getClients() {
         return this.clients;
     }
 
@@ -50,7 +50,7 @@ public class ServerListener {
      * @param name The client name.
      * @return True if the client exists, false otherwise.
      */
-    public final boolean hasClientByName(@Nonnull String name) {
+    public boolean hasClientByName(@Nonnull String name) {
         return this.findClientByName(name).isPresent();
     }
 
@@ -60,7 +60,7 @@ public class ServerListener {
      * @param ip The client ip.
      * @return True if the client exists, false otherwise.
      */
-    public final boolean hasClientByIP(@Nonnull String ip) {
+    public boolean hasClientByIP(@Nonnull String ip) {
         return this.findClientByIP(ip).isPresent();
     }
 
@@ -71,7 +71,7 @@ public class ServerListener {
      * @return Client as optional.
      */
     @Nonnull
-    public final Optional<SocketConnection> findClientByName(@Nonnull String client) {
+    public Optional<SocketConnection> findClientByName(@Nonnull String client) {
         Validate.notNull(client, "client name cannot be null");
         return Optional.ofNullable(this.clients.get(client));
     }
@@ -83,7 +83,7 @@ public class ServerListener {
      * @return Client.
      */
     @Nonnull
-    public final SocketConnection getClientByName(@Nonnull String client) {
+    public SocketConnection getClientByName(@Nonnull String client) {
         Validate.notNull(client, "client name cannot be null");
         return this.findClientByName(client).orElseThrow(() -> new IllegalArgumentException("client not found with name: " + client));
     }
@@ -95,7 +95,7 @@ public class ServerListener {
      * @return Client as optional.
      */
     @Nonnull
-    public final Optional<SocketConnection> findClientByIP(@Nonnull String ip) {
+    public Optional<SocketConnection> findClientByIP(@Nonnull String ip) {
         Validate.notNull(ip, "ip name cannot be null");
         return this.clients.values().stream().filter(c -> c.getIP().equals(ip)).findFirst();
     }
@@ -107,7 +107,7 @@ public class ServerListener {
      * @return Client.
      */
     @Nonnull
-    public final SocketConnection getClientByIP(@Nonnull String ip) {
+    public SocketConnection getClientByIP(@Nonnull String ip) {
         Validate.notNull(ip, "ip name cannot be null");
         return this.findClientByIP(ip).orElseThrow(() -> new IllegalArgumentException("client not found with ip: " + ip));
     }
@@ -118,7 +118,7 @@ public class ServerListener {
      * @param client  The client.
      * @param message The message.
      */
-    public final void send(@Nonnull SocketConnection client, @Nonnull String message) {
+    public void send(@Nonnull SocketConnection client, @Nonnull String message) {
         Validate.notNull(client, "client cannot be null").send(message);
     }
 
@@ -128,7 +128,7 @@ public class ServerListener {
      * @param clientName The client name.
      * @param message    The message.
      */
-    public final void send(@Nonnull String clientName, @Nonnull String message) {
+    public void send(@Nonnull String clientName, @Nonnull String message) {
         this.getClientByName(clientName).send(message);
     }
 
@@ -138,7 +138,7 @@ public class ServerListener {
      * @param client       The client.
      * @param serializable The object.
      */
-    public final void send(@Nonnull SocketConnection client, @Nonnull Serializable serializable) {
+    public void send(@Nonnull SocketConnection client, @Nonnull Serializable serializable) {
         Validate.notNull(client, "client cannot be null").send(serializable);
     }
 
@@ -148,7 +148,7 @@ public class ServerListener {
      * @param clientName   The client name.
      * @param serializable The object.
      */
-    public final void send(@Nonnull String clientName, @Nonnull Serializable serializable) {
+    public void send(@Nonnull String clientName, @Nonnull Serializable serializable) {
         this.getClientByName(clientName).send(serializable);
     }
 
@@ -157,7 +157,7 @@ public class ServerListener {
      *
      * @param message The message.
      */
-    public final void publish(@Nonnull String message) {
+    public void publish(@Nonnull String message) {
         this.clients.values().forEach(client -> client.send(message));
     }
 
@@ -166,7 +166,7 @@ public class ServerListener {
      *
      * @param serializable The message.
      */
-    public final void publish(@Nonnull Serializable serializable) {
+    public void publish(@Nonnull Serializable serializable) {
         this.clients.values().forEach(client -> client.send(serializable));
     }
 
@@ -213,7 +213,7 @@ public class ServerListener {
      *
      * @param client The client.
      */
-    public final void register(@Nonnull SocketConnection client) {
+    public void register(@Nonnull SocketConnection client) {
         Validate.notNull(client, "client cannot be null");
         this.clients.put(client.getName(), client);
 
@@ -226,7 +226,7 @@ public class ServerListener {
      *
      * @param client The client.
      */
-    public final void unregister(@Nonnull SocketConnection client) {
+    public void unregister(@Nonnull SocketConnection client) {
         Validate.notNull(client, "client cannot be null");
         this.clients.remove(client.getName());
 

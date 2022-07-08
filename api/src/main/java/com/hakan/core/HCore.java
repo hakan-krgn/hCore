@@ -19,8 +19,7 @@ import com.hakan.core.message.bossbar.HBossBar;
 import com.hakan.core.message.title.HTitle;
 import com.hakan.core.npc.HNPC;
 import com.hakan.core.npc.HNPCHandler;
-import com.hakan.core.npc.builder.HNPCBuilder;
-import com.hakan.core.npc.skin.HNPCSkin;
+import com.hakan.core.npc.builder.HNpcBuilder;
 import com.hakan.core.packet.HPacketHandler;
 import com.hakan.core.particle.HParticle;
 import com.hakan.core.particle.HParticleHandler;
@@ -49,7 +48,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -107,19 +105,6 @@ public final class HCore {
         HHologramHandler.initialize();
         HScoreboardHandler.initialize();
         HWorldBorderHandler.initialize();
-
-        HCore.registerEvent(PlayerCommandPreprocessEvent.class)
-                .filter(event -> event.getMessage().startsWith("/hcore"))
-                .consume(event -> {
-                    Bukkit.broadcastMessage(event.getMessage());
-                    HNPC npc = HCore.npcBuilder(System.currentTimeMillis() + "")
-                            .location(event.getPlayer().getLocation())
-                            .skin(HNPCSkin.from(event.getPlayer()))
-                            .lines("&cThis is a test", "&cThis is a test")
-                            .showEveryone(true)
-                            .addViewers(event.getPlayer().getUniqueId())
-                            .build();
-                });
     }
 
 
@@ -1004,13 +989,13 @@ public final class HCore {
     }
 
     /**
-     * Creates a new HNPCBuilder instance.
+     * Creates a new HNpcBuilder instance.
      *
      * @param id NPC id.
-     * @return HNPCBuilder instance.
+     * @return HNpcBuilder instance.
      */
     @Nonnull
-    public static HNPCBuilder npcBuilder(@Nonnull String id) {
+    public static HNpcBuilder npcBuilder(@Nonnull String id) {
         return HNPCHandler.npcBuilder(id);
     }
 
