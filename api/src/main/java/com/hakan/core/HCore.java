@@ -20,7 +20,6 @@ import com.hakan.core.message.title.HTitle;
 import com.hakan.core.npc.HNPC;
 import com.hakan.core.npc.HNPCHandler;
 import com.hakan.core.npc.builder.HNpcBuilder;
-import com.hakan.core.npc.skin.HNpcSkin;
 import com.hakan.core.packet.HPacketHandler;
 import com.hakan.core.particle.HParticle;
 import com.hakan.core.particle.HParticleHandler;
@@ -49,7 +48,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -107,18 +105,6 @@ public final class HCore {
         HHologramHandler.initialize();
         HScoreboardHandler.initialize();
         HWorldBorderHandler.initialize();
-
-        HCore.registerEvent(PlayerCommandPreprocessEvent.class)
-                .filter(event -> event.getMessage().startsWith("/test"))
-                .consume(event -> {
-                    HNPC npc = HCore.npcBuilder(System.currentTimeMillis() + "")
-                            .location(event.getPlayer().getLocation())
-                            .skin(HNpcSkin.from(event.getPlayer()))
-                            .lines("§cThis is a test", "§cThis is a test")
-                            .showEveryone(true)
-                            .addViewers(event.getPlayer().getUniqueId())
-                            .build();
-                });
     }
 
 

@@ -40,7 +40,7 @@ public final class PathfinderGoal_v1_17_R1 extends PathfinderGoal {
         this.endRunnable = Validate.notNull(endRunnable, "end runnable cannot be null!");
         this.walkRunnable = Validate.notNull(walkRunnable, "walk runnable cannot be null!");
         this.speed = speed;
-        this.a(EnumSet.of(Type.a));
+        this.a(EnumSet.of(Type.a, Type.b));
     }
 
     /**
