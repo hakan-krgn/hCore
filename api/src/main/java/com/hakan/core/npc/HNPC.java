@@ -4,7 +4,7 @@ import com.hakan.core.HCore;
 import com.hakan.core.hologram.HHologram;
 import com.hakan.core.npc.action.HNpcAction;
 import com.hakan.core.npc.entity.HNpcEntity;
-import com.hakan.core.npc.skin.HNPCSkin;
+import com.hakan.core.npc.skin.HNpcSkin;
 import com.hakan.core.npc.utils.HNpcUtils;
 import com.hakan.core.renderer.HRenderer;
 import com.hakan.core.utils.Validate;
@@ -36,6 +36,7 @@ public final class HNPC {
     private final HNpcAction action;
     private final HNpcEntity entity;
     private final Map<EquipmentType, ItemStack> equipments;
+    private HNpcSkin skin;
     private boolean walking = false;
     private boolean dead = false;
 
@@ -44,6 +45,7 @@ public final class HNPC {
      *
      * @param id           NPC id.
      * @param location     NPC location.
+     * @param skin         NPC skin.
      * @param lines        NPC hologram lines.
      * @param viewers      NPC viewers.
      * @param equipments   NPC equipments.
@@ -51,23 +53,26 @@ public final class HNPC {
      */
     public HNPC(@Nonnull String id,
                 @Nonnull Location location,
+                @Nonnull HNpcSkin skin,
                 @Nonnull List<String> lines,
                 @Nonnull Set<UUID> viewers,
                 @Nonnull Map<EquipmentType, ItemStack> equipments,
                 boolean showEveryone) {
 
-        this.action = new HNpcAction(this);
-        this.entity = HNpcUtils.createEntity(this);
-        this.id = Validate.notNull(id, "id cannot be null!");
-        this.hologram = HCore.createHologram("hcore_npc_hologram:" + id, location, viewers);
-        this.equipments = Validate.notNull(equipments, "equipments cannot be null!");
-
         this.renderer = new HRenderer(location, 30, viewers,
                 this::show, this::hide, renderer -> this.hide(renderer.getShownViewersAsPlayer()));
+
+        this.action = new HNpcAction(this);
+        this.id = Validate.notNull(id, "id cannot be null!");
+        this.skin = Validate.notNull(skin, "skin cannot be null!");
+        this.equipments = Validate.notNull(equipments, "equipments cannot be null!");
+        this.hologram = HCore.createHologram("hcore_npc_hologram:" + id, location, viewers);
+        this.entity = HNpcUtils.createEntity(this);
 
         this.hologram.addLines(Validate.notNull(lines, "lines cannot be null!"));
         this.hologram.showEveryone(showEveryone);
         this.renderer.showEveryone(showEveryone);
+        this.setLocation(location);
 
         this.action.onSpawn();
     }
@@ -78,7 +83,7 @@ public final class HNPC {
      * @return NPC id.
      */
     @Nonnull
-    public String getId() {
+    public String getID() {
         return this.id;
     }
 
@@ -110,6 +115,16 @@ public final class HNPC {
     @Nonnull
     public World getWorld() {
         return Validate.notNull(this.getLocation().getWorld());
+    }
+
+    /**
+     * Gets skin of npc.
+     *
+     * @return Skin.
+     */
+    @Nonnull
+    public HNpcSkin getSkin() {
+        return this.skin;
     }
 
     /**
@@ -345,6 +360,15 @@ public final class HNPC {
         return this.dead;
     }
 
+    /**
+     * Gets nms entity of npc.
+     *
+     * @return HNpcEntity.
+     */
+    @Nonnull
+    public HNpcEntity getEntity() {
+        return this.entity;
+    }
 
     /**
      * Get the id of nms entity.
@@ -364,9 +388,11 @@ public final class HNPC {
     public void walk(@Nonnull Location to, double speed) {
         Validate.notNull(to, "to location cannot be null!");
         Validate.isTrue(this.walking, "NPC is already walking!");
+        Validate.isTrue(to.getWorld() == null, "to world cannot be null!");
+        Validate.isTrue(!to.getWorld().equals(this.getWorld()), "to and from worlds must be equal!");
 
         this.walking = true;
-        this.entity.walk(to, speed, () -> this.walking = false);
+        this.entity.walk(speed, to, () -> this.walking = false);
     }
 
     /**
@@ -377,9 +403,9 @@ public final class HNPC {
     public void setLocation(@Nonnull Location location) {
         Validate.notNull(location, "location cannot be null!");
 
-        this.hologram.setLocation(location.clone().add(0, (this.hologram.getLines().size() * 0.125 + 2), 0));
+        this.hologram.setLocation(location.clone().add(0, (this.hologram.getLines().size() * 0.125 + 1.6), 0));
         this.renderer.setLocation(location);
-        this.entity.setLocation(location);
+        this.entity.updateLocation();
     }
 
     /**
@@ -387,8 +413,9 @@ public final class HNPC {
      *
      * @param skin Skin.
      */
-    public void setSkin(@Nonnull HNPCSkin skin) {
-        this.entity.setSkin(Validate.notNull(skin, "skin cannot be null!"));
+    public void setSkin(@Nonnull HNpcSkin skin) {
+        this.skin = Validate.notNull(skin, "skin cannot be null!");
+        this.entity.updateSkin();
     }
 
     /**
@@ -402,7 +429,7 @@ public final class HNPC {
         Validate.notNull(itemStack, "itemStack type cannot be null!");
 
         this.equipments.put(equipmentType, itemStack);
-        this.entity.setEquipment(equipmentType, itemStack);
+        this.entity.updateEquipments();
     }
 
     /**

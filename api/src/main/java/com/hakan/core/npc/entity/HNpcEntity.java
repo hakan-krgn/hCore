@@ -1,10 +1,7 @@
 package com.hakan.core.npc.entity;
 
-import com.hakan.core.npc.HNPC;
-import com.hakan.core.npc.skin.HNPCSkin;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -19,44 +16,37 @@ public interface HNpcEntity {
     int getID();
 
     /**
-     * Moves NPC.
+     * Moves NPC to given location.
      *
-     * @param to    Destination location.
      * @param speed Speed.
+     * @param to    Destination location.
      */
-    void walk(@Nonnull Location to, double speed, @Nonnull Runnable runnable);
+    void walk(double speed, @Nonnull Location to, @Nonnull Runnable runnable);
 
     /**
      * Sets location.
-     *
-     * @param location Location.
      */
-    void setLocation(@Nonnull Location location);
+    void updateLocation();
 
     /**
      * Sets skin on NPC.
-     *
-     * @param skin Skin.
      */
-    void setSkin(@Nonnull HNPCSkin skin);
+    void updateSkin();
 
     /**
      * Equips NPC with items.
-     *
-     * @param slotType  Slot type. Ex: HAND_ITEM, LEGGINGS,
-     * @param itemStack Item.
      */
-    void setEquipment(@Nonnull HNPC.EquipmentType slotType, @Nonnull ItemStack itemStack);
+    void updateEquipments();
 
     /**
-     * Who sees NPC?
+     * Shows NPC to players.
      *
      * @param players Player list.
      */
     void show(@Nonnull List<Player> players);
 
     /**
-     * From whom should this NPC be hidden?
+     * Hides NPC to players.
      *
      * @param players Player list.
      */
