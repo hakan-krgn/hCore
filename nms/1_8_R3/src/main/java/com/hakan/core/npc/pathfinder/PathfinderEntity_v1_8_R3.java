@@ -69,7 +69,7 @@ public final class PathfinderEntity_v1_8_R3 extends EntityPig {
         Validate.notNull(walkRunnable, "walk runnable cannot be null!");
         Validate.notNull(endRunnable, "end runnable cannot be null!");
 
-        super.getDataWatcher().watch(4, 1); //set silent to true
+        super.getDataWatcher().watch(4, (byte) 1); //set silent to true
         super.e(new NBTTagCompound()); //set nbt tag
         super.setInvisible(true);
         super.setCustomNameVisible(false);
