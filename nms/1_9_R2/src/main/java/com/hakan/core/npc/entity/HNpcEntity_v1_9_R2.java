@@ -53,7 +53,7 @@ public final class HNpcEntity_v1_9_R2 implements HNpcEntity {
     @Nonnull
     private static EntityPlayer createEntityPlayer(@Nonnull HNPC npc) {
         Validate.notNull(npc, "npc cannot be null");
-        
+
         HNpcSkin skin = npc.getSkin();
         Location location = npc.getLocation();
         WorldServer world = ((CraftWorld) npc.getWorld()).getHandle();
@@ -88,8 +88,6 @@ public final class HNpcEntity_v1_9_R2 implements HNpcEntity {
         this.scoreboard = new ScoreboardTeam(new Scoreboard(), hnpc.getID());
         this.scoreboard.setNameTagVisibility(ScoreboardTeamBase.EnumNameTagVisibility.NEVER);
         this.scoreboard.getPlayerNameSet().add(this.nmsPlayer.getName());
-        HCore.syncScheduler().after(20).run(this::updateSkin);
-        HCore.syncScheduler().after(25).run(this::updateSkin);
     }
 
     /**
