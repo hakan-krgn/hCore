@@ -72,9 +72,11 @@ public final class HNPC {
         this.hologram.addLines(Validate.notNull(lines, "lines cannot be null!"));
         this.hologram.showEveryone(showEveryone);
         this.renderer.showEveryone(showEveryone);
-        this.setLocation(location);
-
         this.action.onSpawn();
+
+        this.setLocation(location);
+        HCore.syncScheduler().after(20).run(this.entity::updateSkin);
+        HCore.syncScheduler().after(25).run(this.entity::updateSkin);
     }
 
     /**
