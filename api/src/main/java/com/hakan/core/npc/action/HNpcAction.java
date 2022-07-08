@@ -124,7 +124,7 @@ public final class HNpcAction {
         Validate.notNull(player, "player cannot be null!");
         Validate.notNull(action, "action cannot be null!");
 
-        if (HCore.spam(String.format(SPAM_ID, this.hnpc.getId(), player.getUniqueId()), this.clickDelay))
+        if (HCore.spam(String.format(SPAM_ID, this.hnpc.getID(), player.getUniqueId()), this.clickDelay))
             return;
 
         if (this.clickConsumer != null)

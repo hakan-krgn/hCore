@@ -3,7 +3,7 @@ package com.hakan.core.proxy.client.utils;
 /**
  * Validate class to validate objects.
  */
-public class Validate {
+public final class Validate {
 
     /**
      * Checks if the object is null.
@@ -34,14 +34,36 @@ public class Validate {
     }
 
     /**
+     * Checks if the condition is true.
+     *
+     * @param condition The condition to check.
+     * @throws IllegalArgumentException If the object is null.
+     */
+    public static void isTrue(boolean condition) {
+        if (condition)
+            throw new IllegalArgumentException();
+    }
+
+    /**
+     * Checks if the condition is true.
+     *
+     * @param condition The condition to check.
+     * @param message   The message to throw.
+     * @throws IllegalArgumentException If the object is null.
+     */
+    public static void isTrue(boolean condition, String message) {
+        if (condition)
+            throw new IllegalArgumentException(message);
+    }
+
+    /**
      * Checks if the condition is false.
      *
      * @param condition The condition to check.
      * @throws IllegalArgumentException If the object is null.
      */
     public static void isFalse(boolean condition) {
-        if (condition)
-            throw new IllegalArgumentException();
+        Validate.isTrue(!condition);
     }
 
     /**
@@ -52,7 +74,6 @@ public class Validate {
      * @throws IllegalArgumentException If the object is null.
      */
     public static void isFalse(boolean condition, String message) {
-        if (condition)
-            throw new IllegalArgumentException(message);
+        Validate.isTrue(!condition, message);
     }
 }
