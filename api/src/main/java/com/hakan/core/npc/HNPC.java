@@ -79,6 +79,24 @@ public final class HNPC {
     }
 
     /**
+     * Gets walking status.
+     *
+     * @return Walking.
+     */
+    public boolean isWalking() {
+        return this.walking;
+    }
+
+    /**
+     * Gets if NPC is removed.
+     *
+     * @return If NPC is removed, returns true.
+     */
+    public boolean isDead() {
+        return this.dead;
+    }
+
+    /**
      * ID of NPC.
      *
      * @return NPC id.
@@ -146,6 +164,25 @@ public final class HNPC {
     @Nonnull
     public HHologram getHologram() {
         return this.hologram;
+    }
+
+    /**
+     * Gets nms entity of npc.
+     *
+     * @return HNpcEntity.
+     */
+    @Nonnull
+    public HNpcEntity getEntity() {
+        return this.entity;
+    }
+
+    /**
+     * Get the id of nms entity.
+     *
+     * @return Entity id.
+     */
+    public int getEntityID() {
+        return this.entity.getID();
     }
 
     /**
@@ -341,43 +378,6 @@ public final class HNPC {
     @Nonnull
     public Map<EquipmentType, ItemStack> getEquipments() {
         return this.equipments;
-    }
-
-    /**
-     * Gets walking status.
-     *
-     * @return Walking.
-     */
-    public boolean isWalking() {
-        return this.walking;
-    }
-
-    /**
-     * Gets if NPC is removed.
-     *
-     * @return If NPC is removed, returns true.
-     */
-    public boolean isDead() {
-        return this.dead;
-    }
-
-    /**
-     * Gets nms entity of npc.
-     *
-     * @return HNpcEntity.
-     */
-    @Nonnull
-    public HNpcEntity getEntity() {
-        return this.entity;
-    }
-
-    /**
-     * Get the id of nms entity.
-     *
-     * @return Entity id.
-     */
-    public int getEntityID() {
-        return this.entity.getID();
     }
 
     /**

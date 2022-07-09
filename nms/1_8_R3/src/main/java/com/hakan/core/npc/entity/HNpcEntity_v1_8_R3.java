@@ -152,17 +152,6 @@ public final class HNpcEntity_v1_8_R3 implements HNpcEntity {
      * {@inheritDoc}
      */
     @Override
-    public void setAbsorptionHealth(float health) {
-        this.nmsPlayer.setAbsorptionHearts(health);
-
-        HCore.sendPacket(this.renderer.getShownViewersAsPlayer(),
-                new PacketPlayOutEntityMetadata(this.getID(), this.nmsPlayer.getDataWatcher(), true));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void show(@Nonnull List<Player> players) {
         DataWatcher dataWatcher = this.nmsPlayer.getDataWatcher();
         dataWatcher.watch(10, (byte) 127);
