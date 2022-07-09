@@ -14,11 +14,11 @@ import java.util.function.Consumer;
 
 /**
  * ServerListener class to
- * handle client connections.
+ * handle connection connections.
  */
 public final class ServerListener {
 
-    private final Map<String, SocketConnection> clients;
+    private final Map<String, SocketConnection> connections;
     private Consumer<SocketConnection> connectConsumer;
     private Consumer<SocketConnection> disconnectConsumer;
     BiConsumer<SocketConnection, String> messageConsumer;
@@ -30,148 +30,148 @@ public final class ServerListener {
      * @param port The port to listen on.
      */
     public ServerListener(int port) {
-        this.clients = new HashMap<>();
+        this.connections = new HashMap<>();
         this.listen(port);
     }
 
     /**
-     * Gets all the clients.
+     * Gets all the connections.
      *
-     * @return The clients.
+     * @return The connections.
      */
     @Nonnull
-    public Map<String, SocketConnection> getClients() {
-        return this.clients;
+    public Map<String, SocketConnection> getConnections() {
+        return this.connections;
     }
 
     /**
-     * Checks if the client is connected.
+     * Checks if the connection is connected.
      *
-     * @param name The client name.
-     * @return True if the client exists, false otherwise.
+     * @param name The connection name.
+     * @return True if the connection exists, false otherwise.
      */
-    public boolean hasClientByName(@Nonnull String name) {
-        return this.findClientByName(name).isPresent();
+    public boolean hasConnectionByName(@Nonnull String name) {
+        return this.findConnectionByName(name).isPresent();
     }
 
     /**
-     * Checks if the client is connected.
+     * Checks if the connection is connected.
      *
-     * @param ip The client ip.
-     * @return True if the client exists, false otherwise.
+     * @param ip The connection ip.
+     * @return True if the connection exists, false otherwise.
      */
-    public boolean hasClientByIP(@Nonnull String ip) {
-        return this.findClientByIP(ip).isPresent();
+    public boolean hasConnectionByIP(@Nonnull String ip) {
+        return this.findConnectionByIP(ip).isPresent();
     }
 
     /**
-     * Finds the client by name.
+     * Finds the connection by name.
      *
-     * @param client The client name.
-     * @return Client as optional.
-     */
-    @Nonnull
-    public Optional<SocketConnection> findClientByName(@Nonnull String client) {
-        Validate.notNull(client, "client name cannot be null");
-        return Optional.ofNullable(this.clients.get(client));
-    }
-
-    /**
-     * Gets the client by name.
-     *
-     * @param client The client name.
-     * @return Client.
+     * @param connection The connection name.
+     * @return connection as optional.
      */
     @Nonnull
-    public SocketConnection getClientByName(@Nonnull String client) {
-        Validate.notNull(client, "client name cannot be null");
-        return this.findClientByName(client).orElseThrow(() -> new IllegalArgumentException("client not found with name: " + client));
+    public Optional<SocketConnection> findConnectionByName(@Nonnull String connection) {
+        Validate.notNull(connection, "connection name cannot be null");
+        return Optional.ofNullable(this.connections.get(connection));
     }
 
     /**
-     * Finds the client by name.
+     * Gets the connection by name.
      *
-     * @param ip The client ip.
-     * @return Client as optional.
+     * @param connectionName The connection name.
+     * @return connection.
      */
     @Nonnull
-    public Optional<SocketConnection> findClientByIP(@Nonnull String ip) {
+    public SocketConnection getConnectionByName(@Nonnull String connectionName) {
+        Validate.notNull(connectionName, "connection name cannot be null");
+        return this.findConnectionByName(connectionName).orElseThrow(() -> new IllegalArgumentException("connection not found with name: " + connectionName));
+    }
+
+    /**
+     * Finds the connection by ip.
+     *
+     * @param ip The connection ip.
+     * @return connection as optional.
+     */
+    @Nonnull
+    public Optional<SocketConnection> findConnectionByIP(@Nonnull String ip) {
         Validate.notNull(ip, "ip name cannot be null");
-        return this.clients.values().stream().filter(c -> c.getIP().equals(ip)).findFirst();
+        return this.connections.values().stream().filter(c -> c.getIP().equals(ip)).findFirst();
     }
 
     /**
-     * Gets the client by name.
+     * Gets the connection by ip.
      *
-     * @param ip The client ip.
-     * @return Client.
+     * @param ip The connection ip.
+     * @return Connection.
      */
     @Nonnull
-    public SocketConnection getClientByIP(@Nonnull String ip) {
+    public SocketConnection getConnectionByIP(@Nonnull String ip) {
         Validate.notNull(ip, "ip name cannot be null");
-        return this.findClientByIP(ip).orElseThrow(() -> new IllegalArgumentException("client not found with ip: " + ip));
+        return this.findConnectionByIP(ip).orElseThrow(() -> new IllegalArgumentException("connection not found with ip: " + ip));
     }
 
     /**
-     * Sends the message to the client.
+     * Sends the message to the connection.
      *
-     * @param client  The client.
-     * @param message The message.
-     */
-    public void send(@Nonnull SocketConnection client, @Nonnull String message) {
-        Validate.notNull(client, "client cannot be null").send(message);
-    }
-
-    /**
-     * Sends the message to the client.
-     *
-     * @param clientName The client name.
+     * @param connection The connection.
      * @param message    The message.
      */
-    public void send(@Nonnull String clientName, @Nonnull String message) {
-        this.getClientByName(clientName).send(message);
+    public void send(@Nonnull SocketConnection connection, @Nonnull String message) {
+        Validate.notNull(connection, "connection cannot be null").send(message);
     }
 
     /**
-     * Sends the message to the client.
+     * Sends the message to the connection.
      *
-     * @param client       The client.
+     * @param connectionName The connection name.
+     * @param message        The message.
+     */
+    public void send(@Nonnull String connectionName, @Nonnull String message) {
+        this.getConnectionByName(connectionName).send(message);
+    }
+
+    /**
+     * Sends the message to the connection.
+     *
+     * @param connection   The connection.
      * @param serializable The object.
      */
-    public void send(@Nonnull SocketConnection client, @Nonnull Serializable serializable) {
-        Validate.notNull(client, "client cannot be null").send(serializable);
+    public void send(@Nonnull SocketConnection connection, @Nonnull Serializable serializable) {
+        Validate.notNull(connection, "connection cannot be null").send(serializable);
     }
 
     /**
-     * Sends the message to the client.
+     * Sends the message to the connection.
      *
-     * @param clientName   The client name.
-     * @param serializable The object.
+     * @param connectionName The connection name.
+     * @param serializable   The object.
      */
-    public void send(@Nonnull String clientName, @Nonnull Serializable serializable) {
-        this.getClientByName(clientName).send(serializable);
+    public void send(@Nonnull String connectionName, @Nonnull Serializable serializable) {
+        this.getConnectionByName(connectionName).send(serializable);
     }
 
     /**
-     * Sends the message to all clients.
+     * Sends the message to all connections.
      *
      * @param message The message.
      */
     public void publish(@Nonnull String message) {
-        this.clients.values().forEach(client -> client.send(message));
+        this.connections.values().forEach(connection -> connection.send(message));
     }
 
     /**
-     * Sends the message to all clients.
+     * Sends the message to all connections.
      *
      * @param serializable The message.
      */
     public void publish(@Nonnull Serializable serializable) {
-        this.clients.values().forEach(client -> client.send(serializable));
+        this.connections.values().forEach(connection -> connection.send(serializable));
     }
 
     /**
-     * Calls when the client connects.
+     * Calls when the connection connects.
      *
      * @param consumer The consumer.
      */
@@ -180,7 +180,7 @@ public final class ServerListener {
     }
 
     /**
-     * Calls when the client disconnects.
+     * Calls when the connection disconnects.
      *
      * @param consumer The consumer.
      */
@@ -190,7 +190,7 @@ public final class ServerListener {
 
     /**
      * Calls when the receive
-     * message from client.
+     * message from connection.
      *
      * @param consumer The consumer.
      */
@@ -200,7 +200,7 @@ public final class ServerListener {
 
     /**
      * Calls when the receive
-     * message from client.
+     * message from connection.
      *
      * @param consumer The consumer.
      */
@@ -209,29 +209,29 @@ public final class ServerListener {
     }
 
     /**
-     * Registers the client.
+     * Registers the connection.
      *
-     * @param client The client.
+     * @param connection The connection.
      */
-    public void register(@Nonnull SocketConnection client) {
-        Validate.notNull(client, "client cannot be null");
-        this.clients.put(client.getName(), client);
+    public void register(@Nonnull SocketConnection connection) {
+        Validate.notNull(connection, "connection cannot be null");
+        this.connections.put(connection.getName(), connection);
 
         if (this.connectConsumer != null)
-            this.connectConsumer.accept(client);
+            this.connectConsumer.accept(connection);
     }
 
     /**
-     * Unregisters the client.
+     * Unregisters the connection.
      *
-     * @param client The client.
+     * @param connection The connection.
      */
-    public void unregister(@Nonnull SocketConnection client) {
-        Validate.notNull(client, "client cannot be null");
-        this.clients.remove(client.getName());
+    public void unregister(@Nonnull SocketConnection connection) {
+        Validate.notNull(connection, "connection cannot be null");
+        this.connections.remove(connection.getName());
 
         if (this.disconnectConsumer != null)
-            this.disconnectConsumer.accept(client);
+            this.disconnectConsumer.accept(connection);
     }
 
 
@@ -240,7 +240,7 @@ public final class ServerListener {
      */
 
     /**
-     * Starts listening to the clients.
+     * Starts listening to the connections.
      */
     private void listen(int port) {
         new Thread(() -> {
