@@ -934,6 +934,16 @@ public final class HCore {
     }
 
     /**
+     * Checks if npc exists.
+     *
+     * @param id Npc id.
+     * @return True if exists.
+     */
+    public static boolean hasNpc(@Nonnull String id) {
+        return HNPCHandler.has(id);
+    }
+
+    /**
      * Finds a created npc.
      *
      * @param id NPC id that you want.
@@ -1244,6 +1254,16 @@ public final class HCore {
     @Nonnull
     public static Collection<HHologram> getHologramValues() {
         return HHologramHandler.getValues();
+    }
+
+    /**
+     * Checks if hologram exists.
+     *
+     * @param id Hologram id.
+     * @return True if hologram exists.
+     */
+    public static boolean hasHologram(@Nonnull String id) {
+        return HHologramHandler.has(id);
     }
 
     /**

@@ -280,6 +280,9 @@ public final class HNpcBuilder {
      */
     @Nonnull
     public HNPC build() {
+        Validate.isTrue(HNPCHandler.has(this.id), "npc with id(" + this.id + ") already exists!");
+
+
         if (this.show == null)
             this.show = (this.viewers.size() > 0);
 

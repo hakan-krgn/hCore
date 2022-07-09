@@ -4,6 +4,8 @@ import com.hakan.core.HCore;
 import com.hakan.core.npc.builder.HNpcBuilder;
 import com.hakan.core.npc.listener.HNpcClickListener;
 import com.hakan.core.utils.Validate;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -25,6 +27,10 @@ public final class HNPCHandler {
      */
     public static void initialize() {
         try {
+            HCore.syncScheduler().after(1).run(() -> Bukkit.getWorlds().stream()
+                    .flatMap(world -> world.getLivingEntities().stream())
+                    .filter(entity -> entity.getHealth() == 2.5179998874664307f).forEach(Entity::remove));
+
             HCore.asyncScheduler().every(10)
                     .run(() -> HNPCHandler.npcList.values().forEach(hnpc -> hnpc.getRenderer().render()));
 
@@ -74,6 +80,16 @@ public final class HNPCHandler {
     @Nonnull
     public static Collection<HNPC> getValues() {
         return HNPCHandler.npcList.values();
+    }
+
+    /**
+     * Checks if npc exists.
+     *
+     * @param id Npc id.
+     * @return True if exists.
+     */
+    public static boolean has(@Nonnull String id) {
+        return HNPCHandler.npcList.containsKey(Validate.notNull(id, "id cannot be null!"));
     }
 
     /**
