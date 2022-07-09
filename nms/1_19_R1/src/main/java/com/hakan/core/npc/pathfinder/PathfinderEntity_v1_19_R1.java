@@ -83,6 +83,7 @@ public final class PathfinderEntity_v1_19_R1 {
         this.pig.m(true); //set invulnerable to true
         this.pig.n(false); //set custom name visible to false
         this.pig.a(start.getX(), start.getY(), start.getZ()); //set location
+        this.pig.c(2.518f); //set health to 2.518f
         world.getWorld().addEntity(this.pig, CreatureSpawnEvent.SpawnReason.CUSTOM);
 
         HListenerAdapter<PlayerJoinEvent> listenerAdapter = HCore.registerEvent(PlayerJoinEvent.class)

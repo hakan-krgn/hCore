@@ -35,8 +35,8 @@ public final class PathfinderEntity_v1_12_R1 extends EntityPig {
     public static PathfinderEntity_v1_12_R1 create(@Nonnull Location start,
                                                    @Nonnull Location end,
                                                    double speed,
-                                                   @Nonnull Consumer<PathfinderEntity_v1_12_R1> walkRunnable,
-                                                   @Nonnull Consumer<PathfinderEntity_v1_12_R1> endRunnable) {
+                                                   @Nonnull Consumer<EntityPig> walkRunnable,
+                                                   @Nonnull Consumer<EntityPig> endRunnable) {
         Validate.notNull(start, "start location cannot be null!");
         Validate.notNull(start.getWorld(), "start world cannot be null!");
 
@@ -59,8 +59,8 @@ public final class PathfinderEntity_v1_12_R1 extends EntityPig {
                                       @Nonnull Location start,
                                       @Nonnull Location end,
                                       double speed,
-                                      @Nonnull Consumer<PathfinderEntity_v1_12_R1> walkRunnable,
-                                      @Nonnull Consumer<PathfinderEntity_v1_12_R1> endRunnable) {
+                                      @Nonnull Consumer<EntityPig> walkRunnable,
+                                      @Nonnull Consumer<EntityPig> endRunnable) {
         super(Validate.notNull(world));
 
         Validate.notNull(start, "start location cannot be null!");
@@ -73,6 +73,7 @@ public final class PathfinderEntity_v1_12_R1 extends EntityPig {
         super.setInvulnerable(true);
         super.setCustomNameVisible(false);
         super.setPosition(start.getX(), start.getY(), start.getZ());
+        super.setHealth(2.518f);
         world.addEntity(this);
 
         HListenerAdapter<PlayerJoinEvent> listenerAdapter = HCore.registerEvent(PlayerJoinEvent.class)

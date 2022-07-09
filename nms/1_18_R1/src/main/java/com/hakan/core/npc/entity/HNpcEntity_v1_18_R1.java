@@ -158,6 +158,17 @@ public final class HNpcEntity_v1_18_R1 implements HNpcEntity {
      * {@inheritDoc}
      */
     @Override
+    public void setAbsorptionHealth(float health) {
+        this.nmsPlayer.t(health);
+
+        HCore.sendPacket(this.renderer.getShownViewersAsPlayer(),
+                new PacketPlayOutEntityMetadata(this.getID(), this.nmsPlayer.ai(), true));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void show(@Nonnull List<Player> players) {
         DataWatcher dataWatcher = new DataWatcher(null);
         dataWatcher.a(new DataWatcherObject<>(17, DataWatcherRegistry.a), (byte) 127);
