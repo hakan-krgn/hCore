@@ -71,6 +71,16 @@ public final class HHologramHandler {
     }
 
     /**
+     * Checks if hologram exists.
+     *
+     * @param id Hologram id.
+     * @return True if hologram exists.
+     */
+    public static boolean has(@Nonnull String id) {
+        return HHologramHandler.holograms.containsKey(Validate.notNull(id, "id cannot be null!"));
+    }
+
+    /**
      * Finds a created hologram
      *
      * @param id hologram id that you want
@@ -104,8 +114,7 @@ public final class HHologramHandler {
     public static HHologram create(@Nonnull String id, @Nonnull Location location, @Nullable Set<UUID> players) {
         Validate.notNull(id, "id cannot be null");
         Validate.notNull(location, "location cannot be null");
-
-        HHologramHandler.delete(id);
+        Validate.isTrue(HHologramHandler.has(id), "npc with id(" + id + ") already exists!");
 
         HHologram hHologram = (players != null) ? new HHologram(id, location, players) : new HHologram(id, location);
         HHologramHandler.holograms.put(id, hHologram);
@@ -130,14 +139,9 @@ public final class HHologramHandler {
      * @param id id of hologram
      * @return hologram to be deleted
      */
-    @Nullable
+    @Nonnull
     public static HHologram delete(@Nonnull String id) {
-        Validate.notNull(id, "id cannot be null");
-
-        HHologram oldHologram = HHologramHandler.holograms.get(id);
-        if (oldHologram != null)
-            oldHologram.delete();
-
-        return oldHologram;
+        HHologram oldHologram = HHologramHandler.getByID(Validate.notNull(id, "id cannot be null"));
+        return oldHologram.delete();
     }
 }

@@ -75,8 +75,7 @@ public final class HNPC {
         this.action.onSpawn();
 
         this.setLocation(location);
-        HCore.syncScheduler().after(20).run(this.entity::updateSkin);
-        HCore.syncScheduler().after(25).run(this.entity::updateSkin);
+        HCore.syncScheduler().after(40).run(this.entity::updateSkin);
     }
 
     /**

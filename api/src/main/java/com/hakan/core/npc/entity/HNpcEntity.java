@@ -39,6 +39,11 @@ public interface HNpcEntity {
     void updateEquipments();
 
     /**
+     * Sets absorption health.
+     */
+    void setAbsorptionHealth(float health);
+
+    /**
      * Shows NPC to players.
      *
      * @param players Player list.
