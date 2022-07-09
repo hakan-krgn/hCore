@@ -1319,7 +1319,7 @@ public final class HCore {
      * @param id id of hologram
      * @return hologram to be deleted
      */
-    @Nullable
+    @Nonnull
     public static HHologram deleteHologram(@Nonnull String id) {
         return HHologramHandler.delete(id);
     }

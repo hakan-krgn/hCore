@@ -19,9 +19,9 @@ public final class SocketConnection {
 
     /**
      * Connects to the given server and register
-     * itself to server-side.
+     * itself to side of server.
      *
-     * @param name The name of the client.
+     * @param name The name of the connection.
      * @param ip   The ip of the server.
      * @param port The port of the server.
      * @return The connected server.
@@ -33,17 +33,17 @@ public final class SocketConnection {
             Validate.notNull(name, "name cannot be null");
             Validate.notNull(ip, "ip cannot be null");
 
-            SocketConnection socket = new SocketConnection(new Socket(ip, port));
-            socket.outputStream.writeUTF(name);
+            SocketConnection connection = new SocketConnection(new Socket(ip, port));
+            connection.outputStream.writeUTF(name);
 
-            byte result = socket.inputStream.readByte();
+            byte result = connection.inputStream.readByte();
             if (result == 1)
                 throw new IllegalArgumentException("name already in use!");
             else if (result == 2)
                 throw new IllegalArgumentException("input stream is broken!");
 
-            socket.listen();
-            return socket;
+            connection.listen();
+            return connection;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -71,9 +71,9 @@ public final class SocketConnection {
     }
 
     /**
-     * Gets the ip address of the client.
+     * Gets the ip address of the connection.
      *
-     * @return The ip address of the client.
+     * @return The ip address of the connection.
      */
     @Nonnull
     public String getIP() {
@@ -132,7 +132,7 @@ public final class SocketConnection {
 
     /**
      * Calls the given runnable when
-     * the client is disconnected.
+     * the connection is disconnected.
      *
      * @param runnable The runnable to call.
      */
@@ -170,7 +170,7 @@ public final class SocketConnection {
     }
 
     /**
-     * Publishes a message to all clients which
+     * Publishes a message to all connections which
      * connected to server.
      *
      * @param message The message to send.
@@ -185,7 +185,7 @@ public final class SocketConnection {
     }
 
     /**
-     * Publishes an object to all clients which
+     * Publishes an object to all connections which
      * connected to server.
      *
      * @param serializable The object to send.

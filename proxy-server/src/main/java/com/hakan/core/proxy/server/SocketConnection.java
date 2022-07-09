@@ -28,18 +28,18 @@ public final class SocketConnection {
         Validate.notNull(socket, "socket cannot be null");
         Validate.notNull(listener, "listener cannot be null");
 
-        SocketConnection client = new SocketConnection(socket, listener);
+        SocketConnection connection = new SocketConnection(socket, listener);
 
-        if (listener.hasClientByName(client.name)) {
-            client.outputStream.writeByte(1);
+        if (listener.hasConnectionByName(connection.name)) {
+            connection.outputStream.writeByte(1);
             return;
-        } else if (client.socket.isInputShutdown()) {
-            client.outputStream.writeByte(2);
+        } else if (connection.socket.isInputShutdown()) {
+            connection.outputStream.writeByte(2);
             return;
         }
 
-        client.outputStream.writeByte(0);
-        client.listen();
+        connection.outputStream.writeByte(0);
+        connection.listen();
     }
 
 
@@ -66,9 +66,9 @@ public final class SocketConnection {
     }
 
     /**
-     * Gets the name of the client.
+     * Gets the name of the connection.
      *
-     * @return The name of the client.
+     * @return The name of the connection.
      */
     @Nonnull
     public String getName() {
@@ -76,9 +76,9 @@ public final class SocketConnection {
     }
 
     /**
-     * Gets the ip address of the client.
+     * Gets the ip address of the connection.
      *
-     * @return The ip address of the client.
+     * @return The ip address of the connection.
      */
     @Nonnull
     public String getIP() {
@@ -86,9 +86,9 @@ public final class SocketConnection {
     }
 
     /**
-     * Gets the socket of the client.
+     * Gets the socket of the connection.
      *
-     * @return The socket of the client.
+     * @return The socket of the connection.
      */
     @Nonnull
     public Socket getSocket() {
@@ -96,9 +96,9 @@ public final class SocketConnection {
     }
 
     /**
-     * Gets the input stream of the client.
+     * Gets the input stream of the connection.
      *
-     * @return The input stream of the client.
+     * @return The input stream of the connection.
      */
     @Nonnull
     public DataInputStream getInputStream() {
@@ -106,9 +106,9 @@ public final class SocketConnection {
     }
 
     /**
-     * Gets the output stream of the client.
+     * Gets the output stream of the connection.
      *
-     * @return The output stream of the client.
+     * @return The output stream of the connection.
      */
     @Nonnull
     public DataOutputStream getOutputStream() {
@@ -145,7 +145,7 @@ public final class SocketConnection {
     }
 
     /**
-     * Closes the client.
+     * Closes the connection.
      */
     public void close() {
         try {
@@ -164,7 +164,7 @@ public final class SocketConnection {
 
     /**
      * Listens for messages
-     * from the client.
+     * from the connection.
      */
     private void listen() {
         new Thread(() -> {
