@@ -355,7 +355,7 @@ public final class HNPC {
      * @param clickConsumer Consumer.
      */
     @Nonnull
-    public HNPC whenClicked(@Nonnull BiConsumer<Player, HNPC.Action> clickConsumer) {
+    public HNPC whenClicked(@Nonnull BiConsumer<Player, Action> clickConsumer) {
         this.action.whenClicked(clickConsumer);
         return this;
     }
