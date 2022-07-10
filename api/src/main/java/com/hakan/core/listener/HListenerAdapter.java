@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.EventExecutor;
 
 import javax.annotation.Nonnull;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -94,7 +95,34 @@ public final class HListenerAdapter<T extends Event> implements Listener, EventE
     @Nonnull
     public HListenerAdapter<T> expire(int duration, @Nonnull TimeUnit unit) {
         Validate.notNull(unit, "time unit cannot be null!");
-        HCore.syncScheduler().after(duration, unit)
+        HCore.syncScheduler().after(duration, unit).run(this::unregister);
+        return this;
+    }
+
+    /**
+     * This event will remove in duration
+     * if this method is called.
+     *
+     * @param duration Duration.
+     * @return This class.
+     */
+    @Nonnull
+    public HListenerAdapter<T> expire(@Nonnull Duration duration) {
+        Validate.notNull(duration, "duration cannot be null!");
+        HCore.syncScheduler().after(duration).run(this::unregister);
+        return this;
+    }
+
+    /**
+     * This event will remove in ticks
+     * if this method is called.
+     *
+     * @param ticks ticks.
+     * @return This class.
+     */
+    @Nonnull
+    public HListenerAdapter<T> expire(int ticks) {
+        HCore.syncScheduler().after(ticks)
                 .run(this::unregister);
         return this;
     }

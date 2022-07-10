@@ -9,7 +9,7 @@ import javax.annotation.Nonnull;
 /**
  * {@inheritDoc}
  */
-public class EnchantmentGlow_v1_11_R1 extends Enchantment {
+public final class EnchantmentGlow_v1_11_R1 extends Enchantment {
 
     /**
      * Gets instance of this class

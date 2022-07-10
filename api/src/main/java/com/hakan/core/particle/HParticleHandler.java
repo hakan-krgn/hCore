@@ -3,6 +3,7 @@ package com.hakan.core.particle;
 import com.hakan.core.HCore;
 import com.hakan.core.particle.wrapper.HParticleWrapper;
 import com.hakan.core.utils.Validate;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -53,5 +54,15 @@ public final class HParticleHandler {
     public static void play(@Nonnull Collection<Player> players, @Nonnull Location location, @Nonnull HParticle particle) {
         Validate.notNull(players, "players cannot be null!");
         players.forEach(player -> HParticleHandler.play(player, location, particle));
+    }
+
+    /**
+     * Plays particle for all players.
+     *
+     * @param location Location.
+     * @param particle HParticle class.
+     */
+    public static void play(@Nonnull Location location, @Nonnull HParticle particle) {
+        Bukkit.getOnlinePlayers().forEach(player -> HParticleHandler.play(player, location, particle));
     }
 }
