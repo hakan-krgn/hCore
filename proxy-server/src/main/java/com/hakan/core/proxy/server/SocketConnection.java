@@ -184,9 +184,13 @@ public final class SocketConnection {
                             this.listener.objectConsumer.accept(this, Serializer.deserialize(pureMessage, Serializable.class));
                     } else if (message.startsWith("publish_message:")) {
                         String pureMessage = message.substring("publish_message:".length());
+                        if (this.listener.messageConsumer != null)
+                            this.listener.messageConsumer.accept(this, pureMessage);
                         this.listener.publish(pureMessage);
                     } else if (message.startsWith("publish_object:")) {
                         String pureMessage = message.substring("publish_object:".length());
+                        if (this.listener.objectConsumer != null)
+                            this.listener.objectConsumer.accept(this, Serializer.deserialize(pureMessage, Serializable.class));
                         this.listener.publish(Serializer.deserialize(pureMessage, Serializable.class));
                     }
                 } catch (IOException e) {
