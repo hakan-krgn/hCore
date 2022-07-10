@@ -1,0 +1,47 @@
+dependencies {
+    compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
+
+    implementation 'org.json:json:20220320'
+    implementation 'redis.clients:jedis:4.2.3'
+    implementation 'com.zaxxer:HikariCP:5.0.1'
+    implementation 'mysql:mysql-connector-java:8.0.29'
+    implementation 'org.mongodb:mongo-java-driver:3.12.11'
+
+    implementation project(':api')
+    implementation project(':nms:v1_8_R3')
+    implementation project(':nms:v1_9_R1')
+    implementation project(':nms:v1_9_R2')
+    implementation project(':nms:v1_10_R1')
+    implementation project(':nms:v1_11_R1')
+    implementation project(':nms:v1_12_R1')
+    implementation project(':nms:v1_13_R1')
+    implementation project(':nms:v1_13_R2')
+    implementation project(':nms:v1_14_R1')
+    implementation project(':nms:v1_15_R1')
+    implementation project(':nms:v1_16_R1')
+    implementation project(':nms:v1_16_R2')
+    implementation project(':nms:v1_16_R3')
+    implementation project(':nms:v1_17_R1')
+    implementation project(':nms:v1_18_R1')
+    implementation project(':nms:v1_18_R2')
+    implementation project(':nms:v1_19_R1')
+    implementation project(':proxy-client')
+    implementation project(':proxy-server')
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = project.group
+            version = project.version
+            artifactId = 'bukkit'
+            from components.java
+        }
+    }
+}
+
+shadowJar {
+    dependencies {
+        exclude(dependency('com.google.protobuf:protobuf-java:.*'))
+    }
+}
