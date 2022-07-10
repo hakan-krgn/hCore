@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -218,7 +219,32 @@ public final class HNPC {
     @Nonnull
     public HNPC expire(int expire, @Nonnull TimeUnit timeUnit) {
         Validate.notNull(timeUnit, "time unit cannot be null!");
-        HCore.syncScheduler().after(expire, timeUnit)
+        HCore.syncScheduler().after(expire, timeUnit).run(this::delete);
+        return this;
+    }
+
+    /**
+     * NPC expires after a certain time.
+     *
+     * @param duration Duration.
+     * @return HNPC for chain.
+     */
+    @Nonnull
+    public HNPC expire(@Nonnull Duration duration) {
+        Validate.notNull(duration, "duration cannot be null!");
+        HCore.syncScheduler().after(duration).run(this::delete);
+        return this;
+    }
+
+    /**
+     * NPC expires after a certain time.
+     *
+     * @param ticks Ticks.
+     * @return HNPC for chain.
+     */
+    @Nonnull
+    public HNPC expire(int ticks) {
+        HCore.syncScheduler().after(ticks)
                 .run(this::delete);
         return this;
     }

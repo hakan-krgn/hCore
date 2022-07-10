@@ -19,37 +19,37 @@ public final class HSpam {
     /**
      * Checks if id is spamming.
      *
-     * @param id       The id to check.
-     * @param duration The duration to check.
-     * @return True if spamming.
-     */
-    public static boolean spam(@Nonnull String id, @Nonnull Duration duration) {
-        return HSpam.spam(id, duration.toMillis());
-    }
-
-    /**
-     * Checks if id is spamming.
-     *
      * @param id   The id to check.
      * @param time Time.
      * @param unit Time unit.
      * @return True if spamming.
      */
     public static boolean spam(@Nonnull String id, int time, @Nonnull TimeUnit unit) {
-        return HSpam.spam(id, unit.toMillis(time));
+        return HSpam.spam(id, unit.toMillis(time) / 50);
     }
 
     /**
      * Checks if id is spamming.
      *
-     * @param id   The id to check.
-     * @param time The time in milliseconds.
+     * @param id       The id to check.
+     * @param duration The duration to check.
      * @return True if spamming.
      */
-    public static boolean spam(@Nonnull String id, long time) {
+    public static boolean spam(@Nonnull String id, @Nonnull Duration duration) {
+        return HSpam.spam(id, duration.toMillis() / 50);
+    }
+
+    /**
+     * Checks if id is spamming.
+     *
+     * @param id    The id to check.
+     * @param ticks The time in ticks.
+     * @return True if spamming.
+     */
+    public static boolean spam(@Nonnull String id, long ticks) {
         if (!HSpam.spams.contains(id)) {
             HSpam.spams.add(id);
-            HCore.syncScheduler().after(time / 50)
+            HCore.syncScheduler().after(ticks)
                     .run(() -> HSpam.spams.remove(id));
             return false;
         }

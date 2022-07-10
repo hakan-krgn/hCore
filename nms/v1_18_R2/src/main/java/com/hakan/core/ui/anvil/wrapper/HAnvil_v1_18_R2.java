@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
 /**
  * {@inheritDoc}
  */
-public class HAnvil_v1_18_R2 extends HAnvil {
+public final class HAnvil_v1_18_R2 extends HAnvil {
 
     private final EntityPlayer entityPlayer;
     private final AnvilContainer container;
@@ -100,7 +100,7 @@ public class HAnvil_v1_18_R2 extends HAnvil {
     /**
      * AnvilContainer class.
      */
-    private class AnvilContainer extends ContainerAnvil {
+    private final class AnvilContainer extends ContainerAnvil {
 
         public AnvilContainer(@Nonnull EntityHuman entityhuman) {
             super(nextContainerId, entityhuman.fr(), ContainerAccess.a(entityhuman.s, new BlockPosition(0, 0, 0)));

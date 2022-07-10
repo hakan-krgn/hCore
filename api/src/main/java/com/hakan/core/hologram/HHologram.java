@@ -8,12 +8,14 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Hologram class to create and
@@ -187,15 +189,42 @@ public final class HHologram {
     }
 
     /**
-     * If you want to remove the hologram
-     * when the time is up. you can use this.
+     * NPC expires after a certain time.
      *
-     * @param expire time. (as tick)
+     * @param expire   Amount.
+     * @param timeUnit Time Unit.
+     * @return HNPC for chain.
+     */
+    @Nonnull
+    public HHologram expire(int expire, @Nonnull TimeUnit timeUnit) {
+        Validate.notNull(timeUnit, "time unit cannot be null!");
+        HCore.syncScheduler().after(expire, timeUnit).run(this::delete);
+        return this;
+    }
+
+    /**
+     * NPC expires after a certain time.
+     *
+     * @param duration Duration.
+     * @return HNPC for chain.
+     */
+    @Nonnull
+    public HHologram expire(@Nonnull Duration duration) {
+        Validate.notNull(duration, "duration cannot be null!");
+        HCore.syncScheduler().after(duration).run(this::delete);
+        return this;
+    }
+
+    /**
+     * If you want to remove the hologram
+     * when the time is up. You can use this.
+     *
+     * @param ticks Time. (as tick)
      * @return Instance of this class.
      */
     @Nonnull
-    public HHologram expire(long expire) {
-        HCore.syncScheduler().after(expire)
+    public HHologram expire(long ticks) {
+        HCore.syncScheduler().after(ticks)
                 .run(this::delete);
         return this;
     }

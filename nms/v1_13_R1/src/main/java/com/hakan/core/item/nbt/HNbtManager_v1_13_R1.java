@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 
-public class HNbtManager_v1_13_R1 implements HNbtManager {
+public final class HNbtManager_v1_13_R1 implements HNbtManager {
 
     /**
      * {@inheritDoc}

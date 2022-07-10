@@ -29,7 +29,8 @@ public final class HNPCHandler {
         try {
             HCore.syncScheduler().after(1).run(() -> Bukkit.getWorlds().stream()
                     .flatMap(world -> world.getLivingEntities().stream())
-                    .filter(entity -> entity.getHealth() == 2.5179998874664307f).forEach(Entity::remove));
+                    .filter(entity -> entity.getHealth() == 2.5179998874664307f)
+                    .forEach(Entity::remove));
 
             HCore.asyncScheduler().every(10)
                     .run(() -> HNPCHandler.npcList.values().forEach(hnpc -> hnpc.getRenderer().render()));

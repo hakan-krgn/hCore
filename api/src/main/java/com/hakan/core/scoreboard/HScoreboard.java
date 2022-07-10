@@ -10,6 +10,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 import javax.annotation.Nonnull;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -208,7 +209,34 @@ public final class HScoreboard {
     @Nonnull
     public HScoreboard expire(int time, @Nonnull TimeUnit timeUnit) {
         Validate.notNull(timeUnit, "time unit cannot be null");
-        HCore.syncScheduler().after(time, timeUnit)
+        HCore.syncScheduler().after(time, timeUnit).run(this::delete);
+        return this;
+    }
+
+    /**
+     * When the time is up, scoreboard will
+     * remove automatically.
+     *
+     * @param duration Duration.
+     * @return Instance of this class.
+     */
+    @Nonnull
+    public HScoreboard expire(@Nonnull Duration duration) {
+        Validate.notNull(duration, "duration cannot be null!");
+        HCore.syncScheduler().after(duration).run(this::delete);
+        return this;
+    }
+
+    /**
+     * When the time is up, scoreboard will
+     * remove automatically.
+     *
+     * @param ticks Ticks.
+     * @return Instance of this class.
+     */
+    @Nonnull
+    public HScoreboard expire(int ticks) {
+        HCore.syncScheduler().after(ticks)
                 .run(this::delete);
         return this;
     }

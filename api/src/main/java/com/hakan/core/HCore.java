@@ -1373,24 +1373,24 @@ public final class HCore {
     /**
      * Checks if id is spamming.
      *
-     * @param id       The id to check.
-     * @param duration The duration to check.
-     * @return True if spamming.
-     */
-    public static boolean spam(@Nonnull String id, @Nonnull Duration duration) {
-        return HSpam.spam(id, duration);
-    }
-
-    /**
-     * Checks if id is spamming.
-     *
      * @param id   The id to check.
      * @param time Time.
      * @param unit Time unit.
      * @return True if spamming.
      */
     public static boolean spam(@Nonnull String id, int time, @Nonnull TimeUnit unit) {
-        return HSpam.spam(id, unit.toMillis(time));
+        return HSpam.spam(id, time, unit);
+    }
+
+    /**
+     * Checks if id is spamming.
+     *
+     * @param id       The id to check.
+     * @param duration The duration to check.
+     * @return True if spamming.
+     */
+    public static boolean spam(@Nonnull String id, @Nonnull Duration duration) {
+        return HSpam.spam(id, duration);
     }
 
     /**

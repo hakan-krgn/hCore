@@ -5,6 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import javax.annotation.Nonnull;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -96,7 +97,7 @@ public final class HScheduler {
     }
 
     /**
-     * Runs how many ticks later.
+     * Runs how much time later.
      *
      * @param after    Ticks.
      * @param timeUnit Time unit.
@@ -109,7 +110,7 @@ public final class HScheduler {
     }
 
     /**
-     * Runs every how many ticks.
+     * Runs every how much time.
      *
      * @param every    Ticks.
      * @param timeUnit Time unit.
@@ -118,6 +119,30 @@ public final class HScheduler {
     @Nonnull
     public HScheduler every(int every, @Nonnull TimeUnit timeUnit) {
         this.every = timeUnit.toSeconds(every) * 20;
+        return this;
+    }
+
+    /**
+     * Runs how many ticks later.
+     *
+     * @param duration Duration.
+     * @return This class.
+     */
+    @Nonnull
+    public HScheduler after(@Nonnull Duration duration) {
+        this.after = duration.toMillis() / 50;
+        return this;
+    }
+
+    /**
+     * Runs every how many ticks.
+     *
+     * @param duration Duration.
+     * @return This class.
+     */
+    @Nonnull
+    public HScheduler every(@Nonnull Duration duration) {
+        this.every = duration.toMillis() / 50;
         return this;
     }
 
