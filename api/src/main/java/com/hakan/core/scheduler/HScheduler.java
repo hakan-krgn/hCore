@@ -105,7 +105,7 @@ public final class HScheduler {
      */
     @Nonnull
     public HScheduler after(int after, @Nonnull TimeUnit timeUnit) {
-        this.after = timeUnit.toSeconds(after) * 20;
+        this.after = timeUnit.toMillis(after) / 50;
         return this;
     }
 
@@ -118,7 +118,7 @@ public final class HScheduler {
      */
     @Nonnull
     public HScheduler every(int every, @Nonnull TimeUnit timeUnit) {
-        this.every = timeUnit.toSeconds(every) * 20;
+        this.every = timeUnit.toMillis(every) / 50;
         return this;
     }
 
