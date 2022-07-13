@@ -29,17 +29,6 @@ dependencies {
     implementation project(':proxy-server')
 }
 
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = project.group
-            version = project.version
-            artifactId = 'bukkit'
-            from components.java
-        }
-    }
-}
-
 shadowJar {
     dependencies {
         exclude(dependency('com.google.protobuf:protobuf-java:.*'))

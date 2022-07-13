@@ -30,6 +30,17 @@ subprojects {
         maven { url 'https://repo.codemc.org/repository/nms/' }
     }
 
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                groupId = project.group
+                version = project.version
+                artifactId = project.name
+                from components.java
+            }
+        }
+    }
+
     artifacts.archives(tasks.shadowJar)
 
     tasks.jar {

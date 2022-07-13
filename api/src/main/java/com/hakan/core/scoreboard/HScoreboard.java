@@ -2,47 +2,38 @@ package com.hakan.core.scoreboard;
 
 import com.hakan.core.HCore;
 import com.hakan.core.utils.Validate;
-import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.lang.reflect.Field;
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.stream.IntStream;
 
 /**
  * HScoreboard class for creating a
  * scoreboard object for player
  */
 @SuppressWarnings({"unused", "UnusedReturnValue"})
-public final class HScoreboard {
+public abstract class HScoreboard {
 
-    private final UUID uid;
-    private final Scoreboard scoreboard;
-    private final Objective objective;
-
-    private String title = "";
-    private int updateInterval = 0;
+    protected final Player player;
+    protected String title;
+    protected String[] lines;
 
     /**
      * Creates new Instance of this class.
      *
-     * @param uid UID of player
+     * @param player Player.
      */
-    HScoreboard(@Nonnull UUID uid) {
-        this.uid = Validate.notNull(uid, "uuid cannot be null");
-        this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        this.objective = this.scoreboard.registerNewObjective("board", "dummy");
-        this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        this.objective.setDisplayName(this.title);
+    protected HScoreboard(@Nonnull Player player, @Nonnull String title) {
+        this.player = Validate.notNull(player, "uid cannot be null!");
+        this.title = Validate.notNull(title, "title cannot be null!");
+        this.lines = new String[15];
     }
 
     /**
@@ -50,8 +41,8 @@ public final class HScoreboard {
      *
      * @return if scoreboard still exist for player, return true
      */
-    public boolean isExist() {
-        return HScoreboardHandler.findByUID(this.uid).isPresent();
+    public final boolean isExist() {
+        return HScoreboardHandler.has(this.player.getUniqueId());
     }
 
     /**
@@ -60,29 +51,8 @@ public final class HScoreboard {
      * @return UUID of player.
      */
     @Nonnull
-    public UUID getUID() {
-        return this.uid;
-    }
-
-    /**
-     * Gets player.
-     *
-     * @return Player.
-     */
-    @Nonnull
-    public Optional<Player> getPlayerSafe() {
-        Player player = Bukkit.getPlayer(this.uid);
-        return Optional.ofNullable(player);
-    }
-
-    /**
-     * Gets player.
-     *
-     * @return Player.
-     */
-    @Nonnull
-    public Player getPlayer() {
-        return this.getPlayerSafe().orElseThrow(() -> new NullPointerException("there is no player with this uid(" + this.uid + ")"));
+    public final Player getPlayer() {
+        return this.player;
     }
 
     /**
@@ -91,7 +61,7 @@ public final class HScoreboard {
      * @return Title of scoreboard.
      */
     @Nonnull
-    public String getTitle() {
+    public final String getTitle() {
         return this.title;
     }
 
@@ -99,34 +69,9 @@ public final class HScoreboard {
      * Sets title of scoreboard.
      *
      * @param title Title.
-     * @return Instance of this class.
      */
-    @Nonnull
-    public HScoreboard setTitle(@Nonnull String title) {
-        this.title = Validate.notNull(title, "title cannot be null");
-        this.objective.setDisplayName(title);
-        return this;
-    }
-
-    /**
-     * Gets update interval of scoreboard.
-     *
-     * @return Update interval of scoreboard.
-     */
-    public int getUpdateInterval() {
-        return this.updateInterval;
-    }
-
-    /**
-     * Sets update interval of scoreboard.
-     *
-     * @param updateInterval Update interval.
-     * @return Instance of this class.
-     */
-    @Nonnull
-    public HScoreboard setUpdateInterval(int updateInterval) {
-        this.updateInterval = updateInterval;
-        return this;
+    public final void setTitle(@Nonnull String title) {
+        this.title = Validate.notNull(title, "title cannot be null!");
     }
 
     /**
@@ -135,9 +80,9 @@ public final class HScoreboard {
      * @param line Line.
      * @return Text of line.
      */
-    @Nonnull
-    public String getLine(int line) {
-        return this.getTeam(line).getPrefix();
+    @Nullable
+    public final String getLine(int line) {
+        return this.lines[line];
     }
 
     /**
@@ -145,57 +90,37 @@ public final class HScoreboard {
      *
      * @param line Line number.
      * @param text Text.
-     * @return Instance of this class.
      */
-    @Nonnull
-    public HScoreboard setLine(int line, @Nonnull String text) {
-        Validate.notNull(text, "text cannot be null");
-        this.getTeam(line).setPrefix(text);
-        return this;
+    public final void setLine(int line, @Nonnull String text) {
+        this.lines[line] = Validate.notNull(text, "text cannot be null!");
     }
 
     /**
      * Sets lines of scoreboard to lines.
      *
      * @param lines List of lines.
-     * @return Instance of this class.
      */
-    @Nonnull
-    public HScoreboard setLines(@Nonnull List<String> lines) {
-        Validate.notNull(lines, "lines cannot be null");
-        for (int i = 1; i <= 16; i++)
-            if (lines.size() >= i) this.setLine(i, lines.get(i - 1));
-            else this.removeLine(i);
-        return this;
+    public final void setLines(@Nonnull List<String> lines) {
+        Validate.notNull(lines, "lines cannot be null!");
+        IntStream.range(0, lines.size()).forEach(i -> this.lines[i] = lines.get(i));
     }
 
     /**
      * Sets lines of scoreboard to lines.
      *
      * @param lines List of lines.
-     * @return Instance of this class.
      */
-    @Nonnull
-    public HScoreboard setLines(@Nonnull String... lines) {
-        return this.setLines(Arrays.asList(lines));
+    public final void setLines(@Nonnull String... lines) {
+        this.lines = Validate.notNull(lines, "lines cannot be null!");
     }
 
     /**
      * Removes line from scoreboard.
      *
      * @param line Line number.
-     * @return Instance of this class.
      */
-    @Nonnull
-    public HScoreboard removeLine(int line) {
-        Team currentTeam = this.scoreboard.getTeam("line_" + line);
-        if (currentTeam == null) {
-            return this;
-        }
-
-        this.scoreboard.resetScores(currentTeam.getEntries().iterator().next());
-        currentTeam.unregister();
-        return this;
+    public final void removeLine(int line) {
+        this.lines[line] = null;
     }
 
     /**
@@ -207,7 +132,7 @@ public final class HScoreboard {
      * @return Instance of this class.
      */
     @Nonnull
-    public HScoreboard expire(int time, @Nonnull TimeUnit timeUnit) {
+    public final HScoreboard expire(int time, @Nonnull TimeUnit timeUnit) {
         Validate.notNull(timeUnit, "time unit cannot be null");
         HCore.syncScheduler().after(time, timeUnit).run(this::delete);
         return this;
@@ -221,7 +146,7 @@ public final class HScoreboard {
      * @return Instance of this class.
      */
     @Nonnull
-    public HScoreboard expire(@Nonnull Duration duration) {
+    public final HScoreboard expire(@Nonnull Duration duration) {
         Validate.notNull(duration, "duration cannot be null!");
         HCore.syncScheduler().after(duration).run(this::delete);
         return this;
@@ -235,23 +160,9 @@ public final class HScoreboard {
      * @return Instance of this class.
      */
     @Nonnull
-    public HScoreboard expire(int ticks) {
+    public final HScoreboard expire(int ticks) {
         HCore.syncScheduler().after(ticks)
                 .run(this::delete);
-        return this;
-    }
-
-    /**
-     * Shows the scoreboard to player.
-     */
-    @Nonnull
-    public HScoreboard show() {
-        this.getPlayerSafe().ifPresent(player -> {
-            if (player.getScoreboard().equals(this.scoreboard))
-                return;
-
-            player.setScoreboard(this.scoreboard);
-        });
         return this;
     }
 
@@ -259,20 +170,97 @@ public final class HScoreboard {
      * Once every updateInterval ticks,
      * it will trigger.
      *
-     * @param consumer Callback.
+     * @param updateInterval Update interval as tick.
      * @return Instance of this class.
      */
     @Nonnull
-    public HScoreboard update(@Nonnull Consumer<HScoreboard> consumer) {
-        Validate.notNull(consumer, "consumer cannot be null");
+    public final HScoreboard update(int updateInterval) {
+        return this.update(updateInterval, (board) -> {
+        });
+    }
 
-        if (this.updateInterval > 0 && this.isExist()) {
-            consumer.accept(this);
-            HCore.syncScheduler().after(this.updateInterval)
-                    .run(() -> this.update(consumer));
-        }
+    /**
+     * Once every updateInterval ticks,
+     * it will trigger.
+     *
+     * @param updateInterval Update interval as tick.
+     * @param consumer       Callback.
+     * @return Instance of this class.
+     */
+    @Nonnull
+    public final HScoreboard update(int updateInterval, @Nonnull Consumer<HScoreboard> consumer) {
+        Validate.notNull(consumer, "consumer cannot be null!");
+        Validate.isTrue(updateInterval <= 0, "update interval must be greater than 0!");
+
+        HCore.syncScheduler().every(updateInterval)
+                .terminateIf(task -> !this.isExist())
+                .run(() -> {
+                    consumer.accept(this);
+                    this.show();
+                });
         return this;
     }
+
+    /**
+     * Sets the field of the object.
+     *
+     * @param obj       Object.
+     * @param fieldName Field name.
+     * @param value     Value.
+     */
+    @Nonnull
+    protected final <T> T setField(@Nonnull T obj,
+                                   @Nonnull String fieldName,
+                                   @Nonnull Object value) {
+        try {
+            Validate.notNull(obj, "object cannot be null!");
+            Validate.notNull(fieldName, "field name cannot be null!");
+            Validate.notNull(value, "value cannot be null!");
+
+            Field field = obj.getClass().getDeclaredField(fieldName);
+            field.setAccessible(true);
+            field.set(obj, value);
+        } catch (Exception ignored) {
+        }
+        return obj;
+    }
+
+    /**
+     * Splits text into 3 different parts
+     * for prefix, middle and suffix.
+     *
+     * @param line Line.
+     * @param text Text.
+     * @return 3 parts.
+     */
+    @Nonnull
+    protected final String[] splitLine(int line, @Nonnull String text) {
+        String[] parts;
+
+        int length = text.length();
+        if (length <= 16)
+            parts = new String[]{text, "", ""};
+        else if (length <= 32)
+            parts = new String[]{text.substring(0, 16), "", text.substring(16)};
+        else
+            parts = new String[]{text.substring(0, 16), text.substring(16, Math.min(54, length)), length >= 56 ? text.substring(56) : ""};
+
+        String color = "§" + ((line >= 10) ? new String[]{"a", "b", "c", "d", "e", "f"}[line - 10] : line);
+        String lastColor = ChatColor.getLastColors(parts[0] + parts[1]);
+        lastColor = lastColor.equals("") ? "§r" : lastColor;
+
+        String prefix = parts[0];
+        String middle = parts[1] + color;
+        String suffix = lastColor + parts[2].substring(0, parts[2].length() - lastColor.length());
+        return new String[]{prefix, middle, suffix};
+    }
+
+
+    /**
+     * Shows the scoreboard to player.
+     */
+    @Nonnull
+    public abstract HScoreboard show();
 
     /**
      * Deletes scoreboard.
@@ -280,39 +268,5 @@ public final class HScoreboard {
      * @return Instance of this class.
      */
     @Nonnull
-    public HScoreboard delete() {
-        this.getPlayerSafe().ifPresent(player -> {
-            player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
-            HScoreboardHandler.getContent().remove(this.uid);
-        });
-        return this;
-    }
-
-
-    /**
-     * Gets or creates team object.
-     *
-     * @param line Line.
-     * @return Team.
-     */
-    @Nonnull
-    private Team getTeam(int line) {
-        Team currentTeam = this.scoreboard.getTeam("line_" + line);
-        if (currentTeam != null) {
-            return currentTeam;
-        }
-
-        Team newTeam = this.scoreboard.registerNewTeam("line_" + line);
-        newTeam.setAllowFriendlyFire(true);
-        newTeam.setCanSeeFriendlyInvisibles(false);
-        if (newTeam.getEntries().size() > 0) {
-            newTeam.removeEntry(newTeam.getEntries().iterator().next());
-        }
-
-        String teamEntry = line >= 10 ? "§" + new String[]{"a", "b", "c", "d", "e", "f"}[line - 10] : "§" + line;
-        newTeam.addEntry(teamEntry);
-
-        this.objective.getScore(teamEntry).setScore(16 - line);
-        return newTeam;
-    }
+    public abstract HScoreboard delete();
 }

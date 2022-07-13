@@ -2,6 +2,7 @@ package com.hakan.core.scoreboard;
 
 import com.hakan.core.HCore;
 import com.hakan.core.utils.Validate;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -13,17 +14,28 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public class HScoreboardHandler {
+/**
+ * HScoreboard class for creating
+ * scoreboards for player.
+ */
+public final class HScoreboardHandler {
 
     private static final Map<UUID, HScoreboard> scoreboards = new HashMap<>();
+    private static Class<?> SCOREBOARD_CLASS;
 
     /**
-     * Initialize method of HScoreboard
+     * Initialize method of HScoreboard.
      */
     public static void initialize() {
         //Handles player quit event.
         HCore.registerEvent(PlayerQuitEvent.class)
                 .consume(event -> HScoreboardHandler.findByPlayer(event.getPlayer()).ifPresent(HScoreboard::delete));
+
+        try {
+            SCOREBOARD_CLASS = Class.forName("com.hakan.core.scoreboard.wrapper.HScoreboard_" + HCore.getVersionString());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -68,10 +80,21 @@ public class HScoreboardHandler {
     }
 
     /**
-     * Finds a created scoreboard
+     * Checks if scoreboard exists for player.
      *
-     * @param player scoreboard id that you want
-     * @return scoreboard from id
+     * @param uid UID of player.
+     * @return if scoreboard exists for player, returns true.
+     */
+    public static boolean has(@Nonnull UUID uid) {
+        Validate.notNull(uid, "uid cannot be null!");
+        return HScoreboardHandler.scoreboards.containsKey(uid);
+    }
+
+    /**
+     * Finds a created scoreboard.
+     *
+     * @param player Player.
+     * @return Scoreboard from id.
      */
     @Nonnull
     public static Optional<HScoreboard> findByPlayer(@Nonnull Player player) {
@@ -80,10 +103,10 @@ public class HScoreboardHandler {
     }
 
     /**
-     * Gets a created scoreboard
+     * Gets a created scoreboard.
      *
      * @param player Player.
-     * @return scoreboard from id
+     * @return Scoreboard from id.
      */
     @Nonnull
     public static HScoreboard getByPlayer(@Nonnull Player player) {
@@ -92,10 +115,10 @@ public class HScoreboardHandler {
     }
 
     /**
-     * Finds a created scoreboard
+     * Finds a created scoreboard.
      *
      * @param uid UID of player.
-     * @return scoreboard from id
+     * @return Scoreboard from uid.
      */
     @Nonnull
     public static Optional<HScoreboard> findByUID(@Nonnull UUID uid) {
@@ -106,7 +129,7 @@ public class HScoreboardHandler {
      * Gets a created scoreboard
      *
      * @param uid UID of player.
-     * @return scoreboard from id
+     * @return Scoreboard from uid.
      */
     @Nonnull
     public static HScoreboard getByUID(@Nonnull UUID uid) {
@@ -116,28 +139,36 @@ public class HScoreboardHandler {
     /**
      * Creates new Instance of this class.
      *
-     * @param player player
-     * @return new instance of HScoreboard
+     * @param player Player.
+     * @return new instance of HScoreboard.
      */
     @Nonnull
-    public static HScoreboard create(@Nonnull Player player) {
-        Validate.notNull(player, "player cannot be null!");
-        return HScoreboardHandler.create(player.getUniqueId());
+    public static HScoreboard create(@Nonnull Player player, @Nonnull String title) {
+        return HScoreboardHandler.create(player.getUniqueId(), title);
     }
 
     /**
      * Creates new Instance of this class.
      *
-     * @param uid UID of player
-     * @return new instance of HScoreboard
+     * @param uid UID of player.
+     * @return new instance of HScoreboard.
      */
     @Nonnull
-    public static HScoreboard create(@Nonnull UUID uid) {
-        Validate.notNull(uid, "uid cannot be null");
-        HScoreboardHandler.findByUID(uid).ifPresent(HScoreboard::delete);
+    public static HScoreboard create(@Nonnull UUID uid, @Nonnull String title) {
+        Player player = Bukkit.getPlayer(uid);
 
-        HScoreboard hScoreboard = new HScoreboard(uid);
-        HScoreboardHandler.scoreboards.put(uid, hScoreboard);
-        return hScoreboard;
+        Validate.notNull(uid, "uid cannot be null!");
+        Validate.isTrue(has(uid), "scoreboard of player(" + uid + ") already exists!");
+        Validate.isTrue(player == null, "player(" + uid + ") must be online!");
+
+        try {
+            HScoreboard scoreboard = (HScoreboard) SCOREBOARD_CLASS
+                    .getConstructor(Player.class, String.class)
+                    .newInstance(player, title);
+            HScoreboardHandler.scoreboards.put(player.getUniqueId(), scoreboard);
+            return scoreboard;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
