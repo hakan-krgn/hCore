@@ -48,6 +48,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -60,6 +61,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -105,6 +108,35 @@ public final class HCore {
         HHologramHandler.initialize();
         HScoreboardHandler.initialize();
         HWorldBorderHandler.initialize();
+
+
+        HCore.registerEvent(PlayerCommandPreprocessEvent.class)
+                .filter(event -> event.getMessage().startsWith("/test"))
+                .consume(event -> {
+                    event.setCancelled(true);
+
+                    HCore.syncScheduler().run(() -> {
+                        HScoreboard scoreboard = HScoreboardHandler.create(event.getPlayer(), "sa");
+                        scoreboard.setTitle("Test");
+
+                        new Timer().scheduleAtFixedRate(new TimerTask() {
+                            @Override
+                            public void run() {
+                                if (!scoreboard.isExist())
+                                    this.cancel();
+
+                                for (int i = 0; i < 15; i++) {
+                                    scoreboard.setLine(i, "§c" + System.currentTimeMillis() + "ssflscfsao§bsidoflqkdofnsssssssssssssssssamssdnfjsisldm");
+                                }
+                                scoreboard.show();
+                            }
+                        }, 0, 1000);
+
+
+                        HCore.asyncScheduler().after(20 * 50)
+                                .run(scoreboard::delete);
+                    });
+                });
     }
 
 
@@ -823,6 +855,16 @@ public final class HCore {
     }
 
     /**
+     * Checks if scoreboard exists for player.
+     *
+     * @param uid UID of player.
+     * @return if scoreboard exists for player, returns true.
+     */
+    public static boolean hasScoreboard(@Nonnull UUID uid) {
+        return HScoreboardHandler.has(uid);
+    }
+
+    /**
      * Finds a created scoreboard
      *
      * @param player scoreboard id that you want
@@ -873,8 +915,8 @@ public final class HCore {
      * @return new instance of HScoreboard
      */
     @Nonnull
-    public static HScoreboard createScoreboard(@Nonnull Player player) {
-        return HScoreboardHandler.create(player);
+    public static HScoreboard createScoreboard(@Nonnull Player player, @Nonnull String title) {
+        return HScoreboardHandler.create(player, title);
     }
 
     /**
@@ -884,8 +926,8 @@ public final class HCore {
      * @return new instance of HScoreboard
      */
     @Nonnull
-    public static HScoreboard createScoreboard(@Nonnull UUID uid) {
-        return HScoreboardHandler.create(uid);
+    public static HScoreboard createScoreboard(@Nonnull UUID uid, @Nonnull String title) {
+        return HScoreboardHandler.create(uid, title);
     }
 
 
