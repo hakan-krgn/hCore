@@ -4,7 +4,6 @@ import com.hakan.core.HCore;
 import com.hakan.core.ui.GUIHandler;
 import com.hakan.core.ui.anvil.HAnvil;
 import net.minecraft.server.v1_16_R3.BlockPosition;
-import net.minecraft.server.v1_16_R3.ChatComponentText;
 import net.minecraft.server.v1_16_R3.ContainerAccess;
 import net.minecraft.server.v1_16_R3.ContainerAnvil;
 import net.minecraft.server.v1_16_R3.Containers;
@@ -16,6 +15,7 @@ import net.minecraft.server.v1_16_R3.PacketPlayOutOpenWindow;
 import net.minecraft.server.v1_16_R3.World;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_16_R3.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -69,7 +69,7 @@ public final class HAnvil_v1_16_R3 extends HAnvil {
         if (this.rightItem != null)
             this.container.setItem(1, CraftItemStack.asNMSCopy(super.rightItem));
 
-        HCore.sendPacket(super.player, new PacketPlayOutOpenWindow(this.nextContainerId, Containers.ANVIL, new ChatComponentText(super.title)));
+        HCore.sendPacket(super.player, new PacketPlayOutOpenWindow(this.nextContainerId, Containers.ANVIL, CraftChatMessage.fromStringOrNull(super.title)));
         this.container.levelCost.set(0);
         this.container.addSlotListener(this.entityPlayer);
         this.entityPlayer.activeContainer = this.container;
@@ -106,7 +106,7 @@ public final class HAnvil_v1_16_R3 extends HAnvil {
         public AnvilContainer(@Nonnull EntityHuman entityhuman) {
             super(nextContainerId, entityhuman.inventory, ContainerAccess.at(entityhuman.world, new BlockPosition(0, 0, 0)));
             super.checkReachable = false;
-            super.setTitle(new ChatComponentText(title));
+            super.setTitle(CraftChatMessage.fromStringOrNull(title));
         }
 
         @Override
