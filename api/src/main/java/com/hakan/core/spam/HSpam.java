@@ -24,8 +24,21 @@ public final class HSpam {
      * @return Difference between now
      * and end time of spam as millisecond.
      */
-    public static long spam(@Nonnull String id) {
+    public static long remainTime(@Nonnull String id) {
         return HSpam.spams.get(id) - System.currentTimeMillis();
+    }
+
+    /**
+     * Gets difference between now
+     * and end time of spam as unit.
+     *
+     * @param id   The id to check.
+     * @param unit The time unit.
+     * @return Difference between now
+     * and end time of spam as unit.
+     */
+    public static long remainTime(@Nonnull String id, @Nonnull TimeUnit unit) {
+        return unit.convert(remainTime(id), TimeUnit.MILLISECONDS);
     }
 
     /**
