@@ -16,6 +16,9 @@ public final class ColorUtil {
 
     private static final Pattern HEX_PATTERN = Pattern.compile("#[a-fA-F\\d]{6}");
 
+    private static final Pattern COLOR_PATTERN = Pattern.compile("(?<color>(([§&][A-Fa-f\\d|r])|(#[A-Fa-f\\d]{6})))");
+    private static final Pattern FORMAT_PATTERN = Pattern.compile("(?<format>[§&][klmnor])");
+
     /**
      * Convert a message to a colored message.
      *
@@ -88,5 +91,40 @@ public final class ColorUtil {
         Validate.notNull(color, "color cannot be null!");
         String hex = String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
         return color(hex);
+    }
+
+    /**
+     * Get the last chat color of
+     * the given hex color code.
+     *
+     * @param text The hex color code.
+     * @return The last chat color.
+     */
+    @Nonnull
+    public static String getLastColors(String text) {
+        Matcher colorMatcher = COLOR_PATTERN.matcher(text);
+        Matcher formatMatcher = FORMAT_PATTERN.matcher(text);
+
+        StringBuilder format = new StringBuilder();
+        while (formatMatcher.find()) {
+            String firstColor = formatMatcher.group("format");
+            if (firstColor.equalsIgnoreCase("§r")) {
+                format = new StringBuilder();
+                continue;
+            }
+            format.append(firstColor);
+        }
+
+        String lastColor = "";
+        while (colorMatcher.find()) {
+            String firstColor = colorMatcher.group("color");
+            if (firstColor.equalsIgnoreCase("§r")) {
+                lastColor = "";
+                continue;
+            }
+            lastColor = firstColor;
+        }
+
+        return lastColor + format;
     }
 }
