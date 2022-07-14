@@ -20,10 +20,10 @@ public final class HCommandHandler {
      *
      * @param adapters List of command adapters.
      */
-    public static void register(@Nonnull HCommandAdapter... adapters) {
+    public static void register(@Nonnull Object... adapters) {
         Validate.notNull(adapters, "adapters cannot be null!");
 
-        for (HCommandAdapter adapter : adapters) {
+        for (Object adapter : adapters) {
             BaseCommand baseCommand = adapter.getClass().getAnnotation(BaseCommand.class);
             if (baseCommand == null)
                 continue;

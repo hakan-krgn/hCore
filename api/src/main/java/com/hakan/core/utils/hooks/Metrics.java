@@ -48,7 +48,7 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.zip.GZIPOutputStream;
 
-public class Metrics {
+public final class Metrics {
 
     public static void initialize(JavaPlugin plugin) {
         new Metrics(plugin, 14564);

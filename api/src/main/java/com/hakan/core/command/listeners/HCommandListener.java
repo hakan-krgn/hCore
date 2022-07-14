@@ -1,6 +1,5 @@
 package com.hakan.core.command.listeners;
 
-import com.hakan.core.command.HCommandAdapter;
 import com.hakan.core.command.executors.base.BaseCommandData;
 import com.hakan.core.command.executors.sub.SubCommandData;
 import com.hakan.core.utils.Validate;
@@ -53,7 +52,7 @@ public final class HCommandListener extends BukkitCommand {
         }
 
         try {
-            HCommandAdapter adapter = this.baseCommandData.getAdapter();
+            Object adapter = this.baseCommandData.getAdapter();
             Method method = subCommandData.getMethod();
             Class<?> parameterType = method.getParameterTypes()[0];
 

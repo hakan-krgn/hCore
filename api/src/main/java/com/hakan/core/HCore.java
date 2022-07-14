@@ -1,6 +1,5 @@
 package com.hakan.core;
 
-import com.hakan.core.command.HCommandAdapter;
 import com.hakan.core.command.HCommandHandler;
 import com.hakan.core.database.DatabaseHandler;
 import com.hakan.core.database.DatabaseObject;
@@ -82,6 +81,15 @@ public final class HCore {
     @Nonnull
     public static JavaPlugin getInstance() {
         return HCore.INSTANCE;
+    }
+
+    /**
+     * Sets instance plugin of hCore.
+     *
+     * @param instance Instance.
+     */
+    public static void setInstance(@Nonnull JavaPlugin instance) {
+        HCore.INSTANCE = Validate.notNull(instance, "instance cannot be null!");
     }
 
     /**
@@ -492,7 +500,7 @@ public final class HCore {
      *
      * @param adapters List of command adapters.
      */
-    public static void registerCommands(@Nonnull HCommandAdapter... adapters) {
+    public static void registerCommands(@Nonnull Object... adapters) {
         HCommandHandler.register(adapters);
     }
 
@@ -823,6 +831,16 @@ public final class HCore {
     }
 
     /**
+     * Checks if scoreboard exists for player.
+     *
+     * @param uid UID of player.
+     * @return if scoreboard exists for player, returns true.
+     */
+    public static boolean hasScoreboard(@Nonnull UUID uid) {
+        return HScoreboardHandler.has(uid);
+    }
+
+    /**
      * Finds a created scoreboard
      *
      * @param player scoreboard id that you want
@@ -873,8 +891,8 @@ public final class HCore {
      * @return new instance of HScoreboard
      */
     @Nonnull
-    public static HScoreboard createScoreboard(@Nonnull Player player) {
-        return HScoreboardHandler.create(player);
+    public static HScoreboard createScoreboard(@Nonnull Player player, @Nonnull String title) {
+        return HScoreboardHandler.create(player, title);
     }
 
     /**
@@ -884,8 +902,8 @@ public final class HCore {
      * @return new instance of HScoreboard
      */
     @Nonnull
-    public static HScoreboard createScoreboard(@Nonnull UUID uid) {
-        return HScoreboardHandler.create(uid);
+    public static HScoreboard createScoreboard(@Nonnull UUID uid, @Nonnull String title) {
+        return HScoreboardHandler.create(uid, title);
     }
 
 

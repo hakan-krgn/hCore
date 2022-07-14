@@ -20,14 +20,3 @@ dependencies {
     implementation project(':nms:v1_18_R2')
     implementation project(':nms:v1_19_R1')
 }
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = project.group
-            version = project.version
-            artifactId = 'bukkit-primary'
-            from components.java
-        }
-    }
-}

@@ -4,8 +4,8 @@ import com.hakan.core.HCore;
 
 import javax.annotation.Nonnull;
 import java.time.Duration;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -14,7 +14,19 @@ import java.util.concurrent.TimeUnit;
  */
 public final class HSpam {
 
-    private static final Set<String> spams = new HashSet<>();
+    private static final Map<String, Long> spams = new HashMap<>();
+
+    /**
+     * Gets difference between now
+     * and end time of spam as millisecond.
+     *
+     * @param id The id to check.
+     * @return Difference between now
+     * and end time of spam as millisecond.
+     */
+    public static long spam(@Nonnull String id) {
+        return HSpam.spams.get(id) - System.currentTimeMillis();
+    }
 
     /**
      * Checks if id is spamming.
@@ -47,8 +59,8 @@ public final class HSpam {
      * @return True if spamming.
      */
     public static boolean spam(@Nonnull String id, long ticks) {
-        if (!HSpam.spams.contains(id)) {
-            HSpam.spams.add(id);
+        if (!HSpam.spams.containsKey(id)) {
+            HSpam.spams.put(id, System.currentTimeMillis() + ticks * 50);
             HCore.syncScheduler().after(ticks)
                     .run(() -> HSpam.spams.remove(id));
             return false;
