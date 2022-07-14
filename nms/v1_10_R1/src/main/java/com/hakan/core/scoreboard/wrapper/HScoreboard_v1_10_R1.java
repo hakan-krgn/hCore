@@ -4,11 +4,11 @@ import com.hakan.core.HCore;
 import com.hakan.core.scoreboard.HScoreboard;
 import com.hakan.core.scoreboard.HScoreboardHandler;
 import com.hakan.core.utils.ColorUtil;
-import net.minecraft.server.v1_8_R3.IScoreboardCriteria;
-import net.minecraft.server.v1_8_R3.PacketPlayOutScoreboardDisplayObjective;
-import net.minecraft.server.v1_8_R3.PacketPlayOutScoreboardObjective;
-import net.minecraft.server.v1_8_R3.PacketPlayOutScoreboardScore;
-import net.minecraft.server.v1_8_R3.PacketPlayOutScoreboardTeam;
+import net.minecraft.server.v1_10_R1.IScoreboardCriteria;
+import net.minecraft.server.v1_10_R1.PacketPlayOutScoreboardDisplayObjective;
+import net.minecraft.server.v1_10_R1.PacketPlayOutScoreboardObjective;
+import net.minecraft.server.v1_10_R1.PacketPlayOutScoreboardScore;
+import net.minecraft.server.v1_10_R1.PacketPlayOutScoreboardTeam;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
@@ -18,14 +18,14 @@ import java.util.Collections;
 /**
  * {@inheritDoc}
  */
-public final class HScoreboard_v1_8_R3 extends HScoreboard {
+public final class HScoreboard_v1_10_R1 extends HScoreboard {
 
     private int mode = 0;
 
     /**
      * {@inheritDoc}
      */
-    public HScoreboard_v1_8_R3(@Nonnull Player player, @Nonnull String title) {
+    public HScoreboard_v1_10_R1(@Nonnull Player player, @Nonnull String title) {
         super(player, title);
     }
 
@@ -62,11 +62,12 @@ public final class HScoreboard_v1_8_R3 extends HScoreboard {
             this.setField(team, "b", "team_" + i);
             this.setField(team, "c", prefix);
             this.setField(team, "d", suffix);
-            this.setField(team, "i", 1);
             this.setField(team, "e", "always");
-            this.setField(team, "f", -1);
-            this.setField(team, "h", this.mode);
-            this.setField(team, "g", (this.mode == 0) ? Collections.singletonList(middle) : new ArrayList<>());
+            this.setField(team, "f", "always");
+            this.setField(team, "g", -1);
+            this.setField(team, "h", (this.mode == 0) ? Collections.singletonList(middle) : new ArrayList<>());
+            this.setField(team, "i", this.mode);
+            this.setField(team, "j", 1);
 
             PacketPlayOutScoreboardScore score = new PacketPlayOutScoreboardScore();
             this.setField(score, "a", middle);

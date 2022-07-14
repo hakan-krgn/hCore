@@ -1,6 +1,5 @@
 package com.hakan.core.command.executors.base;
 
-import com.hakan.core.command.HCommandAdapter;
 import com.hakan.core.command.executors.sub.SubCommandData;
 import com.hakan.core.command.listeners.HCommandListener;
 import com.hakan.core.command.utils.CommandUtils;
@@ -26,7 +25,7 @@ import java.util.Optional;
 @SuppressWarnings({"unchecked"})
 public final class BaseCommandData {
 
-    private final HCommandAdapter adapter;
+    private final Object adapter;
 
     private final String name;
     private final String description;
@@ -41,7 +40,7 @@ public final class BaseCommandData {
      * @param adapter     Annotated class.
      * @param baseCommand Annotation.
      */
-    public BaseCommandData(@Nonnull HCommandAdapter adapter, @Nonnull BaseCommand baseCommand) {
+    public BaseCommandData(@Nonnull Object adapter, @Nonnull BaseCommand baseCommand) {
         Validate.notNull(adapter, "adapter cannot be null!");
         Validate.notNull(baseCommand, "baseCommand cannot be null!");
 
@@ -61,7 +60,7 @@ public final class BaseCommandData {
      * @return Adapter class from annotation.
      */
     @Nonnull
-    public HCommandAdapter getAdapter() {
+    public Object getAdapter() {
         return this.adapter;
     }
 

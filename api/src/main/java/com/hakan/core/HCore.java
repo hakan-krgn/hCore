@@ -1,6 +1,5 @@
 package com.hakan.core;
 
-import com.hakan.core.command.HCommandAdapter;
 import com.hakan.core.command.HCommandHandler;
 import com.hakan.core.database.DatabaseHandler;
 import com.hakan.core.database.DatabaseObject;
@@ -48,7 +47,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -61,8 +59,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -88,6 +84,15 @@ public final class HCore {
     }
 
     /**
+     * Sets instance plugin of hCore.
+     *
+     * @param instance Instance.
+     */
+    public static void setInstance(@Nonnull JavaPlugin instance) {
+        HCore.INSTANCE = Validate.notNull(instance, "instance cannot be null!");
+    }
+
+    /**
      * Initializes all APIs.
      *
      * @param plugin Instance of main class.
@@ -108,35 +113,6 @@ public final class HCore {
         HHologramHandler.initialize();
         HScoreboardHandler.initialize();
         HWorldBorderHandler.initialize();
-
-
-        HCore.registerEvent(PlayerCommandPreprocessEvent.class)
-                .filter(event -> event.getMessage().startsWith("/test"))
-                .consume(event -> {
-                    event.setCancelled(true);
-
-                    HCore.syncScheduler().run(() -> {
-                        HScoreboard scoreboard = HScoreboardHandler.create(event.getPlayer(), "sa");
-                        scoreboard.setTitle("Test");
-
-                        new Timer().scheduleAtFixedRate(new TimerTask() {
-                            @Override
-                            public void run() {
-                                if (!scoreboard.isExist())
-                                    this.cancel();
-
-                                for (int i = 0; i < 15; i++) {
-                                    scoreboard.setLine(i, "§c" + System.currentTimeMillis() + "ssflscfsao§bsidoflqkdofnsssssssssssssssssamssdnfjsisldm");
-                                }
-                                scoreboard.show();
-                            }
-                        }, 0, 1000);
-
-
-                        HCore.asyncScheduler().after(20 * 50)
-                                .run(scoreboard::delete);
-                    });
-                });
     }
 
 
@@ -524,7 +500,7 @@ public final class HCore {
      *
      * @param adapters List of command adapters.
      */
-    public static void registerCommands(@Nonnull HCommandAdapter... adapters) {
+    public static void registerCommands(@Nonnull Object... adapters) {
         HCommandHandler.register(adapters);
     }
 

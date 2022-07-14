@@ -1,8 +1,8 @@
 package com.hakan.core.scoreboard;
 
 import com.hakan.core.HCore;
+import com.hakan.core.utils.ColorUtil;
 import com.hakan.core.utils.Validate;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
@@ -229,32 +229,36 @@ public abstract class HScoreboard {
      * Splits text into 3 different parts
      * for prefix, middle and suffix.
      *
-     * @param line Line.
      * @param text Text.
+     * @param len1 Length of prefix.
+     * @param len2 Length of middle.
+     * @param len3 Length of suffix.
      * @return 3 parts.
      */
     @Nonnull
-    protected final String[] splitLine(int line, @Nonnull String text) {
-        String[] parts;
+    protected final String[] splitLine(int line, @Nonnull String text, int len1, int len2, int len3) {
+        String color = (line >= 10) ? "§" + new String[]{"a", "b", "c", "d", "e", "f"}[line - 10] : "§" + line;
 
-        int length = text.length();
-        if (length <= 16)
-            parts = new String[]{text, "", ""};
-        else if (length <= 32)
-            parts = new String[]{text.substring(0, 16), "", text.substring(16)};
-        else
-            parts = new String[]{text.substring(0, 16), text.substring(16, Math.min(54, length)), length >= 56 ? text.substring(56) : ""};
+        text += new String(new char[len1 + len2 + len3 - text.length() - 6]).replace("\0", "‼");
+        String prefixColored = text.substring(0, len1);
+        String prefixLastColor = ColorUtil.getLastColors(prefixColored);
+        prefixLastColor = prefixLastColor.length() == 0 ? "§r" : prefixLastColor;
 
-        String color = "§" + ((line >= 10) ? new String[]{"a", "b", "c", "d", "e", "f"}[line - 10] : line);
-        String lastColor = ChatColor.getLastColors(parts[0] + parts[1]);
-        lastColor = lastColor.equals("") ? "§r" : lastColor;
+        text = text.substring(len1);
+        String middle = prefixLastColor + text.substring(0, len2 - prefixLastColor.length() - 2);
+        String middleColored = middle + color;
+        String middleLastColor = ColorUtil.getLastColors(middle);
+        middleLastColor = middleLastColor.length() == 0 ? "§r" : middleLastColor;
 
-        String prefix = parts[0];
-        String middle = parts[1] + color;
-        String suffix = lastColor + parts[2].substring(0, parts[2].length() - lastColor.length());
-        return new String[]{prefix, middle, suffix};
+        text = text.substring(len2 - prefixLastColor.length() - 2);
+        String suffixColored = middleLastColor + text.substring(0, len3 - middleLastColor.length());
+
+        return new String[]{
+                prefixColored.replace("‼", ""),
+                middleColored.replace("‼", ""),
+                suffixColored.replace("‼", "")
+        };
     }
-
 
     /**
      * Shows the scoreboard to player.
