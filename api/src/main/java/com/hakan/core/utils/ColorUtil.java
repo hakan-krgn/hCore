@@ -94,14 +94,17 @@ public final class ColorUtil {
     }
 
     /**
-     * Get the last chat color of
-     * the given hex color code.
+     * Get the last chat color
+     * from the given text.
      *
-     * @param text The hex color code.
-     * @return The last chat color.
+     * @param text Given text.
+     * @return The last chat color codes.
      */
     @Nonnull
-    public static String getLastColors(String text) {
+    public static String getLastColors(@Nonnull String text) {
+        Validate.notNull(text, "text cannot be null!");
+        Validate.isTrue(text.isEmpty(), "text cannot be empty!");
+
         Matcher colorMatcher = COLOR_PATTERN.matcher(text);
         Matcher formatMatcher = FORMAT_PATTERN.matcher(text);
 
