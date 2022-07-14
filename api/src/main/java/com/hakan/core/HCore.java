@@ -1389,6 +1389,31 @@ public final class HCore {
      */
 
     /**
+     * Gets difference between now
+     * and end time of spam as millisecond.
+     *
+     * @param id The id to check.
+     * @return Difference between now
+     * and end time of spam as millisecond.
+     */
+    public static long remainTime(@Nonnull String id) {
+        return HSpam.remainTime(id);
+    }
+
+    /**
+     * Gets difference between now
+     * and end time of spam as unit.
+     *
+     * @param id   The id to check.
+     * @param unit The time unit.
+     * @return Difference between now
+     * and end time of spam as unit.
+     */
+    public static long remainTime(@Nonnull String id, @Nonnull TimeUnit unit) {
+        return HSpam.remainTime(id, unit);
+    }
+
+    /**
      * Checks if id is spamming.
      *
      * @param id   The id to check.
@@ -1414,12 +1439,12 @@ public final class HCore {
     /**
      * Checks if id is spamming.
      *
-     * @param id   The id to check.
-     * @param time The time in milliseconds.
+     * @param id    The id to check.
+     * @param ticks The time in ticks.
      * @return True if spamming.
      */
-    public static boolean spam(@Nonnull String id, long time) {
-        return HSpam.spam(id, time);
+    public static boolean spam(@Nonnull String id, long ticks) {
+        return HSpam.spam(id, ticks);
     }
 
 
