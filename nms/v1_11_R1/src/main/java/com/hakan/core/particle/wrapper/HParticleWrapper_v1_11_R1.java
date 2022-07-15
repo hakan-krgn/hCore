@@ -36,7 +36,7 @@ public final class HParticleWrapper_v1_11_R1 implements HParticleWrapper {
             }
         }
 
-        Validate.notNull(enumParticle, "Particle not found!");
+        Validate.notNull(enumParticle, "particle couldn't find!");
         HCore.sendPacket(player, new PacketPlayOutWorldParticles(enumParticle, false, (float) location.getX(), (float) location.getY(), (float) location.getZ(), (float) hParticle.getOffset().getX(), (float) hParticle.getOffset().getY(), (float) hParticle.getOffset().getZ(), (float) hParticle.getSpeed(), hParticle.getAmount()));
     }
 }
