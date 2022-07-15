@@ -603,6 +603,16 @@ public final class HCore {
         HParticleHandler.play(players, location, particle);
     }
 
+    /**
+     * Plays particle for all players.
+     *
+     * @param location Location.
+     * @param particle HParticle class.
+     */
+    public static void playParticle(@Nonnull Location location, @Nonnull HParticle particle) {
+        HParticleHandler.play(location, particle);
+    }
+
 
     /*
     MESSAGE

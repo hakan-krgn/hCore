@@ -1,5 +1,6 @@
 package com.hakan.core.particle;
 
+import com.hakan.core.particle.type.HParticleType;
 import com.hakan.core.utils.Validate;
 import org.bukkit.Color;
 import org.bukkit.util.Vector;
@@ -71,20 +72,48 @@ public final class HParticle {
     /**
      * Creates new instance of this class.
      *
-     * @param particleName Particle name.
-     * @param offset       Offset.
+     * @param type   Particle type.
+     * @param amount Amount.
+     * @param speed  Speed.
+     * @param offset Offset.
+     * @param color  Particle Color.
      */
-    public HParticle(@Nonnull String particleName, @Nonnull Vector offset) {
-        this(particleName, 10, 1, offset, Color.WHITE);
+    public HParticle(@Nonnull HParticleType type, int amount, double speed, @Nonnull Vector offset, @Nonnull Color color) {
+        this(type.name(), amount, speed, offset, color);
     }
 
     /**
      * Creates new instance of this class.
      *
-     * @param particleName Particle name.
+     * @param type   Particle type.
+     * @param amount Amount.
+     * @param speed  Speed.
+     * @param offset Offset.
      */
-    public HParticle(@Nonnull String particleName) {
-        this(particleName, 10, 1, new Vector(0.1, 0.1, 0.1), Color.WHITE);
+    public HParticle(@Nonnull HParticleType type, int amount, double speed, @Nonnull Vector offset) {
+        this(type.name(), amount, speed, offset, Color.WHITE);
+    }
+
+    /**
+     * Creates new instance of this class.
+     *
+     * @param type   Particle type.
+     * @param amount Amount.
+     * @param offset Offset.
+     */
+    public HParticle(@Nonnull HParticleType type, int amount, @Nonnull Vector offset) {
+        this(type.name(), amount, 0.1, offset, Color.WHITE);
+    }
+
+    /**
+     * Creates new instance of this class.
+     *
+     * @param type   Particle type.
+     * @param speed  Amount.
+     * @param offset Offset.
+     */
+    public HParticle(@Nonnull HParticleType type, double speed, @Nonnull Vector offset) {
+        this(type.name(), 10, speed, offset, Color.WHITE);
     }
 
     /**
