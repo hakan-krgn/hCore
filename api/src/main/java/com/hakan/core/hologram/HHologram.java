@@ -482,6 +482,21 @@ public final class HHologram {
     }
 
     /**
+     * Replaces every line with given list.
+     *
+     * @param lines New lines.
+     * @return Instance of this class.
+     */
+    @Nonnull
+    public HHologram setLines(@Nonnull List<String> lines) {
+        Validate.notNull(lines, "lines cannot be null");
+        Validate.isTrue(lines.isEmpty(), "lines cannot be empty");
+        this.clearLines();
+        this.lines.forEach(this::addLine);
+        return this;
+    }
+
+    /**
      * Deletes hologram.
      *
      * @return Instance of this class.
