@@ -41,6 +41,23 @@ subprojects {
         }
     }
 
+    /*
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+    }
+
+    artifacts {
+        archives sourcesJar
+        archives javadocJar
+    }
+    */
+
     artifacts.archives(tasks.shadowJar)
 
     tasks.jar {
