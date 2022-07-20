@@ -496,8 +496,15 @@ public final class HHologram {
             for (int i = 0; i < lines.size(); i++)
                 this.setLine(i, lines.get(i));
         } else if (lines.size() > this.lines.size()) {
-            this.clearLines();
-            this.addLines(lines);
+            for (int i = 0; i < this.lines.size(); i++)
+                this.setLine(i, lines.get(i));
+            for (int i = this.lines.size(); i < lines.size(); i++)
+                this.addLine(lines.get(i));
+        } else {
+            for (int i = 0; i < this.lines.size(); i++)
+                this.setLine(i, lines.get(i));
+            for (int i = this.lines.size() - 1; i >= lines.size(); i--)
+                this.removeLine(i);
         }
 
         return this;
