@@ -1,4 +1,4 @@
-sourceCompatibility = 18
+sourceCompatibility = 17
 
 dependencies {
     compileOnly 'com.mojang:authlib:3.2.28'

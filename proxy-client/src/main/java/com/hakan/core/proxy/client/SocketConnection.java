@@ -9,6 +9,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -53,9 +55,9 @@ public final class SocketConnection {
     private final Socket socket;
     private final DataInputStream inputStream;
     private final DataOutputStream outputStream;
-    private Runnable disconnectRunnable;
-    private Consumer<String> messageConsumer;
-    private Consumer<Serializable> objectConsumer;
+    private final List<Runnable> disconnectRunnable;
+    private final List<Consumer<String>> messageConsumer;
+    private final List<Consumer<Serializable>> objectConsumer;
 
     /**
      * Constructor to creates a
@@ -68,6 +70,9 @@ public final class SocketConnection {
         this.socket = Validate.notNull(socket, "socket cannot be null");
         this.inputStream = new DataInputStream(socket.getInputStream());
         this.outputStream = new DataOutputStream(socket.getOutputStream());
+        this.disconnectRunnable = new ArrayList<>();
+        this.messageConsumer = new ArrayList<>();
+        this.objectConsumer = new ArrayList<>();
     }
 
     /**
@@ -117,7 +122,7 @@ public final class SocketConnection {
      * @param consumer The consumer to call.
      */
     public void whenMessageReceived(@Nonnull Consumer<String> consumer) {
-        this.messageConsumer = Validate.notNull(consumer, "consumer cannot be null");
+        this.messageConsumer.add(Validate.notNull(consumer, "consumer cannot be null"));
     }
 
     /**
@@ -127,7 +132,7 @@ public final class SocketConnection {
      * @param consumer The consumer to call.
      */
     public void whenObjectReceived(@Nonnull Consumer<Serializable> consumer) {
-        this.objectConsumer = Validate.notNull(consumer, "consumer cannot be null");
+        this.objectConsumer.add(Validate.notNull(consumer, "consumer cannot be null"));
     }
 
     /**
@@ -137,7 +142,37 @@ public final class SocketConnection {
      * @param runnable The runnable to call.
      */
     public void whenDisconnected(@Nonnull Runnable runnable) {
-        this.disconnectRunnable = Validate.notNull(runnable, "runnable cannot be null");
+        this.disconnectRunnable.add(Validate.notNull(runnable, "runnable cannot be null"));
+    }
+
+    /**
+     * Calls the consumers when
+     * a message is received.
+     *
+     * @param message The message to receive.
+     */
+    public void onMessageReceive(@Nonnull String message) {
+        Validate.notNull(message, "message cannot be null!");
+        this.messageConsumer.forEach(consumer -> consumer.accept(message));
+    }
+
+    /**
+     * Calls the consumers when
+     * a message is received.
+     *
+     * @param object The object to receive.
+     */
+    public void onObjectReceive(@Nonnull Serializable object) {
+        Validate.notNull(object, "object cannot be null!");
+        this.objectConsumer.forEach(consumer -> consumer.accept(object));
+    }
+
+    /**
+     * Calls the consumers when
+     * the connection is disconnected.
+     */
+    public void onDisconnect() {
+        this.disconnectRunnable.forEach(Runnable::run);
     }
 
     /**
@@ -228,16 +263,13 @@ public final class SocketConnection {
 
                     if (message.startsWith("message:")) {
                         String pureMessage = message.substring("message:".length());
-                        if (this.messageConsumer != null)
-                            this.messageConsumer.accept(pureMessage);
+                        this.onMessageReceive(pureMessage);
                     } else if (message.startsWith("object:")) {
                         String pureMessage = message.substring("object:".length());
-                        if (this.objectConsumer != null)
-                            this.objectConsumer.accept(Serializer.deserialize(pureMessage, Serializable.class));
+                        this.onObjectReceive(Serializer.deserialize(pureMessage, Serializable.class));
                     }
                 } catch (IOException e) {
-                    if (this.disconnectRunnable != null)
-                        this.disconnectRunnable.run();
+                    this.onDisconnect();
                     return;
                 }
             }
