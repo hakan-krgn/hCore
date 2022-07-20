@@ -6,7 +6,9 @@ import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.ServerSocket;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
@@ -16,13 +18,13 @@ import java.util.function.Consumer;
  * ServerListener class to
  * handle connection connections.
  */
-public final class ServerListener {
+public class ServerListener {
 
-    private final Map<String, SocketConnection> connections;
-    private Consumer<SocketConnection> connectConsumer;
-    private Consumer<SocketConnection> disconnectConsumer;
-    BiConsumer<SocketConnection, String> messageConsumer;
-    BiConsumer<SocketConnection, Serializable> objectConsumer;
+    protected final Map<String, SocketConnection> connections;
+    protected final List<Consumer<SocketConnection>> connectConsumers;
+    protected final List<Consumer<SocketConnection>> disconnectConsumers;
+    protected final List<BiConsumer<SocketConnection, String>> messageConsumers;
+    protected final List<BiConsumer<SocketConnection, Serializable>> objectConsumers;
 
     /**
      * Constructor to creates a new server listener.
@@ -31,6 +33,10 @@ public final class ServerListener {
      */
     public ServerListener(int port) {
         this.connections = new HashMap<>();
+        this.connectConsumers = new ArrayList<>();
+        this.disconnectConsumers = new ArrayList<>();
+        this.messageConsumers = new ArrayList<>();
+        this.objectConsumers = new ArrayList<>();
         this.listen(port);
     }
 
@@ -40,7 +46,7 @@ public final class ServerListener {
      * @return The connections.
      */
     @Nonnull
-    public Map<String, SocketConnection> getConnections() {
+    public final Map<String, SocketConnection> getConnections() {
         return this.connections;
     }
 
@@ -50,7 +56,7 @@ public final class ServerListener {
      * @param name The connection name.
      * @return True if the connection exists, false otherwise.
      */
-    public boolean hasConnectionByName(@Nonnull String name) {
+    public final boolean hasConnectionByName(@Nonnull String name) {
         return this.findConnectionByName(name).isPresent();
     }
 
@@ -60,7 +66,7 @@ public final class ServerListener {
      * @param ip The connection ip.
      * @return True if the connection exists, false otherwise.
      */
-    public boolean hasConnectionByIP(@Nonnull String ip) {
+    public final boolean hasConnectionByIP(@Nonnull String ip) {
         return this.findConnectionByIP(ip).isPresent();
     }
 
@@ -71,7 +77,7 @@ public final class ServerListener {
      * @return connection as optional.
      */
     @Nonnull
-    public Optional<SocketConnection> findConnectionByName(@Nonnull String connection) {
+    public final Optional<SocketConnection> findConnectionByName(@Nonnull String connection) {
         Validate.notNull(connection, "connection name cannot be null");
         return Optional.ofNullable(this.connections.get(connection));
     }
@@ -83,7 +89,7 @@ public final class ServerListener {
      * @return connection.
      */
     @Nonnull
-    public SocketConnection getConnectionByName(@Nonnull String connectionName) {
+    public final SocketConnection getConnectionByName(@Nonnull String connectionName) {
         Validate.notNull(connectionName, "connection name cannot be null");
         return this.findConnectionByName(connectionName).orElseThrow(() -> new IllegalArgumentException("connection not found with name: " + connectionName));
     }
@@ -95,7 +101,7 @@ public final class ServerListener {
      * @return connection as optional.
      */
     @Nonnull
-    public Optional<SocketConnection> findConnectionByIP(@Nonnull String ip) {
+    public final Optional<SocketConnection> findConnectionByIP(@Nonnull String ip) {
         Validate.notNull(ip, "ip name cannot be null");
         return this.connections.values().stream().filter(c -> c.getIP().equals(ip)).findFirst();
     }
@@ -107,7 +113,7 @@ public final class ServerListener {
      * @return Connection.
      */
     @Nonnull
-    public SocketConnection getConnectionByIP(@Nonnull String ip) {
+    public final SocketConnection getConnectionByIP(@Nonnull String ip) {
         Validate.notNull(ip, "ip name cannot be null");
         return this.findConnectionByIP(ip).orElseThrow(() -> new IllegalArgumentException("connection not found with ip: " + ip));
     }
@@ -118,7 +124,7 @@ public final class ServerListener {
      * @param connection The connection.
      * @param message    The message.
      */
-    public void send(@Nonnull SocketConnection connection, @Nonnull String message) {
+    public final void send(@Nonnull SocketConnection connection, @Nonnull String message) {
         Validate.notNull(connection, "connection cannot be null").send(message);
     }
 
@@ -128,7 +134,7 @@ public final class ServerListener {
      * @param connectionName The connection name.
      * @param message        The message.
      */
-    public void send(@Nonnull String connectionName, @Nonnull String message) {
+    public final void send(@Nonnull String connectionName, @Nonnull String message) {
         this.getConnectionByName(connectionName).send(message);
     }
 
@@ -138,7 +144,7 @@ public final class ServerListener {
      * @param connection   The connection.
      * @param serializable The object.
      */
-    public void send(@Nonnull SocketConnection connection, @Nonnull Serializable serializable) {
+    public final void send(@Nonnull SocketConnection connection, @Nonnull Serializable serializable) {
         Validate.notNull(connection, "connection cannot be null").send(serializable);
     }
 
@@ -148,7 +154,7 @@ public final class ServerListener {
      * @param connectionName The connection name.
      * @param serializable   The object.
      */
-    public void send(@Nonnull String connectionName, @Nonnull Serializable serializable) {
+    public final void send(@Nonnull String connectionName, @Nonnull Serializable serializable) {
         this.getConnectionByName(connectionName).send(serializable);
     }
 
@@ -157,7 +163,7 @@ public final class ServerListener {
      *
      * @param message The message.
      */
-    public void publish(@Nonnull String message) {
+    public final void publish(@Nonnull String message) {
         this.connections.values().forEach(connection -> connection.send(message));
     }
 
@@ -166,7 +172,7 @@ public final class ServerListener {
      *
      * @param serializable The message.
      */
-    public void publish(@Nonnull Serializable serializable) {
+    public final void publish(@Nonnull Serializable serializable) {
         this.connections.values().forEach(connection -> connection.send(serializable));
     }
 
@@ -175,8 +181,8 @@ public final class ServerListener {
      *
      * @param consumer The consumer.
      */
-    public void whenConnected(@Nonnull Consumer<SocketConnection> consumer) {
-        this.connectConsumer = Validate.notNull(consumer, "consumer cannot be null");
+    public final void whenConnected(@Nonnull Consumer<SocketConnection> consumer) {
+        this.connectConsumers.add(Validate.notNull(consumer, "consumer cannot be null"));
     }
 
     /**
@@ -184,8 +190,8 @@ public final class ServerListener {
      *
      * @param consumer The consumer.
      */
-    public void whenDisconnected(@Nonnull Consumer<SocketConnection> consumer) {
-        this.disconnectConsumer = Validate.notNull(consumer, "consumer cannot be null");
+    public final void whenDisconnected(@Nonnull Consumer<SocketConnection> consumer) {
+        this.disconnectConsumers.add(Validate.notNull(consumer, "consumer cannot be null"));
     }
 
     /**
@@ -194,8 +200,8 @@ public final class ServerListener {
      *
      * @param consumer The consumer.
      */
-    public void whenMessageReceived(@Nonnull BiConsumer<SocketConnection, String> consumer) {
-        this.messageConsumer = Validate.notNull(consumer, "consumer cannot be null");
+    public final void whenMessageReceived(@Nonnull BiConsumer<SocketConnection, String> consumer) {
+        this.messageConsumers.add(Validate.notNull(consumer, "consumer cannot be null"));
     }
 
     /**
@@ -204,8 +210,52 @@ public final class ServerListener {
      *
      * @param consumer The consumer.
      */
-    public void whenObjectReceived(@Nonnull BiConsumer<SocketConnection, Serializable> consumer) {
-        this.objectConsumer = Validate.notNull(consumer, "consumer cannot be null");
+    public final void whenObjectReceived(@Nonnull BiConsumer<SocketConnection, Serializable> consumer) {
+        this.objectConsumers.add(Validate.notNull(consumer, "consumer cannot be null"));
+    }
+
+    /**
+     * Calls when the connection connect.
+     *
+     * @param connection The connection.
+     */
+    public void onConnect(@Nonnull SocketConnection connection) {
+        Validate.notNull(connection, "connection cannot be null!");
+        this.connectConsumers.forEach(consumer -> consumer.accept(connection));
+    }
+
+    /**
+     * Calls when the connection disconnect.
+     *
+     * @param connection The connection.
+     */
+    public void onDisconnect(@Nonnull SocketConnection connection) {
+        Validate.notNull(connection, "connection cannot be null!");
+        this.disconnectConsumers.forEach(consumer -> consumer.accept(connection));
+    }
+
+    /**
+     * Calls when the connection receive a message.
+     *
+     * @param connection The connection.
+     * @param message    The message.
+     */
+    public void onMessageReceive(@Nonnull SocketConnection connection, @Nonnull String message) {
+        Validate.notNull(connection, "connection cannot be null!");
+        Validate.notNull(message, "message cannot be null!");
+        this.messageConsumers.forEach(consumer -> consumer.accept(connection, message));
+    }
+
+    /**
+     * Calls when the connection receive an object.
+     *
+     * @param connection   The connection.
+     * @param serializable The object.
+     */
+    public void onObjectReceive(@Nonnull SocketConnection connection, @Nonnull Serializable serializable) {
+        Validate.notNull(connection, "connection cannot be null!");
+        Validate.notNull(serializable, "serializable cannot be null!");
+        this.objectConsumers.forEach(consumer -> consumer.accept(connection, serializable));
     }
 
     /**
@@ -213,12 +263,10 @@ public final class ServerListener {
      *
      * @param connection The connection.
      */
-    public void register(@Nonnull SocketConnection connection) {
+    public final void register(@Nonnull SocketConnection connection) {
         Validate.notNull(connection, "connection cannot be null");
         this.connections.put(connection.getName(), connection);
-
-        if (this.connectConsumer != null)
-            this.connectConsumer.accept(connection);
+        this.onConnect(connection);
     }
 
     /**
@@ -226,12 +274,10 @@ public final class ServerListener {
      *
      * @param connection The connection.
      */
-    public void unregister(@Nonnull SocketConnection connection) {
+    public final void unregister(@Nonnull SocketConnection connection) {
         Validate.notNull(connection, "connection cannot be null");
         this.connections.remove(connection.getName());
-
-        if (this.disconnectConsumer != null)
-            this.disconnectConsumer.accept(connection);
+        this.onDisconnect(connection);
     }
 
 

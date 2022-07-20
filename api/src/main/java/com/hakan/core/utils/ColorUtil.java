@@ -15,9 +15,8 @@ import java.util.regex.Pattern;
 public final class ColorUtil {
 
     private static final Pattern HEX_PATTERN = Pattern.compile("#[a-fA-F\\d]{6}");
-
-    private static final Pattern COLOR_PATTERN = Pattern.compile("(?<color>(([§&][A-Fa-f\\d|r])|(#[A-Fa-f\\d]{6})))");
-    private static final Pattern FORMAT_PATTERN = Pattern.compile("(?<format>[§&][klmnor])");
+    private static final Pattern COLOR_PATTERN = Pattern.compile("(?<color>(([§&][A-Fa-f\\d|rR])|(#[A-Fa-f\\d]{6})))");
+    private static final Pattern FORMAT_PATTERN = Pattern.compile("(?<format>[§&][k-oK-OrR])");
 
     /**
      * Convert a message to a colored message.
@@ -111,7 +110,7 @@ public final class ColorUtil {
         StringBuilder format = new StringBuilder();
         while (formatMatcher.find()) {
             String firstColor = formatMatcher.group("format");
-            if (firstColor.equalsIgnoreCase("§r")) {
+            if (firstColor.equalsIgnoreCase("§r") || firstColor.equalsIgnoreCase("&r")) {
                 format = new StringBuilder();
                 continue;
             }
@@ -121,7 +120,7 @@ public final class ColorUtil {
         String lastColor = "";
         while (colorMatcher.find()) {
             String firstColor = colorMatcher.group("color");
-            if (firstColor.equalsIgnoreCase("§r")) {
+            if (firstColor.equalsIgnoreCase("§r") || firstColor.equalsIgnoreCase("&r")) {
                 lastColor = "";
                 continue;
             }
