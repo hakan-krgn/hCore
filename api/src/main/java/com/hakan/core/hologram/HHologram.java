@@ -492,7 +492,7 @@ public final class HHologram {
         Validate.notNull(lines, "lines cannot be null");
         Validate.isTrue(lines.isEmpty(), "lines cannot be empty");
         this.clearLines();
-        this.lines.forEach(this::addLine);
+        lines.forEach(this::addLine);
         return this;
     }
 
