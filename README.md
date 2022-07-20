@@ -1,8 +1,15 @@
 # hCore
 
+## What is hCore?
 A simplified and multi-functional tool for spigot developers. There are dozens of features you can use in it, and it is
 completely open source code. hCore supports all versions from 1.8.x to 1.19.x. Also, you can find all these APIs usages
 from [here](https://github.com/hakan-krgn/hCore/wiki).
+
+## JavaDocs
+* https://hakan-krgn.github.io/hCore/api/
+* https://hakan-krgn.github.io/hCore/proxy-client/
+* https://hakan-krgn.github.io/hCore/proxy-server/
+
 
 ## Developers
 
