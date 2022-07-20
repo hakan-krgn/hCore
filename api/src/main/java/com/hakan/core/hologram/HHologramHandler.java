@@ -33,7 +33,7 @@ public final class HHologramHandler {
     /**
      * Gets content as safe.
      *
-     * @return holograms map.
+     * @return Holograms map.
      */
     @Nonnull
     public static Map<String, HHologram> getContentSafe() {
@@ -43,7 +43,7 @@ public final class HHologramHandler {
     /**
      * Gets content.
      *
-     * @return holograms map.
+     * @return Holograms map.
      */
     @Nonnull
     public static Map<String, HHologram> getContent() {
@@ -53,7 +53,7 @@ public final class HHologramHandler {
     /**
      * Gets holograms as safe.
      *
-     * @return holograms.
+     * @return Holograms.
      */
     @Nonnull
     public static Collection<HHologram> getValuesSafe() {
@@ -63,7 +63,7 @@ public final class HHologramHandler {
     /**
      * Gets holograms.
      *
-     * @return holograms.
+     * @return Holograms.
      */
     @Nonnull
     public static Collection<HHologram> getValues() {
@@ -83,8 +83,8 @@ public final class HHologramHandler {
     /**
      * Finds a created hologram
      *
-     * @param id hologram id that you want
-     * @return hologram from id
+     * @param id Hologram id that you want.
+     * @return Hologram from id.
      */
     @Nonnull
     public static Optional<HHologram> findByID(@Nonnull String id) {
@@ -94,8 +94,8 @@ public final class HHologramHandler {
     /**
      * Gets a created hologram
      *
-     * @param id hologram id that you want
-     * @return hologram from id
+     * @param id Hologram id that you want
+     * @return Hologram from id
      */
     @Nonnull
     public static HHologram getByID(@Nonnull String id) {
@@ -103,22 +103,32 @@ public final class HHologramHandler {
     }
 
     /**
-     * Creates a new hologram
+     * Creates a hologram but if there
+     * is a hologram with id, removes it.
      *
-     * @param id       hologram id
-     * @param location location
-     * @param players  player list
-     * @return new hologram
+     * @param id       Hologram id.
+     * @param location Hologram location.
+     * @return Created hologram.
      */
     @Nonnull
-    public static HHologram create(@Nonnull String id, @Nonnull Location location, @Nullable Set<UUID> players) {
-        Validate.notNull(id, "id cannot be null");
-        Validate.notNull(location, "location cannot be null");
-        Validate.isTrue(HHologramHandler.has(id), "npc with id(" + id + ") already exists!");
+    public static HHologram forceCreate(@Nonnull String id, @Nonnull Location location) {
+        HHologramHandler.findByID(id).ifPresent(HHologram::delete);
+        return HHologramHandler.create(id, location);
+    }
 
-        HHologram hHologram = (players != null) ? new HHologram(id, location, players) : new HHologram(id, location);
-        HHologramHandler.holograms.put(id, hHologram);
-        return hHologram;
+    /**
+     * Creates a hologram but if there
+     * is a hologram with id, removes it.
+     *
+     * @param id       Hologram id.
+     * @param location Hologram location.
+     * @param players  Viewers.
+     * @return Created hologram.
+     */
+    @Nonnull
+    public static HHologram forceCreate(@Nonnull String id, @Nonnull Location location, @Nullable Set<UUID> players) {
+        HHologramHandler.findByID(id).ifPresent(HHologram::delete);
+        return HHologramHandler.create(id, location, players);
     }
 
     /**
@@ -134,14 +144,33 @@ public final class HHologramHandler {
     }
 
     /**
-     * Deletes hologram by id
+     * Creates a new hologram
      *
-     * @param id id of hologram
-     * @return hologram to be deleted
+     * @param id       Hologram id.
+     * @param location Location.
+     * @param players  Player list.
+     * @return New hologram.
+     */
+    @Nonnull
+    public static HHologram create(@Nonnull String id, @Nonnull Location location, @Nullable Set<UUID> players) {
+        Validate.notNull(id, "id cannot be null");
+        Validate.notNull(location, "location cannot be null");
+        Validate.isTrue(HHologramHandler.has(id), "hologram with id(" + id + ") already exists!");
+
+        HHologram hHologram = (players != null) ? new HHologram(id, location, players) : new HHologram(id, location);
+        HHologramHandler.holograms.put(id, hHologram);
+        return hHologram;
+    }
+
+    /**
+     * Deletes hologram by id.
+     *
+     * @param id ID of hologram.
+     * @return Hologram to be deleted.
      */
     @Nonnull
     public static HHologram delete(@Nonnull String id) {
-        HHologram oldHologram = HHologramHandler.getByID(Validate.notNull(id, "id cannot be null"));
+        HHologram oldHologram = HHologramHandler.getByID(id);
         return oldHologram.delete();
     }
 }
