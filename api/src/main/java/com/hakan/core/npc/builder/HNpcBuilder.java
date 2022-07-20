@@ -274,6 +274,18 @@ public final class HNpcBuilder {
     }
 
     /**
+     * Builds npc but if there is npc
+     * with this id, removes it.
+     *
+     * @return HNPC instance.
+     */
+    @Nonnull
+    public HNPC forceBuild() {
+        HNPCHandler.findByID(this.id).ifPresent(HNPC::delete);
+        return this.build();
+    }
+
+    /**
      * Builds npc.
      *
      * @return HNPC instance.
