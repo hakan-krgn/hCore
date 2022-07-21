@@ -349,6 +349,37 @@ public final class HHologram {
     }
 
     /**
+     * Inserts the text into given line.
+     *
+     * @param index Line to insert into.
+     * @param line  Line text.
+     * @return Instance of this class.
+     */
+    @Nonnull
+    public HHologram insertLine(int index, @Nonnull HHologramLine line) {
+        Validate.notNull(line, "line cannot be null!");
+
+        this.lines.add(index, line);
+        this.setLocation(this.getLocation());
+        line.show(this.renderer.getShownViewersAsPlayer());
+
+        return this;
+    }
+
+    /**
+     * Inserts the text into given line.
+     *
+     * @param index Line to insert into.
+     * @param line  Line text.
+     * @return Instance of this class.
+     */
+    @Nonnull
+    public HHologram insertLine(int index, @Nonnull String line) {
+        Validate.notNull(line, "line cannot be null!");
+        return this.insertLine(index, new HHologramLine(this, line));
+    }
+
+    /**
      * Adds new lines to hologram.
      *
      * @param hHologramLine HHologramLine classes.
@@ -522,20 +553,6 @@ public final class HHologram {
         Validate.isTrue(lines.length == 0, "lines cannot be empty!");
 
         return this.setLines(Arrays.asList(lines));
-    }
-
-    /**
-     * Inserts the text into given line.
-     *
-     * @param index Line to insert into.
-     * @return line Line text.
-     */
-    @Nonnull
-    public HHologram insertLine(int index, @Nonnull String line) {
-        Validate.notNull(line, "line cannot be null!");
-
-        this.lines.add(index, new HHologramLine(this, line));
-        return this;
     }
 
     /**
