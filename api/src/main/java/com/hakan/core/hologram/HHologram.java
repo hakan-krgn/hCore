@@ -484,7 +484,7 @@ public final class HHologram {
     /**
      * Replaces line at row with text.
      *
-     * @param lines Lines.
+     * @param lines New lines.
      * @return Instance of this class.
      */
     @Nonnull
@@ -507,6 +507,34 @@ public final class HHologram {
                 this.removeLine(i);
         }
 
+        return this;
+    }
+
+    /**
+     * Replaces line at row with text.
+     *
+     * @param lines New lines.
+     * @return Instance of this class.
+     */
+    @Nonnull
+    public HHologram setLines(@Nonnull String... lines) {
+        Validate.notNull(lines, "lines cannot be null!");
+        Validate.isTrue(lines.length == 0, "lines cannot be empty!");
+
+        return this.setLines(Arrays.asList(lines));
+    }
+
+    /**
+     * Inserts the text into given line.
+     *
+     * @param index Line to insert into.
+     * @return line Line text.
+     */
+    @Nonnull
+    public HHologram insertLine(int index, @Nonnull String line) {
+        Validate.notNull(line, "line cannot be null!");
+
+        this.lines.add(index, new HHologramLine(this, line));
         return this;
     }
 
