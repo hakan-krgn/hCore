@@ -11,7 +11,7 @@ import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
- * Hologram line abstract class.
+ * Hologram line class.
  */
 @SuppressWarnings("unused")
 public final class HHologramLine {

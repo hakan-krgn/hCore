@@ -534,7 +534,7 @@ public final class HHologram {
         } else {
             for (int i = 0; i < this.lines.size(); i++)
                 this.setLine(i, lines.get(i));
-            for (int i = this.lines.size() - 1; i >= lines.size(); i--)
+            for (int i = this.lines.size(); i < lines.size(); i++)
                 this.removeLine(i);
         }
 
