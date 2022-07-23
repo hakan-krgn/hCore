@@ -1,37 +1,31 @@
 package com.hakan.core.hologram.util;
 
-import com.hakan.core.HCore;
-import com.hakan.core.hologram.HHologram;
-import com.hakan.core.hologram.line.entity.HHologramArmorStand;
-import com.hakan.core.utils.Validate;
-import org.bukkit.Location;
-
-import javax.annotation.Nonnull;
 import java.lang.reflect.Constructor;
 
 /**
  * Hologram util class
  */
+@SuppressWarnings({"unchecked"})
 public final class HHologramUtils {
 
     /**
-     * Creates new instance of HologramArmorStand class.
+     * Creates new instance of given class.
      *
-     * @param hHologram instance of hologram
+     * @param path    Path of class.
+     * @param classes Classes to be used in constructor.
+     * @param objects Objects to be used in constructor.
+     * @param <T>     Type of class.
      * @return New instance of HologramArmorStand class.
      */
-    @Nonnull
-    public static HHologramArmorStand createHologramArmorStand(@Nonnull HHologram hHologram) {
+    public static <T> T createNewInstance(String path, Class<?>[] classes, Object[] objects) {
         try {
-            Validate.notNull(hHologram, "hHologram cannot be null");
-
-            Class<?> clazz = Class.forName("com.hakan.core.hologram.line.entity.HHologramArmorStand_" + HCore.getVersionString());
-            Constructor<?> constructor = clazz.getDeclaredConstructor(HHologram.class, Location.class);
+            Class<T> tClass = (Class<T>) Class.forName(path);
+            Constructor<T> constructor = tClass.getDeclaredConstructor(classes);
             constructor.setAccessible(true);
-            HHologramArmorStand armorStand = (HHologramArmorStand) constructor.newInstance(hHologram, hHologram.getLocation());
+            T instance = constructor.newInstance(objects);
             constructor.setAccessible(false);
 
-            return armorStand;
+            return instance;
         } catch (Exception e) {
             throw new NullPointerException(e.getMessage());
         }
