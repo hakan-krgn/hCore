@@ -27,12 +27,15 @@ public interface HologramLine {
      * @return Line.
      */
     static <T> HologramLine create(@Nonnull HHologram hologram, @Nullable T t) {
-        if (t == null)
+        if (t == null) {
             return EmptyLine.create(hologram);
-        else if (t instanceof String)
-            return TextLine.create(hologram, (String) t);
-        else if (t instanceof ItemStack)
-            return ItemLine.create(hologram, (ItemStack) t);
+        } else if (t instanceof ItemStack) {
+            ItemStack item = (ItemStack) t;
+            return ItemLine.create(hologram, item);
+        } else if (t instanceof String) {
+            String text = (String) t;
+            return (text.isEmpty()) ? EmptyLine.create(hologram) : TextLine.create(hologram, text);
+        }
         throw new IllegalArgumentException("value must be text, item stack or null!");
     }
 

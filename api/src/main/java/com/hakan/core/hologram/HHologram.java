@@ -617,7 +617,7 @@ public final class HHologram {
 
         List<HologramLine> hologramLines = new ArrayList<>();
         for (String line : texts)
-            hologramLines.add(TextLine.create(this, line));
+            hologramLines.add(HologramLine.create(this, line));
         return this.setLines(hologramLines);
     }
 
@@ -646,7 +646,7 @@ public final class HHologram {
 
         List<HologramLine> hologramLines = new ArrayList<>();
         for (ItemStack itemStack : itemStacks)
-            hologramLines.add(ItemLine.create(this, itemStack));
+            hologramLines.add(HologramLine.create(this, itemStack));
         return this.setLines(hologramLines);
     }
 
