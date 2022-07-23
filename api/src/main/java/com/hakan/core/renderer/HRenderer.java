@@ -125,7 +125,7 @@ public final class HRenderer {
      *
      * @return If includes, returns true.
      */
-    public boolean canSeeEveryone() {
+    public boolean canEveryoneSee() {
         return this.showEveryone;
     }
 
@@ -148,7 +148,7 @@ public final class HRenderer {
      */
     @Nonnull
     public Location getLocation() {
-        return this.location;
+        return this.location.clone();
     }
 
     /**
