@@ -138,7 +138,7 @@ public final class HNpcEntity_v1_8_R3 implements HNpcEntity {
         gameProfile.getProperties().get("textures").clear();
         gameProfile.getProperties().put("textures", new Property("textures", this.hnpc.getSkin().getTexture(), this.hnpc.getSkin().getSignature()));
 
-        HCore.syncScheduler().after(5).run(() -> this.show(players));
+        this.show(players);
     }
 
     /**
