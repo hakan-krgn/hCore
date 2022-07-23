@@ -154,7 +154,7 @@ public final class HHologramHandler {
     @Nonnull
     public static HHologram create(@Nonnull String id, @Nonnull Location location, @Nullable Set<UUID> players) {
         Validate.notNull(id, "id cannot be null");
-        Validate.notNull(location, "location cannot be null");
+        Validate.notNull(location, "location cannot be null!");
         Validate.isTrue(HHologramHandler.has(id), "hologram with id(" + id + ") already exists!");
 
         HHologram hHologram = (players != null) ? new HHologram(id, location, players) : new HHologram(id, location);
