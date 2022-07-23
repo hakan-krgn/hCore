@@ -74,6 +74,9 @@ public final class HNPC {
         this.hologram.showEveryone(showEveryone);
         this.renderer.showEveryone(showEveryone);
         this.action.onSpawn();
+
+        this.setLocation(location);
+        this.renderer.render();
     }
 
     /**

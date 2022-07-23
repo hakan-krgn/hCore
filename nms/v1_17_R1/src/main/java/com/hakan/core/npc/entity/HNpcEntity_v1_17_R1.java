@@ -77,7 +77,7 @@ public final class HNpcEntity_v1_17_R1 implements HNpcEntity {
     private final HNPC hnpc;
     private final HRenderer renderer;
     private final ScoreboardTeam scoreboard;
-    private EntityPlayer nmsPlayer;
+    private final EntityPlayer nmsPlayer;
 
     /**
      * {@inheritDoc}
@@ -124,9 +124,9 @@ public final class HNpcEntity_v1_17_R1 implements HNpcEntity {
         float yaw = Math.round(location.getYaw() % 360f * (256f / 360f));
         float pitch = Math.round(location.getPitch() % 360f * (256f / 360f));
         HCore.sendPacket(this.renderer.getShownViewersAsPlayer(),
+                new PacketPlayOutEntityTeleport(this.nmsPlayer),
                 new PacketPlayOutEntityHeadRotation(this.nmsPlayer, (byte) (location.getYaw() * (256f / 360f))),
-                new PacketPlayOutEntity.PacketPlayOutEntityLook(this.getID(), (byte) yaw, (byte) pitch, false),
-                new PacketPlayOutEntityTeleport(this.nmsPlayer));
+                new PacketPlayOutEntity.PacketPlayOutEntityLook(this.getID(), (byte) yaw, (byte) pitch, false));
     }
 
     /**
@@ -135,9 +135,14 @@ public final class HNpcEntity_v1_17_R1 implements HNpcEntity {
     @Override
     public void updateSkin() {
         List<Player> players = this.renderer.getShownViewersAsPlayer();
+
         this.hide(players);
-        this.nmsPlayer = createEntityPlayer(this.hnpc);
-        HCore.syncScheduler().after(20).run(() -> this.show(players));
+
+        GameProfile gameProfile = this.nmsPlayer.getProfile();
+        gameProfile.getProperties().get("textures").clear();
+        gameProfile.getProperties().put("textures", new Property("textures", this.hnpc.getSkin().getTexture(), this.hnpc.getSkin().getSignature()));
+
+        this.show(players);
     }
 
     /**
