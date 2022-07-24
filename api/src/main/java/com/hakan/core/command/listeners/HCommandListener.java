@@ -3,6 +3,7 @@ package com.hakan.core.command.listeners;
 import com.hakan.core.command.executors.base.BaseCommandData;
 import com.hakan.core.command.executors.sub.SubCommandData;
 import com.hakan.core.utils.Validate;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
@@ -11,6 +12,7 @@ import javax.annotation.Nonnull;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -87,7 +89,8 @@ public final class HCommandListener extends BukkitCommand {
         for (; i < enteredArgs.size(); i++) {
             String arg = enteredArgs.get(i);
             for (SubCommandData subCommandData : new ArrayList<>(subCommandDatas)) {
-                if (subCommandData.getArgs().length <= i || !arg.equals(subCommandData.getArgs()[i]))
+                String[] subArgs = subCommandData.getArgs();
+                if (subArgs.length <= i || (!subArgs[i].equals(arg) && !subArgs[i].equals("<player>")))
                     subCommandDatas.remove(subCommandData);
             }
         }
@@ -101,8 +104,12 @@ public final class HCommandListener extends BukkitCommand {
             }
         }
 
-        for (String tab : tabCompleteBefore) {
-            if (tab.startsWith(lastArg)) {
+        for (String tab : new HashSet<>(tabCompleteBefore)) {
+            if (tab.equals("<player>")) {
+                for (Player player : Bukkit.getOnlinePlayers())
+                    tabComplete.add(player.getName());
+                tabCompleteBefore.remove(tab);
+            } else if (tab.startsWith(lastArg)) {
                 tabComplete.add(tab);
             }
         }

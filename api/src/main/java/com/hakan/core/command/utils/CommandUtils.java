@@ -24,7 +24,7 @@ public final class CommandUtils {
         if (args2.length < args1.length)
             return false;
         for (int i = 0; i < args1.length; i++)
-            if (!args1[i].equalsIgnoreCase(args2[i]))
+            if (!args1[i].equalsIgnoreCase(args2[i]) && !args1[i].equals("<player>"))
                 return false;
         return true;
     }
