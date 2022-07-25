@@ -1,5 +1,6 @@
 package com.hakan.core.command.executors.base;
 
+import com.hakan.core.command.executors.placeholder.PlaceholderData;
 import com.hakan.core.command.executors.sub.SubCommandData;
 import com.hakan.core.command.listeners.HCommandListener;
 import com.hakan.core.command.utils.CommandUtils;
@@ -26,13 +27,13 @@ import java.util.Optional;
 public final class BaseCommandData {
 
     private final Object adapter;
-
     private final String name;
     private final String description;
     private final String usage;
     private final String[] aliases;
     private final HCommandListener listener;
     private final List<SubCommandData> subCommands;
+    private final List<PlaceholderData> placeholders;
 
     /**
      * Constructor to create BaseCommandData object.
@@ -51,6 +52,7 @@ public final class BaseCommandData {
         this.description = baseCommand.description();
 
         this.subCommands = new LinkedList<>();
+        this.placeholders = new ArrayList<>();
         this.listener = new HCommandListener(this);
     }
 
@@ -125,6 +127,26 @@ public final class BaseCommandData {
     }
 
     /**
+     * Gets placeholders from annotated class.
+     *
+     * @return Placeholders from annotated class.
+     */
+    @Nonnull
+    public List<PlaceholderData> getPlaceholdersSafe() {
+        return new ArrayList<>(this.placeholders);
+    }
+
+    /**
+     * Gets placeholders from annotated class.
+     *
+     * @return Placeholders from annotated class.
+     */
+    @Nonnull
+    public List<PlaceholderData> getPlaceholders() {
+        return this.placeholders;
+    }
+
+    /**
      * Adds sub command.
      *
      * @param subCommand SubCommandData class.
@@ -167,6 +189,53 @@ public final class BaseCommandData {
             }
         }
         return Optional.empty();
+    }
+
+    /**
+     * Adds placeholder.
+     *
+     * @param placeholder PlaceholderData class.
+     */
+    public void addPlaceholder(@Nonnull PlaceholderData placeholder) {
+        this.placeholders.add(Validate.notNull(placeholder, "placeholder cannot be null!"));
+    }
+
+    /**
+     * Removes placeholder.
+     *
+     * @param placeholder PlaceholderData class.
+     */
+    public void removePlaceholder(@Nonnull PlaceholderData placeholder) {
+        this.placeholders.remove(Validate.notNull(placeholder, "placeholder cannot be null!"));
+    }
+
+    /**
+     * Finds placeholder by name.
+     *
+     * @param name Placeholder name.
+     * @return Placeholder values.
+     */
+    @Nonnull
+    public Optional<PlaceholderData> findPlaceholderByName(@Nonnull String name) {
+        Validate.notNull(name, "name cannot be null!");
+
+        for (PlaceholderData placeholderData : this.placeholders)
+            if (placeholderData.getName().equals(name))
+                return Optional.of(placeholderData);
+        return Optional.empty();
+    }
+
+    /**
+     * Finds placeholder by name.
+     *
+     * @param arg Argument.
+     * @return Placeholder values.
+     */
+    @Nonnull
+    public Optional<PlaceholderData> findPlaceholderByArg(@Nonnull String arg) {
+        Validate.notNull(arg, "argument cannot be null!");
+        String holder = CommandUtils.getPlaceholder(arg);
+        return (holder == null) ? Optional.empty() : this.findPlaceholderByName(holder);
     }
 
 
