@@ -1,5 +1,6 @@
 package com.hakan.core.command.executors.sub;
 
+import com.hakan.core.command.executors.base.BaseCommandData;
 import com.hakan.core.utils.Validate;
 
 import javax.annotation.Nonnull;
@@ -11,6 +12,7 @@ import java.lang.reflect.Method;
  */
 public final class SubCommandData implements Comparable<SubCommandData> {
 
+    private final BaseCommandData baseCommandData;
     private final Method method;
     private final String[] args;
     private final String permission;
@@ -22,14 +24,27 @@ public final class SubCommandData implements Comparable<SubCommandData> {
      * @param method     Method of annotation.
      * @param subCommand Annotation.
      */
-    public SubCommandData(@Nonnull Method method, @Nonnull SubCommand subCommand) {
+    public SubCommandData(@Nonnull BaseCommandData baseCommandData,
+                          @Nonnull Method method,
+                          @Nonnull SubCommand subCommand) {
+        Validate.notNull(baseCommandData, "baseCommandData cannot be null!");
         Validate.notNull(method, "method cannot be null!");
         Validate.notNull(subCommand, "subCommand cannot be null!");
 
+        this.baseCommandData = baseCommandData;
         this.method = method;
         this.args = subCommand.args();
         this.permission = subCommand.permission();
         this.permissionMessage = subCommand.permissionMessage();
+    }
+
+    /**
+     * Gets base command data class.
+     *
+     * @return Base command data class.
+     */
+    public BaseCommandData getBaseCommandData() {
+        return this.baseCommandData;
     }
 
     /**

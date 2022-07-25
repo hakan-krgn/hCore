@@ -3,12 +3,17 @@ package com.hakan.core.command.utils;
 import com.hakan.core.utils.Validate;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * CommandUtils class to check some
  * conditions.
  */
 public final class CommandUtils {
+
+    private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("(?<=<%)(?<placeholder>.+?)(?=%>)");
 
     /**
      * Checks if the args2 contains args1.
@@ -24,8 +29,34 @@ public final class CommandUtils {
         if (args2.length < args1.length)
             return false;
         for (int i = 0; i < args1.length; i++)
-            if (!args1[i].equalsIgnoreCase(args2[i]) && !args1[i].equals("<player>"))
+            if (!args1[i].equalsIgnoreCase(args2[i]) && !CommandUtils.hasPlaceholder(args1[i]))
                 return false;
         return true;
+    }
+
+    /**
+     * Gets the placeholder from
+     * the given string.
+     *
+     * @param arg Argument.
+     * @return Placeholder.
+     */
+    @Nullable
+    public static String getPlaceholder(@Nonnull String arg) {
+        Validate.notNull(arg, "arg cannot be null!");
+        Matcher matcher = PLACEHOLDER_PATTERN.matcher(arg);
+        return matcher.find() ? matcher.group("placeholder") : null;
+    }
+
+    /**
+     * Checks if the arg
+     * contains a placeholder.
+     *
+     * @param arg Argument.
+     * @return True if arg contains a placeholder, returns true.
+     */
+    public static boolean hasPlaceholder(@Nonnull String arg) {
+        Validate.notNull(arg, "arg cannot be null!");
+        return PLACEHOLDER_PATTERN.matcher(arg).find();
     }
 }

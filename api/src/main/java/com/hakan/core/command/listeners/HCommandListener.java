@@ -1,9 +1,10 @@
 package com.hakan.core.command.listeners;
 
 import com.hakan.core.command.executors.base.BaseCommandData;
+import com.hakan.core.command.executors.placeholder.PlaceholderData;
 import com.hakan.core.command.executors.sub.SubCommandData;
+import com.hakan.core.command.utils.CommandUtils;
 import com.hakan.core.utils.Validate;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
@@ -82,7 +83,6 @@ public final class HCommandListener extends BukkitCommand {
         List<String> enteredArgs = new LinkedList<>(Arrays.asList(args));
         List<SubCommandData> subCommandDatas = this.baseCommandData.getSubCommandsSafe();
 
-        String lastArg = enteredArgs.get(enteredArgs.size() - 1);
         enteredArgs.remove(enteredArgs.size() - 1);
 
         int i = 0;
@@ -90,7 +90,7 @@ public final class HCommandListener extends BukkitCommand {
             String arg = enteredArgs.get(i);
             for (SubCommandData subCommandData : new ArrayList<>(subCommandDatas)) {
                 String[] subArgs = subCommandData.getArgs();
-                if (subArgs.length <= i || (!subArgs[i].equals(arg) && !subArgs[i].equals("<player>")))
+                if (subArgs.length <= i || (!subArgs[i].equals(arg) && !CommandUtils.hasPlaceholder(subArgs[i])))
                     subCommandDatas.remove(subCommandData);
             }
         }
@@ -105,17 +105,16 @@ public final class HCommandListener extends BukkitCommand {
         }
 
         for (String tab : new HashSet<>(tabCompleteBefore)) {
-            if (tab.equals("<player>")) {
-                for (Player player : Bukkit.getOnlinePlayers())
-                    tabComplete.add(player.getName());
+            PlaceholderData placeholder = this.baseCommandData.findPlaceholderByArg(tab).orElse(null);
+            if (placeholder != null) {
+                tabComplete.addAll(placeholder.getValues());
                 tabCompleteBefore.remove(tab);
-            } else if (tab.startsWith(lastArg)) {
+            } else {
                 tabComplete.add(tab);
             }
         }
 
         tabComplete.addAll(tabCompleteBefore);
-
         return new ArrayList<>(tabComplete);
     }
 }
