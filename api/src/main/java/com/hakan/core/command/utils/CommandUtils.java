@@ -29,7 +29,7 @@ public final class CommandUtils {
         if (args2.length < args1.length)
             return false;
         for (int i = 0; i < args1.length; i++)
-            if (!args1[i].equalsIgnoreCase(args2[i]) && !CommandUtils.hasPlaceholder(args1[i]))
+            if (!(args1[i].equalsIgnoreCase(args2[i]) || CommandUtils.hasPlaceholder(args1[i])))
                 return false;
         return true;
     }
