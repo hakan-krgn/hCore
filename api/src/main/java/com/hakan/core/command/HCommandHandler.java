@@ -2,6 +2,8 @@ package com.hakan.core.command;
 
 import com.hakan.core.command.executors.base.BaseCommand;
 import com.hakan.core.command.executors.base.BaseCommandData;
+import com.hakan.core.command.executors.placeholder.Placeholder;
+import com.hakan.core.command.executors.placeholder.PlaceholderData;
 import com.hakan.core.command.executors.sub.SubCommand;
 import com.hakan.core.command.executors.sub.SubCommandData;
 import com.hakan.core.utils.Validate;
@@ -33,11 +35,16 @@ public final class HCommandHandler {
 
             for (Method method : adapter.getClass().getDeclaredMethods()) {
                 SubCommand subCommand = method.getAnnotation(SubCommand.class);
-                if (subCommand == null)
-                    continue;
+                if (subCommand != null) {
+                    SubCommandData subCommandData = new SubCommandData(baseCommandData, method, subCommand);
+                    baseCommandData.addSubCommand(subCommandData);
+                }
 
-                SubCommandData subCommandData = new SubCommandData(method, subCommand);
-                baseCommandData.addSubCommand(subCommandData);
+                Placeholder placeholder = method.getAnnotation(Placeholder.class);
+                if (placeholder != null) {
+                    PlaceholderData placeholderData = new PlaceholderData(baseCommandData, method, placeholder);
+                    baseCommandData.addPlaceholder(placeholderData);
+                }
             }
         }
     }

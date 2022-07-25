@@ -78,9 +78,9 @@ public final class HHologram {
     }
 
     /**
-     * Is hologram deleted?
+     * Is hologram exist?
      *
-     * @return If hologram was deleted, returns true.
+     * @return If hologram exist, returns true.
      */
     public boolean isExist() {
         return HHologramHandler.getContent().containsKey(this.id);
@@ -150,10 +150,11 @@ public final class HHologram {
     }
 
     /**
-     * If everyone can see hologram,
-     * returns true.
+     * Checks everyone can
+     * see the hologram.
      *
-     * @return If everyone can see hologram, returns true.
+     * @return If everyone can see
+     * hologram, returns true.
      */
     public boolean canEveryoneSee() {
         return this.renderer.canEveryoneSee();
@@ -190,8 +191,7 @@ public final class HHologram {
      */
     @Nonnull
     public <T extends HologramLine> T getLine(int index) {
-        if (index > this.lines.size() || index < 0)
-            throw new IndexOutOfBoundsException("index cannot bigger line size or smaller than 0: " + index);
+        Validate.isTrue((index > this.lines.size() || index < 0), "index cannot bigger line size or smaller than 0: " + index);
         return (T) this.lines.get(index);
     }
 
@@ -207,11 +207,11 @@ public final class HHologram {
     }
 
     /**
-     * NPC expires after a certain time.
+     * Hologram expires after a certain time.
      *
      * @param expire   Amount.
      * @param timeUnit Time Unit.
-     * @return HNPC for chain.
+     * @return Instance of this class.
      */
     @Nonnull
     public HHologram expire(int expire, @Nonnull TimeUnit timeUnit) {
@@ -221,10 +221,10 @@ public final class HHologram {
     }
 
     /**
-     * NPC expires after a certain time.
+     * Hologram expires after a certain time.
      *
      * @param duration Duration.
-     * @return HNPC for chain.
+     * @return Instance of this class.
      */
     @Nonnull
     public HHologram expire(@Nonnull Duration duration) {
