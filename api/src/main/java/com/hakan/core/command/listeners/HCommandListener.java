@@ -90,7 +90,7 @@ public final class HCommandListener extends BukkitCommand {
             String arg = enteredArgs.get(i);
             for (SubCommandData subCommandData : new ArrayList<>(subCommandDatas)) {
                 String[] subArgs = subCommandData.getArgs();
-                if (subArgs.length <= i || (!subArgs[i].equals(arg) && !CommandUtils.hasPlaceholder(subArgs[i])))
+                if (subArgs.length <= i || !(subArgs[i].equals(arg) || CommandUtils.hasPlaceholder(subArgs[i])))
                     subCommandDatas.remove(subCommandData);
             }
         }
