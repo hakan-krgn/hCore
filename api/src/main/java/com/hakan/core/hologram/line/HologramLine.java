@@ -22,18 +22,17 @@ public interface HologramLine {
      * Creates new hologram line.
      *
      * @param hologram Hologram of line.
-     * @param t        Object.
-     * @param <T>      Object type.
+     * @param object   Object.
      * @return Line.
      */
-    static <T> HologramLine create(@Nonnull HHologram hologram, @Nullable T t) {
-        if (t == null) {
+    static HologramLine create(@Nonnull HHologram hologram, @Nullable Object object) {
+        if (object == null) {
             return EmptyLine.create(hologram);
-        } else if (t instanceof ItemStack) {
-            ItemStack item = (ItemStack) t;
+        } else if (object instanceof ItemStack) {
+            ItemStack item = (ItemStack) object;
             return ItemLine.create(hologram, item);
-        } else if (t instanceof String) {
-            String text = (String) t;
+        } else if (object instanceof String) {
+            String text = (String) object;
             return (text.isEmpty()) ? EmptyLine.create(hologram) : TextLine.create(hologram, text);
         }
         throw new IllegalArgumentException("value must be text, item stack or null!");
