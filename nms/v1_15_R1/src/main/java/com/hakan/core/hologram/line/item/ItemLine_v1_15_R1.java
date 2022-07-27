@@ -29,6 +29,7 @@ public final class ItemLine_v1_15_R1 implements ItemLine {
     private World world;
     private EntityItem nmsItem;
     private final HHologram hologram;
+    private final EntityArmorStand click;
     private final EntityArmorStand armorStand;
 
     /**
@@ -38,6 +39,7 @@ public final class ItemLine_v1_15_R1 implements ItemLine {
         this.world = ((CraftWorld) Validate.notNull(location.getWorld())).getHandle();
         this.hologram = Validate.notNull(hHologram, "hologram class cannot be null!");
         this.armorStand = new EntityArmorStand(this.world, location.getX(), location.getY(), location.getZ());
+        this.click = new EntityArmorStand(this.world, location.getX(), location.getY(), location.getZ());
 
         this.armorStand.setMarker(true);
         this.armorStand.setArms(false);
@@ -47,6 +49,13 @@ public final class ItemLine_v1_15_R1 implements ItemLine {
         this.armorStand.setSmall(true);
         this.armorStand.setCustomNameVisible(false);
         this.armorStand.setHealth(114.13f);
+
+        this.click.setInvisible(true);
+        this.click.setSmall(true);
+        this.click.setMarker(false);
+        this.click.setCustomNameVisible(false);
+        this.click.setNoGravity(true);
+        this.click.setHealth(114.13f);
     }
 
     /**
@@ -82,10 +91,19 @@ public final class ItemLine_v1_15_R1 implements ItemLine {
     /**
      * {@inheritDoc}
      */
+    @Override
+    public int getClickableEntityID() {
+        return this.click.getId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Nonnull
     @Override
     public Location getLocation() {
-        return this.armorStand.getBukkitEntity().getLocation();
+        return this.armorStand.getBukkitEntity()
+                .getLocation().subtract(0, 0.26, 0);
     }
 
     /**
@@ -97,7 +115,10 @@ public final class ItemLine_v1_15_R1 implements ItemLine {
 
         this.world = ((CraftWorld) Validate.notNull(location.getWorld())).getHandle();
         if (!this.world.equals(this.armorStand.getWorld())) this.armorStand.spawnIn(this.world);
-        this.armorStand.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+        this.armorStand.setLocation(location.getX(), location.getY() + 0.26, location.getZ(), location.getYaw(), location.getPitch());
+
+        if (!this.world.equals(this.click.getWorld())) this.click.spawnIn(this.world);
+        this.click.setLocation(location.getX(), location.getY() + 0.26, location.getZ(), location.getYaw(), location.getPitch());
 
         HCore.sendPacket(this.hologram.getRenderer().getShownViewersAsPlayer(),
                 new PacketPlayOutEntityTeleport(this.armorStand));
@@ -116,6 +137,10 @@ public final class ItemLine_v1_15_R1 implements ItemLine {
                     new PacketPlayOutEntityMetadata(this.armorStand.getId(), this.armorStand.getDataWatcher(), true),
                     new PacketPlayOutEntityTeleport(this.armorStand),
 
+                    new PacketPlayOutSpawnEntity(this.click),
+                    new PacketPlayOutEntityMetadata(this.click.getId(), this.click.getDataWatcher(), true),
+                    new PacketPlayOutEntityTeleport(this.click),
+
                     new PacketPlayOutEntityDestroy(this.nmsItem.getId()),
                     new PacketPlayOutSpawnEntity(this.nmsItem),
                     new PacketPlayOutEntityTeleport(this.nmsItem),
@@ -131,6 +156,7 @@ public final class ItemLine_v1_15_R1 implements ItemLine {
     public void hide(@Nonnull List<Player> players) {
         HCore.sendPacket(Validate.notNull(players, "players cannot be null!"),
                 new PacketPlayOutEntityDestroy(this.nmsItem.getId()),
-                new PacketPlayOutEntityDestroy(this.armorStand.getId()));
+                new PacketPlayOutEntityDestroy(this.armorStand.getId()),
+                new PacketPlayOutEntityDestroy(this.click.getId()));
     }
 }
