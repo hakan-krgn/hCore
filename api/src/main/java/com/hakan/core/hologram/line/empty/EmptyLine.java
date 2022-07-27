@@ -54,6 +54,14 @@ public final class EmptyLine implements HologramLine {
     /**
      * {@inheritDoc}
      */
+    @Override
+    public int getClickableEntityID() {
+        return -1;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Nonnull
     @Override
     public Location getLocation() {

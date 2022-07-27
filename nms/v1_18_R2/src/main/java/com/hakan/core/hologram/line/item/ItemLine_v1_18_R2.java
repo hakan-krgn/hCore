@@ -29,6 +29,7 @@ public final class ItemLine_v1_18_R2 implements ItemLine {
     private World world;
     private EntityItem nmsItem;
     private final HHologram hologram;
+    private final EntityArmorStand click;
     private final EntityArmorStand armorStand;
 
     /**
@@ -38,6 +39,7 @@ public final class ItemLine_v1_18_R2 implements ItemLine {
         this.world = ((CraftWorld) Validate.notNull(location.getWorld())).getHandle();
         this.hologram = Validate.notNull(hHologram, "hologram class cannot be null!");
         this.armorStand = new EntityArmorStand(this.world, location.getX(), location.getY(), location.getZ());
+        this.click = new EntityArmorStand(this.world, location.getX(), location.getY(), location.getZ());
 
         this.armorStand.persistentInvisibility = true; //set invisibility to true
         this.armorStand.b(5, true); //set invisibility to true
@@ -48,6 +50,14 @@ public final class ItemLine_v1_18_R2 implements ItemLine {
         this.armorStand.e(true); //set no gravity to true
         this.armorStand.a(true); //set small to true
         this.armorStand.c(114.13f); //set health to 114.13 float
+
+        this.click.persistentInvisibility = true; //set invisibility to true
+        this.click.b(5, true); //set invisibility to true
+        this.click.a(true); //set small to true
+        this.click.t(false); //set marker to false
+        this.click.n(false); //set custom name visibility to false
+        this.click.e(true); //set no gravity to true
+        this.click.c(114.13f); //set health to 114.13 float
     }
 
     /**
@@ -83,10 +93,19 @@ public final class ItemLine_v1_18_R2 implements ItemLine {
     /**
      * {@inheritDoc}
      */
+    @Override
+    public int getClickableEntityID() {
+        return this.click.ae();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Nonnull
     @Override
     public Location getLocation() {
-        return this.armorStand.getBukkitEntity().getLocation();
+        return this.armorStand.getBukkitEntity()
+                .getLocation().subtract(0, 0.26, 0);
     }
 
     /**
@@ -98,10 +117,14 @@ public final class ItemLine_v1_18_R2 implements ItemLine {
 
         this.world = ((CraftWorld) Validate.notNull(location.getWorld())).getHandle();
         if (!this.world.equals(this.armorStand.s)) this.armorStand.s = this.world;
-        this.armorStand.a(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+        this.armorStand.a(location.getX(), location.getY() + 0.26, location.getZ(), location.getYaw(), location.getPitch());
+
+        if (!this.world.equals(this.click.s)) this.click.s = this.world;
+        this.click.a(location.getX(), location.getY() + 0.26, location.getZ(), location.getYaw(), location.getPitch());
 
         HCore.sendPacket(this.hologram.getRenderer().getShownViewersAsPlayer(),
-                new PacketPlayOutEntityTeleport(this.armorStand));
+                new PacketPlayOutEntityTeleport(this.armorStand),
+                new PacketPlayOutEntityTeleport(this.click));
     }
 
     /**
@@ -116,6 +139,10 @@ public final class ItemLine_v1_18_R2 implements ItemLine {
                     new PacketPlayOutSpawnEntityLiving(this.armorStand),
                     new PacketPlayOutEntityMetadata(this.armorStand.ae(), this.armorStand.ai(), true),
                     new PacketPlayOutEntityTeleport(this.armorStand),
+
+                    new PacketPlayOutSpawnEntityLiving(this.click),
+                    new PacketPlayOutEntityMetadata(this.click.ae(), this.click.ai(), true),
+                    new PacketPlayOutEntityTeleport(this.click),
 
                     new PacketPlayOutEntityDestroy(this.nmsItem.ae()),
                     new PacketPlayOutSpawnEntity(this.nmsItem),
@@ -132,6 +159,7 @@ public final class ItemLine_v1_18_R2 implements ItemLine {
     public void hide(@Nonnull List<Player> players) {
         HCore.sendPacket(Validate.notNull(players, "players cannot be null!"),
                 new PacketPlayOutEntityDestroy(this.nmsItem.ae()),
-                new PacketPlayOutEntityDestroy(this.armorStand.ae()));
+                new PacketPlayOutEntityDestroy(this.armorStand.ae()),
+                new PacketPlayOutEntityDestroy(this.click.ae()));
     }
 }
