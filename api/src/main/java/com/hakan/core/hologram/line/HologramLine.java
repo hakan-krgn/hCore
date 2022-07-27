@@ -40,6 +40,13 @@ public interface HologramLine {
 
 
     /**
+     * Gets entity id of hologram line.
+     *
+     * @return Entity id.
+     */
+    int getClickableEntityID();
+
+    /**
      * Gets location of line.
      *
      * @return location of line.
