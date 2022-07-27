@@ -5,6 +5,7 @@ import com.hakan.core.hologram.line.HologramLine;
 import com.hakan.core.hologram.line.empty.EmptyLine;
 import com.hakan.core.hologram.line.item.ItemLine;
 import com.hakan.core.hologram.line.text.TextLine;
+import com.hakan.core.packet.event.PacketEvent;
 import com.hakan.core.renderer.HRenderer;
 import com.hakan.core.utils.Validate;
 import org.bukkit.Location;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BiConsumer;
 
 /**
  * Hologram class to create and
@@ -174,6 +176,21 @@ public final class HHologram {
     }
 
     /**
+     * When the player click on hologram,
+     * this consumer will be called.
+     *
+     * @param consumer Consumer.
+     */
+    public void whenClicked(@Nonnull BiConsumer<Player, HologramLine> consumer) {
+        HCore.registerEvent(PacketEvent.class)
+                .filter(event -> event.getPacket().getClass().getName().contains("PacketPlayInUseEntity"))
+                .consumeAsync(event -> {
+                    HologramLine line = this.getLineByEntityID(event.getValue("a"));
+                    if (line != null) consumer.accept(event.getPlayer(), line);
+                });
+    }
+
+    /**
      * Gets hologram lines.
      *
      * @return Hologram lines.
@@ -198,12 +215,41 @@ public final class HHologram {
     /**
      * Gets hologram line from index.
      *
-     * @param index Index.
+     * @param index  Index.
+     * @param tClass Class of hologram line.
+     * @param <T>    Type of hologram line class.
      * @return HologramLine class.
      */
     @Nonnull
     public <T extends HologramLine> T getLine(int index, @Nonnull Class<T> tClass) {
         return tClass.cast(this.getLine(index));
+    }
+
+    /**
+     * Gets hologram line from entity id.
+     *
+     * @param entityID Entity ID.
+     * @param <T>      Type of hologram line class.
+     * @return HologramLine class.
+     */
+    @Nullable
+    public <T extends HologramLine> T getLineByEntityID(int entityID) {
+        return (T) this.lines.stream().filter(line -> line.getClickableEntityID() == entityID)
+                .findFirst().orElse(null);
+    }
+
+    /**
+     * Gets hologram line from entity id.
+     *
+     * @param entityID Entity ID.
+     * @param tClass   Class of hologram line.
+     * @param <T>      Type of hologram line class.
+     * @return HologramLine class.
+     */
+    @Nullable
+    public <T extends HologramLine> T getLineByEntityID(int entityID, @Nonnull Class<T> tClass) {
+        return tClass.cast(this.lines.stream().filter(line -> line.getClickableEntityID() == entityID)
+                .findFirst().orElse(null));
     }
 
     /**

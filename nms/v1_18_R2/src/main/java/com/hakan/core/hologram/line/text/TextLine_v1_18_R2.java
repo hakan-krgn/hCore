@@ -6,7 +6,7 @@ import com.hakan.core.utils.Validate;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityDestroy;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityMetadata;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityTeleport;
-import net.minecraft.network.protocol.game.PacketPlayOutSpawnEntityLiving;
+import net.minecraft.network.protocol.game.PacketPlayOutSpawnEntity;
 import net.minecraft.world.entity.decoration.EntityArmorStand;
 import net.minecraft.world.level.World;
 import org.bukkit.Location;
@@ -23,6 +23,7 @@ import java.util.List;
 public final class TextLine_v1_18_R2 implements TextLine {
 
     private final HHologram hologram;
+    private final EntityArmorStand click;
     private final EntityArmorStand armorStand;
 
     /**
@@ -32,6 +33,7 @@ public final class TextLine_v1_18_R2 implements TextLine {
         World world = ((CraftWorld) Validate.notNull(location.getWorld())).getHandle();
         this.hologram = Validate.notNull(hHologram, "hologram class cannot be null!");
         this.armorStand = new EntityArmorStand(world, location.getX(), location.getY(), location.getZ());
+        this.click = new EntityArmorStand(world, location.getX(), location.getY(), location.getZ());
 
         this.armorStand.persistentInvisibility = true; //set invisibility to true
         this.armorStand.b(5, true); //set invisibility to true
@@ -42,6 +44,14 @@ public final class TextLine_v1_18_R2 implements TextLine {
         this.armorStand.e(true); //set no gravity to true
         this.armorStand.a(true); //set small to true
         this.armorStand.c(114.13f); //set health to 114.13 float
+
+        this.click.persistentInvisibility = true; //set invisibility to true
+        this.click.b(5, true); //set invisibility to true
+        this.click.a(true); //set small to true
+        this.click.t(false); //set marker to false
+        this.click.n(false); //set custom name visibility to false
+        this.click.e(true); //set no gravity to true
+        this.click.c(114.13f); //set health to 114.13 float
     }
 
     /**
@@ -66,6 +76,14 @@ public final class TextLine_v1_18_R2 implements TextLine {
     /**
      * {@inheritDoc}
      */
+    @Override
+    public int getClickableEntityID() {
+        return this.click.ae();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Nonnull
     @Override
     public Location getLocation() {
@@ -83,8 +101,12 @@ public final class TextLine_v1_18_R2 implements TextLine {
         if (!world.equals(this.armorStand.s)) this.armorStand.s = world;
         this.armorStand.a(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 
+        if (!world.equals(this.click.s)) this.click.s = world;
+        this.click.a(location.getX(), location.getY() + 0.24, location.getZ(), location.getYaw(), location.getPitch());
+
         HCore.sendPacket(this.hologram.getRenderer().getShownViewersAsPlayer(),
-                new PacketPlayOutEntityTeleport(this.armorStand));
+                new PacketPlayOutEntityTeleport(this.armorStand),
+                new PacketPlayOutEntityTeleport(this.click));
     }
 
     /**
@@ -93,9 +115,13 @@ public final class TextLine_v1_18_R2 implements TextLine {
     @Override
     public void show(@Nonnull List<Player> players) {
         HCore.sendPacket(Validate.notNull(players, "players cannot be null!"),
-                new PacketPlayOutSpawnEntityLiving(this.armorStand),
+                new PacketPlayOutSpawnEntity(this.armorStand),
                 new PacketPlayOutEntityMetadata(this.armorStand.ae(), this.armorStand.ai(), true),
-                new PacketPlayOutEntityTeleport(this.armorStand));
+                new PacketPlayOutEntityTeleport(this.armorStand),
+
+                new PacketPlayOutSpawnEntity(this.click),
+                new PacketPlayOutEntityMetadata(this.click.ae(), this.click.ai(), true),
+                new PacketPlayOutEntityTeleport(this.click));
     }
 
     /**
@@ -104,6 +130,7 @@ public final class TextLine_v1_18_R2 implements TextLine {
     @Override
     public void hide(@Nonnull List<Player> players) {
         HCore.sendPacket(Validate.notNull(players, "players cannot be null!"),
-                new PacketPlayOutEntityDestroy(this.armorStand.ae()));
+                new PacketPlayOutEntityDestroy(this.armorStand.ae()),
+                new PacketPlayOutEntityDestroy(this.click.ae()));
     }
 }
