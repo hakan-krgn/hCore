@@ -40,6 +40,13 @@ public interface HologramLine {
 
 
     /**
+     * Gets parent class of line.
+     *
+     * @return Parent class of line.
+     */
+    HHologram getHologram();
+
+    /**
      * Gets entity id of hologram line.
      *
      * @return Entity id.

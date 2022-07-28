@@ -93,6 +93,14 @@ public final class ItemLine_v1_11_R1 implements ItemLine {
      * {@inheritDoc}
      */
     @Override
+    public HHologram getHologram() {
+        return this.hologram;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int getClickableEntityID() {
         return this.click.getId();
     }

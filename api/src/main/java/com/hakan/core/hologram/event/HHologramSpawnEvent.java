@@ -1,6 +1,6 @@
-package com.hakan.core.npc.events;
+package com.hakan.core.hologram.event;
 
-import com.hakan.core.npc.HNPC;
+import com.hakan.core.hologram.HHologram;
 import com.hakan.core.utils.Validate;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -8,9 +8,9 @@ import org.bukkit.event.HandlerList;
 import javax.annotation.Nonnull;
 
 /**
- * HNpcDeleteEvent class.
+ * HHologramSpawnEvent class.
  */
-public final class HNpcDeleteEvent extends Event {
+public final class HHologramSpawnEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
 
@@ -25,15 +25,15 @@ public final class HNpcDeleteEvent extends Event {
     }
 
 
-    private final HNPC npc;
+    private final HHologram hologram;
 
     /**
      * Creates new instance of this class.
      *
-     * @param npc HNPC class.
+     * @param hologram HHologram class.
      */
-    public HNpcDeleteEvent(@Nonnull HNPC npc) {
-        this.npc = Validate.notNull(npc, "npc cannot be null!");
+    public HHologramSpawnEvent(@Nonnull HHologram hologram) {
+        this.hologram = Validate.notNull(hologram, "hologram cannot be null!");
     }
 
     /**
@@ -47,12 +47,12 @@ public final class HNpcDeleteEvent extends Event {
     }
 
     /**
-     * Gets event NPC.
+     * Gets event hologram.
      *
-     * @return Event NPC.
+     * @return Event hologram.
      */
     @Nonnull
-    public HNPC getNpc() {
-        return this.npc;
+    public HHologram getHologram() {
+        return this.hologram;
     }
 }
