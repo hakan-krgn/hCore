@@ -47,6 +47,7 @@ public final class EmptyLine implements HologramLine {
      * @return Parent class of line.
      */
     @Nonnull
+    @Override
     public HHologram getHologram() {
         return this.hologram;
     }

@@ -49,7 +49,7 @@ public final class HNpcSpawnEvent extends Event {
     /**
      * Gets event NPC.
      *
-     * @return event NPC.
+     * @return Event NPC.
      */
     @Nonnull
     public HNPC getNpc() {

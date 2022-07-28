@@ -1,6 +1,7 @@
-package com.hakan.core.npc.events;
+package com.hakan.core.hologram.event;
 
-import com.hakan.core.npc.HNPC;
+import com.hakan.core.hologram.HHologram;
+import com.hakan.core.hologram.line.HologramLine;
 import com.hakan.core.utils.Validate;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -9,9 +10,9 @@ import org.bukkit.event.HandlerList;
 import javax.annotation.Nonnull;
 
 /**
- * HNpcClickEvent class.
+ * HHologramSpawnEvent class.
  */
-public final class HNpcClickEvent extends Event {
+public final class HHologramClickEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
 
@@ -26,21 +27,18 @@ public final class HNpcClickEvent extends Event {
     }
 
 
-    private final HNPC npc;
     private final Player player;
-    private final HNPC.Action action;
+    private final HologramLine line;
 
     /**
      * Creates new instance of this class.
      *
-     * @param npc    HNPC class.
-     * @param player Player.
-     * @param action Action.
+     * @param player Event player.
+     * @param line   Clicked line.
      */
-    public HNpcClickEvent(@Nonnull HNPC npc, @Nonnull Player player, @Nonnull HNPC.Action action) {
-        this.npc = Validate.notNull(npc, "npc cannot be null!");
+    public HHologramClickEvent(@Nonnull Player player, @Nonnull HologramLine line) {
         this.player = Validate.notNull(player, "player cannot be null!");
-        this.action = Validate.notNull(action, "action cannot be null!");
+        this.line = Validate.notNull(line, "line cannot be null!");
     }
 
     /**
@@ -54,16 +52,6 @@ public final class HNpcClickEvent extends Event {
     }
 
     /**
-     * Gets event NPC.
-     *
-     * @return Event NPC.
-     */
-    @Nonnull
-    public HNPC getNpc() {
-        return this.npc;
-    }
-
-    /**
      * Gets event player.
      *
      * @return Event player.
@@ -74,12 +62,22 @@ public final class HNpcClickEvent extends Event {
     }
 
     /**
-     * Gets click type of event.
+     * Gets event line.
      *
-     * @return Click type of event.
+     * @return Event line.
      */
     @Nonnull
-    public HNPC.Action getAction() {
-        return this.action;
+    public HologramLine getLine() {
+        return this.line;
+    }
+
+    /**
+     * Gets event hologram.
+     *
+     * @return Event hologram.
+     */
+    @Nonnull
+    public HHologram getHologram() {
+        return this.line.getHologram();
     }
 }

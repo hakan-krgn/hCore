@@ -75,6 +75,14 @@ public final class TextLine_v1_16_R3 implements TextLine {
      * {@inheritDoc}
      */
     @Override
+    public HHologram getHologram() {
+        return this.hologram;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int getClickableEntityID() {
         return this.click.getId();
     }

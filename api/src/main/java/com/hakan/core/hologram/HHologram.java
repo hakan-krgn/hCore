@@ -1,11 +1,11 @@
 package com.hakan.core.hologram;
 
 import com.hakan.core.HCore;
+import com.hakan.core.hologram.action.HHologramAction;
 import com.hakan.core.hologram.line.HologramLine;
 import com.hakan.core.hologram.line.empty.EmptyLine;
 import com.hakan.core.hologram.line.item.ItemLine;
 import com.hakan.core.hologram.line.text.TextLine;
-import com.hakan.core.packet.event.PacketEvent;
 import com.hakan.core.renderer.HRenderer;
 import com.hakan.core.utils.Validate;
 import org.bukkit.Location;
@@ -24,6 +24,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * Hologram class to create and
@@ -33,9 +34,10 @@ import java.util.function.BiConsumer;
 public final class HHologram {
 
     private final String id;
+    private final HRenderer renderer;
+    private final HHologramAction action;
     private final List<HologramLine> lines;
     private double lineDistance = 0.25;
-    private HRenderer renderer;
 
     /**
      * Creates new instance of this class.
@@ -51,12 +53,15 @@ public final class HHologram {
 
         this.id = id;
         this.lines = new LinkedList<>();
+        this.action = new HHologramAction(this);
         this.renderer = new HRenderer(location, 30, playerList,
                 players -> this.lines.forEach(line -> line.show(players)),
                 players -> this.lines.forEach(line -> line.hide(players)),
                 renderer -> this.lines.forEach(line -> line.hide(renderer.getShownViewersAsPlayer())));
+
         this.renderer.showEveryone(false);
         this.renderer.render();
+        this.action.onSpawn();
     }
 
     /**
@@ -71,12 +76,15 @@ public final class HHologram {
 
         this.id = id;
         this.lines = new LinkedList<>();
+        this.action = new HHologramAction(this);
         this.renderer = new HRenderer(location, 30,
                 players -> this.lines.forEach(line -> line.show(players)),
                 players -> this.lines.forEach(line -> line.hide(players)),
                 renderer -> this.lines.forEach(line -> line.hide(renderer.getShownViewersAsPlayer())));
+
         this.renderer.showEveryone(true);
         this.renderer.render();
+        this.action.onSpawn();
     }
 
     /**
@@ -106,6 +114,16 @@ public final class HHologram {
     @Nonnull
     public Location getLocation() {
         return this.renderer.getLocation();
+    }
+
+    /**
+     * Gets hologram action.
+     *
+     * @return Hologram action.
+     */
+    @Nonnull
+    public HHologramAction getAction() {
+        return this.action;
     }
 
     /**
@@ -140,18 +158,6 @@ public final class HHologram {
     }
 
     /**
-     * Sets renderer of hologram.
-     *
-     * @param renderer Renderer.
-     * @return Instance of this class.
-     */
-    @Nonnull
-    public HHologram setRenderer(@Nonnull HRenderer renderer) {
-        this.renderer = Validate.notNull(renderer, "renderer cannot be null!");
-        return this;
-    }
-
-    /**
      * Checks everyone can
      * see the hologram.
      *
@@ -176,18 +182,42 @@ public final class HHologram {
     }
 
     /**
+     * When hologram is spawned
+     * this consumer will be called.
+     *
+     * @param consumer Consumer.
+     * @return Instance of this class.
+     */
+    @Nonnull
+    public HHologram whenSpawned(@Nonnull Consumer<HHologram> consumer) {
+        this.action.whenSpawned(consumer);
+        return this;
+    }
+
+    /**
+     * When hologram is deleted
+     * this consumer will be called.
+     *
+     * @param consumer Consumer.
+     * @return Instance of this class.
+     */
+    @Nonnull
+    public HHologram whenDeleted(@Nonnull Consumer<HHologram> consumer) {
+        this.action.whenDeleted(consumer);
+        return this;
+    }
+
+    /**
      * When the player click on hologram,
      * this consumer will be called.
      *
      * @param consumer Consumer.
+     * @return Instance of this class.
      */
-    public void whenClicked(@Nonnull BiConsumer<Player, HologramLine> consumer) {
-        HCore.registerEvent(PacketEvent.class)
-                .filter(event -> event.getPacket().getClass().getName().contains("PacketPlayInUseEntity"))
-                .consumeAsync(event -> {
-                    HologramLine line = this.getLineByEntityID(event.getValue("a"));
-                    if (line != null) consumer.accept(event.getPlayer(), line);
-                });
+    @Nonnull
+    public HHologram whenClicked(@Nonnull BiConsumer<Player, HologramLine> consumer) {
+        this.action.whenClicked(consumer);
+        return this;
     }
 
     /**
@@ -767,9 +797,10 @@ public final class HHologram {
     @Nonnull
     public HHologram delete() {
         if (this.isExist()) {
+            HHologramHandler.getContent().remove(this.id);
+            this.action.onDelete();
             this.renderer.delete();
             this.lines.clear();
-            HHologramHandler.getContent().remove(this.id);
         }
         return this;
     }
