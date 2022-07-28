@@ -99,8 +99,10 @@ public final class HNpcAction {
         if (this.spawnConsumer != null)
             this.spawnConsumer.accept(this.hnpc);
 
-        HNpcSpawnEvent event = new HNpcSpawnEvent(this.hnpc);
-        Bukkit.getPluginManager().callEvent(event);
+        HCore.syncScheduler().run(() -> {
+            HNpcSpawnEvent event = new HNpcSpawnEvent(this.hnpc);
+            Bukkit.getPluginManager().callEvent(event);
+        });
     }
 
     /**
@@ -110,8 +112,10 @@ public final class HNpcAction {
         if (this.deleteConsumer != null)
             this.deleteConsumer.accept(this.hnpc);
 
-        HNpcDeleteEvent event = new HNpcDeleteEvent(this.hnpc);
-        Bukkit.getPluginManager().callEvent(event);
+        HCore.syncScheduler().run(() -> {
+            HNpcDeleteEvent event = new HNpcDeleteEvent(this.hnpc);
+            Bukkit.getPluginManager().callEvent(event);
+        });
     }
 
     /**
@@ -130,7 +134,9 @@ public final class HNpcAction {
         if (this.clickConsumer != null)
             this.clickConsumer.accept(player, action);
 
-        HNpcClickEvent event = new HNpcClickEvent(this.hnpc, player, action);
-        Bukkit.getPluginManager().callEvent(event);
+        HCore.syncScheduler().run(() -> {
+            HNpcClickEvent event = new HNpcClickEvent(this.hnpc, player, action);
+            Bukkit.getPluginManager().callEvent(event);
+        });
     }
 }

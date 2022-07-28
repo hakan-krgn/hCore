@@ -1,5 +1,6 @@
 package com.hakan.core.hologram.action;
 
+import com.hakan.core.HCore;
 import com.hakan.core.hologram.HHologram;
 import com.hakan.core.hologram.event.HHologramClickEvent;
 import com.hakan.core.hologram.event.HHologramDeleteEvent;
@@ -81,8 +82,10 @@ public final class HHologramAction {
         if (this.spawnConsumer != null)
             this.spawnConsumer.accept(this.hologram);
 
-        HHologramSpawnEvent event = new HHologramSpawnEvent(this.hologram);
-        Bukkit.getPluginManager().callEvent(event);
+        HCore.syncScheduler().run(() -> {
+            HHologramSpawnEvent event = new HHologramSpawnEvent(this.hologram);
+            Bukkit.getPluginManager().callEvent(event);
+        });
     }
 
     /**
@@ -93,8 +96,10 @@ public final class HHologramAction {
         if (this.deleteConsumer != null)
             this.deleteConsumer.accept(this.hologram);
 
-        HHologramDeleteEvent event = new HHologramDeleteEvent(this.hologram);
-        Bukkit.getPluginManager().callEvent(event);
+        HCore.syncScheduler().run(() -> {
+            HHologramDeleteEvent event = new HHologramDeleteEvent(this.hologram);
+            Bukkit.getPluginManager().callEvent(event);
+        });
     }
 
     /**
@@ -111,7 +116,9 @@ public final class HHologramAction {
         if (this.clickConsumer != null)
             this.clickConsumer.accept(player, line);
 
-        HHologramClickEvent event = new HHologramClickEvent(player, line);
-        Bukkit.getPluginManager().callEvent(event);
+        HCore.syncScheduler().run(() -> {
+            HHologramClickEvent event = new HHologramClickEvent(player, line);
+            Bukkit.getPluginManager().callEvent(event);
+        });
     }
 }
