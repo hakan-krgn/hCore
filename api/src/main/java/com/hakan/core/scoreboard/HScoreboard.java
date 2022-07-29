@@ -194,6 +194,7 @@ public abstract class HScoreboard {
 
         HCore.syncScheduler().every(updateInterval)
                 .terminateIf(task -> !this.isExist())
+                .terminateIf(task -> !HScoreboardHandler.getByPlayer(this.player).equals(this))
                 .run(() -> {
                     consumer.accept(this);
                     this.show();
