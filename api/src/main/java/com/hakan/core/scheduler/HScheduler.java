@@ -6,7 +6,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import javax.annotation.Nonnull;
 import java.time.Duration;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -34,8 +34,8 @@ public final class HScheduler {
     public HScheduler(@Nonnull JavaPlugin plugin, boolean async) {
         this.plugin = Validate.notNull(plugin, "plugin cannot be null!");
         this.async = async;
-        this.freezeFilters = new ArrayList<>();
-        this.terminateFilters = new ArrayList<>();
+        this.freezeFilters = new LinkedList<>();
+        this.terminateFilters = new LinkedList<>();
     }
 
     /**
@@ -232,4 +232,6 @@ public final class HScheduler {
                 return bukkitRunnable.runTaskTimer(this.plugin, this.after, this.every).getTaskId();
         }
     }
+
+
 }
