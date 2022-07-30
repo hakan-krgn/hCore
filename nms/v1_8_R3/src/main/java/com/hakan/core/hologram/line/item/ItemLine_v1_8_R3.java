@@ -53,8 +53,6 @@ public final class ItemLine_v1_8_R3 implements ItemLine {
         this.armorStand.setCustomName(" ");
         this.armorStand.setHealth(114.13f);
 
-        this.click.getDataWatcher().watch(10, (byte) 16);
-        this.click.b(new NBTTagCompound());
         this.click.setInvisible(true);
         this.click.setSmall(true);
         this.click.setCustomNameVisible(false);
