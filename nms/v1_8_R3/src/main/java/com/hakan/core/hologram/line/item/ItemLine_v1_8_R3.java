@@ -130,7 +130,8 @@ public final class ItemLine_v1_8_R3 implements ItemLine {
         this.click.setLocation(location.getX(), location.getY() + 0.26, location.getZ(), location.getYaw(), location.getPitch());
 
         HCore.sendPacket(this.hologram.getRenderer().getShownViewersAsPlayer(),
-                new PacketPlayOutEntityTeleport(this.armorStand));
+                new PacketPlayOutEntityTeleport(this.armorStand),
+                new PacketPlayOutEntityTeleport(this.click));
     }
 
     /**
@@ -163,6 +164,7 @@ public final class ItemLine_v1_8_R3 implements ItemLine {
     public void hide(@Nonnull List<Player> players) {
         HCore.sendPacket(Validate.notNull(players, "players cannot be null!"),
                 new PacketPlayOutEntityDestroy(this.nmsItem.getId()),
-                new PacketPlayOutEntityDestroy(this.armorStand.getId()));
+                new PacketPlayOutEntityDestroy(this.armorStand.getId()),
+                new PacketPlayOutEntityDestroy(this.click.getId()));
     }
 }

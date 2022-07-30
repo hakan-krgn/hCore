@@ -110,7 +110,7 @@ public final class TextLine_v1_18_R1 implements TextLine {
         this.armorStand.a(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 
         if (!world.equals(this.click.t)) this.click.t = world;
-        this.click.a(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+        this.click.a(location.getX(), location.getY() + 0.24, location.getZ(), location.getYaw(), location.getPitch());
 
         HCore.sendPacket(this.hologram.getRenderer().getShownViewersAsPlayer(),
                 new PacketPlayOutEntityTeleport(this.armorStand),
