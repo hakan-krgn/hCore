@@ -30,6 +30,7 @@ from [here](https://github.com/hakan-krgn/hCore/wiki).
 * [@Alpho320](https://github.com/Alpho320)
 * [@rin-17](https://github.com/rin-17)
 * [@bilektugrul](https://github.com/bilektugrul)
+* [@hamza-cskn](https://github.com/hamza-cskn)
 
 ## Features
 
