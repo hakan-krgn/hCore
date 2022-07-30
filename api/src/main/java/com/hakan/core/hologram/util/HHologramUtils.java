@@ -1,5 +1,8 @@
 package com.hakan.core.hologram.util;
 
+import com.hakan.core.utils.Validate;
+
+import javax.annotation.Nonnull;
 import java.lang.reflect.Constructor;
 
 /**
@@ -17,8 +20,13 @@ public final class HHologramUtils {
      * @param <T>     Type of class.
      * @return New instance of HologramArmorStand class.
      */
-    public static <T> T createNewInstance(String path, Class<?>[] classes, Object[] objects) {
+    @Nonnull
+    public static <T> T createNewInstance(@Nonnull String path, @Nonnull Class<?>[] classes, @Nonnull Object[] objects) {
         try {
+            Validate.notNull(path, "path cannot be null!");
+            Validate.notNull(classes, "classes cannot be null!");
+            Validate.notNull(objects, "objects cannot be null!");
+
             Class<T> tClass = (Class<T>) Class.forName(path);
             Constructor<T> constructor = tClass.getDeclaredConstructor(classes);
             constructor.setAccessible(true);

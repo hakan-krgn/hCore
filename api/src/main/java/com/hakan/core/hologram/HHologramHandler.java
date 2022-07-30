@@ -1,8 +1,7 @@
 package com.hakan.core.hologram;
 
 import com.hakan.core.HCore;
-import com.hakan.core.hologram.line.HologramLine;
-import com.hakan.core.packet.event.PacketEvent;
+import com.hakan.core.hologram.listeners.HologramClickListener;
 import com.hakan.core.utils.Validate;
 import org.bukkit.Location;
 
@@ -30,13 +29,7 @@ public final class HHologramHandler {
     public static void initialize() {
         HCore.syncScheduler().every(10)
                 .run(() -> HHologramHandler.getValues().forEach(hologram -> hologram.getRenderer().render()));
-
-        HCore.registerEvent(PacketEvent.class)
-                .filter(event -> event.getPacket().getClass().getName().contains("PacketPlayInUseEntity"))
-                .consumeAsync(event -> HHologramHandler.getValues().forEach(hologram -> {
-                    HologramLine line = hologram.getLineByEntityID(event.getValue("a"));
-                    if (line != null) hologram.getAction().onClick(event.getPlayer(), line);
-                }));
+        HCore.registerListeners(new HologramClickListener());
     }
 
     /**
