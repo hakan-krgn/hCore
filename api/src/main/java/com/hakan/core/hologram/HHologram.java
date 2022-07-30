@@ -275,7 +275,7 @@ public final class HHologram {
      */
     @Nullable
     public <T extends HologramLine> T getLineByEntityID(int entityID) {
-        return (T) this.lines.stream().filter(line -> line.getClickableEntityID() == entityID)
+        return (T) this.lines.stream().filter(line -> line.getEntityID() == entityID)
                 .findFirst().orElse(null);
     }
 
@@ -289,7 +289,7 @@ public final class HHologram {
      */
     @Nullable
     public <T extends HologramLine> T getLineByEntityID(int entityID, @Nonnull Class<T> tClass) {
-        return tClass.cast(this.lines.stream().filter(line -> line.getClickableEntityID() == entityID)
+        return tClass.cast(this.lines.stream().filter(line -> line.getEntityID() == entityID)
                 .findFirst().orElse(null));
     }
 
@@ -447,9 +447,12 @@ public final class HHologram {
     @Nonnull
     public HHologram setLocation(@Nonnull Location location) {
         Validate.notNull(location, "location cannot be null!");
-        Location loc = location.clone().add(0, (this.lineDistance / 2) * (this.lines.size() + 2), 0);
+        Location startLoc = location.clone().add(0, ((this.lines.size() - 1) * this.lineDistance + 0.24) / 2.0 - 1.2680, 0);
+        this.lines.forEach(line -> {
+            line.setLocation(startLoc.clone().subtract(0, 0.24, 0));
+            startLoc.subtract(0, this.lineDistance, 0);
+        });
         this.renderer.setLocation(location);
-        this.lines.forEach(line -> line.setLocation(loc.subtract(0, this.lineDistance, 0)));
         return this;
     }
 

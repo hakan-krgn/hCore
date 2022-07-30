@@ -25,6 +25,7 @@ public interface HologramLine {
      * @param object   Object.
      * @return Line.
      */
+    @Nonnull
     static HologramLine create(@Nonnull HHologram hologram, @Nullable Object object) {
         if (object == null) {
             return EmptyLine.create(hologram);
@@ -44,14 +45,15 @@ public interface HologramLine {
      *
      * @return Parent class of line.
      */
+    @Nonnull
     HHologram getHologram();
 
     /**
-     * Gets entity id of hologram line.
+     * Gets entity id of line.
      *
-     * @return Entity id.
+     * @return Entity id of line.
      */
-    int getClickableEntityID();
+    int getEntityID();
 
     /**
      * Gets location of line.

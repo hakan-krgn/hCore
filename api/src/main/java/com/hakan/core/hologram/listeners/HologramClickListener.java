@@ -33,11 +33,10 @@ public final class HologramClickListener implements Listener {
 
                     float pitch = -playerLocation.getPitch();
 
-                    double y1 = (hologram.getLineDistance() / 2) * (hologram.getLines().size() + 2) + hologramLocation.getY();
-                    double y2 = distance * Math.tan(Math.toRadians(pitch)) + playerLocation.getY();
+                    double y1 = hologramLocation.getY() + ((hologram.getLines().size() - 1) * hologram.getLineDistance() + 0.24) / 2.0;
+                    double y2 = playerLocation.getY() + distance * Math.tan(Math.toRadians(pitch));
 
-                    int index = (int) Math.ceil((y1 - y2) / 0.24);
-
+                    int index = (int) Math.floor((y1 - y2) / hologram.getLineDistance());
                     if (index < 0 || index >= hologram.getLines().size())
                         break;
 
