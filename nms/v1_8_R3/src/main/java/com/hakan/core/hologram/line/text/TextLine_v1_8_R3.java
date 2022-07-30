@@ -4,7 +4,6 @@ import com.hakan.core.HCore;
 import com.hakan.core.hologram.HHologram;
 import com.hakan.core.utils.Validate;
 import net.minecraft.server.v1_8_R3.EntityArmorStand;
-import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityMetadata;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityTeleport;
@@ -23,7 +22,6 @@ import java.util.List;
 public final class TextLine_v1_8_R3 implements TextLine {
 
     private final HHologram hologram;
-    private final EntityArmorStand click;
     private final EntityArmorStand armorStand;
 
     /**
@@ -33,10 +31,7 @@ public final class TextLine_v1_8_R3 implements TextLine {
         World world = ((CraftWorld) Validate.notNull(location.getWorld())).getHandle();
         this.hologram = Validate.notNull(hHologram, "hologram class cannot be null!");
         this.armorStand = new EntityArmorStand(world, location.getX(), location.getY(), location.getZ());
-        this.click = new EntityArmorStand(world, location.getX(), location.getY(), location.getZ());
 
-        this.armorStand.getDataWatcher().watch(10, (byte) 16);
-        this.armorStand.b(new NBTTagCompound());
         this.armorStand.setArms(false);
         this.armorStand.setBasePlate(false);
         this.armorStand.setGravity(false);
@@ -44,12 +39,6 @@ public final class TextLine_v1_8_R3 implements TextLine {
         this.armorStand.setSmall(true);
         this.armorStand.setCustomNameVisible(true);
         this.armorStand.setHealth(114.13f);
-
-        this.click.setInvisible(true);
-        this.click.setSmall(true);
-        this.click.setCustomNameVisible(false);
-        this.click.setGravity(false);
-        this.click.setHealth(114.13f);
     }
 
     /**
@@ -74,6 +63,7 @@ public final class TextLine_v1_8_R3 implements TextLine {
     /**
      * {@inheritDoc}
      */
+    @Nonnull
     @Override
     public HHologram getHologram() {
         return this.hologram;
@@ -83,8 +73,8 @@ public final class TextLine_v1_8_R3 implements TextLine {
      * {@inheritDoc}
      */
     @Override
-    public int getClickableEntityID() {
-        return this.click.getId();
+    public int getEntityID() {
+        return this.armorStand.getId();
     }
 
     /**
@@ -107,12 +97,8 @@ public final class TextLine_v1_8_R3 implements TextLine {
         if (!world.equals(this.armorStand.getWorld())) this.armorStand.spawnIn(world);
         this.armorStand.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 
-        if (!world.equals(this.click.getWorld())) this.click.spawnIn(world);
-        this.click.setLocation(location.getX(), location.getY() + 0.24, location.getZ(), location.getYaw(), location.getPitch());
-
         HCore.sendPacket(this.hologram.getRenderer().getShownViewersAsPlayer(),
-                new PacketPlayOutEntityTeleport(this.armorStand),
-                new PacketPlayOutEntityTeleport(this.click));
+                new PacketPlayOutEntityTeleport(this.armorStand));
     }
 
     /**
@@ -123,11 +109,7 @@ public final class TextLine_v1_8_R3 implements TextLine {
         HCore.sendPacket(Validate.notNull(players, "players cannot be null!"),
                 new PacketPlayOutSpawnEntityLiving(this.armorStand),
                 new PacketPlayOutEntityMetadata(this.armorStand.getId(), this.armorStand.getDataWatcher(), true),
-                new PacketPlayOutEntityTeleport(this.armorStand),
-
-                new PacketPlayOutSpawnEntityLiving(this.click),
-                new PacketPlayOutEntityMetadata(this.click.getId(), this.click.getDataWatcher(), true),
-                new PacketPlayOutEntityTeleport(this.click));
+                new PacketPlayOutEntityTeleport(this.armorStand));
     }
 
     /**
@@ -136,7 +118,6 @@ public final class TextLine_v1_8_R3 implements TextLine {
     @Override
     public void hide(@Nonnull List<Player> players) {
         HCore.sendPacket(Validate.notNull(players, "players cannot be null!"),
-                new PacketPlayOutEntityDestroy(this.armorStand.getId()),
-                new PacketPlayOutEntityDestroy(this.click.getId()));
+                new PacketPlayOutEntityDestroy(this.armorStand.getId()));
     }
 }

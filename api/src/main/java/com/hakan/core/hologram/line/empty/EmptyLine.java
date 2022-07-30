@@ -56,7 +56,7 @@ public final class EmptyLine implements HologramLine {
      * {@inheritDoc}
      */
     @Override
-    public int getClickableEntityID() {
+    public int getEntityID() {
         return -1;
     }
 
