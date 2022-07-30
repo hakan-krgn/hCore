@@ -256,6 +256,17 @@ public final class HHologram {
     }
 
     /**
+     * Checks hologram line is
+     * exist by entity id.
+     *
+     * @param entityID Entity ID.
+     * @return If hologram line is exist, returns true.
+     */
+    public boolean hasLineByEntityID(int entityID) {
+        return this.getLineByEntityID(entityID) != null;
+    }
+
+    /**
      * Gets hologram line from entity id.
      *
      * @param entityID Entity ID.
