@@ -129,7 +129,8 @@ public final class ItemLine_v1_14_R1 implements ItemLine {
         this.click.setLocation(location.getX(), location.getY() + 0.26, location.getZ(), location.getYaw(), location.getPitch());
 
         HCore.sendPacket(this.hologram.getRenderer().getShownViewersAsPlayer(),
-                new PacketPlayOutEntityTeleport(this.armorStand));
+                new PacketPlayOutEntityTeleport(this.armorStand),
+                new PacketPlayOutEntityTeleport(this.click));
     }
 
     /**

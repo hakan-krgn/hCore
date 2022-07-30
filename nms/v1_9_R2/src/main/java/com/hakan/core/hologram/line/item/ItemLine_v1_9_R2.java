@@ -126,8 +126,12 @@ public final class ItemLine_v1_9_R2 implements ItemLine {
         if (!this.world.equals(this.armorStand.getWorld())) this.armorStand.spawnIn(this.world);
         this.armorStand.setLocation(location.getX(), location.getY() + 0.26, location.getZ(), location.getYaw(), location.getPitch());
 
+        if (!this.world.equals(this.click.getWorld())) this.click.spawnIn(this.world);
+        this.click.setLocation(location.getX(), location.getY() + 0.26, location.getZ(), location.getYaw(), location.getPitch());
+
         HCore.sendPacket(this.hologram.getRenderer().getShownViewersAsPlayer(),
-                new PacketPlayOutEntityTeleport(this.armorStand));
+                new PacketPlayOutEntityTeleport(this.armorStand),
+                new PacketPlayOutEntityTeleport(this.click));
     }
 
     /**
