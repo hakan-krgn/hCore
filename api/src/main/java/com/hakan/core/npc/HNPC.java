@@ -70,7 +70,7 @@ public final class HNPC {
         this.hologram = HCore.createHologram("hcore_npc_hologram:" + id, location, viewers);
         this.entity = HNpcUtils.createEntity(this);
 
-        this.hologram.addTextLines(Validate.notNull(lines, "lines cannot be null!"));
+        this.hologram.addLines(Validate.notNull(lines, "lines cannot be null!"));
         this.hologram.showEveryone(showEveryone);
         this.renderer.showEveryone(showEveryone);
         this.action.onSpawn();

@@ -13,6 +13,7 @@ import net.minecraft.world.entity.decoration.EntityArmorStand;
 import net.minecraft.world.entity.item.EntityItem;
 import net.minecraft.world.level.World;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_18_R2.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
@@ -27,7 +28,8 @@ import java.util.List;
 public final class ItemLine_v1_18_R2 implements ItemLine {
 
     private World world;
-    private EntityItem nmsItem;
+    private ItemStack item;
+    private final EntityItem nmsItem;
     private final HHologram hologram;
     private final EntityArmorStand armorStand;
 
@@ -38,6 +40,8 @@ public final class ItemLine_v1_18_R2 implements ItemLine {
         this.world = ((CraftWorld) Validate.notNull(location.getWorld())).getHandle();
         this.hologram = Validate.notNull(hHologram, "hologram class cannot be null!");
         this.armorStand = new EntityArmorStand(this.world, location.getX(), location.getY(), location.getZ());
+        this.nmsItem = new EntityItem(this.world, location.getX(), location.getY(), location.getZ(), CraftItemStack.asNMSCopy(new ItemStack(Material.STONE)));
+        this.nmsItem.a(this.armorStand, true);
 
         this.armorStand.persistentInvisibility = true; //set invisibility to true
         this.armorStand.b(5, true); //set invisibility to true
@@ -55,7 +59,7 @@ public final class ItemLine_v1_18_R2 implements ItemLine {
     @Nonnull
     @Override
     public ItemStack getItem() {
-        return CraftItemStack.asBukkitCopy(this.nmsItem.h());
+        return this.item;
     }
 
     /**
@@ -63,20 +67,10 @@ public final class ItemLine_v1_18_R2 implements ItemLine {
      */
     @Override
     public void setItem(@Nonnull ItemStack item) {
-        Validate.notNull(item, "item stack cannot be null!");
-
-        Location loc = this.hologram.getLocation();
-        this.nmsItem = new EntityItem(this.world, loc.getX(), loc.getY(), loc.getZ(), CraftItemStack.asNMSCopy(item));
-        this.nmsItem.a(this.armorStand, true);
-
+        this.item = Validate.notNull(item, "item cannot be null!");
+        this.nmsItem.a(CraftItemStack.asNMSCopy(this.item));
         HCore.sendPacket(this.hologram.getRenderer().getShownViewersAsPlayer(),
-                new PacketPlayOutEntityDestroy(this.nmsItem.ae()),
-                new PacketPlayOutSpawnEntity(this.nmsItem),
-                new PacketPlayOutEntityTeleport(this.nmsItem),
-                new PacketPlayOutEntityMetadata(this.nmsItem.ae(), this.nmsItem.ai(), true),
-                new PacketPlayOutMount(this.armorStand),
-
-                new PacketPlayOutEntityMetadata(this.armorStand.ae(), this.armorStand.ai(), true));
+                new PacketPlayOutEntityMetadata(this.nmsItem.ae(), this.nmsItem.ai(), true));
     }
 
     /**
@@ -103,7 +97,7 @@ public final class ItemLine_v1_18_R2 implements ItemLine {
     @Override
     public Location getLocation() {
         return this.armorStand.getBukkitEntity()
-                .getLocation().subtract(0, 0.26, 0);
+                .getLocation().add(0, 0.48, 0);
     }
 
     /**
@@ -115,7 +109,7 @@ public final class ItemLine_v1_18_R2 implements ItemLine {
 
         this.world = ((CraftWorld) Validate.notNull(location.getWorld())).getHandle();
         if (!this.world.equals(this.armorStand.s)) this.armorStand.s = this.world;
-        this.armorStand.a(location.getX(), location.getY() + 0.26, location.getZ(), location.getYaw(), location.getPitch());
+        this.armorStand.a(location.getX(), location.getY() - 0.48, location.getZ(), location.getYaw(), location.getPitch());
 
         HCore.sendPacket(this.hologram.getRenderer().getShownViewersAsPlayer(),
                 new PacketPlayOutEntityTeleport(this.armorStand));

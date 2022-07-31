@@ -21,7 +21,9 @@ import java.util.List;
  */
 public final class TextLine_v1_12_R1 implements TextLine {
 
+    private String text;
     private final HHologram hologram;
+    private final EntityArmorStand click;
     private final EntityArmorStand armorStand;
 
     /**
@@ -30,8 +32,18 @@ public final class TextLine_v1_12_R1 implements TextLine {
     private TextLine_v1_12_R1(@Nonnull HHologram hHologram, @Nonnull Location location) {
         World world = ((CraftWorld) Validate.notNull(location.getWorld())).getHandle();
         this.hologram = Validate.notNull(hHologram, "hologram class cannot be null!");
+        this.click = new EntityArmorStand(world, location.getX(), location.getY(), location.getZ());
         this.armorStand = new EntityArmorStand(world, location.getX(), location.getY(), location.getZ());
 
+        this.click.setArms(false);
+        this.click.setBasePlate(false);
+        this.click.setNoGravity(false);
+        this.click.setInvisible(true);
+        this.click.setSmall(false);
+        this.click.setCustomNameVisible(false);
+        this.click.setHealth(114.13f);
+
+        this.armorStand.setMarker(true);
         this.armorStand.setArms(false);
         this.armorStand.setBasePlate(false);
         this.armorStand.setNoGravity(true);
@@ -47,7 +59,7 @@ public final class TextLine_v1_12_R1 implements TextLine {
     @Nonnull
     @Override
     public String getText() {
-        return this.armorStand.getCustomName();
+        return this.text;
     }
 
     /**
@@ -55,7 +67,8 @@ public final class TextLine_v1_12_R1 implements TextLine {
      */
     @Override
     public void setText(@Nonnull String text) {
-        this.armorStand.setCustomName(Validate.notNull(text, "text cannot be null!"));
+        this.text = Validate.notNull(text, "text cannot be null!");
+        this.armorStand.setCustomName(this.text);
         HCore.sendPacket(this.hologram.getRenderer().getShownViewersAsPlayer(),
                 new PacketPlayOutEntityMetadata(this.armorStand.getId(), this.armorStand.getDataWatcher(), true));
     }
@@ -74,7 +87,7 @@ public final class TextLine_v1_12_R1 implements TextLine {
      */
     @Override
     public int getEntityID() {
-        return this.armorStand.getId();
+        return this.click.getId();
     }
 
     /**
@@ -94,11 +107,14 @@ public final class TextLine_v1_12_R1 implements TextLine {
         Validate.notNull(location, "location cannot be null!");
 
         World world = ((CraftWorld) Validate.notNull(location.getWorld())).getHandle();
+        if (!world.equals(this.click.getWorld())) this.click.spawnIn(world);
         if (!world.equals(this.armorStand.getWorld())) this.armorStand.spawnIn(world);
+        this.click.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
         this.armorStand.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 
         HCore.sendPacket(this.hologram.getRenderer().getShownViewersAsPlayer(),
-                new PacketPlayOutEntityTeleport(this.armorStand));
+                new PacketPlayOutEntityTeleport(this.armorStand),
+                new PacketPlayOutEntityTeleport(this.click));
     }
 
     /**
@@ -109,7 +125,11 @@ public final class TextLine_v1_12_R1 implements TextLine {
         HCore.sendPacket(Validate.notNull(players, "players cannot be null!"),
                 new PacketPlayOutSpawnEntityLiving(this.armorStand),
                 new PacketPlayOutEntityMetadata(this.armorStand.getId(), this.armorStand.getDataWatcher(), true),
-                new PacketPlayOutEntityTeleport(this.armorStand));
+                new PacketPlayOutEntityTeleport(this.armorStand),
+
+                new PacketPlayOutSpawnEntityLiving(this.click),
+                new PacketPlayOutEntityMetadata(this.click.getId(), this.click.getDataWatcher(), true),
+                new PacketPlayOutEntityTeleport(this.click));
     }
 
     /**
@@ -118,6 +138,7 @@ public final class TextLine_v1_12_R1 implements TextLine {
     @Override
     public void hide(@Nonnull List<Player> players) {
         HCore.sendPacket(Validate.notNull(players, "players cannot be null!"),
-                new PacketPlayOutEntityDestroy(this.armorStand.getId()));
+                new PacketPlayOutEntityDestroy(this.armorStand.getId()),
+                new PacketPlayOutEntityDestroy(this.click.getId()));
     }
 }

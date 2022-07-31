@@ -15,7 +15,6 @@ import org.bukkit.inventory.ItemStack;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -447,11 +446,13 @@ public final class HHologram {
     @Nonnull
     public HHologram setLocation(@Nonnull Location location) {
         Validate.notNull(location, "location cannot be null!");
-        Location startLoc = location.clone().add(0, ((this.lines.size() - 1) * this.lineDistance + 0.24) / 2.0 - 1.2680, 0);
-        this.lines.forEach(line -> {
+
+        Location startLoc = location.clone().add(0, ((this.lines.size() - 1) * this.lineDistance + 0.24) / 2.0 - 0.28, 0);
+        for (HologramLine line : this.lines) {
             line.setLocation(startLoc.clone().subtract(0, 0.24, 0));
             startLoc.subtract(0, this.lineDistance, 0);
-        });
+        }
+
         this.renderer.setLocation(location);
         return this;
     }
@@ -460,77 +461,49 @@ public final class HHologram {
      * Inserts the text into given line.
      *
      * @param index Line to insert into.
-     * @param line  Line text.
+     * @param value Value to insert.
      * @return Instance of this class.
      */
     @Nonnull
-    public HHologram insertLine(int index, @Nullable HologramLine line) {
-        line = (line == null) ? EmptyLine.create(this) : line;
+    public HHologram insertLine(int index, @Nullable Object value) {
+        if (value instanceof HologramLine) {
+            HologramLine line = (HologramLine) value;
 
-        this.lines.add(index, line);
-        line.show(this.renderer.getShownViewersAsPlayer());
-        return this.setLocation(this.getLocation());
-    }
+            this.lines.add(index, line);
+            line.show(this.renderer.getShownViewersAsPlayer());
+            this.setLocation(this.getLocation());
+        } else if (value instanceof String || value instanceof ItemStack || value == null) {
+            Location location = this.calculateLocation(this.lines.size());
+            this.insertLine(index, HologramLine.create(this, location, value));
+        } else {
+            throw new IllegalArgumentException("value must be HologramLine, String, ItemStack or null!");
+        }
 
-    /**
-     * Inserts the text into given line.
-     *
-     * @param index Line to insert into.
-     * @param line  Line text.
-     * @return Instance of this class.
-     */
-    @Nonnull
-    public HHologram insertTextLine(int index, @Nullable String line) {
-        return this.insertLine(index, HologramLine.create(this, line));
-    }
-
-    /**
-     * Inserts the text into given line.
-     *
-     * @param index     Line to insert into.
-     * @param itemStack ItemStack to insert.
-     * @return Instance of this class.
-     */
-    @Nonnull
-    public HHologram insertItemLine(int index, @Nullable ItemStack itemStack) {
-        return this.insertLine(index, HologramLine.create(this, itemStack));
+        return this;
     }
 
     /**
      * Adds new line to hologram.
      *
-     * @param line HologramLine class.
+     * @param value Value to add.
      * @return Instance of this class.
      */
     @Nonnull
-    public HHologram addLine(@Nullable HologramLine line) {
-        line = (line == null) ? EmptyLine.create(this) : line;
+    public HHologram addLine(@Nullable Object value) {
+        if (value instanceof HologramLine) {
+            HologramLine line = (HologramLine) value;
 
-        this.lines.add(line);
-        line.show(this.renderer.getShownViewersAsPlayer());
-        return this.setLocation(this.getLocation());
-    }
+            this.lines.add(line);
+            line.show(this.renderer.getShownViewersAsPlayer());
+            this.setLocation(this.getLocation());
+        } else if (value instanceof String || value instanceof ItemStack || value == null) {
+            Location location = this.calculateLocation(this.lines.size());
+            this.addLine(HologramLine.create(this, location, value));
+        } else {
+            throw new IllegalArgumentException("value must be HologramLine, String, ItemStack or null!");
+        }
 
-    /**
-     * Adds new text line to hologram.
-     *
-     * @param text Text.
-     * @return Instance of this class.
-     */
-    @Nonnull
-    public HHologram addTextLine(@Nullable String text) {
-        return this.addLine(HologramLine.create(this, text));
-    }
-
-    /**
-     * Adds new text line to hologram.
-     *
-     * @param itemStack ItemStack to insert.
-     * @return Instance of this class.
-     */
-    @Nonnull
-    public HHologram addItemLine(@Nullable ItemStack itemStack) {
-        return this.addLine(HologramLine.create(this, itemStack));
+        return this;
     }
 
     /**
@@ -540,7 +513,7 @@ public final class HHologram {
      * @return Instance of this class.
      */
     @Nonnull
-    public HHologram addLines(@Nonnull HologramLine... lines) {
+    public HHologram addLines(@Nonnull Object... lines) {
         Validate.notNull(lines, "lines cannot be null!");
         Arrays.asList(lines).forEach(this::addLine);
         return this;
@@ -549,133 +522,84 @@ public final class HHologram {
     /**
      * Adds new lines to hologram.
      *
-     * @param texts Text.
+     * @param lines HologramLine classes.
      * @return Instance of this class.
      */
     @Nonnull
-    public HHologram addTextLines(@Nonnull Collection<String> texts) {
-        Validate.notNull(texts, "texts cannot be null!");
-        texts.forEach(this::addTextLine);
+    public HHologram addLines(@Nonnull Collection<Object> lines) {
+        Validate.notNull(lines, "lines cannot be null!");
+        lines.forEach(this::addLine);
         return this;
     }
 
     /**
-     * Adds new lines to hologram.
+     * Sets the value to given line by index
      *
-     * @param texts text.
+     * @param index Index of line.
+     * @param value Value to set.
      * @return Instance of this class.
      */
     @Nonnull
-    public HHologram addTextLines(@Nonnull String... texts) {
-        Validate.notNull(texts, "texts cannot be null!");
-        Arrays.asList(texts).forEach(this::addTextLine);
-        return this;
-    }
-
-    /**
-     * Adds new lines to hologram.
-     *
-     * @param itemStacks ItemStacks to insert.
-     * @return Instance of this class.
-     */
-    @Nonnull
-    public HHologram addItemLines(@Nonnull Collection<ItemStack> itemStacks) {
-        Validate.notNull(itemStacks, "item stacks cannot be null!");
-        itemStacks.forEach(this::addItemLine);
-        return this;
-    }
-
-    /**
-     * Adds new lines to hologram.
-     *
-     * @param itemStacks text.
-     * @return Instance of this class.
-     */
-    @Nonnull
-    public HHologram addItemLines(@Nonnull ItemStack... itemStacks) {
-        Validate.notNull(itemStacks, "item stacks cannot be null!");
-        Arrays.asList(itemStacks).forEach(this::addItemLine);
-        return this;
-    }
-
-    /**
-     * Replaces line at row with text.
-     *
-     * @param row  Index of line.
-     * @param line HologramLine class.
-     * @return Instance of this class.
-     */
-    @Nonnull
-    public HHologram setLine(int row, @Nullable HologramLine line) {
-        HologramLine old = this.lines.get(row);
-        if (old instanceof TextLine && line instanceof TextLine) {
-            TextLine oldTextLine = (TextLine) old;
-            TextLine newTextLine = (TextLine) line;
-            oldTextLine.setText(newTextLine.getText());
-        } else if (old instanceof ItemLine && line instanceof ItemLine) {
-            ItemLine oldItemLine = (ItemLine) old;
-            ItemLine newItemLine = (ItemLine) line;
-            oldItemLine.setItem(newItemLine.getItem());
-        } else {
-            line = (line == null) ? EmptyLine.create(this) : line;
-
-            this.lines.set(row, line);
+    public HHologram setLine(int index, @Nullable Object value) {
+        if (value instanceof HologramLine) {
+            HologramLine line = (HologramLine) value;
+            HologramLine old = this.lines.set(index, line);
             old.hide(this.renderer.getShownViewersAsPlayer());
             line.show(this.renderer.getShownViewersAsPlayer());
+
             this.setLocation(this.getLocation());
+        } else if (value instanceof String) {
+            HologramLine old = this.lines.get(index);
+            if (old instanceof TextLine) {
+                TextLine textLine = (TextLine) old;
+                textLine.setText((String) value);
+            } else {
+                Location location = this.calculateLocation(index);
+                this.setLine(index, HologramLine.create(this, location, value));
+            }
+        } else if (value instanceof ItemStack) {
+            HologramLine old = this.lines.get(index);
+            if (old instanceof ItemLine) {
+                ItemLine itemLine = (ItemLine) old;
+                itemLine.setItem((ItemStack) value);
+            } else {
+                Location location = this.calculateLocation(index);
+                this.setLine(index, HologramLine.create(this, location, value));
+            }
+        } else if (value == null) {
+            this.setLine(index, EmptyLine.create(this));
+        } else {
+            throw new IllegalArgumentException("value must be HologramLine, String, ItemStack or null!");
         }
+
         return this;
     }
 
     /**
-     * Replaces line at row with text.
-     *
-     * @param row  Index of line.
-     * @param text Text.
-     * @return Instance of this class.
-     */
-    @Nonnull
-    public HHologram setTextLine(int row, @Nullable String text) {
-        return this.setLine(row, HologramLine.create(this, text));
-    }
-
-    /**
-     * Replaces line at row with text.
-     *
-     * @param row       Index of line.
-     * @param itemStack ItemStack to insert.
-     * @return Instance of this class.
-     */
-    @Nonnull
-    public HHologram setItemLine(int row, @Nullable ItemStack itemStack) {
-        return this.setLine(row, HologramLine.create(this, itemStack));
-    }
-
-    /**
-     * Replaces line at row with text.
+     * Sets lines with given lines.
      *
      * @param lines New lines.
      * @return Instance of this class.
      */
     @Nonnull
-    public HHologram setLines(@Nonnull List<HologramLine> lines) {
+    public HHologram setLines(@Nonnull Object... lines) {
         Validate.notNull(lines, "lines cannot be null!");
-        Validate.isTrue(lines.isEmpty(), "lines cannot be empty!");
+        Validate.isTrue(lines.length == 0, "lines cannot be empty!");
 
-        if (lines.size() == this.lines.size()) {
-            for (int i = 0; i < lines.size(); i++)
-                this.setLine(i, lines.get(i));
-        } else if (lines.size() > this.lines.size()) {
-            for (int i = this.lines.size(); i < lines.size(); i++)
-                this.addLine(lines.get(i));
+        if (lines.length == this.lines.size()) {
+            for (int i = 0; i < lines.length; i++)
+                this.setLine(i, lines[i]);
+        } else if (lines.length > this.lines.size()) {
             for (int i = 0; i < this.lines.size(); i++)
-                this.setLine(i, lines.get(i));
+                this.setLine(i, lines[i]);
+            for (int i = this.lines.size(); i < lines.length; i++)
+                this.addLine(HologramLine.create(this, lines[i]));
             this.setLocation(this.getLocation());
         } else {
-            for (int i = this.lines.size() - 1; i >= lines.size(); i--)
+            for (int i = this.lines.size() - 1; i >= lines.length; i--)
                 this.removeLine(i);
-            for (int i = 0; i < lines.size(); i++)
-                this.setLine(i, lines.get(i));
+            for (int i = 0; i < lines.length; i++)
+                this.setLine(i, lines[i]);
             this.setLocation(this.getLocation());
         }
 
@@ -683,73 +607,15 @@ public final class HHologram {
     }
 
     /**
-     * Replaces line at row with text.
+     * Sets lines with given lines.
      *
      * @param lines New lines.
      * @return Instance of this class.
      */
     @Nonnull
-    public HHologram setLines(@Nonnull HologramLine... lines) {
+    public HHologram setLines(@Nonnull Collection<Object> lines) {
         Validate.notNull(lines, "lines cannot be null!");
-        return this.setLines(Arrays.asList(lines));
-    }
-
-    /**
-     * Replaces line at row with text.
-     *
-     * @param texts New texts.
-     * @return Instance of this class.
-     */
-    @Nonnull
-    public HHologram setTextLines(@Nonnull List<String> texts) {
-        Validate.notNull(texts, "texts cannot be null!");
-        Validate.isTrue(texts.isEmpty(), "texts cannot be empty!");
-
-        List<HologramLine> hologramLines = new ArrayList<>();
-        for (String line : texts)
-            hologramLines.add(HologramLine.create(this, line));
-        return this.setLines(hologramLines);
-    }
-
-    /**
-     * Replaces line at row with text.
-     *
-     * @param texts New lines.
-     * @return Instance of this class.
-     */
-    @Nonnull
-    public HHologram setTextLines(@Nonnull String... texts) {
-        Validate.notNull(texts, "texts cannot be null!");
-        return this.setTextLines(Arrays.asList(texts));
-    }
-
-    /**
-     * Replaces line at row with item.
-     *
-     * @param itemStacks New lines.
-     * @return Instance of this class.
-     */
-    @Nonnull
-    public HHologram setItemLines(@Nonnull List<ItemStack> itemStacks) {
-        Validate.notNull(itemStacks, "item stacks cannot be null!");
-        Validate.isTrue(itemStacks.isEmpty(), "item stacks cannot be empty!");
-
-        List<HologramLine> hologramLines = new ArrayList<>();
-        for (ItemStack itemStack : itemStacks)
-            hologramLines.add(HologramLine.create(this, itemStack));
-        return this.setLines(hologramLines);
-    }
-
-    /**
-     * Replaces line at row with item.
-     *
-     * @param itemStacks New itemStacks.
-     * @return Instance of this class.
-     */
-    @Nonnull
-    public HHologram setItemLines(@Nonnull ItemStack... itemStacks) {
-        Validate.notNull(itemStacks, "item stacks cannot be null!");
-        return this.setItemLines(Arrays.asList(itemStacks));
+        return this.setLines(lines.toArray());
     }
 
     /**
@@ -817,5 +683,18 @@ public final class HHologram {
             this.lines.clear();
         }
         return this;
+    }
+
+
+    /**
+     * Calculates hologram line location by index.
+     *
+     * @param index Index of line.
+     * @return Location of line.
+     */
+    @Nonnull
+    private Location calculateLocation(int index) {
+        Location startLoc = this.getLocation().add(0, ((this.lines.size() - 1) * this.lineDistance + 0.24) / 2.0 - 0.28, 0);
+        return startLoc.subtract(0, index * this.lineDistance + 0.24, 0);
     }
 }
