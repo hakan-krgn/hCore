@@ -4,6 +4,7 @@ import com.hakan.core.hologram.HHologram;
 import com.hakan.core.hologram.line.empty.EmptyLine;
 import com.hakan.core.hologram.line.item.ItemLine;
 import com.hakan.core.hologram.line.text.TextLine;
+import com.hakan.core.utils.Validate;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -37,6 +38,24 @@ public interface HologramLine {
             return (text.isEmpty()) ? EmptyLine.create(hologram) : TextLine.create(hologram, text);
         }
         throw new IllegalArgumentException("value must be text, item stack or null!");
+    }
+
+    /**
+     * Creates new hologram line.
+     *
+     * @param hologram Hologram of line.
+     * @param location Location of line.
+     * @param object   Object.
+     * @return Line.
+     */
+    @Nonnull
+    static HologramLine create(@Nonnull HHologram hologram, @Nonnull Location location, @Nullable Object object) {
+        Validate.notNull(hologram, "hologram cannot be null!");
+        Validate.notNull(location, "location cannot be null!");
+
+        HologramLine line = HologramLine.create(hologram, object);
+        line.setLocation(location);
+        return line;
     }
 
 

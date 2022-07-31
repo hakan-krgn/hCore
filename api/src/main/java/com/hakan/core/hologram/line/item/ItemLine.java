@@ -37,6 +37,26 @@ public interface ItemLine extends HologramLine {
         return line;
     }
 
+    /**
+     * Creates new item line.
+     *
+     * @param hologram  Hologram of line.
+     * @param location  Location of line.
+     * @param itemStack ItemStack to display.
+     * @return Item line.
+     */
+    @Nonnull
+    static ItemLine create(@Nonnull HHologram hologram, @Nonnull Location location, @Nonnull ItemStack itemStack) {
+        Validate.notNull(hologram, "hologram cannot be null!");
+        Validate.notNull(location, "location cannot be null!");
+        Validate.notNull(itemStack, "item stack cannot be null!");
+
+        ItemLine line = ItemLine.create(hologram, itemStack);
+        line.setLocation(location);
+
+        return line;
+    }
+
 
     /**
      * Gets item from line.

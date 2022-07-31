@@ -36,6 +36,26 @@ public interface TextLine extends HologramLine {
         return line;
     }
 
+    /**
+     * Creates new text line.
+     *
+     * @param hologram Hologram of line.
+     * @param location Location of line.
+     * @param text     Text to display.
+     * @return Text line.
+     */
+    @Nonnull
+    static TextLine create(@Nonnull HHologram hologram, @Nonnull Location location, @Nonnull String text) {
+        Validate.notNull(hologram, "hologram cannot be null!");
+        Validate.notNull(location, "location cannot be null!");
+        Validate.notNull(text, "text cannot be null!");
+
+        TextLine line = TextLine.create(hologram, text);
+        line.setLocation(location);
+
+        return line;
+    }
+
 
     /**
      * Gets text from line.
