@@ -37,7 +37,7 @@ public interface HologramLine {
             String text = (String) object;
             return (text.isEmpty()) ? EmptyLine.create(hologram) : TextLine.create(hologram, text);
         }
-        throw new IllegalArgumentException("value must be text, item stack or null!");
+        throw new IllegalArgumentException("value must be String, ItemStack or null!");
     }
 
     /**
