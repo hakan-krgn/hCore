@@ -509,7 +509,7 @@ public final class HHologram {
      * @return Instance of this class.
      */
     @Nonnull
-    public HHologram addLine(@Nullable Object value) {
+    public <T> HHologram addLine(@Nullable T value) {
         return this.insertLine(this.lines.size(), value);
     }
 
@@ -520,7 +520,7 @@ public final class HHologram {
      * @return Instance of this class.
      */
     @Nonnull
-    public HHologram addLines(@Nonnull Object... lines) {
+    public <T> HHologram addLines(@Nonnull T... lines) {
         Validate.notNull(lines, "lines cannot be null!");
         Arrays.asList(lines).forEach(this::addLine);
         return this;
@@ -533,7 +533,7 @@ public final class HHologram {
      * @return Instance of this class.
      */
     @Nonnull
-    public HHologram addLines(@Nonnull Collection<Object> lines) {
+    public <T> HHologram addLines(@Nonnull Collection<T> lines) {
         Validate.notNull(lines, "lines cannot be null!");
         lines.forEach(this::addLine);
         return this;
@@ -547,7 +547,7 @@ public final class HHologram {
      * @return Instance of this class.
      */
     @Nonnull
-    public HHologram insertLine(int index, @Nullable Object value) {
+    public <T> HHologram insertLine(int index, @Nullable T value) {
         if (value instanceof HologramLine) {
             HologramLine line = (HologramLine) value;
 
@@ -571,7 +571,7 @@ public final class HHologram {
      * @return Instance of this class.
      */
     @Nonnull
-    public HHologram setLines(@Nonnull Collection<Object> lines) {
+    public <T> HHologram setLines(@Nonnull Collection<T> lines) {
         Validate.notNull(lines, "lines cannot be null!");
         return this.setLines(lines.toArray());
     }
@@ -583,7 +583,7 @@ public final class HHologram {
      * @return Instance of this class.
      */
     @Nonnull
-    public HHologram setLines(@Nonnull Object... lines) {
+    public <T> HHologram setLines(@Nonnull T... lines) {
         Validate.notNull(lines, "lines cannot be null!");
         Validate.isTrue(lines.length == 0, "lines cannot be empty!");
 
@@ -615,7 +615,7 @@ public final class HHologram {
      * @return Instance of this class.
      */
     @Nonnull
-    public HHologram setLine(int index, @Nullable Object value) {
+    public <T> HHologram setLine(int index, @Nullable T value) {
         if (value instanceof HologramLine) {
             HologramLine line = (HologramLine) value;
             HologramLine old = this.lines.set(index, line);
