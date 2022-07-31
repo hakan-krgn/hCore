@@ -593,7 +593,7 @@ public final class HHologram {
             for (int i = 0; i < this.lines.size(); i++)
                 this.setLine(i, lines[i]);
             for (int i = this.lines.size(); i < lines.length; i++)
-                this.addLine(HologramLine.create(this, lines[i]));
+                this.addLine(lines[i]);
             this.setLocation(this.getLocation());
         } else {
             for (int i = this.lines.size() - 1; i >= lines.length; i--)
