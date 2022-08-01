@@ -76,6 +76,7 @@ public final class HNPC {
         this.action.onSpawn();
 
         this.setLocation(location);
+        this.hologram.getRenderer().render();
         this.renderer.render();
     }
 
@@ -430,7 +431,7 @@ public final class HNPC {
     public void setLocation(@Nonnull Location location) {
         Validate.notNull(location, "location cannot be null!");
 
-        this.hologram.setLocation(location.clone().add(0, (this.hologram.getLines().size() * 0.125 + 1.6), 0));
+        this.hologram.setLocation(location.clone().add(0, (this.hologram.getLines().size() * this.hologram.getLineDistance() / 2 + 2), 0));
         this.renderer.setLocation(location);
         this.entity.updateLocation();
     }
