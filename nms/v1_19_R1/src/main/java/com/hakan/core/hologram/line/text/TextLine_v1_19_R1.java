@@ -38,7 +38,7 @@ public final class TextLine_v1_19_R1 implements TextLine {
 
         this.click.persistentInvisibility = true; //set invisibility to true
         this.click.b(5, true); //set invisibility to true
-        this.click.n(true); //set custom name visibility to true
+        this.click.n(false); //set custom name visibility to false
         this.click.r(false); //set arms to false
         this.click.s(true); //set no base-plate to true
         this.click.e(true); //set no gravity to true

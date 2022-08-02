@@ -45,7 +45,7 @@ public final class ItemLine_v1_18_R1 implements ItemLine {
 
         this.armorStand.persistentInvisibility = true; //set invisibility to true
         this.armorStand.b(5, true); //set invisibility to true
-        this.armorStand.n(false); //set custom name visibility to true
+        this.armorStand.n(false); //set custom name visibility to false
         this.armorStand.r(false); //set arms to false
         this.armorStand.s(true); //set no base-plate to true
         this.armorStand.e(true); //set no gravity to true
