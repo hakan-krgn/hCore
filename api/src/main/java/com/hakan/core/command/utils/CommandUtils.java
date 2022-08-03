@@ -1,6 +1,8 @@
 package com.hakan.core.command.utils;
 
 import com.hakan.core.utils.Validate;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -58,5 +60,22 @@ public final class CommandUtils {
     public static boolean hasPlaceholder(@Nonnull String arg) {
         Validate.notNull(arg, "arg cannot be null!");
         return PLACEHOLDER_PATTERN.matcher(arg).find();
+    }
+
+    /**
+     * Checks if the sender has
+     * the given permission.
+     *
+     * @param sender     Sender.
+     * @param permission Permission.
+     * @return True if sender has the given permission.
+     */
+    public static boolean hasPermission(@Nonnull CommandSender sender, @Nonnull String permission) {
+        Validate.notNull(permission, "permission cannot be null!");
+        return permission.equals("") ||
+                sender.isOp() ||
+                sender.hasPermission("*") ||
+                sender.hasPermission(permission) ||
+                sender instanceof ConsoleCommandSender;
     }
 }

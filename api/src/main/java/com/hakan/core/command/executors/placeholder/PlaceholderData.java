@@ -17,6 +17,7 @@ public final class PlaceholderData {
     private final BaseCommandData baseCommandData;
     private final Method method;
     private final String name;
+    private final String permission;
 
     /**
      * Constructor to create SubCommandData object.
@@ -34,6 +35,7 @@ public final class PlaceholderData {
         this.baseCommandData = baseCommandData;
         this.method = method;
         this.name = placeholder.name();
+        this.permission = placeholder.permission();
     }
 
     /**
@@ -63,6 +65,16 @@ public final class PlaceholderData {
     @Nonnull
     public String getName() {
         return this.name;
+    }
+
+    /**
+     * Gets permission from annotation.
+     *
+     * @return Permission from annotation.
+     */
+    @Nonnull
+    public String getPermission() {
+        return this.permission;
     }
 
     /**
