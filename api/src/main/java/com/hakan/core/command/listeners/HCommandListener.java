@@ -48,7 +48,7 @@ public final class HCommandListener extends BukkitCommand {
             sender.sendMessage(this.baseCommandData.getUsage());
             return false;
         } else if (!subCommandData.getPermission().isEmpty()) {
-            if (!sender.isOp() && !sender.hasPermission("*") && !sender.hasPermission(subCommandData.getPermission())) {
+            if (!CommandUtils.hasPermission(sender, subCommandData.getPermission())) {
                 sender.sendMessage(subCommandData.getPermissionMessage());
                 return false;
             }
@@ -107,7 +107,8 @@ public final class HCommandListener extends BukkitCommand {
         for (String tab : new HashSet<>(tabCompleteBefore)) {
             PlaceholderData placeholder = this.baseCommandData.findPlaceholderByArg(tab).orElse(null);
             if (placeholder != null) {
-                tabComplete.addAll(placeholder.getValues());
+                if (CommandUtils.hasPermission(sender, placeholder.getPermission()))
+                    tabComplete.addAll(placeholder.getValues());
                 tabCompleteBefore.remove(tab);
             } else {
                 tabComplete.add(tab);

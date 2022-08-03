@@ -21,4 +21,13 @@ public @interface Placeholder {
      */
     @Nonnull
     String name();
+
+    /**
+     * Gets the permission for
+     * using this placeholder.
+     *
+     * @return Required permission.
+     */
+    @Nonnull
+    String permission() default "";
 }
