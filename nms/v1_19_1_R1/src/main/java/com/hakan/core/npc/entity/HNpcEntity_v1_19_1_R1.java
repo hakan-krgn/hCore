@@ -164,7 +164,10 @@ public final class HNpcEntity_v1_19_1_R1 implements HNpcEntity {
      */
     @Override
     public void show(@Nonnull List<Player> players) {
+        GameProfile gameProfile = this.nmsPlayer.fy();
         DataWatcher dataWatcher = new DataWatcher(null);
+        gameProfile.getProperties().get("textures").clear();
+        gameProfile.getProperties().put("textures", new Property("textures", this.hnpc.getSkin().getTexture(), this.hnpc.getSkin().getSignature()));
         dataWatcher.a(new DataWatcherObject<>(17, DataWatcherRegistry.a), (byte) 127);
 
         players.forEach(player -> this.scoreboard.g().add(player.getName()));
