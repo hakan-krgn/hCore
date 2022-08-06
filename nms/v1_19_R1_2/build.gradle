@@ -4,5 +4,4 @@ dependencies {
     compileOnly 'com.mojang:authlib:3.2.28'
     compileOnly 'org.spigotmc:spigot:1.19.1-R0.1-SNAPSHOT'
     compileOnly project(':api')
-    compileOnly project(':nms:v1_19_R1')
 }

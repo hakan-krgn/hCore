@@ -41,18 +41,7 @@ public final class ReflectionUtils {
             Validate.notNull(classes, "classes cannot be null!");
             Validate.notNull(objects, "objects cannot be null!");
 
-            Class<T> tClass = null;
-            for (String version : HCore.getProtocolVersion().getKeys()) {
-                try {
-                    tClass = (Class<T>) Class.forName(path.replace("%s", version));
-                    break;
-                } catch (Exception ignored) {
-
-                }
-            }
-
-            if (tClass == null)
-                throw new NullPointerException("could not find class for path (" + path + ")");
+            Class<T> tClass = (Class<T>) Class.forName(path.replace("%s", HCore.getVersionString()));
 
             Constructor<T> constructor = tClass.getDeclaredConstructor(classes);
             constructor.setAccessible(true);
@@ -81,9 +70,9 @@ public final class ReflectionUtils {
 
             Field field = object.getClass().getDeclaredField(fieldName);
             field.setAccessible(true);
-            T value = (T) field.get(object);
+            Object value = field.get(object);
             field.setAccessible(false);
-            return value;
+            return (value != null) ? (T) value : null;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

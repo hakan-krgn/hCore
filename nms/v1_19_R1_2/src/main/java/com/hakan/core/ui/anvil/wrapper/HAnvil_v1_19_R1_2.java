@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 /**
  * {@inheritDoc}
  */
-public final class HAnvil_v1_19_1_R1 extends HAnvil {
+public final class HAnvil_v1_19_R1_2 extends HAnvil {
 
     private final EntityPlayer entityPlayer;
     private final AnvilContainer container;
@@ -34,7 +34,7 @@ public final class HAnvil_v1_19_1_R1 extends HAnvil {
     /**
      * {@inheritDoc}
      */
-    public HAnvil_v1_19_1_R1(@Nonnull Player player,
+    public HAnvil_v1_19_R1_2(@Nonnull Player player,
                              @Nonnull String title,
                              @Nonnull String text,
                              @Nonnull ItemStack leftItem,
