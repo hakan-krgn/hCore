@@ -232,6 +232,4 @@ public final class HScheduler {
                 return bukkitRunnable.runTaskTimer(this.plugin, this.after, this.every).getTaskId();
         }
     }
-
-
 }

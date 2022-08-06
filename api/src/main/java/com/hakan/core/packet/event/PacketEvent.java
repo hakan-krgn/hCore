@@ -1,6 +1,5 @@
 package com.hakan.core.packet.event;
 
-import com.hakan.core.utils.ReflectionUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -8,6 +7,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 import javax.annotation.Nonnull;
+import java.lang.reflect.Field;
 
 /**
  * Packet custom event class
@@ -130,8 +130,20 @@ public final class PacketEvent extends Event implements Cancellable {
     public <T> T getValue(@Nonnull String fieldName) {
         Validate.notNull(fieldName, "field cannot be null!");
 
-        T t = ReflectionUtils.getField(this.packet.getClass(), fieldName);
-        return Validate.notNull(t, "field value cannot be null!");
+        try {
+            Field field = this.packet.getClass().getDeclaredField(fieldName);
+            boolean flag = field.isAccessible();
+
+            field.setAccessible(true);
+            Object value = field.get(this.packet);
+            field.setAccessible(flag);
+
+            return (T) value;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return (T) this.packet;
     }
 
     /**
@@ -147,8 +159,20 @@ public final class PacketEvent extends Event implements Cancellable {
         Validate.notNull(clazz, "class cannot be null!");
         Validate.notNull(fieldName, "field cannot be null!");
 
-        T t = ReflectionUtils.getField(this.packet.getClass(), fieldName);
-        return clazz.cast(Validate.notNull(t, "field value cannot be null!"));
+        try {
+            Field field = this.packet.getClass().getDeclaredField(fieldName);
+            boolean flag = field.isAccessible();
+
+            field.setAccessible(true);
+            Object value = field.get(this.packet);
+            field.setAccessible(flag);
+
+            return clazz.cast(value);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return clazz.cast(this.packet);
     }
 
 

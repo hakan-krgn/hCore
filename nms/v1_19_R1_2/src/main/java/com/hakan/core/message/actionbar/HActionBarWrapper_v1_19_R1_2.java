@@ -12,7 +12,7 @@ import javax.annotation.Nonnull;
 /**
  * {@inheritDoc}
  */
-public final class HActionBarWrapper_v1_19_1_R1 implements HActionBarWrapper {
+public final class HActionBarWrapper_v1_19_R1_2 implements HActionBarWrapper {
 
     /**
      * {@inheritDoc}
