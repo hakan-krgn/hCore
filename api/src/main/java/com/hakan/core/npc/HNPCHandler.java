@@ -3,6 +3,7 @@ package com.hakan.core.npc;
 import com.hakan.core.HCore;
 import com.hakan.core.npc.builder.HNpcBuilder;
 import com.hakan.core.npc.listener.HNpcClickListener;
+import com.hakan.core.utils.GeneralUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
@@ -26,21 +27,16 @@ public final class HNPCHandler {
      * Initializes the NPC system.
      */
     public static void initialize() {
-        try {
-            HCore.syncScheduler().after(1).run(() -> Bukkit.getWorlds().stream()
-                    .flatMap(world -> world.getLivingEntities().stream())
-                    .filter(entity -> entity.getHealth() == 2.5179998874664307f)
-                    .forEach(Entity::remove));
+        HCore.syncScheduler().after(1).run(() -> Bukkit.getWorlds().stream()
+                .flatMap(world -> world.getLivingEntities().stream())
+                .filter(entity -> entity.getHealth() == 2.5179998874664307f)
+                .forEach(Entity::remove));
 
-            HCore.asyncScheduler().every(10)
-                    .run(() -> HNPCHandler.npcList.values().forEach(hnpc -> hnpc.getRenderer().render()));
+        HCore.asyncScheduler().every(10)
+                .run(() -> HNPCHandler.npcList.values().forEach(hnpc -> hnpc.getRenderer().render()));
 
-            HNpcClickListener clickListener = (HNpcClickListener) Class.forName("com.hakan.core.npc.listener.HNpcClickListener_" + HCore.getVersionString())
-                    .getConstructor().newInstance();
-            HCore.registerListeners(clickListener);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        HNpcClickListener clickListener = GeneralUtils.createNewInstance("com.hakan.core.npc.listener.HNpcClickListener_%s");
+        HCore.registerListeners(clickListener);
     }
 
     /**

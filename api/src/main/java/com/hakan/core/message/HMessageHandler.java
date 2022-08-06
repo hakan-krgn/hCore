@@ -1,13 +1,14 @@
 package com.hakan.core.message;
 
 import com.hakan.core.HCore;
-import com.hakan.core.message.actionbar.HActionBarHandler;
+import com.hakan.core.message.actionbar.HActionBarWrapper;
 import com.hakan.core.message.bossbar.HBarColor;
 import com.hakan.core.message.bossbar.HBarFlag;
 import com.hakan.core.message.bossbar.HBarStyle;
 import com.hakan.core.message.bossbar.HBossBar;
 import com.hakan.core.message.title.HTitle;
-import com.hakan.core.message.title.HTitleHandler;
+import com.hakan.core.message.title.HTitleWrapper;
+import com.hakan.core.utils.GeneralUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.entity.Player;
 
@@ -23,26 +24,17 @@ import java.util.Optional;
  */
 public final class HMessageHandler {
 
-    private static HActionBarHandler actionBarHandler;
-    private static HTitleHandler titleHandler;
+    private static HActionBarWrapper actionBarWrapper;
+    private static HTitleWrapper titleWrapper;
     private static List<HBossBar> bossBars;
 
     /**
      * Initializes message api.
      */
     public static void initialize() {
-        String version = HCore.getVersionString();
-
-        try {
-            HMessageHandler.actionBarHandler = (HActionBarHandler) Class.forName("com.hakan.core.message.actionbar.HActionBarHandler_" + version)
-                    .getConstructor().newInstance();
-            HMessageHandler.titleHandler = (HTitleHandler) Class.forName("com.hakan.core.message.title.HTitleHandler_" + version)
-                    .getConstructor().newInstance();
-            HMessageHandler.bossBars = new ArrayList<>();
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Could not initialize message system. Probably you are using an unsupported version. (" + version + ")");
-        }
+        HMessageHandler.actionBarWrapper = GeneralUtils.createNewInstance("com.hakan.core.message.actionbar.HActionBarWrapper_%s");
+        HMessageHandler.titleWrapper = GeneralUtils.createNewInstance("com.hakan.core.message.title.HTitleWrapper_%s");
+        HMessageHandler.bossBars = new ArrayList<>();
     }
 
 
@@ -57,7 +49,7 @@ public final class HMessageHandler {
      * @param hTitle HTitle class.
      */
     public static void sendTitle(@Nonnull Player player, @Nonnull HTitle hTitle) {
-        HMessageHandler.titleHandler.send(Validate.notNull(player, "player cannot be null!"), Validate.notNull(hTitle, "hTitle cannot be null!"));
+        HMessageHandler.titleWrapper.send(Validate.notNull(player, "player cannot be null!"), Validate.notNull(hTitle, "hTitle cannot be null!"));
     }
 
     /**
@@ -132,7 +124,7 @@ public final class HMessageHandler {
      * @param text   Text.
      */
     public static void sendActionBar(@Nonnull Player player, @Nonnull String text) {
-        HMessageHandler.actionBarHandler.send(Validate.notNull(player, "player cannot be null!"), Validate.notNull(text, "text cannot be null!"));
+        HMessageHandler.actionBarWrapper.send(Validate.notNull(player, "player cannot be null!"), Validate.notNull(text, "text cannot be null!"));
     }
 
     /**

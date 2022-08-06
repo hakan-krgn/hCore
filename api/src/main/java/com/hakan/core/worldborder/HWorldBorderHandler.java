@@ -1,6 +1,7 @@
 package com.hakan.core.worldborder;
 
 import com.hakan.core.HCore;
+import com.hakan.core.utils.GeneralUtils;
 import com.hakan.core.utils.Validate;
 import com.hakan.core.worldborder.border.HBorderColor;
 import com.hakan.core.worldborder.border.HWorldBorder;
@@ -99,18 +100,20 @@ public final class HWorldBorderHandler {
      * @return Created world border.
      */
     @Nonnull
-    public static HWorldBorder create(@Nonnull Location location, double size, double damageAmount, double damageBuffer, int warningDistance, int warningTime, @Nonnull HBorderColor color) {
+    public static HWorldBorder create(@Nonnull Location location,
+                                      double size,
+                                      double damageAmount,
+                                      double damageBuffer,
+                                      int warningDistance,
+                                      int warningTime,
+                                      @Nonnull HBorderColor color) {
         Validate.notNull(location, "location cannot be null!");
         Validate.notNull(color, "border color cannot be null!");
 
-        try {
-            HWorldBorder hWorldBorder = (HWorldBorder) Class.forName("com.hakan.core.worldborder.border.HWorldBorder_" + HCore.getVersionString())
-                    .getConstructor(Location.class, double.class, double.class, double.class, int.class, int.class, HBorderColor.class)
-                    .newInstance(location, size, damageAmount, damageBuffer, warningDistance, warningTime, color);
-            HWorldBorderHandler.borders.add(hWorldBorder);
-            return hWorldBorder;
-        } catch (Exception e) {
-            throw new NullPointerException(e.getMessage());
-        }
+        HWorldBorder hWorldBorder = GeneralUtils.createNewInstance("com.hakan.core.worldborder.border.HWorldBorder_%s",
+                new Class[]{Location.class, double.class, double.class, double.class, int.class, int.class, HBorderColor.class},
+                new Object[]{location, size, damageAmount, damageBuffer, warningDistance, warningTime, color});
+        HWorldBorderHandler.borders.add(hWorldBorder);
+        return hWorldBorder;
     }
 }

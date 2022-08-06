@@ -3,7 +3,7 @@ package com.hakan.core.hologram.line.text;
 import com.hakan.core.HCore;
 import com.hakan.core.hologram.HHologram;
 import com.hakan.core.hologram.line.HologramLine;
-import com.hakan.core.hologram.util.HHologramUtils;
+import com.hakan.core.utils.GeneralUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.Location;
 
@@ -30,7 +30,7 @@ public interface TextLine extends HologramLine {
         Class<?>[] classes = new Class[]{HHologram.class, Location.class};
         Object[] objects = new Object[]{hologram, hologram.getLocation()};
 
-        TextLine line = HHologramUtils.createNewInstance(path, classes, objects);
+        TextLine line = GeneralUtils.createNewInstance(path, classes, objects);
         line.setText(text);
 
         return line;

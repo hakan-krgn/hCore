@@ -1,11 +1,10 @@
 package com.hakan.core.npc.utils;
 
-import com.hakan.core.HCore;
 import com.hakan.core.npc.HNPC;
 import com.hakan.core.npc.entity.HNpcEntity;
+import com.hakan.core.utils.GeneralUtils;
 
 import javax.annotation.Nonnull;
-import java.lang.reflect.Constructor;
 
 /**
  * HNpcUtils class to
@@ -21,12 +20,7 @@ public final class HNpcUtils {
      */
     @Nonnull
     public static HNpcEntity createEntity(HNPC hnpc) {
-        try {
-            Class<?> wrapper = Class.forName("com.hakan.core.npc.entity.HNpcEntity_" + HCore.getVersionString());
-            Constructor<?> constructor = wrapper.getDeclaredConstructor(HNPC.class);
-            return (HNpcEntity) constructor.newInstance(hnpc);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return GeneralUtils.createNewInstance("com.hakan.core.npc.entity.HNpcEntity_%s",
+                new Class[]{HNPC.class}, new Object[]{hnpc});
     }
 }

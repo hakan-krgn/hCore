@@ -1,7 +1,7 @@
 package com.hakan.core.ui.anvil.builder;
 
-import com.hakan.core.HCore;
 import com.hakan.core.ui.anvil.HAnvil;
+import com.hakan.core.utils.GeneralUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -47,6 +47,7 @@ public final class HAnvilBuilder {
      * @param player Player.
      * @return This class.
      */
+    @Nonnull
     public HAnvilBuilder player(@Nonnull Player player) {
         this.player = Validate.notNull(player, "player cannot be null!");
         return this;
@@ -58,6 +59,7 @@ public final class HAnvilBuilder {
      * @param title Title.
      * @return This class.
      */
+    @Nonnull
     public HAnvilBuilder title(@Nonnull String title) {
         this.title = Validate.notNull(title, "title cannot be null!");
         return this;
@@ -69,6 +71,7 @@ public final class HAnvilBuilder {
      * @param text Text.
      * @return This class.
      */
+    @Nonnull
     public HAnvilBuilder text(@Nonnull String text) {
         this.text = Validate.notNull(text, "text cannot be null!");
         return this;
@@ -80,6 +83,7 @@ public final class HAnvilBuilder {
      * @param leftItem Item stack.
      * @return This class.
      */
+    @Nonnull
     public HAnvilBuilder leftItem(@Nonnull ItemStack leftItem) {
         this.leftItem = Validate.notNull(leftItem, "leftItem cannot be null!");
         return this;
@@ -91,6 +95,7 @@ public final class HAnvilBuilder {
      * @param rightItem Item stack.
      * @return This class.
      */
+    @Nonnull
     public HAnvilBuilder rightItem(@Nullable ItemStack rightItem) {
         this.rightItem = rightItem;
         return this;
@@ -102,6 +107,7 @@ public final class HAnvilBuilder {
      * @param closable Closable.
      * @return This class.
      */
+    @Nonnull
     public HAnvilBuilder closable(boolean closable) {
         this.closable = closable;
         return this;
@@ -113,6 +119,7 @@ public final class HAnvilBuilder {
      * @param openRunnable Callback.
      * @return This class.
      */
+    @Nonnull
     public HAnvilBuilder whenOpened(@Nonnull Runnable openRunnable) {
         this.openRunnable = Validate.notNull(openRunnable, "open callback cannot be null!");
         return this;
@@ -125,6 +132,7 @@ public final class HAnvilBuilder {
      * @param inputConsumer Callback.
      * @return This class.
      */
+    @Nonnull
     public HAnvilBuilder whenInputReceived(@Nonnull Consumer<String> inputConsumer) {
         this.inputConsumer = Validate.notNull(inputConsumer, "input callback cannot be null!");
         return this;
@@ -136,6 +144,7 @@ public final class HAnvilBuilder {
      * @param closeRunnable Callback.
      * @return This class.
      */
+    @Nonnull
     public HAnvilBuilder whenClosed(@Nonnull Runnable closeRunnable) {
         this.closeRunnable = Validate.notNull(closeRunnable, "close callback cannot be null!");
         return this;
@@ -146,21 +155,18 @@ public final class HAnvilBuilder {
      *
      * @return HAnvil.
      */
+    @Nonnull
     public HAnvil build() {
-        try {
-            HAnvil anvil = (HAnvil) Class.forName("com.hakan.core.ui.anvil.wrapper.HAnvil_" + HCore.getVersionString())
-                    .getConstructor(Player.class, String.class, String.class, ItemStack.class, ItemStack.class)
-                    .newInstance(this.player, this.title, this.text, this.leftItem, this.rightItem);
+        HAnvil anvil = GeneralUtils.createNewInstance("com.hakan.core.ui.anvil.wrapper.HAnvil_%s",
+                new Class[]{Player.class, String.class, String.class, ItemStack.class, ItemStack.class},
+                new Object[]{this.player, this.title, this.text, this.leftItem, this.rightItem});
 
-            if (this.openRunnable != null)
-                anvil.whenOpened(this.openRunnable);
-            if (this.inputConsumer != null)
-                anvil.whenInputReceived(this.inputConsumer);
-            if (this.closeRunnable != null)
-                anvil.whenClosed(this.closeRunnable);
-            return anvil.setClosable(this.closable);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        if (this.openRunnable != null)
+            anvil.whenOpened(this.openRunnable);
+        if (this.inputConsumer != null)
+            anvil.whenInputReceived(this.inputConsumer);
+        if (this.closeRunnable != null)
+            anvil.whenClosed(this.closeRunnable);
+        return anvil.setClosable(this.closable);
     }
 }
