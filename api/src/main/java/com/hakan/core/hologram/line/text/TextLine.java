@@ -1,6 +1,5 @@
 package com.hakan.core.hologram.line.text;
 
-import com.hakan.core.HCore;
 import com.hakan.core.hologram.HHologram;
 import com.hakan.core.hologram.line.HologramLine;
 import com.hakan.core.utils.GeneralUtils;
@@ -26,11 +25,9 @@ public interface TextLine extends HologramLine {
         Validate.notNull(hologram, "hologram cannot be null!");
         Validate.notNull(text, "text cannot be null!");
 
-        String path = "com.hakan.core.hologram.line.text.TextLine_" + HCore.getVersionString();
-        Class<?>[] classes = new Class[]{HHologram.class, Location.class};
-        Object[] objects = new Object[]{hologram, hologram.getLocation()};
-
-        TextLine line = GeneralUtils.createNewInstance(path, classes, objects);
+        TextLine line = GeneralUtils.createNewInstance("com.hakan.core.hologram.line.text.TextLine_%s",
+                new Class[]{HHologram.class, Location.class},
+                new Object[]{hologram, hologram.getLocation()});
         line.setText(text);
 
         return line;
