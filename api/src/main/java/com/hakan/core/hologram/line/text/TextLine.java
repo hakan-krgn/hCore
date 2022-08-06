@@ -2,7 +2,7 @@ package com.hakan.core.hologram.line.text;
 
 import com.hakan.core.hologram.HHologram;
 import com.hakan.core.hologram.line.HologramLine;
-import com.hakan.core.utils.GeneralUtils;
+import com.hakan.core.utils.ReflectionUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.Location;
 
@@ -25,7 +25,7 @@ public interface TextLine extends HologramLine {
         Validate.notNull(hologram, "hologram cannot be null!");
         Validate.notNull(text, "text cannot be null!");
 
-        TextLine line = GeneralUtils.createNewInstance("com.hakan.core.hologram.line.text.TextLine_%s",
+        TextLine line = ReflectionUtils.newInstance("com.hakan.core.hologram.line.text.TextLine_%s",
                 new Class[]{HHologram.class, Location.class},
                 new Object[]{hologram, hologram.getLocation()});
         line.setText(text);

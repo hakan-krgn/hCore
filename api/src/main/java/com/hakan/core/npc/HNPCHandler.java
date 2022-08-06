@@ -3,7 +3,7 @@ package com.hakan.core.npc;
 import com.hakan.core.HCore;
 import com.hakan.core.npc.builder.HNpcBuilder;
 import com.hakan.core.npc.listener.HNpcClickListener;
-import com.hakan.core.utils.GeneralUtils;
+import com.hakan.core.utils.ReflectionUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
@@ -35,7 +35,7 @@ public final class HNPCHandler {
         HCore.asyncScheduler().every(10)
                 .run(() -> HNPCHandler.npcList.values().forEach(hnpc -> hnpc.getRenderer().render()));
 
-        HNpcClickListener clickListener = GeneralUtils.createNewInstance("com.hakan.core.npc.listener.HNpcClickListener_%s");
+        HNpcClickListener clickListener = ReflectionUtils.newInstance("com.hakan.core.npc.listener.HNpcClickListener_%s");
         HCore.registerListeners(clickListener);
     }
 

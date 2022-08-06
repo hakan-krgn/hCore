@@ -2,7 +2,7 @@ package com.hakan.core.npc.utils;
 
 import com.hakan.core.npc.HNPC;
 import com.hakan.core.npc.entity.HNpcEntity;
-import com.hakan.core.utils.GeneralUtils;
+import com.hakan.core.utils.ReflectionUtils;
 
 import javax.annotation.Nonnull;
 
@@ -20,7 +20,6 @@ public final class HNpcUtils {
      */
     @Nonnull
     public static HNpcEntity createEntity(HNPC hnpc) {
-        return GeneralUtils.createNewInstance("com.hakan.core.npc.entity.HNpcEntity_%s",
-                new Class[]{HNPC.class}, new Object[]{hnpc});
+        return ReflectionUtils.newInstance("com.hakan.core.npc.entity.HNpcEntity_%s", new Class[]{HNPC.class}, new Object[]{hnpc});
     }
 }

@@ -2,7 +2,7 @@ package com.hakan.core.hologram.line.item;
 
 import com.hakan.core.hologram.HHologram;
 import com.hakan.core.hologram.line.HologramLine;
-import com.hakan.core.utils.GeneralUtils;
+import com.hakan.core.utils.ReflectionUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
@@ -26,7 +26,7 @@ public interface ItemLine extends HologramLine {
         Validate.notNull(hologram, "hologram cannot be null!");
         Validate.notNull(itemStack, "item stack cannot be null!");
 
-        ItemLine line = GeneralUtils.createNewInstance("com.hakan.core.hologram.line.item.ItemLine_%s",
+        ItemLine line = ReflectionUtils.newInstance("com.hakan.core.hologram.line.item.ItemLine_%s",
                 new Class[]{HHologram.class, Location.class},
                 new Object[]{hologram, hologram.getLocation()});
         line.setItem(itemStack);

@@ -2,6 +2,7 @@ package com.hakan.core.item.skull;
 
 import com.hakan.core.HCore;
 import com.hakan.core.item.HItemBuilder;
+import com.hakan.core.utils.ReflectionUtils;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import org.bukkit.Material;
@@ -12,7 +13,6 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.lang.reflect.Field;
 import java.util.Base64;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -154,30 +154,22 @@ public class HSkullBuilder extends HItemBuilder {
 
         ItemMeta meta = item.getItemMeta();
         if (meta instanceof SkullMeta) {
-            try {
-                SkullMeta skullMeta = (SkullMeta) meta;
+            SkullMeta skullMeta = (SkullMeta) meta;
 
-                if (this.ownerName != null) {
-                    HSkullData skullData = HSkullData.findByPlayer(this.ownerName).orElse(null);
-                    if (skullData == null)
-                        skullData = HSkullData.register(this.ownerName);
-                    this.texture = skullData.getTexture();
-                }
-
-                if (this.texture != null) {
-                    GameProfile profile = new GameProfile(UUID.randomUUID(), null);
-                    profile.getProperties().put("textures", new Property("textures", this.texture));
-
-                    Field profileField = skullMeta.getClass().getDeclaredField("profile");
-                    profileField.setAccessible(true);
-                    profileField.set(skullMeta, profile);
-                    profileField.setAccessible(false);
-                }
-
-                item.setItemMeta(skullMeta);
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (this.ownerName != null) {
+                HSkullData skullData = HSkullData.findByPlayer(this.ownerName).orElse(null);
+                if (skullData == null)
+                    skullData = HSkullData.register(this.ownerName);
+                this.texture = skullData.getTexture();
             }
+
+            if (this.texture != null) {
+                GameProfile profile = new GameProfile(UUID.randomUUID(), null);
+                profile.getProperties().put("textures", new Property("textures", this.texture));
+                ReflectionUtils.setField(skullMeta, "profile", profile);
+            }
+
+            item.setItemMeta(skullMeta);
         }
 
         return item;

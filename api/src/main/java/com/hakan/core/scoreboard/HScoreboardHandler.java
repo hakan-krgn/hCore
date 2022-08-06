@@ -1,7 +1,7 @@
 package com.hakan.core.scoreboard;
 
 import com.hakan.core.HCore;
-import com.hakan.core.utils.GeneralUtils;
+import com.hakan.core.utils.ReflectionUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -120,7 +120,7 @@ public final class HScoreboardHandler {
     }
 
     /**
-     * Gets a created scoreboard
+     * Gets a created scoreboard.
      *
      * @param uid UID of player.
      * @return Scoreboard from uid.
@@ -131,7 +131,31 @@ public final class HScoreboardHandler {
     }
 
     /**
-     * Creates new Instance of this class.
+     * Creates new instance of HScoreboard as force.
+     *
+     * @param player Player.
+     * @return new instance of HScoreboard.
+     */
+    @Nonnull
+    public static HScoreboard forceCreate(@Nonnull Player player, @Nonnull String title) {
+        HScoreboardHandler.findByPlayer(player).ifPresent(HScoreboard::delete);
+        return HScoreboardHandler.create(player, title);
+    }
+
+    /**
+     * Creates new instance of HScoreboard as force.
+     *
+     * @param uid UID of player.
+     * @return new instance of HScoreboard.
+     */
+    @Nonnull
+    public static HScoreboard forceCreate(@Nonnull UUID uid, @Nonnull String title) {
+        HScoreboardHandler.findByUID(uid).ifPresent(HScoreboard::delete);
+        return HScoreboardHandler.create(uid, title);
+    }
+
+    /**
+     * Creates new instance of HScoreboard.
      *
      * @param player Player.
      * @return new instance of HScoreboard.
@@ -142,7 +166,7 @@ public final class HScoreboardHandler {
     }
 
     /**
-     * Creates new Instance of this class.
+     * Creates new instance of HScoreboard.
      *
      * @param uid UID of player.
      * @return new instance of HScoreboard.
@@ -155,7 +179,7 @@ public final class HScoreboardHandler {
         Validate.isTrue(has(uid), "scoreboard of player(" + uid + ") already exists!");
         Validate.isTrue(player == null, "player(" + uid + ") must be online!");
 
-        HScoreboard scoreboard = GeneralUtils.createNewInstance("com.hakan.core.scoreboard.wrapper.HScoreboard_%s",
+        HScoreboard scoreboard = ReflectionUtils.newInstance("com.hakan.core.scoreboard.wrapper.HScoreboard_%s",
                 new Class[]{Player.class, String.class},
                 new Object[]{player, title});
         HScoreboardHandler.scoreboards.put(player.getUniqueId(), scoreboard);
