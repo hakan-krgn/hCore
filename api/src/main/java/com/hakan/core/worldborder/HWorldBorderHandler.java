@@ -1,7 +1,7 @@
 package com.hakan.core.worldborder;
 
 import com.hakan.core.HCore;
-import com.hakan.core.utils.GeneralUtils;
+import com.hakan.core.utils.ReflectionUtils;
 import com.hakan.core.utils.Validate;
 import com.hakan.core.worldborder.border.HBorderColor;
 import com.hakan.core.worldborder.border.HWorldBorder;
@@ -110,7 +110,7 @@ public final class HWorldBorderHandler {
         Validate.notNull(location, "location cannot be null!");
         Validate.notNull(color, "border color cannot be null!");
 
-        HWorldBorder hWorldBorder = GeneralUtils.createNewInstance("com.hakan.core.worldborder.border.HWorldBorder_%s",
+        HWorldBorder hWorldBorder = ReflectionUtils.newInstance("com.hakan.core.worldborder.border.HWorldBorder_%s",
                 new Class[]{Location.class, double.class, double.class, double.class, int.class, int.class, HBorderColor.class},
                 new Object[]{location, size, damageAmount, damageBuffer, warningDistance, warningTime, color});
         HWorldBorderHandler.borders.add(hWorldBorder);

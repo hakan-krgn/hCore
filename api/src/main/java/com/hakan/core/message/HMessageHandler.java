@@ -7,7 +7,7 @@ import com.hakan.core.message.bossbar.HBarStyle;
 import com.hakan.core.message.bossbar.HBossBar;
 import com.hakan.core.message.title.HTitle;
 import com.hakan.core.message.title.HTitleWrapper;
-import com.hakan.core.utils.GeneralUtils;
+import com.hakan.core.utils.ReflectionUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.entity.Player;
 
@@ -31,8 +31,8 @@ public final class HMessageHandler {
      * Initializes message api.
      */
     public static void initialize() {
-        HMessageHandler.actionBarWrapper = GeneralUtils.createNewInstance("com.hakan.core.message.actionbar.HActionBarWrapper_%s");
-        HMessageHandler.titleWrapper = GeneralUtils.createNewInstance("com.hakan.core.message.title.HTitleWrapper_%s");
+        HMessageHandler.actionBarWrapper = ReflectionUtils.newInstance("com.hakan.core.message.actionbar.HActionBarWrapper_%s");
+        HMessageHandler.titleWrapper = ReflectionUtils.newInstance("com.hakan.core.message.title.HTitleWrapper_%s");
         HMessageHandler.bossBars = new ArrayList<>();
     }
 
@@ -234,7 +234,7 @@ public final class HMessageHandler {
         Validate.notNull(style, "style cannot be null!");
         Validate.notNull(flags, "flags cannot be null!");
 
-        HBossBar bossBar = GeneralUtils.createNewInstance("com.hakan.core.message.bossbar.HBossBar_%s",
+        HBossBar bossBar = ReflectionUtils.newInstance("com.hakan.core.message.bossbar.HBossBar_%s",
                 new Class[]{String.class, HBarColor.class, HBarStyle.class, HBarFlag[].class},
                 new Object[]{title, color, style, flags});
         HMessageHandler.bossBars.add(bossBar);

@@ -2,7 +2,7 @@ package com.hakan.core.ui.sign.builder;
 
 import com.hakan.core.ui.sign.HSign;
 import com.hakan.core.ui.sign.HSignType;
-import com.hakan.core.utils.GeneralUtils;
+import com.hakan.core.utils.ReflectionUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.entity.Player;
 
@@ -73,7 +73,7 @@ public final class HSignBuilder {
      */
     @Nonnull
     public HSign build() {
-        return GeneralUtils.createNewInstance("com.hakan.core.ui.sign.wrapper.HSign_%s",
+        return ReflectionUtils.newInstance("com.hakan.core.ui.sign.wrapper.HSign_%s",
                 new Class<?>[]{Player.class, HSignType.class, String[].class},
                 new Object[]{this.player, this.type, this.lines});
     }

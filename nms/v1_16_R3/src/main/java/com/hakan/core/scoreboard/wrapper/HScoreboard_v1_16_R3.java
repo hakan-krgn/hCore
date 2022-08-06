@@ -4,6 +4,7 @@ import com.hakan.core.HCore;
 import com.hakan.core.scoreboard.HScoreboard;
 import com.hakan.core.scoreboard.HScoreboardHandler;
 import com.hakan.core.utils.ColorUtil;
+import com.hakan.core.utils.ReflectionUtils;
 import net.minecraft.server.v1_16_R3.EnumChatFormat;
 import net.minecraft.server.v1_16_R3.IScoreboardCriteria;
 import net.minecraft.server.v1_16_R3.PacketPlayOutScoreboardDisplayObjective;
@@ -39,14 +40,14 @@ public final class HScoreboard_v1_16_R3 extends HScoreboard {
     @Override
     public HScoreboard show() {
         PacketPlayOutScoreboardObjective objective = new PacketPlayOutScoreboardObjective();
-        this.setField(objective, "a", "board");
-        this.setField(objective, "b", CraftChatMessage.fromStringOrNull(super.title));
-        this.setField(objective, "c", IScoreboardCriteria.EnumScoreboardHealthDisplay.INTEGER);
-        this.setField(objective, "d", this.mode);
+        ReflectionUtils.setField(objective, "a", "board");
+        ReflectionUtils.setField(objective, "b", CraftChatMessage.fromStringOrNull(super.title));
+        ReflectionUtils.setField(objective, "c", IScoreboardCriteria.EnumScoreboardHealthDisplay.INTEGER);
+        ReflectionUtils.setField(objective, "d", this.mode);
 
         PacketPlayOutScoreboardDisplayObjective displayObjective = new PacketPlayOutScoreboardDisplayObjective();
-        this.setField(displayObjective, "a", 1);
-        this.setField(displayObjective, "b", "board");
+        ReflectionUtils.setField(displayObjective, "a", 1);
+        ReflectionUtils.setField(displayObjective, "b", "board");
 
         HCore.sendPacket(super.player, objective, displayObjective);
 
@@ -58,22 +59,22 @@ public final class HScoreboard_v1_16_R3 extends HScoreboard {
             String color = (i >= 10) ? "§" + new String[]{"a", "b", "c", "d", "e", "f"}[i - 10] : "§" + i;
 
             PacketPlayOutScoreboardTeam team = new PacketPlayOutScoreboardTeam();
-            this.setField(team, "a", "team_" + i);
-            this.setField(team, "b", CraftChatMessage.fromStringOrNull("team_" + i));
-            this.setField(team, "c", CraftChatMessage.fromStringOrNull(ColorUtil.colored(line)));
-            this.setField(team, "d", CraftChatMessage.fromStringOrNull(""));
-            this.setField(team, "e", "always");
-            this.setField(team, "f", "always");
-            this.setField(team, "g", EnumChatFormat.RESET);
-            this.setField(team, "h", (this.mode == 0) ? Collections.singletonList(color) : new ArrayList<>());
-            this.setField(team, "i", this.mode);
-            this.setField(team, "j", 1);
+            ReflectionUtils.setField(team, "a", "team_" + i);
+            ReflectionUtils.setField(team, "b", CraftChatMessage.fromStringOrNull("team_" + i));
+            ReflectionUtils.setField(team, "c", CraftChatMessage.fromStringOrNull(ColorUtil.colored(line)));
+            ReflectionUtils.setField(team, "d", CraftChatMessage.fromStringOrNull(""));
+            ReflectionUtils.setField(team, "e", "always");
+            ReflectionUtils.setField(team, "f", "always");
+            ReflectionUtils.setField(team, "g", EnumChatFormat.RESET);
+            ReflectionUtils.setField(team, "h", (this.mode == 0) ? Collections.singletonList(color) : new ArrayList<>());
+            ReflectionUtils.setField(team, "i", this.mode);
+            ReflectionUtils.setField(team, "j", 1);
 
             PacketPlayOutScoreboardScore score = new PacketPlayOutScoreboardScore();
-            this.setField(score, "a", color);
-            this.setField(score, "b", "board");
-            this.setField(score, "c", 15 - i);
-            this.setField(score, "d", ScoreboardServer.Action.CHANGE);
+            ReflectionUtils.setField(score, "a", color);
+            ReflectionUtils.setField(score, "b", "board");
+            ReflectionUtils.setField(score, "c", 15 - i);
+            ReflectionUtils.setField(score, "d", ScoreboardServer.Action.CHANGE);
 
             HCore.sendPacket(super.player, team, score);
         }
@@ -89,8 +90,8 @@ public final class HScoreboard_v1_16_R3 extends HScoreboard {
     @Override
     public HScoreboard delete() {
         PacketPlayOutScoreboardObjective objective = new PacketPlayOutScoreboardObjective();
-        this.setField(objective, "a", "board");
-        this.setField(objective, "d", 1);
+        ReflectionUtils.setField(objective, "a", "board");
+        ReflectionUtils.setField(objective, "d", 1);
 
         HCore.sendPacket(super.player, objective);
         HScoreboardHandler.getContent().remove(super.player.getUniqueId());

@@ -4,8 +4,8 @@ import com.hakan.core.HCore;
 import com.hakan.core.item.nbt.HNbtManager;
 import com.hakan.core.item.skull.HSkullBuilder;
 import com.hakan.core.utils.ColorUtil;
-import com.hakan.core.utils.GeneralUtils;
 import com.hakan.core.utils.ProtocolVersion;
+import com.hakan.core.utils.ReflectionUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -41,10 +41,10 @@ public class HItemBuilder {
         try {
             HSkullBuilder.initialize();
 
-            HItemBuilder.nbtManager = GeneralUtils.createNewInstance("com.hakan.core.item.nbt.HNbtManager_%s");
+            HItemBuilder.nbtManager = ReflectionUtils.newInstance("com.hakan.core.item.nbt.HNbtManager_%s");
 
             if (HItemBuilder.glowEnchantment == null) {
-                HItemBuilder.glowEnchantment = GeneralUtils.createNewInstance("com.hakan.core.item.enchantment.EnchantmentGlow_%s",
+                HItemBuilder.glowEnchantment = ReflectionUtils.newInstance("com.hakan.core.item.enchantment.EnchantmentGlow_%s",
                         new Class[]{int.class},
                         new Object[]{152634});
 

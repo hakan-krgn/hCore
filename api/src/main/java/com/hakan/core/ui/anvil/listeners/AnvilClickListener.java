@@ -1,7 +1,7 @@
 package com.hakan.core.ui.anvil.listeners;
 
 import com.hakan.core.ui.GUIHandler;
-import com.hakan.core.ui.anvil.HAnvil;
+import com.hakan.core.utils.ReflectionUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,7 +10,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
-import java.lang.reflect.Field;
 import java.util.function.Consumer;
 
 /**
@@ -51,16 +50,9 @@ public final class AnvilClickListener implements Listener {
                     String input = clickedItem.getItemMeta().getDisplayName();
                     hAnvil.close();
 
-                    try {
-                        Field field = HAnvil.class.getDeclaredField("inputConsumer");
-                        field.setAccessible(true);
-                        Consumer<String> inputConsumer = (Consumer<String>) field.get(hAnvil);
-                        if (inputConsumer != null)
-                            inputConsumer.accept(input);
-                        field.setAccessible(false);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    Consumer<String> inputConsumer = ReflectionUtils.getField(hAnvil, "inputConsumer");
+                    if (inputConsumer != null)
+                        inputConsumer.accept(input);
                 }
             }
         });

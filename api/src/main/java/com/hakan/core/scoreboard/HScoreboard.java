@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.lang.reflect.Field;
 import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -200,30 +199,6 @@ public abstract class HScoreboard {
                     this.show();
                 });
         return this;
-    }
-
-    /**
-     * Sets the field of the object.
-     *
-     * @param obj       Object.
-     * @param fieldName Field name.
-     * @param value     Value.
-     */
-    @Nonnull
-    protected final <T> T setField(@Nonnull T obj,
-                                   @Nonnull String fieldName,
-                                   @Nonnull Object value) {
-        try {
-            Validate.notNull(obj, "object cannot be null!");
-            Validate.notNull(fieldName, "field name cannot be null!");
-            Validate.notNull(value, "value cannot be null!");
-
-            Field field = obj.getClass().getDeclaredField(fieldName);
-            field.setAccessible(true);
-            field.set(obj, value);
-        } catch (Exception ignored) {
-        }
-        return obj;
     }
 
     /**

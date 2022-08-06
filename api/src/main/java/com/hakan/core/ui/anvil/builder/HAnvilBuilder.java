@@ -1,7 +1,7 @@
 package com.hakan.core.ui.anvil.builder;
 
 import com.hakan.core.ui.anvil.HAnvil;
-import com.hakan.core.utils.GeneralUtils;
+import com.hakan.core.utils.ReflectionUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -157,7 +157,7 @@ public final class HAnvilBuilder {
      */
     @Nonnull
     public HAnvil build() {
-        HAnvil anvil = GeneralUtils.createNewInstance("com.hakan.core.ui.anvil.wrapper.HAnvil_%s",
+        HAnvil anvil = ReflectionUtils.newInstance("com.hakan.core.ui.anvil.wrapper.HAnvil_%s",
                 new Class[]{Player.class, String.class, String.class, ItemStack.class, ItemStack.class},
                 new Object[]{this.player, this.title, this.text, this.leftItem, this.rightItem});
 

@@ -4,6 +4,7 @@ import com.hakan.core.HCore;
 import com.hakan.core.scoreboard.HScoreboard;
 import com.hakan.core.scoreboard.HScoreboardHandler;
 import com.hakan.core.utils.ColorUtil;
+import com.hakan.core.utils.ReflectionUtils;
 import net.minecraft.server.v1_10_R1.IScoreboardCriteria;
 import net.minecraft.server.v1_10_R1.PacketPlayOutScoreboardDisplayObjective;
 import net.minecraft.server.v1_10_R1.PacketPlayOutScoreboardObjective;
@@ -36,14 +37,14 @@ public final class HScoreboard_v1_10_R1 extends HScoreboard {
     @Override
     public HScoreboard show() {
         PacketPlayOutScoreboardObjective objective = new PacketPlayOutScoreboardObjective();
-        this.setField(objective, "a", "board");
-        this.setField(objective, "b", super.title);
-        this.setField(objective, "c", IScoreboardCriteria.EnumScoreboardHealthDisplay.INTEGER);
-        this.setField(objective, "d", this.mode);
+        ReflectionUtils.setField(objective, "a", "board");
+        ReflectionUtils.setField(objective, "b", super.title);
+        ReflectionUtils.setField(objective, "c", IScoreboardCriteria.EnumScoreboardHealthDisplay.INTEGER);
+        ReflectionUtils.setField(objective, "d", this.mode);
 
         PacketPlayOutScoreboardDisplayObjective displayObjective = new PacketPlayOutScoreboardDisplayObjective();
-        this.setField(displayObjective, "a", 1);
-        this.setField(displayObjective, "b", "board");
+        ReflectionUtils.setField(displayObjective, "a", 1);
+        ReflectionUtils.setField(displayObjective, "b", "board");
 
         HCore.sendPacket(super.player, objective, displayObjective);
 
@@ -58,22 +59,22 @@ public final class HScoreboard_v1_10_R1 extends HScoreboard {
             String suffix = ColorUtil.colored(split[2]);
 
             PacketPlayOutScoreboardTeam team = new PacketPlayOutScoreboardTeam();
-            this.setField(team, "a", "team_" + i);
-            this.setField(team, "b", "team_" + i);
-            this.setField(team, "c", prefix);
-            this.setField(team, "d", suffix);
-            this.setField(team, "e", "always");
-            this.setField(team, "f", "always");
-            this.setField(team, "g", -1);
-            this.setField(team, "h", (this.mode == 0) ? Collections.singletonList(middle) : new ArrayList<>());
-            this.setField(team, "i", this.mode);
-            this.setField(team, "j", 1);
+            ReflectionUtils.setField(team, "a", "team_" + i);
+            ReflectionUtils.setField(team, "b", "team_" + i);
+            ReflectionUtils.setField(team, "c", prefix);
+            ReflectionUtils.setField(team, "d", suffix);
+            ReflectionUtils.setField(team, "e", "always");
+            ReflectionUtils.setField(team, "f", "always");
+            ReflectionUtils.setField(team, "g", -1);
+            ReflectionUtils.setField(team, "h", (this.mode == 0) ? Collections.singletonList(middle) : new ArrayList<>());
+            ReflectionUtils.setField(team, "i", this.mode);
+            ReflectionUtils.setField(team, "j", 1);
 
             PacketPlayOutScoreboardScore score = new PacketPlayOutScoreboardScore();
-            this.setField(score, "a", middle);
-            this.setField(score, "b", "board");
-            this.setField(score, "c", 15 - i);
-            this.setField(score, "d", PacketPlayOutScoreboardScore.EnumScoreboardAction.CHANGE);
+            ReflectionUtils.setField(score, "a", middle);
+            ReflectionUtils.setField(score, "b", "board");
+            ReflectionUtils.setField(score, "c", 15 - i);
+            ReflectionUtils.setField(score, "d", PacketPlayOutScoreboardScore.EnumScoreboardAction.CHANGE);
 
             HCore.sendPacket(super.player, team, score);
         }
@@ -89,8 +90,8 @@ public final class HScoreboard_v1_10_R1 extends HScoreboard {
     @Override
     public HScoreboard delete() {
         PacketPlayOutScoreboardObjective objective = new PacketPlayOutScoreboardObjective();
-        this.setField(objective, "a", "board");
-        this.setField(objective, "d", 1);
+        ReflectionUtils.setField(objective, "a", "board");
+        ReflectionUtils.setField(objective, "d", 1);
 
         HCore.sendPacket(super.player, objective);
         HScoreboardHandler.getContent().remove(super.player.getUniqueId());

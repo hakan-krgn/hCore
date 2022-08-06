@@ -895,6 +895,28 @@ public final class HCore {
     }
 
     /**
+     * Creates new instance of HScoreboard as force.
+     *
+     * @param player Player.
+     * @return new instance of HScoreboard.
+     */
+    @Nonnull
+    public static HScoreboard forceCreateScoreboard(@Nonnull Player player, @Nonnull String title) {
+        return HScoreboardHandler.forceCreate(player, title);
+    }
+
+    /**
+     * Creates new instance of HScoreboard as force.
+     *
+     * @param uid UID of player.
+     * @return new instance of HScoreboard.
+     */
+    @Nonnull
+    public static HScoreboard forceCreateScoreboard(@Nonnull UUID uid, @Nonnull String title) {
+        return HScoreboardHandler.forceCreate(uid, title);
+    }
+
+    /**
      * Creates new Instance of this class.
      *
      * @param player player
