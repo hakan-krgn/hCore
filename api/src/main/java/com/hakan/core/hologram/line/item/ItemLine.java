@@ -3,7 +3,7 @@ package com.hakan.core.hologram.line.item;
 import com.hakan.core.HCore;
 import com.hakan.core.hologram.HHologram;
 import com.hakan.core.hologram.line.HologramLine;
-import com.hakan.core.hologram.util.HHologramUtils;
+import com.hakan.core.utils.GeneralUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
@@ -31,7 +31,7 @@ public interface ItemLine extends HologramLine {
         Class<?>[] classes = new Class[]{HHologram.class, Location.class};
         Object[] objects = new Object[]{hologram, hologram.getLocation()};
 
-        ItemLine line = HHologramUtils.createNewInstance(path, classes, objects);
+        ItemLine line = GeneralUtils.createNewInstance(path, classes, objects);
         line.setItem(itemStack);
 
         return line;

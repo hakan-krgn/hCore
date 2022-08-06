@@ -1,6 +1,7 @@
 package com.hakan.core.scoreboard;
 
 import com.hakan.core.HCore;
+import com.hakan.core.utils.GeneralUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -21,7 +22,6 @@ import java.util.UUID;
 public final class HScoreboardHandler {
 
     private static final Map<UUID, HScoreboard> scoreboards = new HashMap<>();
-    private static Class<?> SCOREBOARD_CLASS;
 
     /**
      * Initialize method of HScoreboard.
@@ -30,12 +30,6 @@ public final class HScoreboardHandler {
         //Handles player quit event.
         HCore.registerEvent(PlayerQuitEvent.class)
                 .consume(event -> HScoreboardHandler.findByPlayer(event.getPlayer()).ifPresent(HScoreboard::delete));
-
-        try {
-            SCOREBOARD_CLASS = Class.forName("com.hakan.core.scoreboard.wrapper.HScoreboard_" + HCore.getVersionString());
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 
 
@@ -161,14 +155,10 @@ public final class HScoreboardHandler {
         Validate.isTrue(has(uid), "scoreboard of player(" + uid + ") already exists!");
         Validate.isTrue(player == null, "player(" + uid + ") must be online!");
 
-        try {
-            HScoreboard scoreboard = (HScoreboard) SCOREBOARD_CLASS
-                    .getConstructor(Player.class, String.class)
-                    .newInstance(player, title);
-            HScoreboardHandler.scoreboards.put(player.getUniqueId(), scoreboard);
-            return scoreboard;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        HScoreboard scoreboard = GeneralUtils.createNewInstance("com.hakan.core.scoreboard.wrapper.HScoreboard_%s",
+                new Class[]{Player.class, String.class},
+                new Object[]{player, title});
+        HScoreboardHandler.scoreboards.put(player.getUniqueId(), scoreboard);
+        return scoreboard;
     }
 }

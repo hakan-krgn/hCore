@@ -1,7 +1,7 @@
 package com.hakan.core.particle;
 
-import com.hakan.core.HCore;
 import com.hakan.core.particle.wrapper.HParticleWrapper;
+import com.hakan.core.utils.GeneralUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -22,12 +22,7 @@ public final class HParticleHandler {
      * Initializes the particle api.
      */
     public static void initialize() {
-        try {
-            HParticleHandler.wrapper = (HParticleWrapper) Class.forName("com.hakan.core.particle.wrapper.HParticleWrapper_" + HCore.getVersionString())
-                    .getConstructor().newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        wrapper = GeneralUtils.createNewInstance("com.hakan.core.particle.wrapper.HParticleWrapper_%s");
     }
 
     /**

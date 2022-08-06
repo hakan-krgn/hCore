@@ -2,6 +2,7 @@ package com.hakan.core.packet;
 
 import com.hakan.core.HCore;
 import com.hakan.core.packet.player.HPacketPlayer;
+import com.hakan.core.utils.GeneralUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
@@ -105,15 +106,11 @@ public final class HPacketHandler {
     public static void register(@Nonnull Player player) {
         Validate.notNull(player, "player cannot be null!");
 
-        try {
-            HPacketPlayer packetPlayer = (HPacketPlayer) Class.forName("com.hakan.core.packet.player.HPacketPlayer_" + HCore.getVersionString())
-                    .getConstructor(Player.class).newInstance(player);
-            HPacketHandler.packetPlayers.put(player, packetPlayer);
-
-            packetPlayer.register();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        HPacketPlayer packetPlayer = GeneralUtils.createNewInstance("com.hakan.core.packet.player.HPacketPlayer_%s",
+                new Class[]{Player.class},
+                new Object[]{player});
+        HPacketHandler.packetPlayers.put(player, packetPlayer);
+        packetPlayer.register();
     }
 
     /**

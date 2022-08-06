@@ -28,6 +28,7 @@ public enum ProtocolVersion {
     v1_18_R1("v1_18_R1"),
     v1_18_R2("v1_18_R2"),
     v1_19_R1("v1_19_R1"),
+    v1_19_1_R1("v1_19_1_R1", "v1_19_R1"),
     ;
 
 
@@ -38,6 +39,9 @@ public enum ProtocolVersion {
      */
     @Nonnull
     public static ProtocolVersion getCurrentVersion() {
+        if (Bukkit.getBukkitVersion().contains("1.19.1"))
+            return v1_19_1_R1;
+
         String version = Bukkit.getServer().getClass().getName().split("\\.")[3];
         for (ProtocolVersion protocolVersion : ProtocolVersion.values())
             if (version.equals(protocolVersion.getKey()))
@@ -46,14 +50,14 @@ public enum ProtocolVersion {
     }
 
 
-    private final String key;
+    private final String[] key;
 
     /**
      * Constructor.
      *
      * @param key The protocol version key.
      */
-    ProtocolVersion(@Nonnull String key) {
+    ProtocolVersion(@Nonnull String... key) {
         this.key = Validate.notNull(key, "key cannot be null!");
     }
 
@@ -64,6 +68,16 @@ public enum ProtocolVersion {
      */
     @Nonnull
     public String getKey() {
+        return this.key[0];
+    }
+
+    /**
+     * Gets the protocol version keys.
+     *
+     * @return The protocol version keys.
+     */
+    @Nonnull
+    public String[] getKeys() {
         return this.key;
     }
 

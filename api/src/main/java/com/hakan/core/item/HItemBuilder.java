@@ -4,6 +4,7 @@ import com.hakan.core.HCore;
 import com.hakan.core.item.nbt.HNbtManager;
 import com.hakan.core.item.skull.HSkullBuilder;
 import com.hakan.core.utils.ColorUtil;
+import com.hakan.core.utils.GeneralUtils;
 import com.hakan.core.utils.ProtocolVersion;
 import com.hakan.core.utils.Validate;
 import org.bukkit.Material;
@@ -13,7 +14,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import javax.annotation.Nonnull;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -41,18 +41,12 @@ public class HItemBuilder {
         try {
             HSkullBuilder.initialize();
 
-            Constructor<?> cons = Class.forName("com.hakan.core.item.nbt.HNbtManager_" + HCore.getVersionString())
-                    .getDeclaredConstructor();
-            cons.setAccessible(true);
-            HItemBuilder.nbtManager = (HNbtManager) cons.newInstance();
-            cons.setAccessible(false);
+            HItemBuilder.nbtManager = GeneralUtils.createNewInstance("com.hakan.core.item.nbt.HNbtManager_%s");
 
             if (HItemBuilder.glowEnchantment == null) {
-                Constructor<?> cons2 = Class.forName("com.hakan.core.item.enchantment.EnchantmentGlow_" + HCore.getVersionString())
-                        .getDeclaredConstructor(int.class);
-                cons2.setAccessible(true);
-                HItemBuilder.glowEnchantment = (Enchantment) cons2.newInstance(152634);
-                cons2.setAccessible(false);
+                HItemBuilder.glowEnchantment = GeneralUtils.createNewInstance("com.hakan.core.item.enchantment.EnchantmentGlow_%s",
+                        new Class[]{int.class},
+                        new Object[]{152634});
 
                 if (Arrays.asList(Enchantment.values()).contains(glowEnchantment))
                     return;
