@@ -47,7 +47,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -114,19 +113,6 @@ public final class HCore {
         HHologramHandler.initialize();
         HScoreboardHandler.initialize();
         HWorldBorderHandler.initialize();
-
-        HCore.registerEvent(PlayerCommandPreprocessEvent.class)
-                .filter(event -> event.getMessage().startsWith("/test"))
-                .consume(event -> {
-                    event.setCancelled(true);
-
-                    HNPC npc = HCore.npcBuilder("test")
-                            .skin("hakan")
-                            .location(event.getPlayer().getLocation())
-                            .showEveryone(true)
-                            .appendLines(Arrays.asList("Hello", "World"))
-                            .build();
-                });
     }
 
 
