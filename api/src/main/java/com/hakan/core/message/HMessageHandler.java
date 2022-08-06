@@ -1,6 +1,5 @@
 package com.hakan.core.message;
 
-import com.hakan.core.HCore;
 import com.hakan.core.message.actionbar.HActionBarWrapper;
 import com.hakan.core.message.bossbar.HBarColor;
 import com.hakan.core.message.bossbar.HBarFlag;
@@ -235,16 +234,11 @@ public final class HMessageHandler {
         Validate.notNull(style, "style cannot be null!");
         Validate.notNull(flags, "flags cannot be null!");
 
-        try {
-            String version = HCore.getVersionString();
-            HBossBar bossBar = (HBossBar) Class.forName("com.hakan.core.message.bossbar.HBossBar_" + version)
-                    .getConstructor(String.class, HBarColor.class, HBarStyle.class, HBarFlag[].class)
-                    .newInstance(title, color, style, flags);
-            HMessageHandler.bossBars.add(bossBar);
-            return bossBar;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        HBossBar bossBar = GeneralUtils.createNewInstance("com.hakan.core.message.bossbar.HBossBar_%s",
+                new Class[]{String.class, HBarColor.class, HBarStyle.class, HBarFlag[].class},
+                new Object[]{title, color, style, flags});
+        HMessageHandler.bossBars.add(bossBar);
+        return bossBar;
     }
 
     /**

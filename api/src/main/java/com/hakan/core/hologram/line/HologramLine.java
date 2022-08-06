@@ -55,6 +55,7 @@ public interface HologramLine {
 
         HologramLine line = HologramLine.create(hologram, object);
         line.setLocation(location);
+
         return line;
     }
 

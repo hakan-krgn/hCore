@@ -1,6 +1,5 @@
 package com.hakan.core.hologram.line.item;
 
-import com.hakan.core.HCore;
 import com.hakan.core.hologram.HHologram;
 import com.hakan.core.hologram.line.HologramLine;
 import com.hakan.core.utils.GeneralUtils;
@@ -27,11 +26,9 @@ public interface ItemLine extends HologramLine {
         Validate.notNull(hologram, "hologram cannot be null!");
         Validate.notNull(itemStack, "item stack cannot be null!");
 
-        String path = "com.hakan.core.hologram.line.item.ItemLine_" + HCore.getVersionString();
-        Class<?>[] classes = new Class[]{HHologram.class, Location.class};
-        Object[] objects = new Object[]{hologram, hologram.getLocation()};
-
-        ItemLine line = GeneralUtils.createNewInstance(path, classes, objects);
+        ItemLine line = GeneralUtils.createNewInstance("com.hakan.core.hologram.line.item.ItemLine_%s",
+                new Class[]{HHologram.class, Location.class},
+                new Object[]{hologram, hologram.getLocation()});
         line.setItem(itemStack);
 
         return line;
