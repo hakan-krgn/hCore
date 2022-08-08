@@ -1,4 +1,4 @@
-package com.hakan.core.utils.yaml;
+package com.hakan.core.config;
 
 import com.hakan.core.utils.Validate;
 import org.bukkit.OfflinePlayer;
