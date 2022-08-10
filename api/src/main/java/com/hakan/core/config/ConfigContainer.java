@@ -15,7 +15,7 @@ public class ConfigContainer<T> {
         this.file = f;
     }
 
-    public static <T> ConfigContainer of(File f, Class<T> type, Supplier<T> defaultConfig) {
+    public static <T> ConfigContainer<T> of(File f, Class<T> type, Supplier<T> defaultConfig) {
         Gson GSON = new GsonBuilder()
                 .setPrettyPrinting()
                 .create();
