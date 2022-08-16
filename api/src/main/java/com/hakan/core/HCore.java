@@ -1,6 +1,8 @@
 package com.hakan.core;
 
 import com.hakan.core.command.HCommandHandler;
+import com.hakan.core.configuration.ConfigHandler;
+import com.hakan.core.configuration.containers.ConfigContainer;
 import com.hakan.core.database.DatabaseHandler;
 import com.hakan.core.database.DatabaseObject;
 import com.hakan.core.database.DatabaseProvider;
@@ -1374,6 +1376,54 @@ public final class HCore {
         return HHologramHandler.delete(id);
     }
 
+
+    /*
+    CONFIGURATION
+     */
+
+    /**
+     * Loads configuration container.
+     *
+     * @param configClass Configuration class.
+     * @return Configuration class.
+     */
+    @Nonnull
+    public static ConfigContainer loadConfig(@Nonnull Object configClass) {
+        return ConfigHandler.load(configClass);
+    }
+
+    /**
+     * Loads configuration container.
+     *
+     * @param file Configuration container.
+     * @return Configuration container.
+     */
+    @Nonnull
+    public static ConfigContainer loadConfig(@Nonnull ConfigContainer file) {
+        return ConfigHandler.load(file);
+    }
+
+    /**
+     * Finds configuration container.
+     *
+     * @param path Configuration container path.
+     * @return Configuration container.
+     */
+    @Nonnull
+    public static Optional<ConfigContainer> findConfigByPath(@Nonnull String path) {
+        return ConfigHandler.findByPath(path);
+    }
+
+    /**
+     * Gets configuration file.
+     *
+     * @param path Configuration file container.
+     * @return Configuration container.
+     */
+    @Nonnull
+    public static ConfigContainer getConfigByPath(@Nonnull String path) {
+        return ConfigHandler.getByPath(path);
+    }
 
     /*
     DATABASE

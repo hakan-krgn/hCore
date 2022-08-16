@@ -2,7 +2,7 @@ package com.hakan.core.configuration;
 
 import com.hakan.core.configuration.annotations.ConfigFile;
 import com.hakan.core.configuration.containers.ConfigContainer;
-import com.hakan.core.configuration.utils.ConfigurationUtils;
+import com.hakan.core.configuration.utils.ConfigUtils;
 import com.hakan.core.utils.Validate;
 
 import javax.annotation.Nonnull;
@@ -29,38 +29,34 @@ public final class ConfigHandler {
         Validate.notNull(configClass, "config class cannot be null!");
         ConfigFile configFile = configClass.getClass().getAnnotation(ConfigFile.class);
 
-        if (configFile == null)
-            throw new IllegalArgumentException("config class must be annotated with @ConfigFile!");
-        else if (configFile.path().isEmpty())
-            throw new IllegalArgumentException("config file must have a path!");
+        Validate.notNull(configFile, "config class must have ConfigFile annotation!");
+        Validate.isTrue(configFile.path().isEmpty(), "config file must have a path!");
+        Validate.isTrue(configurations.containsKey(configFile.path()), "config file already exists!");
 
-        ConfigContainer configContainer = ConfigHandler.load(ConfigContainer.of(configFile));
-        configContainer.loadData(configClass);
-        return configContainer;
+        ConfigUtils.createFile(configFile);
+
+        ConfigContainer container = ConfigContainer.of(configFile);
+        configurations.put(container.getPath(), container);
+
+        return container.loadData(configClass);
     }
 
     /**
      * Loads configuration container.
      *
-     * @param file Configuration container.
+     * @param container Configuration container.
      * @return Configuration container.
      */
     @Nonnull
-    public static ConfigContainer load(@Nonnull ConfigContainer file) {
-        Validate.notNull(file, "config file cannot be null!");
-        ConfigurationUtils.createFile(file);
+    public static ConfigContainer load(@Nonnull ConfigContainer container) {
+        Validate.notNull(container, "config container cannot be null!");
+        Validate.isTrue(container.getPath().isEmpty(), "config file must have a path!");
+        Validate.isTrue(configurations.containsKey(container.getPath()), "config file already exists!");
 
-        configurations.put(file.getPath(), file);
-        return file;
-    }
+        ConfigUtils.createFile(container);
 
-    /**
-     * Updates configuration container.
-     *
-     * @param configClass Configuration class.
-     */
-    public static void update(@Nonnull Object configClass) {
-        Validate.notNull(configClass, "config class cannot be null!");
+        configurations.put(container.getPath(), container);
+        return container.loadData(container);
     }
 
     /**

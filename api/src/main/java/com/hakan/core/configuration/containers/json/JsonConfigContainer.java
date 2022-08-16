@@ -6,20 +6,23 @@ import com.hakan.core.configuration.ConfigType;
 import com.hakan.core.configuration.annotations.ConfigFile;
 import com.hakan.core.configuration.annotations.ConfigValue;
 import com.hakan.core.configuration.containers.ConfigContainer;
-import com.hakan.core.configuration.utils.ConfigurationUtils;
+import com.hakan.core.configuration.utils.JsonUtils;
 import com.hakan.core.utils.ReflectionUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 
 /**
  * {@inheritDoc}
  */
+@SuppressWarnings({"unchecked"})
 public class JsonConfigContainer extends ConfigContainer {
 
     private final Gson gson;
+    private JsonObject jsonObject;
 
     /**
      * {@inheritDoc}
@@ -27,6 +30,7 @@ public class JsonConfigContainer extends ConfigContainer {
     public JsonConfigContainer(@Nonnull ConfigFile configFile) {
         super(configFile);
         this.gson = new Gson();
+        this.jsonObject = JsonUtils.loadFromFile(super.path);
     }
 
     /**
@@ -36,6 +40,7 @@ public class JsonConfigContainer extends ConfigContainer {
                                @Nonnull Class<? extends JavaPlugin> plugin) {
         super(path, plugin);
         this.gson = new Gson();
+        this.jsonObject = JsonUtils.loadFromFile(super.path);
     }
 
     /**
@@ -46,6 +51,7 @@ public class JsonConfigContainer extends ConfigContainer {
                                @Nonnull Class<? extends JavaPlugin> plugin) {
         super(path, type, plugin);
         this.gson = new Gson();
+        this.jsonObject = JsonUtils.loadFromFile(super.path);
     }
 
     /**
@@ -57,16 +63,76 @@ public class JsonConfigContainer extends ConfigContainer {
                                @Nonnull Class<? extends JavaPlugin> plugin) {
         super(path, resource, type, plugin);
         this.gson = new Gson();
+        this.jsonObject = JsonUtils.loadFromFile(super.path);
     }
 
     /**
      * {@inheritDoc}
      */
+    @Nonnull
     @Override
-    public final void loadData(@Nonnull Object configClass) {
+    public ConfigContainer save() {
+        JsonUtils.saveToFile(this.jsonObject, super.path);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Nullable
+    @Override
+    public <T> T getValue(@Nonnull String path) {
+        Validate.notNull(path, "path cannot be null!");
+        return (T) JsonUtils.getValue(this.jsonObject, path);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Nullable
+    @Override
+    public <T> T getValue(@Nonnull String path,
+                          @Nonnull Class<T> clazz) {
+        Validate.notNull(path, "path cannot be null!");
+        Validate.notNull(clazz, "clazz cannot be null!");
+        return clazz.cast(JsonUtils.getValue(this.jsonObject, path));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public ConfigContainer setValue(@Nonnull String path,
+                                    @Nonnull Object value) {
+        return this.setValue(path, value, true);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public ConfigContainer setValue(@Nonnull String path,
+                                    @Nonnull Object value,
+                                    boolean save) {
+        Validate.notNull(path, "path cannot be null!");
+        Validate.notNull(value, "value cannot be null!");
+
+        JsonUtils.setValue(this.jsonObject, path, this.gson.toJsonTree(value));
+        if (save) this.save();
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public final ConfigContainer loadData(@Nonnull Object configClass) {
         try {
             Validate.notNull(configClass, "config class cannot be null!");
-            JsonObject jsonObject = ConfigurationUtils.getJsonObject(super.path);
+            this.jsonObject = JsonUtils.loadFromFile(super.path);
 
             boolean save = false;
             for (Field field : configClass.getClass().getDeclaredFields()) {
@@ -75,7 +141,7 @@ public class JsonConfigContainer extends ConfigContainer {
 
                 ConfigValue configValue = field.getAnnotation(ConfigValue.class);
 
-                Object value = ConfigurationUtils.getElement(jsonObject, configValue.path());
+                Object value = this.getValue(configValue.path());
                 Object defaultValue = ReflectionUtils.getField(configClass, field.getName());
 
                 if (defaultValue != null && value != null) {
@@ -83,16 +149,18 @@ public class JsonConfigContainer extends ConfigContainer {
                 } else if (defaultValue == null && value != null) {
                     ReflectionUtils.setField(configClass, field.getName(), value);
                 } else if (defaultValue != null) {
-                    ConfigurationUtils.setElement(jsonObject, configValue.path(), this.gson.toJsonTree(defaultValue));
+                    this.setValue(configValue.path(), defaultValue, false);
                     save = true;
                 } else {
                     throw new IllegalArgumentException("config value cannot be null!");
                 }
             }
 
-            if (save) ConfigurationUtils.saveJsonObject(jsonObject, super.path);
+            if (save) this.save();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return this;
     }
 }
