@@ -1,7 +1,7 @@
 package com.hakan.core.configuration;
 
 /**
- * Configuration type enum.
+ * Config type enum.
  */
 public enum ConfigType {
 

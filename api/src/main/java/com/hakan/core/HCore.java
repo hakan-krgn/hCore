@@ -1384,8 +1384,8 @@ public final class HCore {
     /**
      * Loads configuration container.
      *
-     * @param configClass Configuration class.
-     * @return Configuration class.
+     * @param configClass Config class.
+     * @return Config container class.
      */
     @Nonnull
     public static ConfigContainer loadConfig(@Nonnull Object configClass) {
@@ -1393,7 +1393,7 @@ public final class HCore {
     }
 
     /**
-     * Loads configuration container.
+     * Loads config container.
      *
      * @param file Configuration container.
      * @return Configuration container.

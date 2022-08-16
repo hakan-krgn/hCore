@@ -14,8 +14,8 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 
 /**
- * Configuration utilities for
- * creating files and including resources.
+ * Config utilities for creating files
+ * and including resources.
  */
 public final class ConfigUtils {
 
