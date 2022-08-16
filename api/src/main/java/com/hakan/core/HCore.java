@@ -1341,6 +1341,33 @@ public final class HCore {
     }
 
     /**
+     * Creates a hologram but if there
+     * is a hologram with id, removes it.
+     *
+     * @param id       Hologram id.
+     * @param location Hologram location.
+     * @return Created hologram.
+     */
+    @Nonnull
+    public static HHologram forceCreateHologram(@Nonnull String id, @Nonnull Location location) {
+        return HHologramHandler.forceCreate(id, location);
+    }
+
+    /**
+     * Creates a hologram but if there
+     * is a hologram with id, removes it.
+     *
+     * @param id       Hologram id.
+     * @param location Hologram location.
+     * @param players  Viewers.
+     * @return Created hologram.
+     */
+    @Nonnull
+    public static HHologram forceCreateHologram(@Nonnull String id, @Nonnull Location location, @Nullable Set<UUID> players) {
+        return HHologramHandler.forceCreate(id, location, players);
+    }
+
+    /**
      * Creates a new hologram
      *
      * @param id       hologram id

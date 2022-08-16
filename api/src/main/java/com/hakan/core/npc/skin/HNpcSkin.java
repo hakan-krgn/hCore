@@ -6,7 +6,6 @@ import com.hakan.core.utils.Validate;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
@@ -52,8 +51,8 @@ public final class HNpcSkin {
             String signature = textureProperty.get("signature").getAsString();
 
             return new HNpcSkin(texture, signature);
-        } catch (IOException e) {
-            return new HNpcSkin("", "");
+        } catch (Exception e) {
+            throw new RuntimeException("there is no skin for player " + playerName, e);
         }
     }
 
