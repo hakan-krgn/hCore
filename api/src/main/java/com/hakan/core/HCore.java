@@ -1,7 +1,6 @@
 package com.hakan.core;
 
 import com.hakan.core.command.HCommandHandler;
-import com.hakan.core.config.ConfigHandler;
 import com.hakan.core.database.DatabaseHandler;
 import com.hakan.core.database.DatabaseObject;
 import com.hakan.core.database.DatabaseProvider;
@@ -114,7 +113,6 @@ public final class HCore {
         HHologramHandler.initialize();
         HScoreboardHandler.initialize();
         HWorldBorderHandler.initialize();
-        ConfigHandler.initialize();
     }
 
 
