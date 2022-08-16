@@ -184,11 +184,64 @@ public abstract class ConfigContainer {
 
 
     /**
+     * Saves last data to
+     * config file as persist.
+     */
+    @Nonnull
+    public abstract ConfigContainer save();
+
+    /**
+     * Gets value from config file
+     * with the given path.
+     *
+     * @param path Value path.
+     */
+    @Nullable
+    public abstract <T> T getValue(@Nonnull String path);
+
+    /**
+     * Gets value from config file
+     * with the given path.
+     *
+     * @param path  Value path.
+     * @param clazz Value class.
+     */
+    @Nullable
+    public abstract <T> T getValue(@Nonnull String path,
+                                   @Nonnull Class<T> clazz);
+
+    /**
+     * Sets value to config file
+     * with the given path and save
+     * it to file.
+     *
+     * @param path  Value path.
+     * @param value Value.
+     */
+    @Nonnull
+    public abstract ConfigContainer setValue(@Nonnull String path,
+                                             @Nonnull Object value);
+
+    /**
+     * Sets value to config file
+     * with the given path.
+     *
+     * @param path  Value path.
+     * @param value Value.
+     * @param save  Save config file after setting value.
+     */
+    @Nonnull
+    public abstract ConfigContainer setValue(@Nonnull String path,
+                                             @Nonnull Object value,
+                                             boolean save);
+
+    /**
      * Gets all nodes from config
      * and sets it to the all fields
      * of given object.
      *
      * @param configClass Object to set fields.
      */
-    public abstract void loadData(@Nonnull Object configClass);
+    @Nonnull
+    public abstract ConfigContainer loadData(@Nonnull Object configClass);
 }
