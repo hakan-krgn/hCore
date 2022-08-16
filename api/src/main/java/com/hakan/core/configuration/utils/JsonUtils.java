@@ -129,6 +129,7 @@ public final class JsonUtils {
      *
      * @param input Input json string.
      * @return Beautified json string.
+     * @see <a href="https://stackoverflow.com/questions/5457524/json-beautifier-library-for-java">Json beautifier method</a>
      */
     @Nonnull
     public static String beautify(@Nonnull String input) {
