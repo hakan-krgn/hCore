@@ -94,9 +94,11 @@ public final class ReflectionUtils {
             Validate.notNull(value, "value cannot be null!");
 
             Field field = object.getClass().getDeclaredField(fieldName);
+            boolean accessible = field.isAccessible();
+
             field.setAccessible(true);
             field.set(object, value);
-            field.setAccessible(false);
+            field.setAccessible(accessible);
         } catch (Exception e) {
             throw new NullPointerException(e.getMessage());
         }

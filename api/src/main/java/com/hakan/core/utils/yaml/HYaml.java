@@ -1,5 +1,6 @@
-package com.hakan.core.config;
+package com.hakan.core.utils.yaml;
 
+import com.hakan.core.configuration.containers.ConfigContainer;
 import com.hakan.core.utils.Validate;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
@@ -23,7 +24,11 @@ import java.util.regex.Pattern;
 /**
  * HYaml class to create
  * and get yaml files.
+ * <p>
+ * Use this class {@link ConfigContainer}
+ * instead of HYaml.
  */
+@Deprecated
 public final class HYaml {
 
     /**
