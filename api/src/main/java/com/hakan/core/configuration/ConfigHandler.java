@@ -11,8 +11,8 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Configuration handler class to load
- * and update configuration files.
+ * Config handler class to load
+ * and update config files.
  */
 public final class ConfigHandler {
 
@@ -42,10 +42,10 @@ public final class ConfigHandler {
     }
 
     /**
-     * Loads configuration container.
+     * Loads config container.
      *
-     * @param container Configuration container.
-     * @return Configuration container.
+     * @param container Config container.
+     * @return Config container.
      */
     @Nonnull
     public static ConfigContainer load(@Nonnull ConfigContainer container) {
@@ -60,10 +60,11 @@ public final class ConfigHandler {
     }
 
     /**
-     * Finds configuration container.
+     * Finds config container
+     * by the given path.
      *
-     * @param path Configuration container path.
-     * @return Configuration container.
+     * @param path Config container path.
+     * @return Config container.
      */
     @Nonnull
     public static Optional<ConfigContainer> findByPath(@Nonnull String path) {
@@ -72,10 +73,10 @@ public final class ConfigHandler {
     }
 
     /**
-     * Gets configuration file.
+     * Gets config file.
      *
-     * @param path Configuration file container.
-     * @return Configuration container.
+     * @param path File path.
+     * @return Config container.
      */
     @Nonnull
     public static ConfigContainer getByPath(@Nonnull String path) {

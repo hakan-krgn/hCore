@@ -81,7 +81,7 @@ public abstract class ConfigContainer {
             case JSON:
                 return new JsonConfigContainer(path, resource, type, plugin);
             default:
-                throw new IllegalArgumentException("unsupported configuration file type: " + type);
+                throw new IllegalArgumentException("unsupported config file type: " + type);
         }
     }
 
