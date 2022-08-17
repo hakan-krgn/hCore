@@ -20,6 +20,7 @@ public final class HScheduler {
     private final JavaPlugin plugin;
     private final List<Function<BukkitRunnable, Boolean>> freezeFilters;
     private final List<Function<BukkitRunnable, Boolean>> terminateFilters;
+    private BukkitRunnable runnable;
     private long after;
     private Long every;
     private Long limiter;
@@ -175,6 +176,14 @@ public final class HScheduler {
     }
 
     /**
+     * Cancels the runnable if it's running.
+     */
+    public synchronized void cancel() {
+        if (this.runnable != null)
+            this.runnable.cancel();
+    }
+
+    /**
      * Starts to scheduler.
      *
      * @param runnable Callback.
@@ -194,7 +203,7 @@ public final class HScheduler {
     public synchronized int run(@Nonnull Consumer<BukkitRunnable> taskConsumer) {
         Validate.notNull(taskConsumer, "task consumer cannot be null!");
 
-        BukkitRunnable bukkitRunnable = new BukkitRunnable() {
+        this.runnable = new BukkitRunnable() {
             @Override
             public void run() {
                 for (Function<BukkitRunnable, Boolean> freezeFilter : freezeFilters) {
@@ -222,14 +231,14 @@ public final class HScheduler {
 
         if (this.async) {
             if (this.every == null)
-                return bukkitRunnable.runTaskLaterAsynchronously(this.plugin, this.after).getTaskId();
+                return this.runnable.runTaskLaterAsynchronously(this.plugin, this.after).getTaskId();
             else
-                return bukkitRunnable.runTaskTimerAsynchronously(this.plugin, this.after, this.every).getTaskId();
+                return this.runnable.runTaskTimerAsynchronously(this.plugin, this.after, this.every).getTaskId();
         } else {
             if (this.every == null)
-                return bukkitRunnable.runTaskLater(this.plugin, this.after).getTaskId();
+                return this.runnable.runTaskLater(this.plugin, this.after).getTaskId();
             else
-                return bukkitRunnable.runTaskTimer(this.plugin, this.after, this.every).getTaskId();
+                return this.runnable.runTaskTimer(this.plugin, this.after, this.every).getTaskId();
         }
     }
 }
