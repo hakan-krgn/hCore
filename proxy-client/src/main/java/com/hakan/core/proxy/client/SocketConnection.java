@@ -39,10 +39,8 @@ public final class SocketConnection {
             connection.outputStream.writeUTF(name);
 
             byte result = connection.inputStream.readByte();
-            if (result == 1)
-                throw new IllegalArgumentException("name already in use!");
-            else if (result == 2)
-                throw new IllegalArgumentException("input stream is broken!");
+            Validate.isTrue(result == 1, "name already in use!");
+            Validate.isTrue(result == 2, "input stream is broken!");
 
             connection.listen();
             return connection;
