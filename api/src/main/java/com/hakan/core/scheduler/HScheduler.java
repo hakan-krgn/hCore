@@ -176,7 +176,8 @@ public final class HScheduler {
     }
 
     /**
-     * Cancels the runnable if it's running.
+     * Cancels the runnable
+     * if it's currently running.
      */
     public synchronized void cancel() {
         if (this.runnable != null)
