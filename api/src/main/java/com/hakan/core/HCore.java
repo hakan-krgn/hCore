@@ -85,10 +85,11 @@ public final class HCore {
     /**
      * Sets instance plugin of hCore.
      *
-     * @param instance Instance.
+     * @param plugin Instance.
      */
-    public static void setInstance(@Nonnull JavaPlugin instance) {
-        HCore.INSTANCE = Validate.notNull(instance, "instance cannot be null!");
+    public static void setInstance(@Nonnull JavaPlugin plugin) {
+        HCore.INSTANCE = Validate.notNull(plugin, "instance cannot be null!");
+        HCore.VERSION = ProtocolVersion.getCurrentVersion();
     }
 
     /**
@@ -99,10 +100,9 @@ public final class HCore {
     public static void initialize(@Nonnull JavaPlugin plugin) {
         if (HCore.INSTANCE != null) return;
 
-        HCore.INSTANCE = Validate.notNull(plugin, "plugin cannot be null!");
-        HCore.VERSION = ProtocolVersion.getCurrentVersion();
-
+        HCore.setInstance(plugin);
         Metrics.initialize(plugin);
+
         HPacketHandler.initialize();
         GUIHandler.initialize();
         HNPCHandler.initialize();

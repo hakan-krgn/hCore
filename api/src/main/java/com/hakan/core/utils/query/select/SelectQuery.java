@@ -96,7 +96,8 @@ public final class SelectQuery extends QueryBuilder {
         this.query.delete(this.query.length() - 2, this.query.length());
         this.query.append(" FROM ").append(this.table);
 
-        this.query.append(whereCriteria.getCriteriaQuery()).append(orderCriteria.getCriteriaQuery());
+        this.query.append(this.whereCriteria.getCriteriaQuery())
+                .append(this.orderCriteria.getCriteriaQuery());
 
         return this.query.toString();
     }
