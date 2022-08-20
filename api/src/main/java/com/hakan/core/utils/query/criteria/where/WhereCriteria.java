@@ -48,7 +48,7 @@ public final class WhereCriteria extends QueryCriteria {
         if (this.where.isEmpty()) return "";
 
         this.criteria.append(" WHERE ");
-        this.where.forEach((key, value) -> criteria.append(key).append(" = ").append(value).append(" AND "));
+        this.where.forEach((key, value) -> this.criteria.append(key).append(" = ").append(value).append(" AND "));
         this.criteria.delete(this.criteria.length() - 5, this.criteria.length());
 
         return this.criteria.toString();

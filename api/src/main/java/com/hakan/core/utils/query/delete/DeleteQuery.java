@@ -43,8 +43,7 @@ public final class DeleteQuery extends QueryBuilder {
     @Override
     public String build() {
         this.query.append("DELETE FROM ").append(this.table);
-
-        this.query.append(whereCriteria.getCriteriaQuery());
+        this.query.append(this.whereCriteria.getCriteriaQuery());
 
         return this.query.toString();
     }

@@ -69,7 +69,7 @@ public final class UpdateQuery extends QueryBuilder {
         this.values.forEach((k, v) -> this.query.append(k).append(" = ").append(v).append(", "));
         this.query.delete(this.query.length() - 2, this.query.length());
 
-        this.query.append(whereCriteria.getCriteriaQuery());
+        this.query.append(this.whereCriteria.getCriteriaQuery());
 
         return this.query.toString();
     }
