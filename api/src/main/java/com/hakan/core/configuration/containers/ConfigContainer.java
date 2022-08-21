@@ -201,7 +201,7 @@ public abstract class ConfigContainer {
      * @return ConfigContainer.
      */
     @Nonnull
-    public ConfigContainer reload() {
+    public ConfigContainer loadData() {
         return this.loadData(this);
     }
 
