@@ -28,9 +28,17 @@ public class YamlConfigContainer extends ConfigContainer {
     /**
      * {@inheritDoc}
      */
+    public YamlConfigContainer() {
+        this.file = new File(super.path);
+        this.configuration = YamlConfiguration.loadConfiguration(this.file);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public YamlConfigContainer(@Nonnull ConfigFile configFile) {
         super(configFile);
-        this.file = new File(configFile.path());
+        this.file = new File(super.path);
         this.configuration = YamlConfiguration.loadConfiguration(this.file);
     }
 
@@ -40,7 +48,7 @@ public class YamlConfigContainer extends ConfigContainer {
     public YamlConfigContainer(@Nonnull String path,
                                @Nonnull Class<? extends JavaPlugin> plugin) {
         super(path, plugin);
-        this.file = new File(path);
+        this.file = new File(super.path);
         this.configuration = YamlConfiguration.loadConfiguration(this.file);
     }
 
@@ -51,7 +59,7 @@ public class YamlConfigContainer extends ConfigContainer {
                                @Nonnull ConfigType type,
                                @Nonnull Class<? extends JavaPlugin> plugin) {
         super(path, type, plugin);
-        this.file = new File(path);
+        this.file = new File(super.path);
         this.configuration = YamlConfiguration.loadConfiguration(this.file);
     }
 
@@ -63,7 +71,7 @@ public class YamlConfigContainer extends ConfigContainer {
                                @Nonnull ConfigType type,
                                @Nonnull Class<? extends JavaPlugin> plugin) {
         super(path, resource, type, plugin);
-        this.file = new File(path);
+        this.file = new File(super.path);
         this.configuration = YamlConfiguration.loadConfiguration(this.file);
     }
 

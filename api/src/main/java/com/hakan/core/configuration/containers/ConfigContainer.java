@@ -92,7 +92,18 @@ public abstract class ConfigContainer {
     protected final Class<? extends JavaPlugin> plugin;
 
     /**
-     * Create a new ConfigContainer.
+     * Creates a new ConfigContainer.
+     */
+    public ConfigContainer() {
+        ConfigFile configFile = this.getClass().getAnnotation(ConfigFile.class);
+        this.path = configFile.path();
+        this.resource = configFile.resource();
+        this.type = configFile.type();
+        this.plugin = configFile.plugin();
+    }
+
+    /**
+     * Creates a new ConfigContainer.
      *
      * @param configFile ConfigFile annotation.
      */
@@ -101,7 +112,7 @@ public abstract class ConfigContainer {
     }
 
     /**
-     * Create a new ConfigContainer.
+     * Creates a new ConfigContainer.
      *
      * @param path   Config file path.
      * @param plugin JavaPlugin.
@@ -112,7 +123,7 @@ public abstract class ConfigContainer {
     }
 
     /**
-     * Create a new ConfigContainer.
+     * Creates a new ConfigContainer.
      *
      * @param path   Config file path.
      * @param type   Config file type.
@@ -125,7 +136,7 @@ public abstract class ConfigContainer {
     }
 
     /**
-     * Create a new ConfigContainer.
+     * Creates a new ConfigContainer.
      *
      * @param path     Config file path.
      * @param resource Config file resource.
@@ -143,7 +154,7 @@ public abstract class ConfigContainer {
     }
 
     /**
-     * Get the config file path.
+     * Gets the config file path.
      *
      * @return Config file path.
      */
@@ -153,7 +164,7 @@ public abstract class ConfigContainer {
     }
 
     /**
-     * Get the config file resource.
+     * Gets the config file resource.
      *
      * @return Config file resource.
      */
@@ -163,7 +174,7 @@ public abstract class ConfigContainer {
     }
 
     /**
-     * Get the config file type.
+     * Gets the config file type.
      *
      * @return Config file type.
      */
@@ -173,7 +184,7 @@ public abstract class ConfigContainer {
     }
 
     /**
-     * Get the JavaPlugin.
+     * Gets the JavaPlugin.
      *
      * @return JavaPlugin.
      */
