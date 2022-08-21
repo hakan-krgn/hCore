@@ -193,10 +193,24 @@ public abstract class ConfigContainer {
         return this.plugin;
     }
 
+    /**
+     * Gets all nodes from config
+     * and sets it to the all fields
+     * of this class.
+     *
+     * @return ConfigContainer.
+     */
+    @Nonnull
+    public ConfigContainer reload() {
+        return this.loadData(this);
+    }
+
 
     /**
      * Saves last data to
      * config file as persist.
+     *
+     * @return ConfigContainer.
      */
     @Nonnull
     public abstract ConfigContainer save();
@@ -206,6 +220,7 @@ public abstract class ConfigContainer {
      * with the given path.
      *
      * @param path Value path.
+     * @return Value.
      */
     @Nullable
     public abstract <T> T getValue(@Nonnull String path);
@@ -216,6 +231,7 @@ public abstract class ConfigContainer {
      *
      * @param path  Value path.
      * @param clazz Value class.
+     * @return Value.
      */
     @Nullable
     public abstract <T> T getValue(@Nonnull String path,
@@ -228,6 +244,7 @@ public abstract class ConfigContainer {
      *
      * @param path  Value path.
      * @param value Value.
+     * @return ConfigContainer.
      */
     @Nonnull
     public abstract ConfigContainer setValue(@Nonnull String path,
@@ -240,6 +257,7 @@ public abstract class ConfigContainer {
      * @param path  Value path.
      * @param value Value.
      * @param save  Save config file after setting value.
+     * @return ConfigContainer.
      */
     @Nonnull
     public abstract ConfigContainer setValue(@Nonnull String path,
@@ -252,6 +270,7 @@ public abstract class ConfigContainer {
      * of given object.
      *
      * @param configClass Object to set fields.
+     * @return ConfigContainer.
      */
     @Nonnull
     public abstract ConfigContainer loadData(@Nonnull Object configClass);
