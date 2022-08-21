@@ -79,7 +79,7 @@ public class JsonConfigContainer extends ConfigContainer {
      */
     @Nonnull
     @Override
-    public ConfigContainer save() {
+    public final ConfigContainer save() {
         JsonUtils.saveToFile(this.jsonObject, super.path);
         return this;
     }
@@ -89,7 +89,7 @@ public class JsonConfigContainer extends ConfigContainer {
      */
     @Nullable
     @Override
-    public <T> T getValue(@Nonnull String path) {
+    public final <T> T getValue(@Nonnull String path) {
         Validate.notNull(path, "path cannot be null!");
         return (T) JsonUtils.getValue(this.jsonObject, path);
     }
@@ -99,8 +99,8 @@ public class JsonConfigContainer extends ConfigContainer {
      */
     @Nullable
     @Override
-    public <T> T getValue(@Nonnull String path,
-                          @Nonnull Class<T> clazz) {
+    public final <T> T getValue(@Nonnull String path,
+                                @Nonnull Class<T> clazz) {
         Validate.notNull(path, "path cannot be null!");
         Validate.notNull(clazz, "clazz cannot be null!");
         return clazz.cast(JsonUtils.getValue(this.jsonObject, path));
@@ -111,8 +111,8 @@ public class JsonConfigContainer extends ConfigContainer {
      */
     @Nonnull
     @Override
-    public ConfigContainer setValue(@Nonnull String path,
-                                    @Nonnull Object value) {
+    public final ConfigContainer setValue(@Nonnull String path,
+                                          @Nonnull Object value) {
         return this.setValue(path, value, true);
     }
 
@@ -121,15 +121,24 @@ public class JsonConfigContainer extends ConfigContainer {
      */
     @Nonnull
     @Override
-    public ConfigContainer setValue(@Nonnull String path,
-                                    @Nonnull Object value,
-                                    boolean save) {
+    public final ConfigContainer setValue(@Nonnull String path,
+                                          @Nonnull Object value,
+                                          boolean save) {
         Validate.notNull(path, "path cannot be null!");
         Validate.notNull(value, "value cannot be null!");
 
         JsonUtils.setValue(this.jsonObject, path, this.gson.toJsonTree(value));
         if (save) this.save();
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public final ConfigContainer loadData() {
+        return this.loadData(this);
     }
 
     /**

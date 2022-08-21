@@ -80,7 +80,7 @@ public class YamlConfigContainer extends ConfigContainer {
      */
     @Nonnull
     @Override
-    public ConfigContainer save() {
+    public final ConfigContainer save() {
         try {
             this.configuration.save(this.file);
         } catch (IOException e) {
@@ -95,7 +95,7 @@ public class YamlConfigContainer extends ConfigContainer {
      */
     @Nullable
     @Override
-    public <T> T getValue(@Nonnull String path) {
+    public final <T> T getValue(@Nonnull String path) {
         Validate.notNull(path, "path cannot be null!");
         return (T) this.configuration.get(path);
     }
@@ -105,8 +105,8 @@ public class YamlConfigContainer extends ConfigContainer {
      */
     @Nullable
     @Override
-    public <T> T getValue(@Nonnull String path,
-                          @Nonnull Class<T> clazz) {
+    public final <T> T getValue(@Nonnull String path,
+                                @Nonnull Class<T> clazz) {
         Validate.notNull(clazz, "clazz cannot be null!");
         Validate.notNull(path, "path cannot be null!");
         return clazz.cast(this.configuration.get(path));
@@ -117,8 +117,8 @@ public class YamlConfigContainer extends ConfigContainer {
      */
     @Nonnull
     @Override
-    public ConfigContainer setValue(@Nonnull String path,
-                                    @Nonnull Object value) {
+    public final ConfigContainer setValue(@Nonnull String path,
+                                          @Nonnull Object value) {
         return this.setValue(path, value, true);
     }
 
@@ -127,14 +127,23 @@ public class YamlConfigContainer extends ConfigContainer {
      */
     @Nonnull
     @Override
-    public ConfigContainer setValue(@Nonnull String path,
-                                    @Nonnull Object value,
-                                    boolean save) {
+    public final ConfigContainer setValue(@Nonnull String path,
+                                          @Nonnull Object value,
+                                          boolean save) {
         Validate.notNull(path, "path cannot be null!");
         Validate.notNull(value, "value cannot be null!");
         this.configuration.set(path, value);
         if (save) this.save();
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Nonnull
+    @Override
+    public final ConfigContainer loadData() {
+        return this.loadData(this);
     }
 
     /**
