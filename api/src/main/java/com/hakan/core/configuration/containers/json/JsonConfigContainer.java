@@ -27,6 +27,14 @@ public class JsonConfigContainer extends ConfigContainer {
     /**
      * {@inheritDoc}
      */
+    public JsonConfigContainer() {
+        this.gson = new Gson();
+        this.jsonObject = JsonUtils.loadFromFile(super.path);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public JsonConfigContainer(@Nonnull ConfigFile configFile) {
         super(configFile);
         this.gson = new Gson();
