@@ -160,6 +160,14 @@ public final class HWorldBorder_v1_19_1_R1 extends WorldBorder implements HWorld
      * {@inheritDoc}
      */
     @Override
+    public void setSize(double size, long time) {
+        super.a(this.getSize(), size, time);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public double getDamageAmount() {
         return super.o();
     }

@@ -14,6 +14,7 @@ import java.util.Optional;
  * Config handler class to load
  * and update config files.
  */
+@SuppressWarnings({"unchecked"})
 public final class ConfigHandler {
 
     private static final Map<String, ConfigContainer> configurations = new HashMap<>();
@@ -25,7 +26,7 @@ public final class ConfigHandler {
      * @return Configuration class.
      */
     @Nonnull
-    public static ConfigContainer load(@Nonnull Object configClass) {
+    public static <T extends ConfigContainer> T load(@Nonnull Object configClass) {
         Validate.notNull(configClass, "config class cannot be null!");
         ConfigFile configFile = configClass.getClass().getAnnotation(ConfigFile.class);
 
@@ -38,7 +39,7 @@ public final class ConfigHandler {
         ConfigContainer container = ConfigContainer.of(configFile);
         configurations.put(container.getPath(), container);
 
-        return container.loadData(configClass);
+        return (T) container.loadData(configClass);
     }
 
     /**
@@ -48,7 +49,7 @@ public final class ConfigHandler {
      * @return Config container.
      */
     @Nonnull
-    public static ConfigContainer load(@Nonnull ConfigContainer container) {
+    public static <T extends ConfigContainer> T load(@Nonnull ConfigContainer container) {
         Validate.notNull(container, "config container cannot be null!");
         Validate.isTrue(container.getPath().isEmpty(), "config file must have a path!");
         Validate.isTrue(configurations.containsKey(container.getPath()), "config file already exists!");
@@ -56,7 +57,7 @@ public final class ConfigHandler {
         ConfigUtils.createFile(container);
 
         configurations.put(container.getPath(), container);
-        return container.loadData(container);
+        return (T) container.loadData(container);
     }
 
     /**

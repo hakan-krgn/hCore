@@ -131,6 +131,14 @@ public final class HWorldBorder_v1_16_R2 extends WorldBorder implements HWorldBo
      * {@inheritDoc}
      */
     @Override
+    public void setSize(double size, long time) {
+        super.transitionSizeBetween(this.getSize(), size, time);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void update() {
         if (this.color == HBorderColor.BLUE)
             super.transitionSizeBetween(super.getSize(), super.getSize(), Long.MAX_VALUE);

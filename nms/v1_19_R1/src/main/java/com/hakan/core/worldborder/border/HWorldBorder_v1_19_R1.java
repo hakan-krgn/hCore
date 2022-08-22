@@ -160,6 +160,14 @@ public final class HWorldBorder_v1_19_R1 extends WorldBorder implements HWorldBo
      * {@inheritDoc}
      */
     @Override
+    public void setSize(double size, long time) {
+        super.a(this.getSize(), size, time);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public double getDamageAmount() {
         return super.o();
     }
@@ -226,11 +234,11 @@ public final class HWorldBorder_v1_19_R1 extends WorldBorder implements HWorldBo
     @Override
     public void update() {
         if (this.color == HBorderColor.BLUE)
-            super.a(super.i(), super.i(), Long.MAX_VALUE);
+            super.a(this.getSize(), this.getSize(), Long.MAX_VALUE);
         else if (this.color == HBorderColor.GREEN)
-            super.a(super.i(), super.i() + 0.1, Long.MAX_VALUE);
+            super.a(this.getSize(), this.getSize() + 0.1, Long.MAX_VALUE);
         else if (this.color == HBorderColor.RED)
-            super.a(super.i(), super.i() - 0.1, Long.MAX_VALUE);
+            super.a(this.getSize(), this.getSize() - 0.1, Long.MAX_VALUE);
         this.shownViewers.forEach(this::show);
     }
 }
