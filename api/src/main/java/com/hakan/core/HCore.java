@@ -1412,7 +1412,7 @@ public final class HCore {
      * @return Config container class.
      */
     @Nonnull
-    public static ConfigContainer loadConfig(@Nonnull Object configClass) {
+    public static <T extends ConfigContainer> T loadConfig(@Nonnull Object configClass) {
         return ConfigHandler.load(configClass);
     }
 
@@ -1423,7 +1423,7 @@ public final class HCore {
      * @return Configuration container.
      */
     @Nonnull
-    public static ConfigContainer loadConfig(@Nonnull ConfigContainer file) {
+    public static <T extends ConfigContainer> T loadConfig(@Nonnull ConfigContainer file) {
         return ConfigHandler.load(file);
     }
 

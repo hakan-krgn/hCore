@@ -94,6 +94,15 @@ public interface HWorldBorder {
     void setSize(double size);
 
     /**
+     * Changes size of worldborder
+     * in given time.
+     *
+     * @param size Size.
+     * @param time Time.
+     */
+    void setSize(double size, long time);
+
+    /**
      * Gets damage amount.
      *
      * @return Damage amount.
