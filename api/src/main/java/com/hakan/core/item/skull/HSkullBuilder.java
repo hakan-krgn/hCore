@@ -2,7 +2,9 @@ package com.hakan.core.item.skull;
 
 import com.hakan.core.HCore;
 import com.hakan.core.item.HItemBuilder;
+import com.hakan.core.skin.Skin;
 import com.hakan.core.utils.ReflectionUtils;
+import com.hakan.core.utils.Validate;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import org.bukkit.Material;
@@ -14,6 +16,8 @@ import org.bukkit.inventory.meta.SkullMeta;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -24,6 +28,7 @@ import java.util.function.Consumer;
 public class HSkullBuilder extends HItemBuilder {
 
     private static Material SKULL;
+    private static Map<String, Skin> skullDataMap;
 
     /**
      * Initialize the skull builder class.
@@ -34,6 +39,27 @@ public class HSkullBuilder extends HItemBuilder {
         } catch (Exception e) {
             SKULL = Material.valueOf("SKULL_ITEM");
         }
+        skullDataMap = new HashMap<>();
+    }
+
+    /**
+     * Gets the skin from map,
+     * if it doesn't exist, it will
+     * get from mojang.
+     *
+     * @param name Name of the player.
+     * @return Skin of the player.
+     */
+    @Nonnull
+    public static Skin getOrLoad(@Nonnull String name) {
+        Validate.notNull(name, "name cannot be null!");
+
+        if (skullDataMap.containsKey(name))
+            return skullDataMap.get(name);
+
+        Skin skin = Skin.from(name);
+        skullDataMap.put(name, skin);
+        return skin;
     }
 
 
@@ -157,9 +183,7 @@ public class HSkullBuilder extends HItemBuilder {
             SkullMeta skullMeta = (SkullMeta) meta;
 
             if (this.ownerName != null) {
-                HSkullData skullData = HSkullData.findByPlayer(this.ownerName).orElse(null);
-                if (skullData == null)
-                    skullData = HSkullData.register(this.ownerName);
+                Skin skullData = HSkullBuilder.getOrLoad(this.ownerName);
                 this.texture = skullData.getTexture();
             }
 

@@ -2,7 +2,7 @@ package com.hakan.core.npc.builder;
 
 import com.hakan.core.npc.HNPC;
 import com.hakan.core.npc.HNPCHandler;
-import com.hakan.core.npc.skin.HNpcSkin;
+import com.hakan.core.skin.Skin;
 import com.hakan.core.utils.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -29,7 +29,7 @@ public final class HNpcBuilder {
 
     private final String id;
     private Boolean show;
-    private HNpcSkin skin;
+    private Skin skin;
     private Location location;
     private Set<UUID> viewers;
     private List<String> lines;
@@ -48,7 +48,7 @@ public final class HNpcBuilder {
      */
     public HNpcBuilder(@Nonnull String id) {
         this.id = Validate.notNull(id, "id cannot be null!");
-        this.skin = HNpcSkin.EMPTY;
+        this.skin = Skin.STEVE;
         this.lines = new ArrayList<>();
         this.viewers = new HashSet<>();
         this.equipments = new HashMap<>();
@@ -231,7 +231,7 @@ public final class HNpcBuilder {
      * @return HNpcBuilder instance.
      */
     @Nonnull
-    public HNpcBuilder skin(@Nonnull HNpcSkin skin) {
+    public HNpcBuilder skin(@Nonnull Skin skin) {
         this.skin = Validate.notNull(skin, "skin cannot be null!");
         return this;
     }
@@ -244,7 +244,7 @@ public final class HNpcBuilder {
      */
     @Nonnull
     public HNpcBuilder skin(@Nonnull String skin) {
-        return this.skin(HNpcSkin.from(skin));
+        return this.skin(Skin.from(skin));
     }
 
     /**

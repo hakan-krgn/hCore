@@ -84,7 +84,14 @@ public final class HWorldBorder_v1_19_R1 extends WorldBorder implements HWorldBo
      */
     @Override
     public void hideAll() {
-        this.shownViewers.forEach(this::hide);
+        this.shownViewers.forEach(player -> {
+            super.c(0, 0);
+            super.a(Long.MAX_VALUE);
+            HCore.sendPacket(player, new ClientboundSetBorderCenterPacket(this));
+            HCore.sendPacket(player, new ClientboundSetBorderSizePacket(this));
+            HCore.sendPacket(player, new ClientboundInitializeBorderPacket(this));
+        });
+        this.shownViewers.clear();
     }
 
     /**

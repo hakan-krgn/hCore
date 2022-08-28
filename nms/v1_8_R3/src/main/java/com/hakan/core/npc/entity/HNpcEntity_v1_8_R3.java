@@ -3,8 +3,8 @@ package com.hakan.core.npc.entity;
 import com.hakan.core.HCore;
 import com.hakan.core.npc.HNPC;
 import com.hakan.core.npc.pathfinder.PathfinderEntity_v1_8_R3;
-import com.hakan.core.npc.skin.HNpcSkin;
 import com.hakan.core.renderer.HRenderer;
+import com.hakan.core.skin.Skin;
 import com.hakan.core.utils.Validate;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
@@ -51,7 +51,7 @@ public final class HNpcEntity_v1_8_R3 implements HNpcEntity {
     private static EntityPlayer createEntityPlayer(@Nonnull HNPC npc) {
         Validate.notNull(npc, "npc cannot be null");
 
-        HNpcSkin skin = npc.getSkin();
+        Skin skin = npc.getSkin();
         Location location = npc.getLocation();
         WorldServer world = ((CraftWorld) npc.getWorld()).getHandle();
         MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();
