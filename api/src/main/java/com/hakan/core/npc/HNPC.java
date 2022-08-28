@@ -4,9 +4,9 @@ import com.hakan.core.HCore;
 import com.hakan.core.hologram.HHologram;
 import com.hakan.core.npc.action.HNpcAction;
 import com.hakan.core.npc.entity.HNpcEntity;
-import com.hakan.core.npc.skin.HNpcSkin;
 import com.hakan.core.npc.utils.HNpcUtils;
 import com.hakan.core.renderer.HRenderer;
+import com.hakan.core.skin.Skin;
 import com.hakan.core.utils.Validate;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -37,7 +37,7 @@ public final class HNPC {
     private final HNpcAction action;
     private final HNpcEntity entity;
     private final Map<EquipmentType, ItemStack> equipments;
-    private HNpcSkin skin;
+    private Skin skin;
     private boolean walking = false;
     private boolean dead = false;
 
@@ -54,7 +54,7 @@ public final class HNPC {
      */
     public HNPC(@Nonnull String id,
                 @Nonnull Location location,
-                @Nonnull HNpcSkin skin,
+                @Nonnull Skin skin,
                 @Nonnull List<String> lines,
                 @Nonnull Set<UUID> viewers,
                 @Nonnull Map<EquipmentType, ItemStack> equipments,
@@ -144,7 +144,7 @@ public final class HNPC {
      * @return Skin.
      */
     @Nonnull
-    public HNpcSkin getSkin() {
+    public Skin getSkin() {
         return this.skin;
     }
 
@@ -441,7 +441,7 @@ public final class HNPC {
      *
      * @param skin Skin.
      */
-    public void setSkin(@Nonnull HNpcSkin skin) {
+    public void setSkin(@Nonnull Skin skin) {
         this.skin = Validate.notNull(skin, "skin cannot be null!");
         this.entity.updateSkin();
     }

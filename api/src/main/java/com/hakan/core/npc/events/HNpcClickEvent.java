@@ -49,6 +49,7 @@ public final class HNpcClickEvent extends Event {
      * @return Handler list.
      */
     @Nonnull
+    @Override
     public HandlerList getHandlers() {
         return handlers;
     }

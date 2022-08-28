@@ -53,7 +53,7 @@ public final class HScoreboard_v1_9_R1 extends HScoreboard {
             String line = super.lines[i];
             if (line == null) continue;
 
-            String[] split = this.splitLine(i, line, 16, 40, 16);
+            String[] split = this.splitLine(i, line, 16, 16);
             String prefix = ColorUtil.colored(split[0]);
             String middle = ColorUtil.colored(split[1]);
             String suffix = ColorUtil.colored(split[2]);
