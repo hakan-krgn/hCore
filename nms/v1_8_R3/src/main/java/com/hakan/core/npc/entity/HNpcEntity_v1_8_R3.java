@@ -111,7 +111,7 @@ public final class HNpcEntity_v1_8_R3 implements HNpcEntity {
      */
     @Override
     public void updateLocation(@Nonnull List<Player> players) {
-        this.updateHeadRotation(players);
+        this.updateHeadRotation(Validate.notNull(players, "players cannot be null!"));
         HCore.sendPacket(players, new PacketPlayOutEntityTeleport(this.nmsPlayer));
     }
 
@@ -120,6 +120,8 @@ public final class HNpcEntity_v1_8_R3 implements HNpcEntity {
      */
     @Override
     public void updateHeadRotation(@Nonnull List<Player> players) {
+        Validate.notNull(players, "players cannot be null!");
+
         Location location = this.hnpc.getLocation();
         this.nmsPlayer.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 
@@ -134,6 +136,8 @@ public final class HNpcEntity_v1_8_R3 implements HNpcEntity {
      */
     @Override
     public void updateSkin(@Nonnull List<Player> players) {
+        Validate.notNull(players, "players cannot be null!");
+
         this.hide(players);
 
         GameProfile gameProfile = this.nmsPlayer.getProfile();
@@ -148,6 +152,8 @@ public final class HNpcEntity_v1_8_R3 implements HNpcEntity {
      */
     @Override
     public void updateEquipments(@Nonnull List<Player> players) {
+        Validate.notNull(players, "players cannot be null!");
+
         if (this.hnpc.getEquipments().size() == 0)
             return;
 
@@ -160,6 +166,8 @@ public final class HNpcEntity_v1_8_R3 implements HNpcEntity {
      */
     @Override
     public void show(@Nonnull List<Player> players) {
+        Validate.notNull(players, "players cannot be null!");
+
         GameProfile gameProfile = this.nmsPlayer.getProfile();
         DataWatcher dataWatcher = this.nmsPlayer.getDataWatcher();
         gameProfile.getProperties().get("textures").clear();
@@ -185,9 +193,10 @@ public final class HNpcEntity_v1_8_R3 implements HNpcEntity {
      */
     @Override
     public void hide(@Nonnull List<Player> players) {
+        Validate.notNull(players, "players cannot be null!");
+
         players.forEach(player -> this.scoreboard.getPlayerNameSet().remove(player.getName()));
-        HCore.sendPacket(players,
-                new PacketPlayOutEntityDestroy(this.getID()),
+        HCore.sendPacket(players, new PacketPlayOutEntityDestroy(this.getID()),
                 new PacketPlayOutScoreboardTeam(this.scoreboard, 0));
     }
 }
