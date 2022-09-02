@@ -18,25 +18,39 @@ public interface HNpcEntity {
     /**
      * Moves NPC to given location.
      *
-     * @param speed Speed.
-     * @param to    Destination location.
+     * @param speed    Speed.
+     * @param to       Destination location.
+     * @param runnable Runnable to run when npc reached the destination.
      */
     void walk(double speed, @Nonnull Location to, @Nonnull Runnable runnable);
 
     /**
      * Sets location.
+     *
+     * @param players Player list.
      */
-    void updateLocation();
+    void updateLocation(@Nonnull List<Player> players);
+
+    /**
+     * Sets head rotation.
+     *
+     * @param players Player list.
+     */
+    void updateHeadRotation(@Nonnull List<Player> players);
 
     /**
      * Sets skin on NPC.
+     *
+     * @param players Player list.
      */
-    void updateSkin();
+    void updateSkin(@Nonnull List<Player> players);
 
     /**
      * Equips NPC with items.
+     *
+     * @param players Player list.
      */
-    void updateEquipments();
+    void updateEquipments(@Nonnull List<Player> players);
 
     /**
      * Shows NPC to players.

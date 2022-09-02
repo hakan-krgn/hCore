@@ -37,9 +37,11 @@ public final class HNPC {
     private final HNpcAction action;
     private final HNpcEntity entity;
     private final Map<EquipmentType, ItemStack> equipments;
+
     private Skin skin;
-    private boolean walking = false;
+    private LookTarget target;
     private boolean dead = false;
+    private boolean walking = false;
 
     /**
      * Constructor to create new NPC.
@@ -55,6 +57,7 @@ public final class HNPC {
     public HNPC(@Nonnull String id,
                 @Nonnull Location location,
                 @Nonnull Skin skin,
+                @Nonnull LookTarget target,
                 @Nonnull List<String> lines,
                 @Nonnull Set<UUID> viewers,
                 @Nonnull Map<EquipmentType, ItemStack> equipments,
@@ -66,6 +69,7 @@ public final class HNPC {
         this.action = new HNpcAction(this);
         this.id = Validate.notNull(id, "id cannot be null!");
         this.skin = Validate.notNull(skin, "skin cannot be null!");
+        this.target = Validate.notNull(target, "target cannot be null!");
         this.equipments = Validate.notNull(equipments, "equipments cannot be null!");
         this.hologram = HCore.createHologram("hcore_npc_hologram:" + id, location, viewers);
         this.entity = HNpcUtils.createEntity(this);
@@ -146,6 +150,16 @@ public final class HNPC {
     @Nonnull
     public Skin getSkin() {
         return this.skin;
+    }
+
+    /**
+     * Gets look target of npc.
+     *
+     * @return Look target.
+     */
+    @Nonnull
+    public LookTarget getLookTarget() {
+        return this.target;
     }
 
     /**
@@ -407,6 +421,96 @@ public final class HNPC {
         return this.equipments;
     }
 
+
+    /**
+     * Looks at location
+     * of player.
+     *
+     * @param target Target.
+     */
+    public void setTarget(@Nonnull LookTarget target) {
+        this.target = Validate.notNull(target, "target type cannot be null!");
+    }
+
+    /**
+     * Sets skin on NPC.
+     *
+     * @param skin Skin.
+     */
+    public void setSkin(@Nonnull Skin skin) {
+        this.skin = Validate.notNull(skin, "skin cannot be null!");
+        this.entity.updateSkin(this.renderer.getShownViewersAsPlayer());
+    }
+
+    /**
+     * Equips NPC with items.
+     *
+     * @param equipmentType Equipment type. Ex: HAND_ITEM, LEGGINGS,
+     * @param itemStack     Item.
+     */
+    public void setEquipment(@Nonnull EquipmentType equipmentType, @Nonnull ItemStack itemStack) {
+        Validate.notNull(equipmentType, "equipment type cannot be null!");
+        Validate.notNull(itemStack, "itemStack type cannot be null!");
+
+        this.equipments.put(equipmentType, itemStack);
+        this.entity.updateEquipments(this.renderer.getShownViewersAsPlayer());
+    }
+
+    /**
+     * Sets location.
+     *
+     * @param location Location.
+     */
+    public void setLocation(@Nonnull Location location) {
+        Validate.notNull(location, "location cannot be null!");
+
+        this.hologram.setLocation(location.clone().add(0, (this.hologram.getLines().size() * this.hologram.getLineDistance() / 2 + 2), 0));
+        this.renderer.setLocation(location);
+        this.entity.updateLocation(this.renderer.getShownViewersAsPlayer());
+    }
+
+    /**
+     * Sets head rotation
+     * with yaw and pitch.
+     *
+     * @param yaw   Yaw.
+     * @param pitch Pitch.
+     */
+    public void setHeadRotation(double yaw, double pitch) {
+        Location location = this.getLocation();
+        location.setYaw((float) yaw);
+        location.setPitch((float) pitch);
+
+        this.renderer.setLocation(location);
+        this.entity.updateHeadRotation(this.renderer.getShownViewersAsPlayer());
+    }
+
+    /**
+     * Looks at location
+     * of player.
+     *
+     * @param player Player.
+     */
+    public void lookAt(@Nonnull Player player) {
+        Validate.notNull(player, "player cannot be null!");
+        this.lookAt(player.getEyeLocation());
+    }
+
+    /**
+     * Looks at location.
+     *
+     * @param location Location to look.
+     */
+    public void lookAt(@Nonnull Location location) {
+        Validate.notNull(location, "location cannot be null!");
+        Validate.isTrue(location.getWorld() == null, "location world cannot be null!");
+        Validate.isTrue(!location.getWorld().equals(this.getWorld()), "location and npc worlds must be equal!");
+
+        Location npcLocation = this.getLocation().add(0, 1.62, 0);
+        double[] angles = HNpcUtils.calculateVector(npcLocation, location);
+        this.setHeadRotation(angles[0], angles[1]);
+    }
+
     /**
      * Moves NPC.
      *
@@ -421,43 +525,6 @@ public final class HNPC {
 
         this.walking = true;
         this.entity.walk(speed, to, () -> this.walking = false);
-    }
-
-    /**
-     * Sets location.
-     *
-     * @param location Location.
-     */
-    public void setLocation(@Nonnull Location location) {
-        Validate.notNull(location, "location cannot be null!");
-
-        this.hologram.setLocation(location.clone().add(0, (this.hologram.getLines().size() * this.hologram.getLineDistance() / 2 + 2), 0));
-        this.renderer.setLocation(location);
-        this.entity.updateLocation();
-    }
-
-    /**
-     * Sets skin on NPC.
-     *
-     * @param skin Skin.
-     */
-    public void setSkin(@Nonnull Skin skin) {
-        this.skin = Validate.notNull(skin, "skin cannot be null!");
-        this.entity.updateSkin();
-    }
-
-    /**
-     * Equips NPC with items.
-     *
-     * @param equipmentType Equipment type. Ex: HAND_ITEM, LEGGINGS,
-     * @param itemStack     Item.
-     */
-    public void setEquipment(@Nonnull EquipmentType equipmentType, @Nonnull ItemStack itemStack) {
-        Validate.notNull(equipmentType, "equipment type cannot be null!");
-        Validate.notNull(itemStack, "itemStack type cannot be null!");
-
-        this.equipments.put(equipmentType, itemStack);
-        this.entity.updateEquipments();
     }
 
     /**
@@ -502,8 +569,52 @@ public final class HNPC {
      * Click types.
      */
     public enum Action {
+
         RIGHT_CLICK,
         LEFT_CLICK,
+    }
+
+    /**
+     * Look target types.
+     */
+    public enum LookTarget {
+
+        NEAREST,
+        INDIVIDUAL,
+        CONSTANT,
+    }
+
+    /**
+     * Animation types.
+     */
+    public enum Animation {
+
+        SWING_MAINHAND(0),
+        TAKE_DAMAGE(1),
+        SWING_OFFHAND(3),
+        CRITICAL_DAMAGE(4),
+        MAGICAL_DAMAGE(5),
+        ;
+
+        private final int id;
+
+        /**
+         * Constructor.
+         *
+         * @param id Id.
+         */
+        Animation(int id) {
+            this.id = id;
+        }
+
+        /**
+         * Gets id of animation.
+         *
+         * @return Id.
+         */
+        public int getId() {
+            return this.id;
+        }
     }
 
     /**
@@ -523,13 +634,15 @@ public final class HNPC {
         private final String value;
 
         /**
-         * Constructor with slot.
+         * Constructor with slot and
+         * value for its name.
          *
-         * @param slot Slot number.
+         * @param slot  Slot number.
+         * @param value Value.
          */
-        EquipmentType(int slot, String value) {
+        EquipmentType(int slot, @Nonnull String value) {
             this.slot = slot;
-            this.value = value;
+            this.value = Validate.notNull(value);
         }
 
         /**
@@ -546,6 +659,7 @@ public final class HNPC {
          *
          * @return value.
          */
+        @Nonnull
         public String getValue() {
             return this.value;
         }
