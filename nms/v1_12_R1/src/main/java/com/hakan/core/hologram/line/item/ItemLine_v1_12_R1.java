@@ -69,7 +69,7 @@ public final class ItemLine_v1_12_R1 implements ItemLine {
     public void setItem(@Nonnull ItemStack item) {
         this.item = Validate.notNull(item, "item cannot be null!");
         this.nmsItem.setItemStack(CraftItemStack.asNMSCopy(this.item));
-        HCore.sendPacket(this.hologram.getRenderer().getShownViewersAsPlayer(),
+        HCore.sendPacket(this.hologram.getRenderer().getShownPlayers(),
                 new PacketPlayOutEntityMetadata(this.nmsItem.getId(), this.nmsItem.getDataWatcher(), true));
     }
 
@@ -111,7 +111,7 @@ public final class ItemLine_v1_12_R1 implements ItemLine {
         if (!this.world.equals(this.armorStand.getWorld())) this.armorStand.spawnIn(this.world);
         this.armorStand.setLocation(location.getX(), location.getY() - 0.48, location.getZ(), location.getYaw(), location.getPitch());
 
-        HCore.sendPacket(this.hologram.getRenderer().getShownViewersAsPlayer(),
+        HCore.sendPacket(this.hologram.getRenderer().getShownPlayers(),
                 new PacketPlayOutEntityTeleport(this.armorStand));
     }
 

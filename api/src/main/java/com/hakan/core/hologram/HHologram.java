@@ -56,7 +56,7 @@ public final class HHologram {
         this.renderer = new HRenderer(location, 30, playerList,
                 players -> this.lines.forEach(line -> line.show(players)),
                 players -> this.lines.forEach(line -> line.hide(players)),
-                renderer -> this.lines.forEach(line -> line.hide(renderer.getShownViewersAsPlayer())));
+                renderer -> this.lines.forEach(line -> line.hide(renderer.getShownPlayers())));
 
         this.renderer.showEveryone(false);
         this.renderer.render();
@@ -79,7 +79,7 @@ public final class HHologram {
         this.renderer = new HRenderer(location, 30,
                 players -> this.lines.forEach(line -> line.show(players)),
                 players -> this.lines.forEach(line -> line.hide(players)),
-                renderer -> this.lines.forEach(line -> line.hide(renderer.getShownViewersAsPlayer())));
+                renderer -> this.lines.forEach(line -> line.hide(renderer.getShownPlayers())));
 
         this.renderer.showEveryone(true);
         this.renderer.render();
@@ -460,7 +460,7 @@ public final class HHologram {
     @Nonnull
     public HHologram removeLine(int index) {
         HologramLine line = this.lines.remove(index);
-        line.hide(this.renderer.getShownViewersAsPlayer());
+        line.hide(this.renderer.getShownPlayers());
         return this.setLocation(this.getLocation());
     }
 
@@ -552,7 +552,7 @@ public final class HHologram {
             HologramLine line = (HologramLine) value;
 
             this.lines.add(index, line);
-            line.show(this.renderer.getShownViewersAsPlayer());
+            line.show(this.renderer.getShownPlayers());
             this.setLocation(this.getLocation());
         } else if (value instanceof String || value instanceof ItemStack || value == null) {
             Location location = this.calculateLocation(this.lines.size());
@@ -619,8 +619,8 @@ public final class HHologram {
         if (value instanceof HologramLine) {
             HologramLine line = (HologramLine) value;
             HologramLine old = this.lines.set(index, line);
-            old.hide(this.renderer.getShownViewersAsPlayer());
-            line.show(this.renderer.getShownViewersAsPlayer());
+            old.hide(this.renderer.getShownPlayers());
+            line.show(this.renderer.getShownPlayers());
 
             this.setLocation(this.getLocation());
         } else if (value instanceof String) {

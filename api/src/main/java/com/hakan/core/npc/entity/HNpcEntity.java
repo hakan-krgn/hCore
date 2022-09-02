@@ -1,5 +1,6 @@
 package com.hakan.core.npc.entity;
 
+import com.hakan.core.npc.HNPC;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -9,7 +10,7 @@ import java.util.List;
 public interface HNpcEntity {
 
     /**
-     * Get the id of nms entity.
+     * Gets the id of nms entity.
      *
      * @return Entity id.
      */
@@ -22,24 +23,35 @@ public interface HNpcEntity {
      * @param to       Destination location.
      * @param runnable Runnable to run when npc reached the destination.
      */
-    void walk(double speed, @Nonnull Location to, @Nonnull Runnable runnable);
+    void walk(double speed,
+              @Nonnull Location to,
+              @Nonnull Runnable runnable);
 
     /**
-     * Sets location.
+     * Plays animation to given players.
+     *
+     * @param players   Players.
+     * @param animation Animation.
+     */
+    void playAnimation(@Nonnull List<Player> players,
+                       @Nonnull HNPC.Animation animation);
+
+    /**
+     * Updates location.
      *
      * @param players Player list.
      */
     void updateLocation(@Nonnull List<Player> players);
 
     /**
-     * Sets head rotation.
+     * Updates head rotation.
      *
      * @param players Player list.
      */
     void updateHeadRotation(@Nonnull List<Player> players);
 
     /**
-     * Sets skin on NPC.
+     * Updates skin on NPC.
      *
      * @param players Player list.
      */

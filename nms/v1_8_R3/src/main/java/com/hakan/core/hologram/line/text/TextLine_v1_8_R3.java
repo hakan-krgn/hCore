@@ -71,7 +71,7 @@ public final class TextLine_v1_8_R3 implements TextLine {
     public void setText(@Nonnull String text) {
         this.text = Validate.notNull(text, "text cannot be null!");
         this.armorStand.setCustomName(this.text);
-        HCore.sendPacket(this.hologram.getRenderer().getShownViewersAsPlayer(),
+        HCore.sendPacket(this.hologram.getRenderer().getShownPlayers(),
                 new PacketPlayOutEntityMetadata(this.armorStand.getId(), this.armorStand.getDataWatcher(), true));
     }
 
@@ -114,7 +114,7 @@ public final class TextLine_v1_8_R3 implements TextLine {
         this.click.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
         this.armorStand.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 
-        HCore.sendPacket(this.hologram.getRenderer().getShownViewersAsPlayer(),
+        HCore.sendPacket(this.hologram.getRenderer().getShownPlayers(),
                 new PacketPlayOutEntityTeleport(this.armorStand),
                 new PacketPlayOutEntityTeleport(this.click));
     }

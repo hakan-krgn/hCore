@@ -64,7 +64,7 @@ public final class HNPC {
                 boolean showEveryone) {
 
         this.renderer = new HRenderer(location, 30, viewers,
-                this::show, this::hide, renderer -> this.hide(renderer.getShownViewersAsPlayer()));
+                this::show, this::hide, renderer -> this.hide(renderer.getShownPlayers()));
 
         this.action = new HNpcAction(this);
         this.id = Validate.notNull(id, "id cannot be null!");
@@ -439,7 +439,7 @@ public final class HNPC {
      */
     public void setSkin(@Nonnull Skin skin) {
         this.skin = Validate.notNull(skin, "skin cannot be null!");
-        this.entity.updateSkin(this.renderer.getShownViewersAsPlayer());
+        this.entity.updateSkin(this.renderer.getShownPlayers());
     }
 
     /**
@@ -453,7 +453,7 @@ public final class HNPC {
         Validate.notNull(itemStack, "itemStack type cannot be null!");
 
         this.equipments.put(equipmentType, itemStack);
-        this.entity.updateEquipments(this.renderer.getShownViewersAsPlayer());
+        this.entity.updateEquipments(this.renderer.getShownPlayers());
     }
 
     /**
@@ -466,7 +466,7 @@ public final class HNPC {
 
         this.hologram.setLocation(location.clone().add(0, (this.hologram.getLines().size() * this.hologram.getLineDistance() / 2 + 2), 0));
         this.renderer.setLocation(location);
-        this.entity.updateLocation(this.renderer.getShownViewersAsPlayer());
+        this.entity.updateLocation(this.renderer.getShownPlayers());
     }
 
     /**
@@ -482,7 +482,17 @@ public final class HNPC {
         location.setPitch((float) pitch);
 
         this.renderer.setLocation(location);
-        this.entity.updateHeadRotation(this.renderer.getShownViewersAsPlayer());
+        this.entity.updateHeadRotation(this.renderer.getShownPlayers());
+    }
+
+    /**
+     * Plays animation.
+     *
+     * @param animation Animation.
+     */
+    public void playAnimation(@Nonnull Animation animation) {
+        Validate.notNull(animation, "animation cannot be null!");
+        this.entity.playAnimation(this.renderer.getShownPlayers(), animation);
     }
 
     /**
@@ -558,7 +568,7 @@ public final class HNPC {
         this.renderer.delete();
         this.dead = true;
         this.walking = false;
-        this.hide(this.renderer.getShownViewersAsPlayer());
+        this.hide(this.renderer.getShownPlayers());
 
         return this;
     }
@@ -590,6 +600,7 @@ public final class HNPC {
 
         SWING_MAINHAND(0),
         TAKE_DAMAGE(1),
+        LEAVE_BED(2),
         SWING_OFFHAND(3),
         CRITICAL_DAMAGE(4),
         MAGICAL_DAMAGE(5),
