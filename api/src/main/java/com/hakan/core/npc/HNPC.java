@@ -506,8 +506,7 @@ public final class HNPC {
         Validate.isTrue(location.getWorld() == null, "location world cannot be null!");
         Validate.isTrue(!location.getWorld().equals(this.getWorld()), "location and npc worlds must be equal!");
 
-        Location npcLocation = this.getLocation().add(0, 1.62, 0);
-        double[] angles = HNpcUtils.calculateVector(npcLocation, location);
+        double[] angles = HNpcUtils.calculateVector(this.getLocation().add(0, 1.62, 0), location);
         this.setHeadRotation(angles[0], angles[1]);
     }
 
