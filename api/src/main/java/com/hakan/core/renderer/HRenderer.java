@@ -179,7 +179,7 @@ public final class HRenderer {
      * @return Shown viewers as player list.
      */
     @Nonnull
-    public List<Player> getShownViewersAsPlayer() {
+    public List<Player> getShownPlayers() {
         List<Player> players = new ArrayList<>();
         this.shownViewers.forEach(uid -> {
             Player player = Bukkit.getPlayer(uid);

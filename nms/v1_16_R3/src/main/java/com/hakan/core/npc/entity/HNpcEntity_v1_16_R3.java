@@ -14,6 +14,7 @@ import net.minecraft.server.v1_16_R3.DataWatcherRegistry;
 import net.minecraft.server.v1_16_R3.DedicatedServer;
 import net.minecraft.server.v1_16_R3.EntityPlayer;
 import net.minecraft.server.v1_16_R3.EnumItemSlot;
+import net.minecraft.server.v1_16_R3.PacketPlayOutAnimation;
 import net.minecraft.server.v1_16_R3.PacketPlayOutEntity;
 import net.minecraft.server.v1_16_R3.PacketPlayOutEntityDestroy;
 import net.minecraft.server.v1_16_R3.PacketPlayOutEntityEquipment;
@@ -109,6 +110,15 @@ public final class HNpcEntity_v1_16_R3 implements HNpcEntity {
                     this.hnpc.setLocation(to);
                     runnable.run();
                 });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void playAnimation(@Nonnull List<Player> players, @Nonnull HNPC.Animation animation) {
+        Validate.notNull(players, "players cannot be null");
+        HCore.sendPacket(players, new PacketPlayOutAnimation(this.nmsPlayer, animation.getId()));
     }
 
     /**

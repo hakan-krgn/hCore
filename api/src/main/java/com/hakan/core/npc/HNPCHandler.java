@@ -48,7 +48,7 @@ public final class HNPCHandler {
                         Player nearestPlayer = HNpcUtils.getNearestPlayer(hnpc);
                         if (nearestPlayer != null) hnpc.lookAt(nearestPlayer);
                     } else if (hnpc.getLookTarget().equals(HNPC.LookTarget.INDIVIDUAL)) {
-                        hnpc.getRenderer().getShownViewersAsPlayer().forEach(player -> {
+                        hnpc.getRenderer().getShownPlayers().forEach(player -> {
                             Location targetLocation = player.getEyeLocation();
                             Location npcLocation = hnpc.getLocation().add(0, 1.62, 0);
                             Location teleportLocation = HNpcUtils.calculateVectorAsLocation(npcLocation, targetLocation);

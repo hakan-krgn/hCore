@@ -42,7 +42,7 @@ public final class HNpcUtils {
         Player nearestPlayer = null;
 
         double distance = Double.MAX_VALUE;
-        for (Player player : hnpc.getRenderer().getShownViewersAsPlayer()) {
+        for (Player player : hnpc.getRenderer().getShownPlayers()) {
             double currentDistance = player.getLocation().distance(hnpc.getLocation());
             if (currentDistance < distance) {
                 distance = currentDistance;

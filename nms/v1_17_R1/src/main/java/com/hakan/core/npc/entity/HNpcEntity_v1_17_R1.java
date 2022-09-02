@@ -8,6 +8,7 @@ import com.hakan.core.utils.Validate;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.network.protocol.game.PacketPlayOutAnimation;
 import net.minecraft.network.protocol.game.PacketPlayOutEntity;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityDestroy;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityEquipment;
@@ -108,6 +109,15 @@ public final class HNpcEntity_v1_17_R1 implements HNpcEntity {
                     this.hnpc.setLocation(to);
                     runnable.run();
                 });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void playAnimation(@Nonnull List<Player> players, @Nonnull HNPC.Animation animation) {
+        Validate.notNull(players, "players cannot be null");
+        HCore.sendPacket(players, new PacketPlayOutAnimation(this.nmsPlayer, animation.getId()));
     }
 
     /**

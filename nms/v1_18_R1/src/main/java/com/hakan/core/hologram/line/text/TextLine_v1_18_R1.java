@@ -72,7 +72,7 @@ public final class TextLine_v1_18_R1 implements TextLine {
     public void setText(@Nonnull String text) {
         this.text = Validate.notNull(text, "text cannot be null!");
         this.armorStand.a(CraftChatMessage.fromStringOrNull(this.text));
-        HCore.sendPacket(this.hologram.getRenderer().getShownViewersAsPlayer(),
+        HCore.sendPacket(this.hologram.getRenderer().getShownPlayers(),
                 new PacketPlayOutEntityMetadata(this.armorStand.ae(), this.armorStand.ai(), true));
     }
 
@@ -115,7 +115,7 @@ public final class TextLine_v1_18_R1 implements TextLine {
         this.click.a(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
         this.armorStand.a(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 
-        HCore.sendPacket(this.hologram.getRenderer().getShownViewersAsPlayer(),
+        HCore.sendPacket(this.hologram.getRenderer().getShownPlayers(),
                 new PacketPlayOutEntityTeleport(this.armorStand),
                 new PacketPlayOutEntityTeleport(this.click));
     }
