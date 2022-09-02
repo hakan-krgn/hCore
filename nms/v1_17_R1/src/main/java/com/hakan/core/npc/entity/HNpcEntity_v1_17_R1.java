@@ -3,7 +3,6 @@ package com.hakan.core.npc.entity;
 import com.hakan.core.HCore;
 import com.hakan.core.npc.HNPC;
 import com.hakan.core.npc.pathfinder.PathfinderEntity_v1_17_R1;
-import com.hakan.core.renderer.HRenderer;
 import com.hakan.core.skin.Skin;
 import com.hakan.core.utils.Validate;
 import com.mojang.authlib.GameProfile;
@@ -75,16 +74,14 @@ public final class HNpcEntity_v1_17_R1 implements HNpcEntity {
 
 
     private final HNPC hnpc;
-    private final HRenderer renderer;
-    private final ScoreboardTeam scoreboard;
     private final EntityPlayer nmsPlayer;
+    private final ScoreboardTeam scoreboard;
 
     /**
      * {@inheritDoc}
      */
     public HNpcEntity_v1_17_R1(@Nonnull HNPC hnpc) {
         this.hnpc = Validate.notNull(hnpc, "hnpc cannot be null!");
-        this.renderer = this.hnpc.getRenderer();
         this.nmsPlayer = createEntityPlayer(hnpc);
         this.scoreboard = new ScoreboardTeam(new Scoreboard(), hnpc.getID());
         this.scoreboard.setNameTagVisibility(ScoreboardTeamBase.EnumNameTagVisibility.b);
@@ -117,25 +114,30 @@ public final class HNpcEntity_v1_17_R1 implements HNpcEntity {
      * {@inheritDoc}
      */
     @Override
-    public void updateLocation() {
-        Location location = this.hnpc.getLocation();
-        this.nmsPlayer.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
-
-        float yaw = Math.round(location.getYaw() % 360f * (256f / 360f));
-        float pitch = Math.round(location.getPitch() % 360f * (256f / 360f));
-        HCore.sendPacket(this.renderer.getShownViewersAsPlayer(),
-                new PacketPlayOutEntityHeadRotation(this.nmsPlayer, (byte) (location.getYaw() * (256f / 360f))),
-                new PacketPlayOutEntity.PacketPlayOutEntityLook(this.getID(), (byte) yaw, (byte) pitch, false),
-                new PacketPlayOutEntityTeleport(this.nmsPlayer));
+    public void updateLocation(@Nonnull List<Player> players) {
+        this.updateHeadRotation(players);
+        HCore.sendPacket(players, new PacketPlayOutEntityTeleport(this.nmsPlayer));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void updateSkin() {
-        List<Player> players = this.renderer.getShownViewersAsPlayer();
+    public void updateHeadRotation(@Nonnull List<Player> players) {
+        Location location = this.hnpc.getLocation();
+        this.nmsPlayer.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 
+        float yaw = Math.round(location.getYaw() % 360f * (256f / 360f));
+        float pitch = Math.round(location.getPitch() % 360f * (256f / 360f));
+        HCore.sendPacket(players, new PacketPlayOutEntityHeadRotation(this.nmsPlayer, (byte) (location.getYaw() * (256f / 360f))),
+                new PacketPlayOutEntity.PacketPlayOutEntityLook(this.getID(), (byte) yaw, (byte) pitch, false));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateSkin(@Nonnull List<Player> players) {
         this.hide(players);
 
         GameProfile gameProfile = this.nmsPlayer.getProfile();
@@ -149,13 +151,13 @@ public final class HNpcEntity_v1_17_R1 implements HNpcEntity {
      * {@inheritDoc}
      */
     @Override
-    public void updateEquipments() {
+    public void updateEquipments(@Nonnull List<Player> players) {
         if (this.hnpc.getEquipments().size() == 0)
             return;
 
         List<Pair<EnumItemSlot, ItemStack>> equipmentList = new ArrayList<>();
         this.hnpc.getEquipments().forEach((key, value) -> equipmentList.add(new Pair<>(EnumItemSlot.valueOf(key.name()), CraftItemStack.asNMSCopy(value))));
-        HCore.sendPacket(this.renderer.getShownViewersAsPlayer(), new PacketPlayOutEntityEquipment(this.getID(), equipmentList));
+        HCore.sendPacket(players, new PacketPlayOutEntityEquipment(this.getID(), equipmentList));
     }
 
     /**
@@ -179,8 +181,8 @@ public final class HNpcEntity_v1_17_R1 implements HNpcEntity {
                 .run(() -> HCore.sendPacket(players, new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.e, this.nmsPlayer)));
 
         HCore.syncScheduler().after(2)
-                .run(this::updateLocation);
-        this.updateEquipments();
+                .run(() -> this.updateLocation(players));
+        this.updateEquipments(players);
     }
 
     /**

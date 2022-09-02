@@ -3,14 +3,18 @@ package com.hakan.core.npc;
 import com.hakan.core.HCore;
 import com.hakan.core.npc.builder.HNpcBuilder;
 import com.hakan.core.npc.listener.HNpcClickListener;
+import com.hakan.core.npc.utils.HNpcUtils;
 import com.hakan.core.utils.ReflectionUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -33,7 +37,27 @@ public final class HNPCHandler {
                 .forEach(Entity::remove));
 
         HCore.asyncScheduler().every(10)
+                .freezeIf((task) -> HNPCHandler.npcList.isEmpty())
                 .run(() -> HNPCHandler.npcList.values().forEach(hnpc -> hnpc.getRenderer().render()));
+
+        HCore.asyncScheduler().every(1)
+                .freezeIf((task) -> HNPCHandler.npcList.isEmpty())
+                .freezeIf((task) -> Bukkit.getOnlinePlayers().isEmpty())
+                .run(() -> HNPCHandler.npcList.values().forEach(hnpc -> {
+                    if (hnpc.getLookTarget().equals(HNPC.LookTarget.NEAREST)) {
+                        Player nearestPlayer = HNpcUtils.getNearestPlayer(hnpc);
+                        if (nearestPlayer != null) hnpc.lookAt(nearestPlayer);
+                    } else if (hnpc.getLookTarget().equals(HNPC.LookTarget.INDIVIDUAL)) {
+                        hnpc.getRenderer().getShownViewersAsPlayer().forEach(player -> {
+                            Location targetLocation = player.getEyeLocation();
+                            Location npcLocation = hnpc.getLocation().add(0, 1.62, 0);
+                            Location teleportLocation = HNpcUtils.calculateVectorAsLocation(npcLocation, targetLocation);
+
+                            hnpc.getRenderer().setLocation(teleportLocation);
+                            hnpc.getEntity().updateHeadRotation(Collections.singletonList(player));
+                        });
+                    }
+                }));
 
         HNpcClickListener clickListener = ReflectionUtils.newInstance("com.hakan.core.npc.listener.HNpcClickListener_%s");
         HCore.registerListeners(clickListener);

@@ -31,6 +31,7 @@ public final class HNpcBuilder {
     private Boolean show;
     private Skin skin;
     private Location location;
+    private HNPC.LookTarget target;
     private Set<UUID> viewers;
     private List<String> lines;
     private Map<HNPC.EquipmentType, ItemStack> equipments;
@@ -52,6 +53,7 @@ public final class HNpcBuilder {
         this.lines = new ArrayList<>();
         this.viewers = new HashSet<>();
         this.equipments = new HashMap<>();
+        this.target = HNPC.LookTarget.CONSTANT;
         this.location = new Location(Bukkit.getWorlds().get(0), 0, 0, 0);
     }
 
@@ -172,6 +174,18 @@ public final class HNpcBuilder {
     @Nonnull
     public HNpcBuilder location(@Nonnull Location location) {
         this.location = Validate.notNull(location, "location cannot be null!");
+        return this;
+    }
+
+    /**
+     * Sets aim type of npc.
+     *
+     * @param target Aim type.
+     * @return HNpcBuilder instance.
+     */
+    @Nonnull
+    public HNpcBuilder target(@Nonnull HNPC.LookTarget target) {
+        this.target = Validate.notNull(target, "target cannot be null!");
         return this;
     }
 
@@ -298,7 +312,7 @@ public final class HNpcBuilder {
         if (this.show == null)
             this.show = (this.viewers.size() > 0);
 
-        HNPC npc = new HNPC(this.id, this.location, this.skin, this.lines, this.viewers, this.equipments, this.show);
+        HNPC npc = new HNPC(this.id, this.location, this.skin, this.target, this.lines, this.viewers, this.equipments, this.show);
         if (this.clickConsumer != null)
             npc.whenClicked(this.clickConsumer);
         if (this.spawnConsumer != null)
