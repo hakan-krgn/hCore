@@ -9,8 +9,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
+/**
+ * HologramClickListener class to listen
+ * the hologram clicks.
+ */
 public final class HologramClickListener implements Listener {
 
+    /**
+     * Called when a packet is received.
+     *
+     * @param event PacketEvent.
+     */
     @EventHandler
     public void onPacketEvent(PacketEvent event) {
         Player player = event.getPlayer();

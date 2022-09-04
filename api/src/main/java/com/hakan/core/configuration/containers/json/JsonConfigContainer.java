@@ -66,7 +66,7 @@ public class JsonConfigContainer extends ConfigContainer {
      * {@inheritDoc}
      */
     public JsonConfigContainer(@Nonnull String path,
-                               @Nonnull String resource,
+                               @Nullable String resource,
                                @Nonnull ConfigType type,
                                @Nonnull Class<? extends JavaPlugin> plugin) {
         super(path, resource, type, plugin);
