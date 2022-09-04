@@ -54,6 +54,7 @@ public final class Metrics {
         new Metrics(plugin, 14564);
     }
 
+
     private final Plugin plugin;
     private final MetricsBase metricsBase;
 

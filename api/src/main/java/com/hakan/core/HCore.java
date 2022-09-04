@@ -130,7 +130,8 @@ public final class HCore {
     }
 
     /**
-     * Gets protocol version of current server.
+     * Gets protocol version
+     * of current server.
      *
      * @return Protocol version.
      */

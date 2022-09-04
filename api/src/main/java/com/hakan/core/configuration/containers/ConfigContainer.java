@@ -73,7 +73,6 @@ public abstract class ConfigContainer {
         Validate.notNull(path, "path cannot be null!");
         Validate.notNull(type, "type cannot be null!");
         Validate.notNull(plugin, "plugin cannot be null!");
-        Validate.notNull(resource, "resource cannot be null!");
 
         switch (type) {
             case YAML:
@@ -168,7 +167,7 @@ public abstract class ConfigContainer {
      *
      * @return Config file resource.
      */
-    @Nonnull
+    @Nullable
     public final String getResource() {
         return this.resource;
     }

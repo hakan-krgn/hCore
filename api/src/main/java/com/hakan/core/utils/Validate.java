@@ -1,5 +1,8 @@
 package com.hakan.core.utils;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Validate class to validate objects.
  */
@@ -12,7 +15,8 @@ public final class Validate {
      * @return The object.
      * @throws NullPointerException If the object is null.
      */
-    public static <T> T notNull(T object) {
+    @Nonnull
+    public static <T> T notNull(@Nullable T object) {
         if (object == null)
             throw new NullPointerException();
         return object;
@@ -27,7 +31,8 @@ public final class Validate {
      * @return The object.
      * @throws NullPointerException If the object is null.
      */
-    public static <T> T notNull(T object, String message) {
+    @Nonnull
+    public static <T> T notNull(@Nullable T object, @Nonnull String message) {
         if (object == null)
             throw new NullPointerException(message);
         return object;
@@ -51,7 +56,7 @@ public final class Validate {
      * @param message   The message to throw.
      * @throws IllegalArgumentException If the object is null.
      */
-    public static void isTrue(boolean condition, String message) {
+    public static void isTrue(boolean condition, @Nonnull String message) {
         if (condition)
             throw new IllegalArgumentException(message);
     }
@@ -73,7 +78,7 @@ public final class Validate {
      * @param message   The message to throw.
      * @throws IllegalArgumentException If the object is null.
      */
-    public static void isFalse(boolean condition, String message) {
+    public static void isFalse(boolean condition, @Nonnull String message) {
         Validate.isTrue(!condition, message);
     }
 }

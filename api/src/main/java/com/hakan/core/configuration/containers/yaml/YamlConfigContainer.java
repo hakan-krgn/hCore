@@ -67,7 +67,7 @@ public class YamlConfigContainer extends ConfigContainer {
      * {@inheritDoc}
      */
     public YamlConfigContainer(@Nonnull String path,
-                               @Nonnull String resource,
+                               @Nullable String resource,
                                @Nonnull ConfigType type,
                                @Nonnull Class<? extends JavaPlugin> plugin) {
         super(path, resource, type, plugin);
@@ -86,7 +86,6 @@ public class YamlConfigContainer extends ConfigContainer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return this;
     }
 
