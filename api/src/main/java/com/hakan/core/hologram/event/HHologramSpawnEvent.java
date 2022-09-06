@@ -42,6 +42,7 @@ public final class HHologramSpawnEvent extends Event {
      * @return Handler list.
      */
     @Nonnull
+    @Override
     public HandlerList getHandlers() {
         return handlers;
     }

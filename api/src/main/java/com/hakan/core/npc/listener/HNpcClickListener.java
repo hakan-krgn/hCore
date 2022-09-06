@@ -20,9 +20,12 @@ public abstract class HNpcClickListener implements Listener {
      */
     @EventHandler
     public final void onPacketEvent(@Nonnull PacketEvent event) {
-        if (event.getPacket().getClass().getName().contains("PacketPlayInUseEntity")) {
-            this.onEntityInteractEvent(event, event.getPlayer());
-        }
+        if (!event.getType().equals(PacketEvent.Type.READ))
+            return;
+        else if (!event.getPacket().getClass().getName().contains("PacketPlayInUseEntity"))
+            return;
+
+        this.onEntityInteractEvent(event, event.getPlayer());
     }
 
 

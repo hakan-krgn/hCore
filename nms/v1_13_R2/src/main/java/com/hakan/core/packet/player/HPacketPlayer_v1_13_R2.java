@@ -1,6 +1,5 @@
 package com.hakan.core.packet.player;
 
-import com.hakan.core.HCore;
 import com.hakan.core.packet.event.PacketEvent;
 import com.hakan.core.utils.Validate;
 import io.netty.channel.ChannelDuplexHandler;
@@ -13,7 +12,6 @@ import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * {@inheritDoc}
@@ -52,27 +50,19 @@ public final class HPacketPlayer_v1_13_R2 extends HPacketPlayer {
             this.pipeline = this.connection.networkManager.channel.pipeline().addBefore("packet_handler", CHANNEL + super.player.getUniqueId(), new ChannelDuplexHandler() {
                 @Override
                 public void channelRead(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
-                    AtomicBoolean status = new AtomicBoolean(false);
-                    HCore.syncScheduler().run(() -> {
-                        PacketEvent packet_event = new PacketEvent(player, msg, PacketEvent.Type.READ);
-                        Bukkit.getPluginManager().callEvent(packet_event);
-                        status.set(packet_event.isCancelled());
-                    });
+                    PacketEvent packetEvent = new PacketEvent(player, msg, PacketEvent.Type.READ);
+                    Bukkit.getPluginManager().callEvent(packetEvent);
 
-                    if (status.get()) return;
+                    if (packetEvent.isCancelled()) return;
                     super.channelRead(channelHandlerContext, msg);
                 }
 
                 @Override
                 public void write(ChannelHandlerContext channelHandlerContext, Object o, ChannelPromise channelPromise) throws Exception {
-                    AtomicBoolean status = new AtomicBoolean(false);
-                    HCore.syncScheduler().run(() -> {
-                        PacketEvent packet_event = new PacketEvent(player, o, PacketEvent.Type.WRITE);
-                        Bukkit.getPluginManager().callEvent(packet_event);
-                        status.set(packet_event.isCancelled());
-                    });
+                    PacketEvent packetEvent = new PacketEvent(player, o, PacketEvent.Type.WRITE);
+                    Bukkit.getPluginManager().callEvent(packetEvent);
 
-                    if (status.get()) return;
+                    if (packetEvent.isCancelled()) return;
                     super.write(channelHandlerContext, o, channelPromise);
                 }
             });

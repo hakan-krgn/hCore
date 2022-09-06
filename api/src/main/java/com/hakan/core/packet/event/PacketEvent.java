@@ -25,7 +25,7 @@ public final class PacketEvent extends Event implements Cancellable {
      */
     @Nonnull
     public static HandlerList getHandlerList() {
-        return PacketEvent.handlerList;
+        return handlerList;
     }
 
 
@@ -53,8 +53,9 @@ public final class PacketEvent extends Event implements Cancellable {
      * @return Handler list.
      */
     @Nonnull
+    @Override
     public HandlerList getHandlers() {
-        return PacketEvent.handlerList;
+        return handlerList;
     }
 
     /**

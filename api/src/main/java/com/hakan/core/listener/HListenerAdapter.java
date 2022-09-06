@@ -40,7 +40,7 @@ public final class HListenerAdapter<T extends Event> implements Listener, EventE
      * @param eventClass Event class.
      */
     public HListenerAdapter(@Nonnull Class<T> eventClass) {
-        this.eventClass = Validate.notNull(eventClass, "eventClass cannot be null!");
+        this.eventClass = Validate.notNull(eventClass, "event class cannot be null!");
         this.filters = new ArrayList<>();
         this.priority = EventPriority.NORMAL;
         this.limit = -10;

@@ -27,7 +27,7 @@ public final class HHologramHandler {
      * Initializes holograms.
      */
     public static void initialize() {
-        HCore.syncScheduler().every(10)
+        HCore.asyncScheduler().every(10)
                 .run(() -> HHologramHandler.getValues().forEach(hologram -> hologram.getRenderer().render()));
         HCore.registerListeners(new HologramClickListener());
     }
