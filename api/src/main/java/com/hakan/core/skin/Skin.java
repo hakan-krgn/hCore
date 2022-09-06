@@ -103,7 +103,7 @@ public class Skin {
      * @return Texture.
      */
     @Nonnull
-    public String getTexture() {
+    public final String getTexture() {
         return this.texture;
     }
 
@@ -113,7 +113,7 @@ public class Skin {
      * @return Signature.
      */
     @Nonnull
-    public String getSignature() {
+    public final String getSignature() {
         return this.signature;
     }
 
@@ -123,7 +123,7 @@ public class Skin {
      * @return Short texture.
      */
     @Nonnull
-    public String getShortTexture() {
+    public final String getShortTexture() {
         return this.shortTexture;
     }
 }
