@@ -12,6 +12,10 @@ from [here](https://github.com/hakan-krgn/hCore/wiki).
 * https://hakan-krgn.github.io/hCore/proxy-client/
 * https://hakan-krgn.github.io/hCore/proxy-server/
 
+## GitBook
+
+* https://hcore.gitbook.io/wiki/UlrGgPjjLVL9eysYaR5X/
+
 ## Developers
 
 ### Owner:
@@ -31,6 +35,7 @@ from [here](https://github.com/hakan-krgn/hCore/wiki).
 * [@rin-17](https://github.com/rin-17)
 * [@bilektugrul](https://github.com/bilektugrul)
 * [@hamza-cskn](https://github.com/hamza-cskn)
+* [@zhogoshi](https://github.com/zhogoshi)
 
 ## Features
 
