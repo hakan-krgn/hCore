@@ -1,13 +1,13 @@
 package com.hakan.core.packet.player;
 
 import com.hakan.core.packet.event.PacketEvent;
+import com.hakan.core.packet.utils.PacketUtils;
 import com.hakan.core.utils.Validate;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 import net.minecraft.server.v1_14_R1.Packet;
 import net.minecraft.server.v1_14_R1.PlayerConnection;
-import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
@@ -51,7 +51,7 @@ public final class HPacketPlayer_v1_14_R1 extends HPacketPlayer {
                 @Override
                 public void channelRead(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
                     PacketEvent packetEvent = new PacketEvent(player, msg, PacketEvent.Type.READ);
-                    Bukkit.getPluginManager().callEvent(packetEvent);
+                    PacketUtils.callEvent(packetEvent);
 
                     if (packetEvent.isCancelled()) return;
                     super.channelRead(channelHandlerContext, msg);
@@ -60,7 +60,7 @@ public final class HPacketPlayer_v1_14_R1 extends HPacketPlayer {
                 @Override
                 public void write(ChannelHandlerContext channelHandlerContext, Object o, ChannelPromise channelPromise) throws Exception {
                     PacketEvent packetEvent = new PacketEvent(player, o, PacketEvent.Type.WRITE);
-                    Bukkit.getPluginManager().callEvent(packetEvent);
+                    PacketUtils.callEvent(packetEvent);
 
                     if (packetEvent.isCancelled()) return;
                     super.write(channelHandlerContext, o, channelPromise);
