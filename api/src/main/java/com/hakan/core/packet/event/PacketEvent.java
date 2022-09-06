@@ -129,7 +129,7 @@ public final class PacketEvent extends Event implements Cancellable {
      */
     @Nonnull
     public <T> T getValue(@Nonnull String fieldName) {
-        Validate.notNull(fieldName, "field cannot be null!");
+        Validate.notNull(fieldName, "field name cannot be null!");
         return Validate.notNull(ReflectionUtils.getField(this.packet, fieldName), "field cannot be null!");
     }
 
