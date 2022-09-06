@@ -78,6 +78,7 @@ public final class GUIHandler {
 
         //SIGN
         HCore.registerEvent(PacketEvent.class)
+                .filter(event -> event.getType().equals(PacketEvent.Type.READ))
                 .filter(event -> event.getPacket().toString().contains("PacketPlayInUpdateSign"))
                 .consume(event -> GUIHandler.findSignByPlayer(event.getPlayer())
                         .ifPresent(hSign -> hSign.listen(event.getPacket())));

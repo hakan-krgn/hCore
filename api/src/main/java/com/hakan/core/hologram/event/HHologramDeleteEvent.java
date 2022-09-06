@@ -42,6 +42,7 @@ public final class HHologramDeleteEvent extends Event {
      * @return Handler list.
      */
     @Nonnull
+    @Override
     public HandlerList getHandlers() {
         return handlers;
     }

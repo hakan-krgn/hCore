@@ -163,7 +163,7 @@ public final class HCore {
      */
     @Nonnull
     public static HScheduler asyncScheduler() {
-        return new HScheduler(HCore.INSTANCE, true);
+        return HCore.scheduler(true);
     }
 
     /**
@@ -173,7 +173,7 @@ public final class HCore {
      */
     @Nonnull
     public static HScheduler syncScheduler() {
-        return new HScheduler(HCore.INSTANCE, false);
+        return HCore.scheduler(false);
     }
 
 

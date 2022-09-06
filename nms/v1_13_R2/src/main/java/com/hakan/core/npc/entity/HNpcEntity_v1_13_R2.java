@@ -196,7 +196,7 @@ public final class HNpcEntity_v1_13_R2 implements HNpcEntity {
         HCore.asyncScheduler().after(5)
                 .run(() -> HCore.sendPacket(players, new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, this.nmsPlayer)));
 
-        HCore.syncScheduler().after(2)
+        HCore.asyncScheduler().after(2)
                 .run(() -> this.updateLocation(players));
         this.updateEquipments(players);
     }

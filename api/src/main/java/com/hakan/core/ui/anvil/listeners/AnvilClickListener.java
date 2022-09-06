@@ -15,7 +15,6 @@ import java.util.function.Consumer;
 /**
  * AnvilClickListener class.
  */
-@SuppressWarnings({"unchecked"})
 public final class AnvilClickListener implements Listener {
 
     /**

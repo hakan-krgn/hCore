@@ -47,6 +47,7 @@ public final class HHologramClickEvent extends Event {
      * @return Handler list.
      */
     @Nonnull
+    @Override
     public HandlerList getHandlers() {
         return handlers;
     }
