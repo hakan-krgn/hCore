@@ -25,7 +25,7 @@ public final class HSpam {
      * and end time of spam as millisecond.
      */
     public static long remainTime(@Nonnull String id) {
-        return HSpam.spams.get(id) - System.currentTimeMillis();
+        return spams.get(id) - System.currentTimeMillis();
     }
 
     /**
@@ -72,10 +72,10 @@ public final class HSpam {
      * @return True if spamming.
      */
     public static boolean spam(@Nonnull String id, long ticks) {
-        if (!HSpam.spams.containsKey(id)) {
-            HSpam.spams.put(id, System.currentTimeMillis() + ticks * 50);
+        if (!spams.containsKey(id)) {
+            spams.put(id, System.currentTimeMillis() + ticks * 50);
             HCore.syncScheduler().after(ticks)
-                    .run(() -> HSpam.spams.remove(id));
+                    .run(() -> spams.remove(id));
             return false;
         }
         return true;

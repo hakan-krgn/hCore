@@ -36,7 +36,7 @@ public final class HHologram {
     private final HRenderer renderer;
     private final HHologramAction action;
     private final List<HologramLine> lines;
-    private double lineDistance = 0.25;
+    private double lineDistance;
 
     /**
      * Creates new instance of this class.
@@ -45,43 +45,25 @@ public final class HHologram {
      * @param location   Hologram location.
      * @param playerList List of player who can see hologram.
      */
-    HHologram(@Nonnull String id, @Nonnull Location location, @Nonnull Set<UUID> playerList) {
+    public HHologram(@Nonnull String id,
+                     @Nonnull Location location,
+                     @Nonnull Set<UUID> playerList,
+                     boolean showEveryone,
+                     double lineDistance) {
         Validate.notNull(id, "id cannot be null!");
         Validate.notNull(location, "location cannot be null!");
         Validate.notNull(playerList, "player list cannot be null!");
 
         this.id = id;
         this.lines = new LinkedList<>();
+        this.lineDistance = lineDistance;
         this.action = new HHologramAction(this);
         this.renderer = new HRenderer(location, 30, playerList,
                 players -> this.lines.forEach(line -> line.show(players)),
                 players -> this.lines.forEach(line -> line.hide(players)),
                 renderer -> this.lines.forEach(line -> line.hide(renderer.getShownPlayers())));
 
-        this.renderer.showEveryone(false);
-        this.renderer.render();
-        this.action.onSpawn();
-    }
-
-    /**
-     * Creates new instance of this class.
-     *
-     * @param id       Hologram id that you want.
-     * @param location Hologram location.
-     */
-    HHologram(@Nonnull String id, @Nonnull Location location) {
-        Validate.notNull(id, "id cannot be null!");
-        Validate.notNull(location, "location cannot be null!");
-
-        this.id = id;
-        this.lines = new LinkedList<>();
-        this.action = new HHologramAction(this);
-        this.renderer = new HRenderer(location, 30,
-                players -> this.lines.forEach(line -> line.show(players)),
-                players -> this.lines.forEach(line -> line.hide(players)),
-                renderer -> this.lines.forEach(line -> line.hide(renderer.getShownPlayers())));
-
-        this.renderer.showEveryone(true);
+        this.renderer.showEveryone(showEveryone);
         this.renderer.render();
         this.action.onSpawn();
     }

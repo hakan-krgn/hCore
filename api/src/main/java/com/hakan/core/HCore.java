@@ -5,6 +5,7 @@ import com.hakan.core.configuration.ConfigHandler;
 import com.hakan.core.configuration.containers.ConfigContainer;
 import com.hakan.core.hologram.HHologram;
 import com.hakan.core.hologram.HHologramHandler;
+import com.hakan.core.hologram.builder.HHologramBuilder;
 import com.hakan.core.item.HItemBuilder;
 import com.hakan.core.item.nbt.HNbtManager;
 import com.hakan.core.item.skull.HSkullBuilder;
@@ -57,7 +58,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -1339,66 +1339,14 @@ public final class HCore {
     }
 
     /**
-     * Creates a hologram but if there
-     * is a hologram with id, removes it.
+     * Creates a hologram builder.
      *
-     * @param id       Hologram id.
-     * @param location Hologram location.
+     * @param id Hologram id.
      * @return Created hologram.
      */
     @Nonnull
-    public static HHologram forceCreateHologram(@Nonnull String id, @Nonnull Location location) {
-        return HHologramHandler.forceCreate(id, location);
-    }
-
-    /**
-     * Creates a hologram but if there
-     * is a hologram with id, removes it.
-     *
-     * @param id       Hologram id.
-     * @param location Hologram location.
-     * @param players  Viewers.
-     * @return Created hologram.
-     */
-    @Nonnull
-    public static HHologram forceCreateHologram(@Nonnull String id, @Nonnull Location location, @Nullable Set<UUID> players) {
-        return HHologramHandler.forceCreate(id, location, players);
-    }
-
-    /**
-     * Creates a new hologram
-     *
-     * @param id       hologram id
-     * @param location location
-     * @param players  player list
-     * @return new hologram
-     */
-    @Nonnull
-    public static HHologram createHologram(@Nonnull String id, @Nonnull Location location, @Nullable Set<UUID> players) {
-        return HHologramHandler.create(id, location, players);
-    }
-
-    /**
-     * Creates a new hologram
-     *
-     * @param id       hologram id
-     * @param location location
-     * @return new hologram
-     */
-    @Nonnull
-    public static HHologram createHologram(@Nonnull String id, @Nonnull Location location) {
-        return HHologramHandler.create(id, location);
-    }
-
-    /**
-     * Deletes hologram by id
-     *
-     * @param id id of hologram
-     * @return hologram to be deleted
-     */
-    @Nonnull
-    public static HHologram deleteHologram(@Nonnull String id) {
-        return HHologramHandler.delete(id);
+    public static HHologramBuilder hologramBuilder(@Nonnull String id) {
+        return HHologramHandler.builder(id);
     }
 
 

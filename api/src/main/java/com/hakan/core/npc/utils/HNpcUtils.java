@@ -55,6 +55,21 @@ public final class HNpcUtils {
     /**
      * Calculates the yaw angle
      * and pitch angle between
+     * two locations as location type
+     *
+     * @param from From location.
+     * @param to   To location.
+     * @return The yaw and pitch angle as location.
+     */
+    @Nonnull
+    public static Location calculateVectorAsLocation(@Nonnull Location from, @Nonnull Location to) {
+        double[] angles = HNpcUtils.calculateVector(from, to);
+        return new Location(from.getWorld(), from.getX(), from.getY(), from.getZ(), (float) angles[0], (float) angles[1]);
+    }
+
+    /**
+     * Calculates the yaw angle
+     * and pitch angle between
      * two locations.
      *
      * @param from From location.
@@ -74,29 +89,5 @@ public final class HNpcUtils {
         yawAngle = (zDiff < 0) ? yawAngle + 180 : yawAngle;
 
         return new double[]{yawAngle, pitchAngle};
-    }
-
-    /**
-     * Calculates the yaw angle
-     * and pitch angle between
-     * two locations as location type
-     *
-     * @param from From location.
-     * @param to   To location.
-     * @return The yaw and pitch angle as location.
-     */
-    public static Location calculateVectorAsLocation(@Nonnull Location from, @Nonnull Location to) {
-        Validate.notNull(from, "from cannot be null!");
-        Validate.notNull(to, "to cannot be null!");
-
-        double xDiff = to.getX() - from.getX();
-        double yDiff = to.getY() - from.getY();
-        double zDiff = to.getZ() - from.getZ();
-
-        double yawAngle = -Math.toDegrees(Math.atan(xDiff / zDiff));
-        double pitchAngle = -Math.toDegrees(Math.atan(yDiff / Math.sqrt(xDiff * xDiff + zDiff * zDiff)));
-        yawAngle = (zDiff < 0) ? yawAngle + 180 : yawAngle;
-
-        return new Location(from.getWorld(), from.getX(), from.getY(), from.getZ(), (float) yawAngle, (float) pitchAngle);
     }
 }
