@@ -65,13 +65,15 @@ public final class HNPC {
 
         this.renderer = new HRenderer(location, 30, viewers,
                 this::show, this::hide, renderer -> this.hide(renderer.getShownPlayers()));
+        this.hologram = HCore.hologramBuilder("hcore_npc_hologram:" + id)
+                .location(location).setViewers(viewers)
+                .showEveryone(showEveryone).forceBuild();
 
         this.action = new HNpcAction(this);
         this.id = Validate.notNull(id, "id cannot be null!");
         this.skin = Validate.notNull(skin, "skin cannot be null!");
         this.target = Validate.notNull(target, "target cannot be null!");
         this.equipments = Validate.notNull(equipments, "equipments cannot be null!");
-        this.hologram = HCore.createHologram("hcore_npc_hologram:" + id, location, viewers);
         this.entity = HNpcUtils.createEntity(this);
 
         this.hologram.addLines(Validate.notNull(lines, "lines cannot be null!"));

@@ -1,19 +1,16 @@
 package com.hakan.core.hologram;
 
 import com.hakan.core.HCore;
+import com.hakan.core.hologram.builder.HHologramBuilder;
 import com.hakan.core.hologram.listeners.HologramClickListener;
 import com.hakan.core.utils.Validate;
-import org.bukkit.Location;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
 
 /**
  * HHologramHandler class to handle
@@ -83,7 +80,7 @@ public final class HHologramHandler {
     }
 
     /**
-     * Finds a created hologram
+     * Finds a created hologram.
      *
      * @param id Hologram id that you want.
      * @return Hologram from id.
@@ -94,10 +91,10 @@ public final class HHologramHandler {
     }
 
     /**
-     * Gets a created hologram
+     * Gets a created hologram.
      *
-     * @param id Hologram id that you want
-     * @return Hologram from id
+     * @param id Hologram id that you want.
+     * @return Hologram from id.
      */
     @Nonnull
     public static HHologram getByID(@Nonnull String id) {
@@ -105,74 +102,13 @@ public final class HHologramHandler {
     }
 
     /**
-     * Creates a hologram but if there
-     * is a hologram with id, removes it.
+     * Creates a hologram builder.
      *
-     * @param id       Hologram id.
-     * @param location Hologram location.
-     * @return Created hologram.
-     */
-    @Nonnull
-    public static HHologram forceCreate(@Nonnull String id, @Nonnull Location location) {
-        HHologramHandler.findByID(id).ifPresent(HHologram::delete);
-        return HHologramHandler.create(id, location);
-    }
-
-    /**
-     * Creates a hologram but if there
-     * is a hologram with id, removes it.
-     *
-     * @param id       Hologram id.
-     * @param location Hologram location.
-     * @param players  Viewers.
-     * @return Created hologram.
-     */
-    @Nonnull
-    public static HHologram forceCreate(@Nonnull String id, @Nonnull Location location, @Nullable Set<UUID> players) {
-        HHologramHandler.findByID(id).ifPresent(HHologram::delete);
-        return HHologramHandler.create(id, location, players);
-    }
-
-    /**
-     * Creates a new hologram
-     *
-     * @param id       hologram id
-     * @param location location
-     * @return new hologram
-     */
-    @Nonnull
-    public static HHologram create(@Nonnull String id, @Nonnull Location location) {
-        return HHologramHandler.create(id, location, null);
-    }
-
-    /**
-     * Creates a new hologram
-     *
-     * @param id       Hologram id.
-     * @param location Location.
-     * @param players  Player list.
+     * @param id Hologram id.
      * @return New hologram.
      */
     @Nonnull
-    public static HHologram create(@Nonnull String id, @Nonnull Location location, @Nullable Set<UUID> players) {
-        Validate.notNull(id, "id cannot be null");
-        Validate.notNull(location, "location cannot be null!");
-        Validate.isTrue(HHologramHandler.has(id), "hologram with id(" + id + ") already exists!");
-
-        HHologram hHologram = (players != null) ? new HHologram(id, location, players) : new HHologram(id, location);
-        HHologramHandler.holograms.put(id, hHologram);
-        return hHologram;
-    }
-
-    /**
-     * Deletes hologram by id.
-     *
-     * @param id ID of hologram.
-     * @return Hologram to be deleted.
-     */
-    @Nonnull
-    public static HHologram delete(@Nonnull String id) {
-        HHologram oldHologram = HHologramHandler.getByID(id);
-        return oldHologram.delete();
+    public static HHologramBuilder builder(@Nonnull String id) {
+        return new HHologramBuilder(id);
     }
 }

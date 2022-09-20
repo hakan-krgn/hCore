@@ -49,7 +49,7 @@ public enum ProtocolVersion {
         for (ProtocolVersion protocolVersion : ProtocolVersion.values())
             if (version.equals(protocolVersion.getKey()))
                 return protocolVersion;
-        throw new IllegalStateException("Unknown protocol version!");
+        throw new IllegalStateException("unknown protocol version!");
     }
 
 

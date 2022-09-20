@@ -63,16 +63,6 @@ public final class HHologramClickEvent extends Event {
     }
 
     /**
-     * Gets event line.
-     *
-     * @return Event line.
-     */
-    @Nonnull
-    public HologramLine getLine() {
-        return this.line;
-    }
-
-    /**
      * Gets event hologram.
      *
      * @return Event hologram.
@@ -80,5 +70,15 @@ public final class HHologramClickEvent extends Event {
     @Nonnull
     public HHologram getHologram() {
         return this.line.getHologram();
+    }
+
+    /**
+     * Gets event line.
+     *
+     * @return Event line.
+     */
+    @Nonnull
+    public HologramLine getLine() {
+        return this.line;
     }
 }
