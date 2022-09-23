@@ -1,7 +1,6 @@
 package com.hakan.core.plugin;
 
 import com.hakan.core.utils.Validate;
-import org.yaml.snakeyaml.Yaml;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
@@ -49,35 +48,23 @@ public final class PluginProcessor extends AbstractProcessor {
 
 
             Map<String, Object> data = new LinkedHashMap<>();
-            if (!annotation.name().isEmpty())
-                data.put("name", annotation.name());
-            if (!annotation.version().isEmpty())
-                data.put("version", annotation.version());
-            if (!annotation.description().equals(""))
-                data.put("description", annotation.description());
-            if (!annotation.apiVersion().equals(""))
-                data.put("api-version", annotation.apiVersion());
-            if (!annotation.load().equals(""))
-                data.put("load", annotation.load());
-            if (!annotation.website().equals(""))
-                data.put("website", annotation.website());
-            if (annotation.authors().length != 0)
-                data.put("authors", annotation.authors());
-            if (!annotation.prefix().equals(""))
-                data.put("prefix", annotation.prefix());
-            if (annotation.depends().length != 0)
-                data.put("depend", annotation.depends());
-            if (annotation.softDepends().length != 0)
-                data.put("softdepend", annotation.softDepends());
-            if (annotation.loadBefore().length != 0)
-                data.put("loadbefore", annotation.loadBefore());
-            if (annotation.libraries().length != 0)
-                data.put("libraries", annotation.libraries());
+            if (!annotation.name().isEmpty()) data.put("name", annotation.name());
+            if (!annotation.version().isEmpty()) data.put("version", annotation.version());
+            if (!annotation.description().isEmpty()) data.put("description", annotation.description());
+            if (!annotation.apiVersion().isEmpty()) data.put("api-version", annotation.apiVersion());
+            if (!annotation.load().isEmpty()) data.put("load", annotation.load());
+            if (!annotation.website().isEmpty()) data.put("website", annotation.website());
+            if (!annotation.prefix().isEmpty()) data.put("prefix", annotation.prefix());
+            if (annotation.authors().length != 0) data.put("authors", annotation.authors());
+            if (annotation.depends().length != 0) data.put("depend", annotation.depends());
+            if (annotation.softDepends().length != 0) data.put("softdepend", annotation.softDepends());
+            if (annotation.loadBefore().length != 0) data.put("loadbefore", annotation.loadBefore());
+            if (annotation.libraries().length != 0) data.put("libraries", annotation.libraries());
 
             TypeElement typeElement = (TypeElement) element;
             data.putIfAbsent("name", typeElement.getSimpleName().toString());
-            data.putIfAbsent("main", typeElement.getQualifiedName().toString());
             data.putIfAbsent("version", System.currentTimeMillis());
+            data.putIfAbsent("main", typeElement.getQualifiedName().toString());
 
 
             try {
@@ -85,8 +72,30 @@ public final class PluginProcessor extends AbstractProcessor {
                 FileObject resource = filer.createResource(StandardLocation.CLASS_OUTPUT, "", "plugin.yml");
                 Writer writer = resource.openWriter();
 
-                Yaml yaml = new Yaml();
-                yaml.dump(data, writer);
+                writer.write("main: " + data.get("main") + "\n");
+                writer.write("name: " + data.get("name") + "\n");
+                writer.write("version: " + data.get("version") + "\n");
+
+                if (data.containsKey("description"))
+                    writer.write("description: " + data.get("description") + "\n");
+                if (data.containsKey("api-version"))
+                    writer.write("api-version: " + data.get("api-version") + "\n");
+                if (data.containsKey("load"))
+                    writer.write("load: " + data.get("load") + "\n");
+                if (data.containsKey("website"))
+                    writer.write("website: " + data.get("website") + "\n");
+                if (data.containsKey("prefix"))
+                    writer.write("prefix: " + data.get("prefix") + "\n");
+                if (data.containsKey("authors"))
+                    writer.write("authors: [" + String.join(", ", (String[]) data.get("authors")) + "]\n");
+                if (data.containsKey("depend"))
+                    writer.write("depend: [" + String.join(", ", (String[]) data.get("depend")) + "]\n");
+                if (data.containsKey("softdepend"))
+                    writer.write("softdepend: [" + String.join(", ", (String[]) data.get("softdepend")) + "]\n");
+                if (data.containsKey("loadbefore"))
+                    writer.write("loadbefore: [" + String.join(", ", (String[]) data.get("loadbefore")) + "]\n");
+                if (data.containsKey("libraries"))
+                    writer.write("libraries: [" + String.join(", ", (String[]) data.get("libraries")) + "]\n");
 
                 writer.flush();
                 writer.close();
