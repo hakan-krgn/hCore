@@ -4,7 +4,7 @@ import com.hakan.core.HCore;
 import org.bukkit.ChatColor;
 
 import javax.annotation.Nonnull;
-import java.awt.*;
+import java.awt.Color;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

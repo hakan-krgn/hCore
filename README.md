@@ -8,6 +8,7 @@ A simplified and multi-functional tool for spigot developers. There are dozens o
 completely open source code. hCore supports all versions from 1.8.x to 1.19.x.
 
 ### [GitBook](https://hcore.gitbook.io/wiki)
+
 ### [Wiki](https://github.com/hakan-krgn/hCore/wiki)
 
 ## Developers
@@ -22,6 +23,7 @@ completely open source code. hCore supports all versions from 1.8.x to 1.19.x.
 * [@hogoshi](https://github.com/zhogoshi) - GitBook
 
 #### [Click to go **wiki** page.](https://github.com/hakan-krgn/hCore/wiki)
+
 #### [Click to go **gitbook** page.](https://hcore.gitbook.io/wiki)
 
 ### Contributors:
