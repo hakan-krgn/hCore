@@ -1,6 +1,6 @@
 # hCore
 
-### [Implement HCore to your project now.](https://hcore.gitbook.io/wiki/#import)
+### [Implement hCore to your project now.](https://hcore.gitbook.io/wiki/#import)
 
 ## What is hCore
 
@@ -16,9 +16,13 @@ completely open source code. hCore supports all versions from 1.8.x to 1.19.x.
 
 * [@hakan-krgn](https://github.com/hakan-krgn) Discord: Hakan#2584
 
-### Wiki:
+### Wiki + GitBook:
 
-* [@rin-17](https://github.com/rin-17)
+* [@rin-17](https://github.com/rin-17) - Wiki
+* [@hogoshi](https://github.com/zhogoshi) - GitBook
+
+#### [Click to go **wiki** page.](https://github.com/hakan-krgn/hCore/wiki)
+#### [Click to go **gitbook** page.](https://hcore.gitbook.io/wiki)
 
 ### Contributors:
 
