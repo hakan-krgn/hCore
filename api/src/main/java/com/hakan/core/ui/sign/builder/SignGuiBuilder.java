@@ -1,12 +1,13 @@
 package com.hakan.core.ui.sign.builder;
 
 import com.hakan.core.ui.sign.SignGui;
-import com.hakan.core.ui.sign.SignType;
+import com.hakan.core.ui.sign.type.SignType;
 import com.hakan.core.utils.ReflectionUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
+import java.util.function.Consumer;
 
 /**
  * SignGuiBuilder class to build SignGui.
@@ -16,6 +17,7 @@ public final class SignGuiBuilder {
     private Player player;
     private SignType type;
     private String[] lines;
+    private Consumer<String[]> consumer;
 
     /**
      * Creates new instance of this class.
@@ -51,6 +53,18 @@ public final class SignGuiBuilder {
     }
 
     /**
+     * Runs when sign close.
+     *
+     * @param consumer Callback.
+     * @return This class.
+     */
+    @Nonnull
+    public SignGuiBuilder whenInputReceived(@Nonnull Consumer<String[]> consumer) {
+        this.consumer = Validate.notNull(consumer, "complete consumer cannot be null!");
+        return this;
+    }
+
+    /**
      * Sets lines.
      *
      * @param lines Lines.
@@ -73,7 +87,12 @@ public final class SignGuiBuilder {
      */
     @Nonnull
     public SignGui build() {
-        return ReflectionUtils.newInstance("com.hakan.core.ui.sign.wrapper.Sign_%s",
+        SignGui signGui = ReflectionUtils.newInstance("com.hakan.core.ui.sign.wrapper.SignWrapper_%s",
                 this.player, this.type, this.lines);
+
+        if (this.consumer != null)
+            signGui.whenInputReceived(this.consumer);
+
+        return signGui;
     }
 }

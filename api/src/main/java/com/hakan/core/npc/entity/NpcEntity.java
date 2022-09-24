@@ -23,9 +23,7 @@ public interface NpcEntity {
      * @param to       Destination location.
      * @param runnable Runnable to run when npc reached the destination.
      */
-    void walk(double speed,
-              @Nonnull Location to,
-              @Nonnull Runnable runnable);
+    void walk(double speed, @Nonnull Location to, @Nonnull Runnable runnable);
 
     /**
      * Plays animation to given players.
@@ -33,8 +31,7 @@ public interface NpcEntity {
      * @param players   Players.
      * @param animation Animation.
      */
-    void playAnimation(@Nonnull List<Player> players,
-                       @Nonnull Npc.Animation animation);
+    void playAnimation(@Nonnull List<Player> players, @Nonnull Npc.Animation animation);
 
     /**
      * Updates location.

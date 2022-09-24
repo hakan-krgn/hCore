@@ -3,6 +3,7 @@ package com.hakan.core.ui.sign;
 import com.hakan.core.HCore;
 import com.hakan.core.protocol.ProtocolVersion;
 import com.hakan.core.ui.Gui;
+import com.hakan.core.ui.sign.type.SignType;
 import com.hakan.core.utils.Validate;
 import org.bukkit.entity.Player;
 

@@ -55,6 +55,7 @@ public final class NpcBuilder {
         this.equipments = new HashMap<>();
         this.target = Npc.LookTarget.CONSTANT;
         this.location = new Location(Bukkit.getWorlds().get(0), 0, 0, 0);
+        this.clickDelay = 0;
     }
 
     /**

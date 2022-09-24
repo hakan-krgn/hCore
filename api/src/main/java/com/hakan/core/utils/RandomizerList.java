@@ -40,6 +40,7 @@ public final class RandomizerList<T> extends ArrayList<T> {
      * @param elementCount Count that you want.
      * @return Random elements as list.
      */
+    @Nonnull
     public List<T> getRandomElements(int elementCount) {
         List<T> copyList = new ArrayList<>(this);
         List<T> list = new ArrayList<>();
@@ -58,6 +59,7 @@ public final class RandomizerList<T> extends ArrayList<T> {
      *
      * @return Random element.
      */
+    @Nonnull
     public T getRandomElement() {
         return this.getRandomElements(1).get(0);
     }

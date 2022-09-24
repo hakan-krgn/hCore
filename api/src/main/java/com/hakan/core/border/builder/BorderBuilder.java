@@ -1,8 +1,8 @@
 package com.hakan.core.border.builder;
 
+import com.hakan.core.border.Border;
 import com.hakan.core.border.BorderHandler;
 import com.hakan.core.border.color.BorderColor;
-import com.hakan.core.border.wrapper.Border;
 import com.hakan.core.utils.ReflectionUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.Location;
@@ -170,7 +170,7 @@ public final class BorderBuilder {
      */
     @Nonnull
     public Border build() {
-        Border border = ReflectionUtils.newInstance("com.hakan.core.border.wrapper.Border_%s",
+        Border border = ReflectionUtils.newInstance("com.hakan.core.border.wrapper.BorderWrapper_%s",
                 new Class[]{Location.class, double.class, double.class, double.class, int.class, int.class, BorderColor.class},
                 new Object[]{this.center, this.size, this.damageAmount, this.damageBuffer, this.warningDistance, this.warningTime, this.color});
         this.viewers.forEach(border::show);

@@ -157,15 +157,17 @@ public final class AnvilGuiBuilder {
      */
     @Nonnull
     public AnvilGui build() {
-        AnvilGui anvil = ReflectionUtils.newInstance("com.hakan.core.ui.anvil.wrapper.Anvil_%s",
+        AnvilGui anvil = ReflectionUtils.newInstance("com.hakan.core.ui.anvil.wrapper.AnvilWrapper_%s",
                 this.player, this.title, this.text, this.leftItem, this.rightItem);
+        anvil.setClosable(this.closable);
 
         if (this.openRunnable != null)
             anvil.whenOpened(this.openRunnable);
-        if (this.inputConsumer != null)
-            anvil.whenInputReceived(this.inputConsumer);
         if (this.closeRunnable != null)
             anvil.whenClosed(this.closeRunnable);
-        return anvil.setClosable(this.closable);
+        if (this.inputConsumer != null)
+            anvil.whenInputReceived(this.inputConsumer);
+
+        return anvil;
     }
 }

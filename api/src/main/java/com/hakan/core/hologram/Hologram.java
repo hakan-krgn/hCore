@@ -651,6 +651,7 @@ public final class Hologram {
     }
 
 
+
     /**
      * Calculates hologram line location by index.
      *
