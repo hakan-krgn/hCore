@@ -1,8 +1,8 @@
 package com.hakan.core.hologram.listeners;
 
 import com.hakan.core.HCore;
-import com.hakan.core.hologram.HHologram;
-import com.hakan.core.hologram.HHologramHandler;
+import com.hakan.core.hologram.Hologram;
+import com.hakan.core.hologram.HologramHandler;
 import com.hakan.core.packet.event.PacketEvent;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -31,7 +31,7 @@ public final class HologramClickListener implements Listener {
             return;
 
         HCore.asyncScheduler().run(() -> {
-            for (HHologram hologram : HHologramHandler.getValues()) {
+            for (Hologram hologram : HologramHandler.getValues()) {
                 if (hologram.hasLineByEntityID(event.getValue("a"))) {
                     Location playerLocation = player.getEyeLocation();
                     Location hologramLocation = hologram.getLocation();

@@ -1,7 +1,7 @@
 package com.hakan.core.hologram.line.item;
 
 import com.hakan.core.HCore;
-import com.hakan.core.hologram.HHologram;
+import com.hakan.core.hologram.Hologram;
 import com.hakan.core.utils.Validate;
 import net.minecraft.server.v1_13_R1.EntityArmorStand;
 import net.minecraft.server.v1_13_R1.EntityItem;
@@ -30,15 +30,15 @@ public final class ItemLine_v1_13_R1 implements ItemLine {
     private World world;
     private ItemStack item;
     private final EntityItem nmsItem;
-    private final HHologram hologram;
+    private final Hologram hologram;
     private final EntityArmorStand armorStand;
 
     /**
      * {@inheritDoc}
      */
-    private ItemLine_v1_13_R1(@Nonnull HHologram hHologram, @Nonnull Location location) {
+    private ItemLine_v1_13_R1(@Nonnull Hologram hologram, @Nonnull Location location) {
         this.world = ((CraftWorld) Validate.notNull(location.getWorld())).getHandle();
-        this.hologram = Validate.notNull(hHologram, "hologram class cannot be null!");
+        this.hologram = Validate.notNull(hologram, "hologram class cannot be null!");
         this.armorStand = new EntityArmorStand(this.world, location.getX(), location.getY(), location.getZ());
         this.nmsItem = new EntityItem(this.world, location.getX(), location.getY(), location.getZ(), CraftItemStack.asNMSCopy(new ItemStack(Material.STONE)));
         this.armorStand.passengers.add(this.nmsItem);
@@ -77,7 +77,7 @@ public final class ItemLine_v1_13_R1 implements ItemLine {
      */
     @Nonnull
     @Override
-    public HHologram getHologram() {
+    public Hologram getHologram() {
         return this.hologram;
     }
 

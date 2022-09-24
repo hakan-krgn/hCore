@@ -1,6 +1,7 @@
 package com.hakan.core.command.executors.placeholder;
 
-import com.hakan.core.command.executors.base.BaseCommandData;
+import com.hakan.core.command.executors.basecommand.BaseCommandData;
+import com.hakan.core.utils.ReflectionUtils;
 import com.hakan.core.utils.Validate;
 
 import javax.annotation.Nonnull;
@@ -84,11 +85,6 @@ public final class PlaceholderData {
      * @return Values.
      */
     public List<String> getValues() {
-        try {
-            Object adapter = this.baseCommandData.getAdapter();
-            return (List<String>) this.method.invoke(adapter);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return ReflectionUtils.invoke(this.baseCommandData.getAdapter(), this.method);
     }
 }
