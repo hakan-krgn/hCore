@@ -9,6 +9,9 @@ import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 
+/**
+ * {@inheritDoc}
+ */
 public final class NbtManager_v1_8_R3 implements NbtManager {
 
     /**

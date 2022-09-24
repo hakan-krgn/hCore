@@ -854,7 +854,7 @@ public final class HCore {
      * Finds a created scoreboard
      *
      * @param player scoreboard id that you want
-     * @return scoreboard from id
+     * @return Scoreboard from player.
      */
     @Nonnull
     public static Optional<Scoreboard> findScoreboardByPlayer(@Nonnull Player player) {
@@ -865,7 +865,7 @@ public final class HCore {
      * Gets a created scoreboard
      *
      * @param player Player.
-     * @return scoreboard from id
+     * @return Scoreboard from player.
      */
     @Nonnull
     public static Scoreboard getScoreboardByPlayer(@Nonnull Player player) {
@@ -876,7 +876,7 @@ public final class HCore {
      * Finds a created scoreboard
      *
      * @param uid UID of player.
-     * @return scoreboard from id
+     * @return Scoreboard from uid.
      */
     @Nonnull
     public static Optional<Scoreboard> findScoreboardByUID(@Nonnull UUID uid) {
@@ -887,7 +887,7 @@ public final class HCore {
      * Gets a created scoreboard
      *
      * @param uid UID of player.
-     * @return scoreboard from id
+     * @return Scoreboard from uid.
      */
     @Nonnull
     public static Scoreboard getScoreboardByUID(@Nonnull UUID uid) {
@@ -898,6 +898,7 @@ public final class HCore {
      * Creates new instance of Scoreboard as force.
      *
      * @param player Player.
+     * @param title  Title.
      * @return new instance of Scoreboard.
      */
     @Nonnull
@@ -908,7 +909,8 @@ public final class HCore {
     /**
      * Creates new instance of Scoreboard as force.
      *
-     * @param uid UID of player.
+     * @param uid   UID of player.
+     * @param title Title.
      * @return new instance of Scoreboard.
      */
     @Nonnull
@@ -919,8 +921,9 @@ public final class HCore {
     /**
      * Creates new Instance of this class.
      *
-     * @param player player
-     * @return new instance of Scoreboard
+     * @param player Player.
+     * @param title  Title.
+     * @return new instance of Scoreboard.
      */
     @Nonnull
     public static Scoreboard createScoreboard(@Nonnull Player player, @Nonnull String title) {
@@ -930,8 +933,9 @@ public final class HCore {
     /**
      * Creates new Instance of this class.
      *
-     * @param uid UID of player
-     * @return new instance of Scoreboard
+     * @param uid   UID of player.
+     * @param title Title.
+     * @return new instance of Scoreboard.
      */
     @Nonnull
     public static Scoreboard createScoreboard(@Nonnull UUID uid, @Nonnull String title) {

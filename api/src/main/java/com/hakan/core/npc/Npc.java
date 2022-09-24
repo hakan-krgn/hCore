@@ -49,6 +49,7 @@ public final class Npc {
      * @param id           NPC id.
      * @param location     NPC location.
      * @param skin         NPC skin.
+     * @param target       NPC look target.
      * @param lines        NPC hologram lines.
      * @param viewers      NPC viewers.
      * @param equipments   NPC equipments.
@@ -374,6 +375,7 @@ public final class Npc {
      * This consumer will run when NPC is spawned.
      *
      * @param spawnConsumer Consumer.
+     * @return Instance of this class.
      */
     @Nonnull
     public Npc whenSpawned(@Nonnull Consumer<Npc> spawnConsumer) {
@@ -385,6 +387,7 @@ public final class Npc {
      * This consumer will run when NPC is deleted.
      *
      * @param deleteConsumer Consumer.
+     * @return Instance of this class.
      */
     @Nonnull
     public Npc whenDeleted(@Nonnull Consumer<Npc> deleteConsumer) {
@@ -396,6 +399,7 @@ public final class Npc {
      * This consumer will run when NPC is clicked by player.
      *
      * @param clickConsumer Consumer.
+     * @return Instance of this class.
      */
     @Nonnull
     public Npc whenClicked(@Nonnull BiConsumer<Player, Action> clickConsumer) {
