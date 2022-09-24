@@ -33,6 +33,7 @@ public abstract class AnvilGui implements Gui {
     /**
      * Constructor.
      *
+     * @param player    Player.
      * @param title     Title.
      * @param text      Text.
      * @param leftItem  Left item.
@@ -69,6 +70,8 @@ public abstract class AnvilGui implements Gui {
 
     /**
      * Gets title of Gui.
+     *
+     * @return Title of Gui.
      */
     @Nonnull
     public final String getTitle() {
@@ -77,6 +80,8 @@ public abstract class AnvilGui implements Gui {
 
     /**
      * Gets text of input area.
+     *
+     * @return Text of input area.
      */
     @Nonnull
     public final String getText() {
@@ -85,6 +90,8 @@ public abstract class AnvilGui implements Gui {
 
     /**
      * Gets item stack at left side.
+     *
+     * @return Item stack at left side.
      */
     @Nonnull
     public final ItemStack getLeftItem() {
@@ -93,6 +100,8 @@ public abstract class AnvilGui implements Gui {
 
     /**
      * Gets item stack at right side.
+     *
+     * @return Item stack at right side.
      */
     @Nullable
     public final ItemStack getRightItem() {
@@ -101,6 +110,8 @@ public abstract class AnvilGui implements Gui {
 
     /**
      * Gets if Gui is closable.
+     *
+     * @return If Gui is closable.
      */
     public final boolean isClosable() {
         return this.closable;
@@ -108,6 +119,9 @@ public abstract class AnvilGui implements Gui {
 
     /**
      * Sets if Gui is closable.
+     *
+     * @param closable If Gui is closable.
+     * @return This class.
      */
     @Nonnull
     public final AnvilGui setClosable(boolean closable) {
@@ -119,6 +133,7 @@ public abstract class AnvilGui implements Gui {
      * Runs when Gui is opened.
      *
      * @param openRunnable Callback.
+     * @return This class.
      */
     @Nonnull
     public final AnvilGui whenOpened(@Nonnull Runnable openRunnable) {
@@ -131,6 +146,7 @@ public abstract class AnvilGui implements Gui {
      * (When the player clicks the second slot on the Anvil Gui.)
      *
      * @param inputConsumer Callback.
+     * @return This class.
      */
     @Nonnull
     public final AnvilGui whenInputReceived(@Nonnull Consumer<String> inputConsumer) {
@@ -142,6 +158,7 @@ public abstract class AnvilGui implements Gui {
      * Runs when Gui is closed.
      *
      * @param closeRunnable Callback.
+     * @return This class.
      */
     @Nonnull
     public final AnvilGui whenClosed(@Nonnull Runnable closeRunnable) {
@@ -182,6 +199,8 @@ public abstract class AnvilGui implements Gui {
 
     /**
      * Gets as bukkit inventory.
+     *
+     * @return Bukkit inventory.
      */
     @Nonnull
     public abstract Inventory toInventory();

@@ -41,9 +41,11 @@ public final class Hologram {
     /**
      * Creates new instance of this class.
      *
-     * @param id         Hologram id that you want.
-     * @param location   Hologram location.
-     * @param playerList List of player who can see hologram.
+     * @param id           Hologram id that you want.
+     * @param location     Hologram location.
+     * @param lineDistance Line distance.
+     * @param showEveryone Show everyone.
+     * @param playerList   List of player who can see hologram.
      */
     public Hologram(@Nonnull String id,
                     @Nonnull Location location,
