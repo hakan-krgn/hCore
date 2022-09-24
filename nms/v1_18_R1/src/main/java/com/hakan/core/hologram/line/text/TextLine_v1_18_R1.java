@@ -1,7 +1,7 @@
 package com.hakan.core.hologram.line.text;
 
 import com.hakan.core.HCore;
-import com.hakan.core.hologram.HHologram;
+import com.hakan.core.hologram.Hologram;
 import com.hakan.core.utils.Validate;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityDestroy;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityMetadata;
@@ -23,16 +23,16 @@ import java.util.List;
 public final class TextLine_v1_18_R1 implements TextLine {
 
     private String text;
-    private final HHologram hologram;
+    private final Hologram hologram;
     private final EntityArmorStand click;
     private final EntityArmorStand armorStand;
 
     /**
      * {@inheritDoc}
      */
-    private TextLine_v1_18_R1(@Nonnull HHologram hHologram, @Nonnull Location location) {
+    private TextLine_v1_18_R1(@Nonnull Hologram hologram, @Nonnull Location location) {
         World world = ((CraftWorld) Validate.notNull(location.getWorld())).getHandle();
-        this.hologram = Validate.notNull(hHologram, "hologram class cannot be null!");
+        this.hologram = Validate.notNull(hologram, "hologram class cannot be null!");
         this.click = new EntityArmorStand(world, location.getX(), location.getY(), location.getZ());
         this.armorStand = new EntityArmorStand(world, location.getX(), location.getY(), location.getZ());
 
@@ -81,7 +81,7 @@ public final class TextLine_v1_18_R1 implements TextLine {
      */
     @Nonnull
     @Override
-    public HHologram getHologram() {
+    public Hologram getHologram() {
         return this.hologram;
     }
 

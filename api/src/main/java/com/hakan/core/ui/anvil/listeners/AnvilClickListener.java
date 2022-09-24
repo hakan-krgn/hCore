@@ -1,6 +1,6 @@
 package com.hakan.core.ui.anvil.listeners;
 
-import com.hakan.core.ui.GUIHandler;
+import com.hakan.core.ui.GuiHandler;
 import com.hakan.core.utils.ReflectionUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,7 +32,7 @@ public final class AnvilClickListener implements Listener {
         }
 
         Player player = (Player) event.getWhoClicked();
-        GUIHandler.findAnvilByPlayer(player).ifPresent(hAnvil -> {
+        GuiHandler.findAnvilByPlayer(player).ifPresent(gui -> {
             ItemStack clickedItem = event.getCurrentItem();
 
             if (event.getClickedInventory() == null) {
@@ -42,14 +42,14 @@ public final class AnvilClickListener implements Listener {
                 return;
             }
 
-            if (event.getClickedInventory().equals(hAnvil.toInventory())) {
+            if (event.getClickedInventory().equals(gui.toInventory())) {
                 event.setCancelled(true);
 
                 if (event.getSlot() == 2) {
                     String input = clickedItem.getItemMeta().getDisplayName();
-                    hAnvil.close();
+                    gui.close();
 
-                    Consumer<String> inputConsumer = ReflectionUtils.getField(hAnvil, "inputConsumer");
+                    Consumer<String> inputConsumer = ReflectionUtils.getField(gui, "inputConsumer");
                     if (inputConsumer != null)
                         inputConsumer.accept(input);
                 }

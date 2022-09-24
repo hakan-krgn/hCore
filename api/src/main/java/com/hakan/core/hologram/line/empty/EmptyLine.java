@@ -1,6 +1,6 @@
 package com.hakan.core.hologram.line.empty;
 
-import com.hakan.core.hologram.HHologram;
+import com.hakan.core.hologram.Hologram;
 import com.hakan.core.hologram.line.HologramLine;
 import com.hakan.core.utils.Validate;
 import org.bukkit.Location;
@@ -21,13 +21,13 @@ public final class EmptyLine implements HologramLine {
      * @return Item line.
      */
     @Nonnull
-    public static EmptyLine create(@Nonnull HHologram hologram) {
+    public static EmptyLine create(@Nonnull Hologram hologram) {
         Validate.notNull(hologram, "hologram cannot be null!");
         return new EmptyLine(hologram, hologram.getLocation());
     }
 
 
-    private final HHologram hologram;
+    private final Hologram hologram;
     private Location location;
 
     /**
@@ -36,7 +36,7 @@ public final class EmptyLine implements HologramLine {
      * @param hologram Hologram of line.
      * @param location Location of line.
      */
-    private EmptyLine(@Nonnull HHologram hologram, @Nonnull Location location) {
+    private EmptyLine(@Nonnull Hologram hologram, @Nonnull Location location) {
         this.hologram = hologram;
         this.location = location;
     }
@@ -48,7 +48,7 @@ public final class EmptyLine implements HologramLine {
      */
     @Nonnull
     @Override
-    public HHologram getHologram() {
+    public Hologram getHologram() {
         return this.hologram;
     }
 

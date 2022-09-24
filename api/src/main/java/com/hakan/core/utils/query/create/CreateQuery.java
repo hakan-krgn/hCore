@@ -50,12 +50,12 @@ public final class CreateQuery extends QueryBuilder {
         StringBuilder query = new StringBuilder("CREATE TABLE IF NOT EXISTS ");
         query.append(this.table);
         query.append("(");
-        for (Map.Entry<String, String> entry : this.values.entrySet()) {
-            query.append(entry.getKey());
+        this.values.forEach((key, value) -> {
+            query.append(key);
             query.append(" ");
-            query.append(entry.getValue());
+            query.append(value);
             query.append(", ");
-        }
+        });
         query.delete(query.length() - 2, query.length());
         query.append(")");
         return query.toString();

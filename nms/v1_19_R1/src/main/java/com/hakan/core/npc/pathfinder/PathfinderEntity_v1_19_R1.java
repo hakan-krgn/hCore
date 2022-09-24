@@ -1,7 +1,7 @@
 package com.hakan.core.npc.pathfinder;
 
 import com.hakan.core.HCore;
-import com.hakan.core.listener.HListenerAdapter;
+import com.hakan.core.listener.ListenerAdapter;
 import com.hakan.core.utils.Validate;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityDestroy;
 import net.minecraft.world.entity.EntityTypes;
@@ -86,7 +86,7 @@ public final class PathfinderEntity_v1_19_R1 {
         this.pig.c(2.518f); //set health to 2.518f
         world.getWorld().addEntity(this.pig, CreatureSpawnEvent.SpawnReason.CUSTOM);
 
-        HListenerAdapter<PlayerJoinEvent> listenerAdapter = HCore.registerEvent(PlayerJoinEvent.class)
+        ListenerAdapter<PlayerJoinEvent> listenerAdapter = HCore.registerEvent(PlayerJoinEvent.class)
                 .consumeAsync(event -> HCore.sendPacket(event.getPlayer(), new PacketPlayOutEntityDestroy(this.pig.ae())));
         HCore.sendPacket(new ArrayList<>(Bukkit.getOnlinePlayers()),
                 new PacketPlayOutEntityDestroy(this.pig.ae()));
