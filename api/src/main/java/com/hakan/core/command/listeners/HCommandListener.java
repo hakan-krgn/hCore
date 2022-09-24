@@ -1,9 +1,10 @@
 package com.hakan.core.command.listeners;
 
-import com.hakan.core.command.executors.base.BaseCommandData;
+import com.hakan.core.command.executors.basecommand.BaseCommandData;
 import com.hakan.core.command.executors.placeholder.PlaceholderData;
-import com.hakan.core.command.executors.sub.SubCommandData;
+import com.hakan.core.command.executors.subcommand.SubCommandData;
 import com.hakan.core.command.utils.CommandUtils;
+import com.hakan.core.utils.ReflectionUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
@@ -54,19 +55,14 @@ public final class HCommandListener extends BukkitCommand {
             }
         }
 
-        try {
-            Object adapter = this.baseCommandData.getAdapter();
-            Method method = subCommandData.getMethod();
-            Class<?> parameterType = method.getParameterTypes()[0];
 
-            if (parameterType.equals(Player.class) && sender instanceof Player) {
-                Player player = (Player) sender;
-                method.invoke(adapter, player, args);
-            } else if (parameterType.equals(CommandSender.class)) {
-                method.invoke(adapter, sender, args);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        Method method = subCommandData.getMethod();
+        Class<?>[] parameters = method.getParameterTypes();
+
+        if (parameters[0].equals(Player.class) && sender instanceof Player) {
+            ReflectionUtils.invoke(this.baseCommandData.getAdapter(), method, sender, args);
+        } else if (parameters[0].equals(CommandSender.class)) {
+            ReflectionUtils.invoke(this.baseCommandData.getAdapter(), method, sender, args);
         }
 
         return false;

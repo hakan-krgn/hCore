@@ -1,6 +1,6 @@
 package com.hakan.core.hologram.line;
 
-import com.hakan.core.hologram.HHologram;
+import com.hakan.core.hologram.Hologram;
 import com.hakan.core.hologram.line.empty.EmptyLine;
 import com.hakan.core.hologram.line.item.ItemLine;
 import com.hakan.core.hologram.line.text.TextLine;
@@ -27,7 +27,7 @@ public interface HologramLine {
      * @return Line.
      */
     @Nonnull
-    static HologramLine create(@Nonnull HHologram hologram, @Nullable Object object) {
+    static HologramLine create(@Nonnull Hologram hologram, @Nullable Object object) {
         if (object == null) {
             return EmptyLine.create(hologram);
         } else if (object instanceof ItemStack) {
@@ -49,7 +49,7 @@ public interface HologramLine {
      * @return Line.
      */
     @Nonnull
-    static HologramLine create(@Nonnull HHologram hologram, @Nonnull Location location, @Nullable Object object) {
+    static HologramLine create(@Nonnull Hologram hologram, @Nonnull Location location, @Nullable Object object) {
         Validate.notNull(hologram, "hologram cannot be null!");
         Validate.notNull(location, "location cannot be null!");
 
@@ -66,7 +66,7 @@ public interface HologramLine {
      * @return Parent class of line.
      */
     @Nonnull
-    HHologram getHologram();
+    Hologram getHologram();
 
     /**
      * Gets entity id of line.
