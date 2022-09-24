@@ -1,6 +1,7 @@
 package com.hakan.core.utils;
 
 import com.hakan.core.HCore;
+import com.hakan.core.protocol.ProtocolVersion;
 import org.bukkit.ChatColor;
 
 import javax.annotation.Nonnull;

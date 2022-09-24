@@ -1,7 +1,7 @@
 package com.hakan.core.ui.inventory.listeners;
 
-import com.hakan.core.ui.GUIHandler;
-import com.hakan.core.ui.inventory.HInventory;
+import com.hakan.core.ui.GuiHandler;
+import com.hakan.core.ui.inventory.InventoryGui;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,8 +12,8 @@ import javax.annotation.Nonnull;
 import java.util.Optional;
 
 /**
- * This class handles hInventory click
- * events.
+ * This class handles inventory
+ * click events.
  */
 public final class InventoryClickListener implements Listener {
 
@@ -32,22 +32,22 @@ public final class InventoryClickListener implements Listener {
         }
 
         Player player = (Player) event.getWhoClicked();
-        GUIHandler.findInventoryByPlayer(player).ifPresent(hInventory -> {
+        GuiHandler.findInventoryByPlayer(player).ifPresent(gui -> {
             if (event.getClickedInventory() == null) {
                 event.setCancelled(true);
                 return;
             }
 
-            if (event.getClickedInventory().equals(hInventory.toInventory())) {
-                if (hInventory.hasOption(HInventory.Option.CANCEL_TOP_CLICK))
+            if (event.getClickedInventory().equals(gui.toInventory())) {
+                if (gui.hasOption(InventoryGui.Option.CANCEL_TOP_CLICK))
                     event.setCancelled(true);
             } else {
-                if (hInventory.hasOption(HInventory.Option.CANCEL_DOWN_CLICK))
+                if (gui.hasOption(InventoryGui.Option.CANCEL_DOWN_CLICK))
                     event.setCancelled(true);
             }
 
-            if (event.getClickedInventory().equals(hInventory.toInventory())) {
-                hInventory.findItem(event.getSlot()).flatMap(clickableItem -> Optional.ofNullable(clickableItem.getClick()))
+            if (event.getClickedInventory().equals(gui.toInventory())) {
+                gui.findItem(event.getSlot()).flatMap(clickableItem -> Optional.ofNullable(clickableItem.getClick()))
                         .ifPresent(clickEventConsumer -> {
                             event.setCancelled(true);
                             clickEventConsumer.accept(event);

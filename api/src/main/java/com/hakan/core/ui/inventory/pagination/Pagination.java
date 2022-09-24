@@ -1,6 +1,6 @@
 package com.hakan.core.ui.inventory.pagination;
 
-import com.hakan.core.ui.inventory.HInventory;
+import com.hakan.core.ui.inventory.InventoryGui;
 import com.hakan.core.ui.inventory.item.ClickableItem;
 import com.hakan.core.utils.Validate;
 import org.bukkit.Material;
@@ -19,7 +19,7 @@ import java.util.stream.IntStream;
  */
 public final class Pagination {
 
-    private final HInventory inventory;
+    private final InventoryGui inventory;
 
     private int currentPage;
     private List<Integer> slots;
@@ -31,7 +31,7 @@ public final class Pagination {
      *
      * @param inventory Parent inventory.
      */
-    public Pagination(@Nonnull HInventory inventory) {
+    public Pagination(@Nonnull InventoryGui inventory) {
         this.inventory = Validate.notNull(inventory, "inventory cannot be null!");
         this.currentPage = 0;
         this.slots = new ArrayList<>();
@@ -46,7 +46,7 @@ public final class Pagination {
      * @return Parent inventory.
      */
     @Nonnull
-    public HInventory getInventory() {
+    public InventoryGui getInventory() {
         return this.inventory;
     }
 

@@ -1,6 +1,6 @@
 package com.hakan.core.hologram.line.item;
 
-import com.hakan.core.hologram.HHologram;
+import com.hakan.core.hologram.Hologram;
 import com.hakan.core.hologram.line.HologramLine;
 import com.hakan.core.utils.ReflectionUtils;
 import com.hakan.core.utils.Validate;
@@ -22,13 +22,12 @@ public interface ItemLine extends HologramLine {
      * @return Item line.
      */
     @Nonnull
-    static ItemLine create(@Nonnull HHologram hologram, @Nonnull ItemStack itemStack) {
+    static ItemLine create(@Nonnull Hologram hologram, @Nonnull ItemStack itemStack) {
         Validate.notNull(hologram, "hologram cannot be null!");
         Validate.notNull(itemStack, "item stack cannot be null!");
 
         ItemLine line = ReflectionUtils.newInstance("com.hakan.core.hologram.line.item.ItemLine_%s",
-                new Class[]{HHologram.class, Location.class},
-                new Object[]{hologram, hologram.getLocation()});
+                hologram, hologram.getLocation());
         line.setItem(itemStack);
 
         return line;
@@ -43,7 +42,7 @@ public interface ItemLine extends HologramLine {
      * @return Item line.
      */
     @Nonnull
-    static ItemLine create(@Nonnull HHologram hologram, @Nonnull Location location, @Nonnull ItemStack itemStack) {
+    static ItemLine create(@Nonnull Hologram hologram, @Nonnull Location location, @Nonnull ItemStack itemStack) {
         Validate.notNull(hologram, "hologram cannot be null!");
         Validate.notNull(location, "location cannot be null!");
         Validate.notNull(itemStack, "item stack cannot be null!");

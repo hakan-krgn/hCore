@@ -1,6 +1,6 @@
 package com.hakan.core.hologram.line.text;
 
-import com.hakan.core.hologram.HHologram;
+import com.hakan.core.hologram.Hologram;
 import com.hakan.core.hologram.line.HologramLine;
 import com.hakan.core.utils.ReflectionUtils;
 import com.hakan.core.utils.Validate;
@@ -21,13 +21,12 @@ public interface TextLine extends HologramLine {
      * @return Text line.
      */
     @Nonnull
-    static TextLine create(@Nonnull HHologram hologram, @Nonnull String text) {
+    static TextLine create(@Nonnull Hologram hologram, @Nonnull String text) {
         Validate.notNull(hologram, "hologram cannot be null!");
         Validate.notNull(text, "text cannot be null!");
 
         TextLine line = ReflectionUtils.newInstance("com.hakan.core.hologram.line.text.TextLine_%s",
-                new Class[]{HHologram.class, Location.class},
-                new Object[]{hologram, hologram.getLocation()});
+                hologram, hologram.getLocation());
         line.setText(text);
 
         return line;
@@ -42,7 +41,7 @@ public interface TextLine extends HologramLine {
      * @return Text line.
      */
     @Nonnull
-    static TextLine create(@Nonnull HHologram hologram, @Nonnull Location location, @Nonnull String text) {
+    static TextLine create(@Nonnull Hologram hologram, @Nonnull Location location, @Nonnull String text) {
         Validate.notNull(hologram, "hologram cannot be null!");
         Validate.notNull(location, "location cannot be null!");
         Validate.notNull(text, "text cannot be null!");

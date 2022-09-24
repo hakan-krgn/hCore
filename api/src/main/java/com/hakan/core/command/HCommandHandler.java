@@ -1,11 +1,11 @@
 package com.hakan.core.command;
 
-import com.hakan.core.command.executors.base.BaseCommand;
-import com.hakan.core.command.executors.base.BaseCommandData;
+import com.hakan.core.command.executors.basecommand.BaseCommand;
+import com.hakan.core.command.executors.basecommand.BaseCommandData;
 import com.hakan.core.command.executors.placeholder.Placeholder;
 import com.hakan.core.command.executors.placeholder.PlaceholderData;
-import com.hakan.core.command.executors.sub.SubCommand;
-import com.hakan.core.command.executors.sub.SubCommandData;
+import com.hakan.core.command.executors.subcommand.SubCommand;
+import com.hakan.core.command.executors.subcommand.SubCommandData;
 import com.hakan.core.utils.Validate;
 
 import javax.annotation.Nonnull;
