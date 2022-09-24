@@ -2,18 +2,20 @@ package com.hakan.core.border;
 
 import com.hakan.core.HCore;
 import com.hakan.core.border.builder.BorderBuilder;
-import com.hakan.core.border.listeners.BorderActionListeners;
 import com.hakan.core.border.wrapper.Border;
 import com.hakan.core.utils.Validate;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -31,7 +33,15 @@ public final class BorderHandler {
         HCore.registerEvent(PlayerQuitEvent.class).priority(EventPriority.LOWEST)
                 .filter(event -> BorderHandler.findByPlayer(event.getPlayer()).isPresent())
                 .consume(event -> BorderHandler.getByPlayer(event.getPlayer()).hide(event.getPlayer()));
-        HCore.registerListeners(new BorderActionListeners());
+
+        HCore.registerEvent(PlayerChangedWorldEvent.class)
+                .consume(event -> BorderHandler.findByPlayer(event.getPlayer()).ifPresent(border -> border.hide(event.getPlayer())));
+
+        HCore.registerEvent(PlayerTeleportEvent.class)
+                .filter(event -> event.getFrom().getWorld() != null)
+                .filter(event -> event.getTo() != null && event.getTo().getWorld() != null)
+                .filter(event -> Objects.equals(event.getTo().getWorld(), event.getFrom().getWorld()))
+                .consume(event -> BorderHandler.findByPlayer(event.getPlayer()).ifPresent(border -> border.show(event.getPlayer())));
     }
 
 
