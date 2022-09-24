@@ -1,8 +1,8 @@
 package com.hakan.core;
 
+import com.hakan.core.border.Border;
 import com.hakan.core.border.BorderHandler;
 import com.hakan.core.border.builder.BorderBuilder;
-import com.hakan.core.border.wrapper.Border;
 import com.hakan.core.command.HCommandHandler;
 import com.hakan.core.configuration.ConfigHandler;
 import com.hakan.core.configuration.containers.ConfigContainer;

@@ -2,12 +2,15 @@ package com.hakan.core.ui.inventory.builder;
 
 import com.hakan.core.ui.inventory.InventoryGui;
 import com.hakan.core.utils.Validate;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * InventoryGuiBuilder class to
@@ -15,11 +18,13 @@ import java.util.Set;
  */
 public final class InventoryGuiBuilder {
 
+    private final String id;
     private int size;
-    private String id;
     private String title;
     private InventoryType type;
     private Set<InventoryGui.Option> options;
+    private Consumer<Player> openConsumer;
+    private Consumer<Player> closeConsumer;
 
     /**
      * Creates new instance of this class.
@@ -28,19 +33,14 @@ public final class InventoryGuiBuilder {
      */
     public InventoryGuiBuilder(@Nonnull String id) {
         this.id = Validate.notNull(id, "id cannot be null!");
-        this.options(InventoryGui.Option.values());
-    }
-
-    /**
-     * Sets id.
-     *
-     * @param id ID.
-     * @return This class.
-     */
-    @Nonnull
-    public InventoryGuiBuilder id(@Nonnull String id) {
-        this.id = Validate.notNull(id, "id cannot be null!");
-        return this;
+        this.size = 6;
+        this.title = "Inventory";
+        this.type = InventoryType.CHEST;
+        this.options = EnumSet.allOf(InventoryGui.Option.class);
+        this.openConsumer = (player) -> {
+        };
+        this.closeConsumer = (player) -> {
+        };
     }
 
     /**
@@ -128,12 +128,41 @@ public final class InventoryGuiBuilder {
     }
 
     /**
-     * Builds InventoryGui class.
+     * Called when player opens the inventory.
+     *
+     * @param consumer Consumer.
+     */
+    @Nonnull
+    public InventoryGuiBuilder whenOpened(@Nonnull Consumer<Player> consumer) {
+        this.openConsumer = Validate.notNull(consumer, "consumer cannot be null!");
+        return this;
+    }
+
+    /**
+     * Called when player closes the inventory.
+     *
+     * @param consumer Consumer.
+     */
+    @Nonnull
+    public InventoryGuiBuilder whenClosed(@Nonnull Consumer<Player> consumer) {
+        this.closeConsumer = Validate.notNull(consumer, "consumer cannot be null!");
+        return this;
+    }
+
+    /**
+     * Builds InventoryGui.
      *
      * @return InventoryGui.
      */
     @Nonnull
     public InventoryGui build() {
-        return new InventoryGui(this.id, this.title, this.size, this.type, this.options);
+        InventoryGui inventoryGui = new InventoryGui(this.id, this.title, this.size, this.type, this.options);
+
+        if (this.openConsumer != null)
+            inventoryGui.whenOpened(this.openConsumer);
+        if (this.closeConsumer != null)
+            inventoryGui.whenClosed(this.closeConsumer);
+
+        return inventoryGui;
     }
 }

@@ -58,7 +58,6 @@ public class InventoryGui implements Gui {
         this.inventory = (type == InventoryType.CHEST) ?
                 Bukkit.createInventory(null, size * 9, title) :
                 Bukkit.createInventory(null, type, title);
-
         this.fillAir(false);
     }
 
@@ -442,7 +441,7 @@ public class InventoryGui implements Gui {
 
     /**
      * Close inventory of player also if UI is not locked
-     * removes from i nventory map and triggers onClose method.
+     * removes from inventory map and triggers onClose method.
      *
      * @param player Player.
      */

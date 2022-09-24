@@ -2,6 +2,7 @@ package com.hakan.core.hologram.builder;
 
 import com.hakan.core.hologram.Hologram;
 import com.hakan.core.hologram.HologramHandler;
+import com.hakan.core.hologram.line.HologramLine;
 import com.hakan.core.utils.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -11,6 +12,8 @@ import javax.annotation.Nonnull;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * HologramBuilder class to manage
@@ -23,6 +26,9 @@ public final class HologramBuilder {
     private Set<UUID> viewers;
     private boolean showEveryone;
     private double lineDistance;
+    private Consumer<Hologram> spawnConsumer;
+    private Consumer<Hologram> deleteConsumer;
+    private BiConsumer<Player, HologramLine> clickConsumer;
 
     /**
      * Creates a new HologramBuilder.
@@ -137,6 +143,45 @@ public final class HologramBuilder {
     }
 
     /**
+     * When hologram is spawned
+     * this consumer will be called.
+     *
+     * @param consumer Consumer.
+     * @return Instance of this class.
+     */
+    @Nonnull
+    public HologramBuilder whenSpawned(@Nonnull Consumer<Hologram> consumer) {
+        this.spawnConsumer = Validate.notNull(consumer, "consumer cannot be null!");
+        return this;
+    }
+
+    /**
+     * When hologram is deleted
+     * this consumer will be called.
+     *
+     * @param consumer Consumer.
+     * @return Instance of this class.
+     */
+    @Nonnull
+    public HologramBuilder whenDeleted(@Nonnull Consumer<Hologram> consumer) {
+        this.deleteConsumer = Validate.notNull(consumer, "consumer cannot be null!");
+        return this;
+    }
+
+    /**
+     * When the player click on hologram,
+     * this consumer will be called.
+     *
+     * @param consumer Consumer.
+     * @return Instance of this class.
+     */
+    @Nonnull
+    public HologramBuilder whenClicked(@Nonnull BiConsumer<Player, HologramLine> consumer) {
+        this.clickConsumer = Validate.notNull(consumer, "consumer cannot be null!");
+        return this;
+    }
+
+    /**
      * Creates a new Hologram as force.
      *
      * @return Hologram.
@@ -154,7 +199,17 @@ public final class HologramBuilder {
      */
     @Nonnull
     public Hologram build() {
+        Validate.isTrue(HologramHandler.has(this.id), "hologram with id " + this.id + " already exists!");
+
+
         Hologram hologram = new Hologram(this.id, this.location, this.viewers, this.showEveryone, this.lineDistance);
+        if (this.spawnConsumer != null)
+            hologram.whenSpawned(this.spawnConsumer);
+        if (this.deleteConsumer != null)
+            hologram.whenDeleted(this.deleteConsumer);
+        if (this.clickConsumer != null)
+            hologram.whenClicked(this.clickConsumer);
+
         HologramHandler.getContent().put(this.id, hologram);
         return hologram;
     }

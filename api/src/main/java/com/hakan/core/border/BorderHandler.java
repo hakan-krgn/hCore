@@ -2,7 +2,6 @@ package com.hakan.core.border;
 
 import com.hakan.core.HCore;
 import com.hakan.core.border.builder.BorderBuilder;
-import com.hakan.core.border.wrapper.Border;
 import com.hakan.core.utils.Validate;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
