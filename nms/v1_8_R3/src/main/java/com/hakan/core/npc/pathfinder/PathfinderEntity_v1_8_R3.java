@@ -20,7 +20,7 @@ import java.util.function.Consumer;
  * PathfinderEntity is a
  * custom entity class.
  */
-public final class PathfinderEntity_v1_8_R3 extends EntityPig {
+public final class PathfinderEntity_v1_8_R3 {
 
     /**
      * Creates a new PathfinderEntity
@@ -46,6 +46,9 @@ public final class PathfinderEntity_v1_8_R3 extends EntityPig {
     }
 
 
+
+    private final EntityPig entityPig;
+
     /**
      * Creates a new PathfinderEntity instance.
      *
@@ -62,31 +65,31 @@ public final class PathfinderEntity_v1_8_R3 extends EntityPig {
                                      double speed,
                                      @Nonnull Consumer<EntityPig> walkRunnable,
                                      @Nonnull Consumer<EntityPig> endRunnable) {
-        super(Validate.notNull(world));
+        this.entityPig = new EntityPig(Validate.notNull(world));
 
         Validate.notNull(start, "start location cannot be null!");
         Validate.notNull(end, "end location cannot be null!");
         Validate.notNull(walkRunnable, "walk runnable cannot be null!");
         Validate.notNull(endRunnable, "end runnable cannot be null!");
 
-        super.getDataWatcher().watch(4, (byte) 1); //set silent to true
-        super.e(new NBTTagCompound()); //set nbt tag
-        super.setInvisible(true);
-        super.setCustomNameVisible(false);
-        super.setPosition(start.getX(), start.getY(), start.getZ());
-        super.setHealth(2.518f);
-        world.addEntity(this);
+        this.entityPig.getDataWatcher().watch(4, (byte) 1); //set silent to true
+        this.entityPig.e(new NBTTagCompound()); //set nbt tag
+        this.entityPig.setInvisible(true);
+        this.entityPig.setCustomNameVisible(false);
+        this.entityPig.setPosition(start.getX(), start.getY(), start.getZ());
+        this.entityPig.setHealth(2.518f);
+        world.addEntity(this.entityPig);
 
         ListenerAdapter<PlayerJoinEvent> listenerAdapter = HCore.registerEvent(PlayerJoinEvent.class)
-                .consumeAsync(event -> HCore.sendPacket(event.getPlayer(), new PacketPlayOutEntityDestroy(super.getId())));
+                .consumeAsync(event -> HCore.sendPacket(event.getPlayer(), new PacketPlayOutEntityDestroy(this.entityPig.getId())));
         HCore.sendPacket(new ArrayList<>(Bukkit.getOnlinePlayers()),
-                new PacketPlayOutEntityDestroy(super.getId()));
+                new PacketPlayOutEntityDestroy(this.entityPig.getId()));
 
-        super.goalSelector.a(2, new PathfinderGoal_v1_8_R3(this, end, speed,
-                () -> walkRunnable.accept(this),
+        this.entityPig.goalSelector.a(2, new PathfinderGoal_v1_8_R3(this.entityPig, end, speed,
+                () -> walkRunnable.accept(this.entityPig),
                 () -> {
                     listenerAdapter.unregister();
-                    endRunnable.accept(this);
+                    endRunnable.accept(this.entityPig);
                 }));
     }
 }

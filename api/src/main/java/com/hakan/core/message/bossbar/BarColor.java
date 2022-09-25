@@ -11,5 +11,10 @@ public enum BarColor {
     GREEN,
     YELLOW,
     PURPLE,
-    WHITE
+    WHITE,
+    ;
+
+    public org.bukkit.boss.BarColor toBukkit() {
+        return org.bukkit.boss.BarColor.valueOf(this.name());
+    }
 }

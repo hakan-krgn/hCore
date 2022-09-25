@@ -5,7 +5,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
-import java.util.Set;
 
 /**
  * Border class to
@@ -14,41 +13,12 @@ import java.util.Set;
 public interface Border {
 
     /**
-     * Shows world border to player.
-     *
-     * @param player Player.
-     */
-    void show(@Nonnull Player player);
-
-    /**
-     * Shows world border to everyone.
-     */
-    void showAll();
-
-    /**
-     * Hides world border from player.
-     *
-     * @param player Player.
-     */
-    void hide(@Nonnull Player player);
-
-    /**
-     * Hides world border from everyone.
-     */
-    void hideAll();
-
-    /**
-     * Deletes world border.
-     */
-    void delete();
-
-    /**
      * Gets shown viewers.
      *
      * @return Shown viewers.
      */
     @Nonnull
-    Set<Player> getShownViewers();
+    Player getViewer();
 
     /**
      * Gets center location.
@@ -79,29 +49,6 @@ public interface Border {
      * @param borderColor Color.
      */
     void setColor(@Nonnull BorderColor borderColor);
-
-    /**
-     * Gets size.
-     *
-     * @return Size.
-     */
-    double getSize();
-
-    /**
-     * Sets size.
-     *
-     * @param size Size.
-     */
-    void setSize(double size);
-
-    /**
-     * Changes size of worldborder
-     * in given time.
-     *
-     * @param size Size.
-     * @param time Time.
-     */
-    void setSize(double size, long time);
 
     /**
      * Gets damage amount.
@@ -160,8 +107,39 @@ public interface Border {
     void setWarningTime(int warningTime);
 
     /**
+     * Gets size.
+     *
+     * @return Size.
+     */
+    double getSize();
+
+    /**
+     * Sets size.
+     *
+     * @param size Size.
+     */
+    void setSize(double size);
+
+    /**
+     * Changes size of worldborder
+     * in given time.
+     *
+     * @param size New size of border.
+     * @param time Time as millisecond.
+     */
+    void setSize(double size, long time);
+
+    /**
      * Updates all values of world border
-     * and shows the viewers.
+     * and shows the latest version of
+     * world border to viewer.
      */
     void update();
+
+    /**
+     * Deletes world border from viewer
+     * and remove it from border map in
+     * BorderHandler class.
+     */
+    void delete();
 }

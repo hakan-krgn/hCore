@@ -5,14 +5,14 @@ import com.hakan.core.scoreboard.Scoreboard;
 import com.hakan.core.scoreboard.ScoreboardHandler;
 import com.hakan.core.utils.ColorUtil;
 import com.hakan.core.utils.ReflectionUtils;
-import net.minecraft.server.v1_15_R1.EnumChatFormat;
-import net.minecraft.server.v1_15_R1.IScoreboardCriteria;
-import net.minecraft.server.v1_15_R1.PacketPlayOutScoreboardDisplayObjective;
-import net.minecraft.server.v1_15_R1.PacketPlayOutScoreboardObjective;
-import net.minecraft.server.v1_15_R1.PacketPlayOutScoreboardScore;
-import net.minecraft.server.v1_15_R1.PacketPlayOutScoreboardTeam;
-import net.minecraft.server.v1_15_R1.ScoreboardServer;
-import org.bukkit.craftbukkit.v1_15_R1.util.CraftChatMessage;
+import net.minecraft.server.v1_13_R1.EnumChatFormat;
+import net.minecraft.server.v1_13_R1.IScoreboardCriteria;
+import net.minecraft.server.v1_13_R1.PacketPlayOutScoreboardDisplayObjective;
+import net.minecraft.server.v1_13_R1.PacketPlayOutScoreboardObjective;
+import net.minecraft.server.v1_13_R1.PacketPlayOutScoreboardScore;
+import net.minecraft.server.v1_13_R1.PacketPlayOutScoreboardTeam;
+import net.minecraft.server.v1_13_R1.ScoreboardServer;
+import org.bukkit.craftbukkit.v1_13_R1.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
@@ -22,14 +22,14 @@ import java.util.Collections;
 /**
  * {@inheritDoc}
  */
-public final class Scoreboard_v1_15_R1 extends Scoreboard {
+public final class ScoreboardWrapper_v1_13_R1 extends Scoreboard {
 
     private int mode = 0;
 
     /**
      * {@inheritDoc}
      */
-    public Scoreboard_v1_15_R1(@Nonnull Player player, @Nonnull String title) {
+    public ScoreboardWrapper_v1_13_R1(@Nonnull Player player, @Nonnull String title) {
         super(player, title);
     }
 

@@ -1207,6 +1207,26 @@ public final class HCore {
      */
 
     /**
+     * Gets content as safe.
+     *
+     * @return Content.
+     */
+    @Nonnull
+    public static Map<Player, Border> getBorderContentSafe() {
+        return BorderHandler.getContentSafe();
+    }
+
+    /**
+     * Gets content.
+     *
+     * @return Content.
+     */
+    @Nonnull
+    public static Map<Player, Border> getBorderContent() {
+        return BorderHandler.getContent();
+    }
+
+    /**
      * Gets values as safe.
      *
      * @return Values.

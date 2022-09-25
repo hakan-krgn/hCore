@@ -4,90 +4,54 @@ import com.hakan.core.HCore;
 import com.hakan.core.border.Border;
 import com.hakan.core.border.BorderHandler;
 import com.hakan.core.border.color.BorderColor;
+import com.hakan.core.scheduler.Scheduler;
 import com.hakan.core.utils.Validate;
 import net.minecraft.server.v1_16_R2.PacketPlayOutWorldBorder;
 import net.minecraft.server.v1_16_R2.WorldBorder;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_16_R2.CraftWorld;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * {@inheritDoc}
  */
-public final class BorderWrapper_v1_16_R2 extends WorldBorder implements Border {
+public final class BorderWrapper_v1_16_R2 implements Border {
+
+    private final Player viewer;
+    private final WorldBorder border;
+    private final Scheduler scheduler;
 
     private BorderColor color;
-    private final Set<Player> shownViewers;
+    private boolean transition;
 
     /**
      * {@inheritDoc}
      */
-    public BorderWrapper_v1_16_R2(@Nonnull Location location, double size, double damageAmount, double damageBuffer, int warningDistance, int warningTime, @Nonnull BorderColor color) {
+    private BorderWrapper_v1_16_R2(@Nonnull Player viewer,
+                                   @Nonnull Location location,
+                                   @Nonnull BorderColor color,
+                                   double size,
+                                   double damageAmount,
+                                   double damageBuffer,
+                                   int warningDistance,
+                                   int warningTime) {
+        this.scheduler = HCore.syncScheduler();
+        this.viewer = Validate.notNull(viewer, "viewer cannot be null!");
         this.color = Validate.notNull(color, "border color cannot be null!");
-        this.shownViewers = new HashSet<>();
-        super.world = ((CraftWorld) location.getWorld()).getHandle();
-        super.setCenter(location.getX(), location.getZ());
-        super.setSize(size);
-        super.setDamageAmount(damageAmount);
-        super.setDamageBuffer(damageBuffer);
-        super.setWarningDistance(warningDistance);
-        super.setWarningTime(warningTime);
+
+        this.border = new WorldBorder();
+        this.border.setSize(size);
+        this.border.setWarningTime(warningTime);
+        this.border.setDamageAmount(damageAmount);
+        this.border.setDamageBuffer(damageBuffer);
+        this.border.setWarningDistance(warningDistance);
+        this.border.setCenter(location.getX(), location.getZ());
+        this.border.world = ((CraftWorld) location.getWorld()).getHandle();
+
         this.update();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void show(@Nonnull Player player) {
-        this.shownViewers.add(Validate.notNull(player, "player cannot be null!"));
-        HCore.sendPacket(player, new PacketPlayOutWorldBorder(this, PacketPlayOutWorldBorder.EnumWorldBorderAction.INITIALIZE));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void showAll() {
-        Bukkit.getOnlinePlayers().forEach(this::show);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void hide(@Nonnull Player player) {
-        this.shownViewers.remove(Validate.notNull(player, "player cannot be null!"));
-        super.setCenter(0, 0);
-        super.setSize(59999998);
-        HCore.sendPacket(player, new PacketPlayOutWorldBorder(this, PacketPlayOutWorldBorder.EnumWorldBorderAction.INITIALIZE));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void hideAll() {
-        this.shownViewers.forEach(player -> {
-            super.setCenter(0, 0);
-            super.setSize(59999998);
-            HCore.sendPacket(player, new PacketPlayOutWorldBorder(this, PacketPlayOutWorldBorder.EnumWorldBorderAction.INITIALIZE));
-        });
-        this.shownViewers.clear();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void delete() {
-        this.hideAll();
-        BorderHandler.getValues().remove(this);
     }
 
     /**
@@ -95,8 +59,8 @@ public final class BorderWrapper_v1_16_R2 extends WorldBorder implements Border 
      */
     @Nonnull
     @Override
-    public Set<Player> getShownViewers() {
-        return this.shownViewers;
+    public Player getViewer() {
+        return this.viewer;
     }
 
     /**
@@ -105,7 +69,7 @@ public final class BorderWrapper_v1_16_R2 extends WorldBorder implements Border 
     @Nonnull
     @Override
     public Location getCenter() {
-        return new Location(super.world.getWorld(), super.getCenterX(), 64, super.getCenterZ());
+        return new Location(this.border.world.getWorld(), this.border.getCenterX(), 64, this.border.getCenterZ());
     }
 
     /**
@@ -114,7 +78,7 @@ public final class BorderWrapper_v1_16_R2 extends WorldBorder implements Border 
     @Override
     public void setCenter(@Nonnull Location location) {
         Validate.notNull(location, "location cannot be null!");
-        super.setCenter(location.getX(), location.getZ());
+        this.border.setCenter(location.getX(), location.getZ());
     }
 
     /**
@@ -138,8 +102,95 @@ public final class BorderWrapper_v1_16_R2 extends WorldBorder implements Border 
      * {@inheritDoc}
      */
     @Override
+    public double getDamageAmount() {
+        return this.border.getDamageAmount();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setDamageAmount(double damageAmount) {
+        this.border.setDamageAmount(damageAmount);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public double getDamageBuffer() {
+        return this.border.getDamageBuffer();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setDamageBuffer(double damageBuffer) {
+        this.border.setDamageBuffer(damageBuffer);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getWarningDistance() {
+        return this.border.getWarningDistance();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setWarningDistance(int warningDistance) {
+        this.border.setWarningDistance(warningDistance);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getWarningTime() {
+        return this.border.getWarningTime();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setWarningTime(int warningTime) {
+        this.border.setWarningTime(warningTime);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public double getSize() {
+        return this.border.getSize();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setSize(double size) {
+        this.border.setSize(size);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setSize(double size, long time) {
-        super.transitionSizeBetween(this.getSize(), size, time);
+        if (this.transition)
+            this.scheduler.cancel();
+
+        this.scheduler.after(time, TimeUnit.MILLISECONDS)
+                .run(() -> this.transition = false);
+        this.transition = true;
+
+        this.border.transitionSizeBetween(this.getSize(), size, time);
     }
 
     /**
@@ -147,12 +198,30 @@ public final class BorderWrapper_v1_16_R2 extends WorldBorder implements Border 
      */
     @Override
     public void update() {
-        if (this.color == BorderColor.BLUE)
-            super.transitionSizeBetween(super.getSize(), super.getSize(), Long.MAX_VALUE);
-        else if (this.color == BorderColor.GREEN)
-            super.transitionSizeBetween(super.getSize(), super.getSize() + 0.1, Long.MAX_VALUE);
-        else if (this.color == BorderColor.RED)
-            super.transitionSizeBetween(super.getSize(), super.getSize() - 0.1, Long.MAX_VALUE);
-        this.shownViewers.forEach(this::show);
+        if (!this.transition)
+            if (this.color == BorderColor.BLUE)
+                this.border.transitionSizeBetween(this.getSize(), this.getSize(), Long.MAX_VALUE);
+            else if (this.color == BorderColor.GREEN)
+                this.border.transitionSizeBetween(this.getSize(), this.getSize() + 0.1, Long.MAX_VALUE);
+            else if (this.color == BorderColor.RED)
+                this.border.transitionSizeBetween(this.getSize(), this.getSize() - 0.1, Long.MAX_VALUE);
+
+        HCore.sendPacket(this.viewer, new PacketPlayOutWorldBorder(this.border, PacketPlayOutWorldBorder.EnumWorldBorderAction.INITIALIZE));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void delete() {
+        this.setSize(6.0E7);
+        this.setWarningTime(15);
+        this.setDamageAmount(0.2);
+        this.setDamageBuffer(5.0);
+        this.setWarningDistance(5);
+        this.setCenter(new Location(this.border.world.getWorld(), 0, 64, 0));
+
+        HCore.sendPacket(this.viewer, new PacketPlayOutWorldBorder(this.border, PacketPlayOutWorldBorder.EnumWorldBorderAction.INITIALIZE));
+        BorderHandler.getContent().remove(this.viewer);
     }
 }

@@ -74,8 +74,13 @@ public final class HCommandListener extends BukkitCommand {
     @Nonnull
     @Override
     public List<String> tabComplete(@Nonnull CommandSender sender, @Nonnull String alias, @Nonnull String[] args) {
-        Set<String> tabComplete = new LinkedHashSet<>();
+        if (!this.baseCommandData.isTabComplete())
+            return new ArrayList<>();
 
+
+        String lastArg = args[args.length - 1];
+        Set<String> tabComplete = new LinkedHashSet<>();
+        Set<String> tabCompleteBefore = new LinkedHashSet<>();
         List<String> enteredArgs = new LinkedList<>(Arrays.asList(args));
         List<SubCommandData> subCommandDatas = this.baseCommandData.getSubCommandsSafe();
 
@@ -91,7 +96,6 @@ public final class HCommandListener extends BukkitCommand {
             }
         }
 
-        Set<String> tabCompleteBefore = new LinkedHashSet<>();
         for (SubCommandData subCommandData : subCommandDatas) {
             String[] subArgs = subCommandData.getArgs();
             int subArgLen = subArgs.length;
@@ -112,6 +116,13 @@ public final class HCommandListener extends BukkitCommand {
         }
 
         tabComplete.addAll(tabCompleteBefore);
-        return new ArrayList<>(tabComplete);
+
+
+        Set<String> tabCompleteList = new LinkedHashSet<>();
+        tabComplete.stream().filter(tab -> tab.equals(lastArg)).forEach(tabCompleteList::add);
+        tabComplete.stream().filter(tab -> tab.startsWith(lastArg)).forEach(tabCompleteList::add);
+        tabCompleteList.addAll(tabComplete);
+
+        return new ArrayList<>(tabCompleteList);
     }
 }

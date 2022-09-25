@@ -31,6 +31,7 @@ public final class BaseCommandData {
     private final String description;
     private final String usage;
     private final String[] aliases;
+    private final boolean tabComplete;
     private final HCommandListener listener;
     private final List<SubCommandData> subCommands;
     private final List<PlaceholderData> placeholders;
@@ -50,6 +51,7 @@ public final class BaseCommandData {
         this.usage = baseCommand.usage();
         this.aliases = baseCommand.aliases();
         this.description = baseCommand.description();
+        this.tabComplete = baseCommand.tabComplete();
 
         this.subCommands = new LinkedList<>();
         this.placeholders = new ArrayList<>();
@@ -94,6 +96,15 @@ public final class BaseCommandData {
     @Nonnull
     public String getDescription() {
         return this.description;
+    }
+
+    /**
+     * Gets tab complete status from annotation.
+     *
+     * @return Tab complete status from annotation.
+     */
+    public boolean isTabComplete() {
+        return this.tabComplete;
     }
 
     /**

@@ -14,7 +14,7 @@ import net.minecraft.server.ScoreboardServer;
 import net.minecraft.world.scores.ScoreboardObjective;
 import net.minecraft.world.scores.ScoreboardTeam;
 import net.minecraft.world.scores.criteria.IScoreboardCriteria;
-import org.bukkit.craftbukkit.v1_17_R1.util.CraftChatMessage;
+import org.bukkit.craftbukkit.v1_19_R1.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
@@ -25,14 +25,14 @@ import java.util.Optional;
 /**
  * {@inheritDoc}
  */
-public final class Scoreboard_v1_17_R1 extends Scoreboard {
+public final class ScoreboardWrapper_v1_19_1_R1 extends Scoreboard {
 
     private int mode = 0;
 
     /**
      * {@inheritDoc}
      */
-    public Scoreboard_v1_17_R1(@Nonnull Player player, @Nonnull String title) {
+    public ScoreboardWrapper_v1_19_1_R1(@Nonnull Player player, @Nonnull String title) {
         super(player, title);
     }
 
@@ -43,7 +43,7 @@ public final class Scoreboard_v1_17_R1 extends Scoreboard {
     @Override
     public Scoreboard show() {
         net.minecraft.world.scores.Scoreboard scoreboard = new net.minecraft.world.scores.Scoreboard();
-        ScoreboardObjective scoreboardObjective = scoreboard.registerObjective("",
+        ScoreboardObjective scoreboardObjective = scoreboard.a("",
                 IScoreboardCriteria.a,
                 CraftChatMessage.fromStringOrNull(" "),
                 IScoreboardCriteria.EnumScoreboardHealthDisplay.a);
@@ -101,7 +101,7 @@ public final class Scoreboard_v1_17_R1 extends Scoreboard {
     @Override
     public Scoreboard delete() {
         net.minecraft.world.scores.Scoreboard scoreboard = new net.minecraft.world.scores.Scoreboard();
-        ScoreboardObjective scoreboardObjective = scoreboard.registerObjective("",
+        ScoreboardObjective scoreboardObjective = scoreboard.a("",
                 IScoreboardCriteria.a,
                 CraftChatMessage.fromStringOrNull(" "),
                 IScoreboardCriteria.EnumScoreboardHealthDisplay.a);

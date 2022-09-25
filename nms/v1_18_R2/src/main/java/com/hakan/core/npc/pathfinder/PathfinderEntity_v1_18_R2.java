@@ -47,6 +47,7 @@ public final class PathfinderEntity_v1_18_R2 {
     }
 
 
+
     private final EntityPig pig;
 
     /**

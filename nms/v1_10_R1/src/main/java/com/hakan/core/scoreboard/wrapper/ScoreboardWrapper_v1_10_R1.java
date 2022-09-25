@@ -5,14 +5,11 @@ import com.hakan.core.scoreboard.Scoreboard;
 import com.hakan.core.scoreboard.ScoreboardHandler;
 import com.hakan.core.utils.ColorUtil;
 import com.hakan.core.utils.ReflectionUtils;
-import net.minecraft.server.v1_16_R2.EnumChatFormat;
-import net.minecraft.server.v1_16_R2.IScoreboardCriteria;
-import net.minecraft.server.v1_16_R2.PacketPlayOutScoreboardDisplayObjective;
-import net.minecraft.server.v1_16_R2.PacketPlayOutScoreboardObjective;
-import net.minecraft.server.v1_16_R2.PacketPlayOutScoreboardScore;
-import net.minecraft.server.v1_16_R2.PacketPlayOutScoreboardTeam;
-import net.minecraft.server.v1_16_R2.ScoreboardServer;
-import org.bukkit.craftbukkit.v1_16_R2.util.CraftChatMessage;
+import net.minecraft.server.v1_10_R1.IScoreboardCriteria;
+import net.minecraft.server.v1_10_R1.PacketPlayOutScoreboardDisplayObjective;
+import net.minecraft.server.v1_10_R1.PacketPlayOutScoreboardObjective;
+import net.minecraft.server.v1_10_R1.PacketPlayOutScoreboardScore;
+import net.minecraft.server.v1_10_R1.PacketPlayOutScoreboardTeam;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
@@ -22,14 +19,14 @@ import java.util.Collections;
 /**
  * {@inheritDoc}
  */
-public final class Scoreboard_v1_16_R2 extends Scoreboard {
+public final class ScoreboardWrapper_v1_10_R1 extends Scoreboard {
 
     private int mode = 0;
 
     /**
      * {@inheritDoc}
      */
-    public Scoreboard_v1_16_R2(@Nonnull Player player, @Nonnull String title) {
+    public ScoreboardWrapper_v1_10_R1(@Nonnull Player player, @Nonnull String title) {
         super(player, title);
     }
 
@@ -41,7 +38,7 @@ public final class Scoreboard_v1_16_R2 extends Scoreboard {
     public Scoreboard show() {
         PacketPlayOutScoreboardObjective objective = new PacketPlayOutScoreboardObjective();
         ReflectionUtils.setField(objective, "a", "board");
-        ReflectionUtils.setField(objective, "b", CraftChatMessage.fromStringOrNull(super.title));
+        ReflectionUtils.setField(objective, "b", super.title);
         ReflectionUtils.setField(objective, "c", IScoreboardCriteria.EnumScoreboardHealthDisplay.INTEGER);
         ReflectionUtils.setField(objective, "d", this.mode);
 
@@ -56,25 +53,28 @@ public final class Scoreboard_v1_16_R2 extends Scoreboard {
             String line = super.lines[i];
             if (line == null) continue;
 
-            String color = (i >= 10) ? "§" + new String[]{"a", "b", "c", "d", "e", "f"}[i - 10] : "§" + i;
+            String[] split = this.splitLine(i, line, 16, 16);
+            String prefix = ColorUtil.colored(split[0]);
+            String middle = ColorUtil.colored(split[1]);
+            String suffix = ColorUtil.colored(split[2]);
 
             PacketPlayOutScoreboardTeam team = new PacketPlayOutScoreboardTeam();
             ReflectionUtils.setField(team, "a", "team_" + i);
-            ReflectionUtils.setField(team, "b", CraftChatMessage.fromStringOrNull("team_" + i));
-            ReflectionUtils.setField(team, "c", CraftChatMessage.fromStringOrNull(ColorUtil.colored(line)));
-            ReflectionUtils.setField(team, "d", CraftChatMessage.fromStringOrNull(""));
+            ReflectionUtils.setField(team, "b", "team_" + i);
+            ReflectionUtils.setField(team, "c", prefix);
+            ReflectionUtils.setField(team, "d", suffix);
             ReflectionUtils.setField(team, "e", "always");
             ReflectionUtils.setField(team, "f", "always");
-            ReflectionUtils.setField(team, "g", EnumChatFormat.RESET);
-            ReflectionUtils.setField(team, "h", (this.mode == 0) ? Collections.singletonList(color) : new ArrayList<>());
+            ReflectionUtils.setField(team, "g", -1);
+            ReflectionUtils.setField(team, "h", (this.mode == 0) ? Collections.singletonList(middle) : new ArrayList<>());
             ReflectionUtils.setField(team, "i", this.mode);
             ReflectionUtils.setField(team, "j", 1);
 
             PacketPlayOutScoreboardScore score = new PacketPlayOutScoreboardScore();
-            ReflectionUtils.setField(score, "a", color);
+            ReflectionUtils.setField(score, "a", middle);
             ReflectionUtils.setField(score, "b", "board");
             ReflectionUtils.setField(score, "c", 15 - i);
-            ReflectionUtils.setField(score, "d", ScoreboardServer.Action.CHANGE);
+            ReflectionUtils.setField(score, "d", PacketPlayOutScoreboardScore.EnumScoreboardAction.CHANGE);
 
             HCore.sendPacket(super.player, team, score);
         }

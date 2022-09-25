@@ -105,7 +105,7 @@ public final class Scheduler {
      * @return This class.
      */
     @Nonnull
-    public Scheduler after(int after, @Nonnull TimeUnit timeUnit) {
+    public Scheduler after(long after, @Nonnull TimeUnit timeUnit) {
         this.after = timeUnit.toMillis(after) / 50;
         return this;
     }
@@ -118,7 +118,7 @@ public final class Scheduler {
      * @return This class.
      */
     @Nonnull
-    public Scheduler every(int every, @Nonnull TimeUnit timeUnit) {
+    public Scheduler every(long every, @Nonnull TimeUnit timeUnit) {
         this.every = timeUnit.toMillis(every) / 50;
         return this;
     }
