@@ -2,9 +2,9 @@
 
 ### [Implement hCore to your project now](https://hcore.gitbook.io/wiki/#import)
 
-## What is it
+## Little bit about hCore
 
-HCore is a simplified and multi-functional tool for spigot developers. There are dozens of features you can use. HCore also completely open source code. hCore supports all mc versions from 1.8.x to 1.19.x.
+HCore is a simplified and multi-functional tool for spigot developers. There are dozens of features you can use. HCore is also completely open source code. hCore supports all mc versions from 1.8.x to 1.19.x.
 
 ## Developers
 
