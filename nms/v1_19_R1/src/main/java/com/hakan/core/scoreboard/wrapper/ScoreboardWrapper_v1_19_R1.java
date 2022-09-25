@@ -25,14 +25,14 @@ import java.util.Optional;
 /**
  * {@inheritDoc}
  */
-public final class Scoreboard_v1_19_R1 extends Scoreboard {
+public final class ScoreboardWrapper_v1_19_R1 extends Scoreboard {
 
     private int mode = 0;
 
     /**
      * {@inheritDoc}
      */
-    public Scoreboard_v1_19_R1(@Nonnull Player player, @Nonnull String title) {
+    public ScoreboardWrapper_v1_19_R1(@Nonnull Player player, @Nonnull String title) {
         super(player, title);
     }
 

@@ -44,4 +44,11 @@ public @interface BaseCommand {
      */
     @Nonnull
     String[] aliases() default "";
+
+    /**
+     * Gets auto tab complete of command.
+     *
+     * @return Auto tab complete of command.
+     */
+    boolean tabComplete() default true;
 }

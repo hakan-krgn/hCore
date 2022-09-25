@@ -175,7 +175,7 @@ public final class BorderBuilder {
                 new Object[]{this.center, this.size, this.damageAmount, this.damageBuffer, this.warningDistance, this.warningTime, this.color});
         this.viewers.forEach(border::show);
 
-        BorderHandler.getValues().add(border);
+        BorderHandler.getContent().add(border);
         return border;
     }
 }

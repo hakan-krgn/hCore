@@ -14,7 +14,7 @@ import net.minecraft.server.ScoreboardServer;
 import net.minecraft.world.scores.ScoreboardObjective;
 import net.minecraft.world.scores.ScoreboardTeam;
 import net.minecraft.world.scores.criteria.IScoreboardCriteria;
-import org.bukkit.craftbukkit.v1_18_R2.util.CraftChatMessage;
+import org.bukkit.craftbukkit.v1_18_R1.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
@@ -25,14 +25,14 @@ import java.util.Optional;
 /**
  * {@inheritDoc}
  */
-public final class Scoreboard_v1_18_R2 extends Scoreboard {
+public final class ScoreboardWrapper_v1_18_R1 extends Scoreboard {
 
     private int mode = 0;
 
     /**
      * {@inheritDoc}
      */
-    public Scoreboard_v1_18_R2(@Nonnull Player player, @Nonnull String title) {
+    public ScoreboardWrapper_v1_18_R1(@Nonnull Player player, @Nonnull String title) {
         super(player, title);
     }
 

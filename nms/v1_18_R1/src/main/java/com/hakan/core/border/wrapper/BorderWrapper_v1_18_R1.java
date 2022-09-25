@@ -4,6 +4,7 @@ import com.hakan.core.HCore;
 import com.hakan.core.border.Border;
 import com.hakan.core.border.BorderHandler;
 import com.hakan.core.border.color.BorderColor;
+import com.hakan.core.scheduler.Scheduler;
 import com.hakan.core.utils.Validate;
 import net.minecraft.network.protocol.game.ClientboundInitializeBorderPacket;
 import net.minecraft.network.protocol.game.ClientboundSetBorderCenterPacket;
@@ -12,97 +13,47 @@ import net.minecraft.network.protocol.game.ClientboundSetBorderSizePacket;
 import net.minecraft.network.protocol.game.ClientboundSetBorderWarningDelayPacket;
 import net.minecraft.network.protocol.game.ClientboundSetBorderWarningDistancePacket;
 import net.minecraft.world.level.border.WorldBorder;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_18_R1.CraftWorld;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * {@inheritDoc}
  */
-public final class BorderWrapper_v1_18_R1 extends WorldBorder implements Border {
+public final class BorderWrapper_v1_18_R1 implements Border {
+
+    private final Player viewer;
+    private final WorldBorder border;
+    private final Scheduler scheduler;
 
     private BorderColor color;
-    private final Set<Player> shownViewers;
+    private boolean transition;
 
     /**
      * {@inheritDoc}
      */
-    public BorderWrapper_v1_18_R1(@Nonnull Location location, double size, double damageAmount, double damageBuffer, int warningDistance, int warningTime, @Nonnull BorderColor color) {
+    private BorderWrapper_v1_18_R1(@Nonnull Player viewer,
+                                   @Nonnull Location location,
+                                   @Nonnull BorderColor color,
+                                   double size,
+                                   double damageAmount,
+                                   double damageBuffer,
+                                   int warningDistance,
+                                   int warningTime) {
+        this.scheduler = HCore.syncScheduler();
+        this.viewer = Validate.notNull(viewer, "viewer cannot be null!");
         this.color = Validate.notNull(color, "border color cannot be null!");
-        this.shownViewers = new HashSet<>();
-        super.world = ((CraftWorld) location.getWorld()).getHandle();
-        this.setCenter(location);
+
+        this.border = new WorldBorder();
         this.setSize(size);
+        this.setCenter(location);
+        this.setWarningTime(warningTime);
         this.setDamageAmount(damageAmount);
         this.setDamageBuffer(damageBuffer);
         this.setWarningDistance(warningDistance);
-        this.setWarningTime(warningTime);
         this.update();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void show(@Nonnull Player player) {
-        this.shownViewers.add(Validate.notNull(player, "player cannot be null!"));
-
-        HCore.sendPacket(player, new ClientboundSetBorderLerpSizePacket(this));
-        HCore.sendPacket(player, new ClientboundSetBorderCenterPacket(this));
-        HCore.sendPacket(player, new ClientboundSetBorderSizePacket(this));
-        HCore.sendPacket(player, new ClientboundSetBorderWarningDistancePacket(this));
-        HCore.sendPacket(player, new ClientboundSetBorderWarningDelayPacket(this));
-        HCore.sendPacket(player, new ClientboundInitializeBorderPacket(this));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void showAll() {
-        Bukkit.getOnlinePlayers().forEach(this::show);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void hide(@Nonnull Player player) {
-        this.shownViewers.remove(Validate.notNull(player, "player cannot be null!"));
-        super.c(0, 0);
-        super.a(Long.MAX_VALUE);
-        HCore.sendPacket(player, new ClientboundSetBorderCenterPacket(this));
-        HCore.sendPacket(player, new ClientboundSetBorderSizePacket(this));
-        HCore.sendPacket(player, new ClientboundInitializeBorderPacket(this));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void hideAll() {
-        this.shownViewers.forEach(player -> {
-            super.c(0, 0);
-            super.a(Long.MAX_VALUE);
-            HCore.sendPacket(player, new ClientboundSetBorderCenterPacket(this));
-            HCore.sendPacket(player, new ClientboundSetBorderSizePacket(this));
-            HCore.sendPacket(player, new ClientboundInitializeBorderPacket(this));
-        });
-        this.shownViewers.clear();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void delete() {
-        this.hideAll();
-        BorderHandler.getValues().remove(this);
     }
 
     /**
@@ -110,8 +61,8 @@ public final class BorderWrapper_v1_18_R1 extends WorldBorder implements Border 
      */
     @Nonnull
     @Override
-    public Set<Player> getShownViewers() {
-        return this.shownViewers;
+    public Player getViewer() {
+        return this.viewer;
     }
 
     /**
@@ -120,7 +71,7 @@ public final class BorderWrapper_v1_18_R1 extends WorldBorder implements Border 
     @Nonnull
     @Override
     public Location getCenter() {
-        return new Location(super.world.getWorld(), super.a(), 64, super.b());
+        return new Location(this.border.world.getWorld(), this.border.a(), 64, this.border.b());
     }
 
     /**
@@ -129,7 +80,7 @@ public final class BorderWrapper_v1_18_R1 extends WorldBorder implements Border 
     @Override
     public void setCenter(@Nonnull Location location) {
         Validate.notNull(location, "location cannot be null!");
-        super.c(location.getX(), location.getZ());
+        this.border.c(location.getX(), location.getZ());
     }
 
     /**
@@ -153,32 +104,8 @@ public final class BorderWrapper_v1_18_R1 extends WorldBorder implements Border 
      * {@inheritDoc}
      */
     @Override
-    public double getSize() {
-        return super.i();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setSize(double size) {
-        super.a(size);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setSize(double size, long time) {
-        super.a(this.getSize(), size, time);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public double getDamageAmount() {
-        return super.o();
+        return this.border.o();
     }
 
     /**
@@ -186,7 +113,7 @@ public final class BorderWrapper_v1_18_R1 extends WorldBorder implements Border 
      */
     @Override
     public void setDamageAmount(double damageAmount) {
-        super.c(damageAmount);
+        this.border.c(damageAmount);
     }
 
     /**
@@ -194,7 +121,7 @@ public final class BorderWrapper_v1_18_R1 extends WorldBorder implements Border 
      */
     @Override
     public double getDamageBuffer() {
-        return super.n();
+        return this.border.n();
     }
 
     /**
@@ -202,7 +129,7 @@ public final class BorderWrapper_v1_18_R1 extends WorldBorder implements Border 
      */
     @Override
     public void setDamageBuffer(double damageBuffer) {
-        super.b(damageBuffer);
+        this.border.b(damageBuffer);
     }
 
     /**
@@ -210,7 +137,7 @@ public final class BorderWrapper_v1_18_R1 extends WorldBorder implements Border 
      */
     @Override
     public int getWarningDistance() {
-        return super.r();
+        return this.border.r();
     }
 
     /**
@@ -218,7 +145,7 @@ public final class BorderWrapper_v1_18_R1 extends WorldBorder implements Border 
      */
     @Override
     public void setWarningDistance(int warningDistance) {
-        super.c(warningDistance);
+        this.border.c(warningDistance);
     }
 
     /**
@@ -226,7 +153,7 @@ public final class BorderWrapper_v1_18_R1 extends WorldBorder implements Border 
      */
     @Override
     public int getWarningTime() {
-        return super.q();
+        return this.border.q();
     }
 
     /**
@@ -234,7 +161,38 @@ public final class BorderWrapper_v1_18_R1 extends WorldBorder implements Border 
      */
     @Override
     public void setWarningTime(int warningTime) {
-        super.b(warningTime);
+        this.border.b(warningTime);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public double getSize() {
+        return this.border.i();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setSize(double size) {
+        this.border.a(size);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setSize(double size, long time) {
+        if (this.transition)
+            this.scheduler.cancel();
+
+        this.scheduler.after(time, TimeUnit.MILLISECONDS)
+                .run(() -> this.transition = false);
+        this.transition = true;
+
+        this.border.a(this.getSize(), size, time);
     }
 
     /**
@@ -242,12 +200,40 @@ public final class BorderWrapper_v1_18_R1 extends WorldBorder implements Border 
      */
     @Override
     public void update() {
-        if (this.color == BorderColor.BLUE)
-            super.a(super.i(), super.i(), Long.MAX_VALUE);
-        else if (this.color == BorderColor.GREEN)
-            super.a(super.i(), super.i() + 0.1, Long.MAX_VALUE);
-        else if (this.color == BorderColor.RED)
-            super.a(super.i(), super.i() - 0.1, Long.MAX_VALUE);
-        this.shownViewers.forEach(this::show);
+        if (!this.transition)
+            if (this.color == BorderColor.BLUE)
+                this.border.a(this.getSize(), this.getSize(), Long.MAX_VALUE);
+            else if (this.color == BorderColor.GREEN)
+                this.border.a(this.getSize(), this.getSize() + 0.1, Long.MAX_VALUE);
+            else if (this.color == BorderColor.RED)
+                this.border.a(this.getSize(), this.getSize() - 0.1, Long.MAX_VALUE);
+
+        HCore.sendPacket(this.viewer, new ClientboundSetBorderLerpSizePacket(this.border));
+        HCore.sendPacket(this.viewer, new ClientboundSetBorderCenterPacket(this.border));
+        HCore.sendPacket(this.viewer, new ClientboundSetBorderSizePacket(this.border));
+        HCore.sendPacket(this.viewer, new ClientboundSetBorderWarningDistancePacket(this.border));
+        HCore.sendPacket(this.viewer, new ClientboundSetBorderWarningDelayPacket(this.border));
+        HCore.sendPacket(this.viewer, new ClientboundInitializeBorderPacket(this.border));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void delete() {
+        this.setSize(6.0E7);
+        this.setWarningTime(15);
+        this.setDamageAmount(0.2);
+        this.setDamageBuffer(5.0);
+        this.setWarningDistance(5);
+        this.setCenter(new Location(this.border.world.getWorld(), 0, 64, 0));
+
+        HCore.sendPacket(this.viewer, new ClientboundSetBorderLerpSizePacket(this.border));
+        HCore.sendPacket(this.viewer, new ClientboundSetBorderCenterPacket(this.border));
+        HCore.sendPacket(this.viewer, new ClientboundSetBorderSizePacket(this.border));
+        HCore.sendPacket(this.viewer, new ClientboundSetBorderWarningDistancePacket(this.border));
+        HCore.sendPacket(this.viewer, new ClientboundSetBorderWarningDelayPacket(this.border));
+        HCore.sendPacket(this.viewer, new ClientboundInitializeBorderPacket(this.border));
+        BorderHandler.getContent().remove(this.viewer);
     }
 }

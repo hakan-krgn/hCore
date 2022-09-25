@@ -24,7 +24,10 @@ public final class BossBar_v1_8_R3 implements BossBar {
     /**
      * {@inheritDoc}
      */
-    public BossBar_v1_8_R3(@Nonnull String title, @Nonnull BarColor color, @Nonnull BarStyle style, @Nonnull BarFlag... flags) {
+    private BossBar_v1_8_R3(@Nonnull String title,
+                            @Nonnull BarColor color,
+                            @Nonnull BarStyle style,
+                            @Nonnull BarFlag... flags) {
         this.title = Validate.notNull(title, "title cannot be null!");
         this.color = Validate.notNull(color, "bar color cannot be null!");
         this.style = Validate.notNull(style, "bar style cannot be null!");

@@ -5,6 +5,7 @@ import org.bukkit.craftbukkit.v1_18_R1.boss.CraftBossBar;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -12,20 +13,22 @@ import java.util.List;
  */
 public final class BossBar_v1_18_R1 implements BossBar {
 
-    private final org.bukkit.boss.BossBar bossBar;
+    private final CraftBossBar bossBar;
 
     /**
      * {@inheritDoc}
      */
-    public BossBar_v1_18_R1(@Nonnull String title, @Nonnull BarColor color, @Nonnull BarStyle style, @Nonnull BarFlag... flags) {
+    private BossBar_v1_18_R1(@Nonnull String title,
+                             @Nonnull BarColor color,
+                             @Nonnull BarStyle style,
+                             @Nonnull BarFlag... flags) {
         Validate.notNull(title, "title cannot be null!");
         Validate.notNull(color, "color cannot be null!");
         Validate.notNull(style, "style cannot be null!");
         Validate.notNull(flags, "flags cannot be null!");
 
-        this.bossBar = new CraftBossBar(title, org.bukkit.boss.BarColor.valueOf(color.name()), org.bukkit.boss.BarStyle.valueOf(style.name()));
-        for (BarFlag barFlag : flags)
-            this.bossBar.addFlag(org.bukkit.boss.BarFlag.valueOf(barFlag.name()));
+        this.bossBar = new CraftBossBar(title, color.toBukkit(), style.toBukkit());
+        Arrays.asList(flags).forEach((flag) -> this.bossBar.addFlag(flag.toBukkit()));
     }
 
     /**
@@ -59,7 +62,7 @@ public final class BossBar_v1_18_R1 implements BossBar {
      */
     @Override
     public void setColor(@Nonnull BarColor barColor) {
-        this.bossBar.setColor(org.bukkit.boss.BarColor.valueOf(Validate.notNull(barColor, "bar color cannot be null!").name()));
+        this.bossBar.setColor(Validate.notNull(barColor, "bar color cannot be null!").toBukkit());
     }
 
     /**
@@ -76,7 +79,7 @@ public final class BossBar_v1_18_R1 implements BossBar {
      */
     @Override
     public void setStyle(@Nonnull BarStyle barStyle) {
-        this.bossBar.setStyle(org.bukkit.boss.BarStyle.valueOf(Validate.notNull(barStyle, "bar style cannot be null!").name()));
+        this.bossBar.setStyle(Validate.notNull(barStyle, "bar style cannot be null!").toBukkit());
     }
 
     /**
@@ -84,7 +87,7 @@ public final class BossBar_v1_18_R1 implements BossBar {
      */
     @Override
     public void removeFlag(@Nonnull BarFlag barFlag) {
-        this.bossBar.removeFlag(org.bukkit.boss.BarFlag.valueOf(Validate.notNull(barFlag, "bar flag cannot be null!").name()));
+        this.bossBar.removeFlag(Validate.notNull(barFlag, "bar flag cannot be null!").toBukkit());
     }
 
     /**
@@ -92,7 +95,7 @@ public final class BossBar_v1_18_R1 implements BossBar {
      */
     @Override
     public void addFlag(@Nonnull BarFlag barFlag) {
-        this.bossBar.addFlag(org.bukkit.boss.BarFlag.valueOf(Validate.notNull(barFlag, "bar flag cannot be null!").name()));
+        this.bossBar.addFlag(Validate.notNull(barFlag, "bar flag cannot be null!").toBukkit());
     }
 
     /**
@@ -100,7 +103,7 @@ public final class BossBar_v1_18_R1 implements BossBar {
      */
     @Override
     public boolean hasFlag(@Nonnull BarFlag barFlag) {
-        return this.bossBar.hasFlag(org.bukkit.boss.BarFlag.valueOf(Validate.notNull(barFlag, "bar flag cannot be null!").name()));
+        return this.bossBar.hasFlag(Validate.notNull(barFlag, "bar flag cannot be null!").toBukkit());
     }
 
     /**
