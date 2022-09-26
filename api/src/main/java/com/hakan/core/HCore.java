@@ -1,8 +1,5 @@
 package com.hakan.core;
 
-import com.hakan.core.border.Border;
-import com.hakan.core.border.BorderHandler;
-import com.hakan.core.border.builder.BorderBuilder;
 import com.hakan.core.command.HCommandHandler;
 import com.hakan.core.configuration.ConfigHandler;
 import com.hakan.core.configuration.containers.ConfigContainer;
@@ -33,14 +30,17 @@ import com.hakan.core.spam.Spam;
 import com.hakan.core.ui.Gui;
 import com.hakan.core.ui.GuiHandler;
 import com.hakan.core.ui.anvil.AnvilGui;
-import com.hakan.core.ui.anvil.builder.AnvilGuiBuilder;
+import com.hakan.core.ui.anvil.builder.AnvilBuilder;
 import com.hakan.core.ui.inventory.InventoryGui;
-import com.hakan.core.ui.inventory.builder.InventoryGuiBuilder;
+import com.hakan.core.ui.inventory.builder.InventoryBuilder;
 import com.hakan.core.ui.sign.SignGui;
-import com.hakan.core.ui.sign.builder.SignGuiBuilder;
+import com.hakan.core.ui.sign.builder.SignBuilder;
 import com.hakan.core.utils.Serializer;
 import com.hakan.core.utils.Validate;
 import com.hakan.core.utils.hooks.Metrics;
+import com.hakan.core.worldborder.BorderHandler;
+import com.hakan.core.worldborder.border.Border;
+import com.hakan.core.worldborder.builder.BorderBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -333,10 +333,10 @@ public final class HCore {
      * Creates builder with ID.
      *
      * @param id ID.
-     * @return InventoryGuiBuilder.
+     * @return InventoryBuilder.
      */
     @Nonnull
-    public static InventoryGuiBuilder inventoryBuilder(@Nonnull String id) {
+    public static InventoryBuilder inventoryBuilder(@Nonnull String id) {
         return GuiHandler.inventoryBuilder(id);
     }
 
@@ -408,11 +408,11 @@ public final class HCore {
      * Creates sign builder.
      *
      * @param player Player.
-     * @return SignGuiBuilder.
+     * @return SignBuilder.
      */
     @Nonnull
-    public static SignGuiBuilder signBuilder(@Nonnull Player player) {
-        return new SignGuiBuilder(player);
+    public static SignBuilder signBuilder(@Nonnull Player player) {
+        return new SignBuilder(player);
     }
 
     /**
@@ -483,10 +483,10 @@ public final class HCore {
      * Creates sign builder.
      *
      * @param player Player.
-     * @return SignGuiBuilder.
+     * @return SignBuilder.
      */
     @Nonnull
-    public static AnvilGuiBuilder anvilBuilder(@Nonnull Player player) {
+    public static AnvilBuilder anvilBuilder(@Nonnull Player player) {
         return GuiHandler.anvilBuilder(player);
     }
 
@@ -759,15 +759,6 @@ public final class HCore {
     @Nonnull
     public static BossBar getFirstBossBarByPlayer(@Nonnull Player player) {
         return MessageHandler.getFirstBossBarByPlayer(player);
-    }
-
-    /**
-     * Deletes bossbar.
-     *
-     * @param bossBar Bossbar.
-     */
-    public static void deleteBossBar(@Nonnull BossBar bossBar) {
-        MessageHandler.deleteBossBar(bossBar);
     }
 
     /**
@@ -1271,12 +1262,12 @@ public final class HCore {
     /**
      * Creates world border builder.
      *
-     * @param location Center location.
+     * @param viewer Viewer.
      * @return World border builder.
      */
     @Nonnull
-    public static BorderBuilder buildBorder(@Nonnull Location location) {
-        return BorderHandler.builder(location);
+    public static BorderBuilder buildBorder(@Nonnull Player viewer) {
+        return BorderHandler.builder(viewer);
     }
 
 

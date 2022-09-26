@@ -21,15 +21,9 @@ public interface TextLine extends HologramLine {
      * @return Text line.
      */
     @Nonnull
-    static TextLine create(@Nonnull Hologram hologram, @Nonnull String text) {
-        Validate.notNull(hologram, "hologram cannot be null!");
-        Validate.notNull(text, "text cannot be null!");
-
-        TextLine line = ReflectionUtils.newInstance("com.hakan.core.hologram.line.text.TextLine_%s",
-                hologram, hologram.getLocation());
-        line.setText(text);
-
-        return line;
+    static TextLine create(@Nonnull Hologram hologram,
+                           @Nonnull String text) {
+        return TextLine.create(hologram, hologram.getLocation(), text);
     }
 
     /**
@@ -41,13 +35,17 @@ public interface TextLine extends HologramLine {
      * @return Text line.
      */
     @Nonnull
-    static TextLine create(@Nonnull Hologram hologram, @Nonnull Location location, @Nonnull String text) {
+    static TextLine create(@Nonnull Hologram hologram,
+                           @Nonnull Location location,
+                           @Nonnull String text) {
         Validate.notNull(hologram, "hologram cannot be null!");
         Validate.notNull(location, "location cannot be null!");
         Validate.notNull(text, "text cannot be null!");
 
-        TextLine line = TextLine.create(hologram, text);
+        TextLine line = ReflectionUtils.newInstance("com.hakan.core.hologram.line.text.TextLine_%s",
+                hologram, location);
         line.setLocation(location);
+        line.setText(text);
 
         return line;
     }

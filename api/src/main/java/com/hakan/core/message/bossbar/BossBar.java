@@ -136,9 +136,11 @@ public interface BossBar {
     void setVisible(boolean visible);
 
     /**
-     * Delete bossbar.
+     * Deletes bossbar.
      */
-    default void delete() {
-        MessageHandler.deleteBossBar(this);
+    default BossBar delete() {
+        this.removeAll();
+        MessageHandler.getBossBars().remove(this);
+        return this;
     }
 }

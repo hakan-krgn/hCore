@@ -15,7 +15,6 @@ import net.minecraft.world.scores.ScoreboardObjective;
 import net.minecraft.world.scores.ScoreboardTeam;
 import net.minecraft.world.scores.criteria.IScoreboardCriteria;
 import org.bukkit.craftbukkit.v1_19_R1.util.CraftChatMessage;
-import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -25,23 +24,22 @@ import java.util.Optional;
 /**
  * {@inheritDoc}
  */
-public final class ScoreboardWrapper_v1_19_1_R1 extends Scoreboard {
+public final class ScoreboardWrapper_v1_19_1_R1 extends ScoreboardWrapper {
 
     private int mode = 0;
 
     /**
      * {@inheritDoc}
      */
-    public ScoreboardWrapper_v1_19_1_R1(@Nonnull Player player, @Nonnull String title) {
-        super(player, title);
+    private ScoreboardWrapper_v1_19_1_R1(@Nonnull Scoreboard scoreboard) {
+        super(scoreboard);
     }
 
     /**
      * {@inheritDoc}
      */
-    @Nonnull
     @Override
-    public Scoreboard show() {
+    public void show() {
         net.minecraft.world.scores.Scoreboard scoreboard = new net.minecraft.world.scores.Scoreboard();
         ScoreboardObjective scoreboardObjective = scoreboard.a("",
                 IScoreboardCriteria.a,
@@ -52,7 +50,7 @@ public final class ScoreboardWrapper_v1_19_1_R1 extends Scoreboard {
 
         PacketPlayOutScoreboardObjective objective = new PacketPlayOutScoreboardObjective(scoreboardObjective, 0);
         ReflectionUtils.setField(objective, "d", "board");
-        ReflectionUtils.setField(objective, "e", CraftChatMessage.fromStringOrNull(super.title));
+        ReflectionUtils.setField(objective, "e", CraftChatMessage.fromStringOrNull(super.scoreboard.getTitle()));
         ReflectionUtils.setField(objective, "f", IScoreboardCriteria.EnumScoreboardHealthDisplay.a);
         ReflectionUtils.setField(objective, "g", this.mode);
 
@@ -60,12 +58,12 @@ public final class ScoreboardWrapper_v1_19_1_R1 extends Scoreboard {
         ReflectionUtils.setField(displayObjective, "a", 1);
         ReflectionUtils.setField(displayObjective, "b", "board");
 
-        HCore.sendPacket(super.player, objective, displayObjective);
+        HCore.sendPacket(super.scoreboard.getPlayer(), objective, displayObjective);
 
 
-        int length = super.lines.length;
+        int length = super.scoreboard.getLines().length;
         for (int i = 0; i < length; i++) {
-            String line = super.lines[i];
+            String line = super.scoreboard.getLine(i);
             if (line == null) continue;
 
             String color = (i >= 10) ? "§" + new String[]{"a", "b", "c", "d", "e", "f"}[i - 10] : "§" + i;
@@ -87,19 +85,17 @@ public final class ScoreboardWrapper_v1_19_1_R1 extends Scoreboard {
 
             PacketPlayOutScoreboardScore score = new PacketPlayOutScoreboardScore(ScoreboardServer.Action.a, "board", color, 15 - i);
 
-            HCore.sendPacket(super.player, team, score);
+            HCore.sendPacket(super.scoreboard.getPlayer(), team, score);
         }
 
         this.mode = 2;
-        return this;
     }
 
     /**
      * {@inheritDoc}
      */
-    @Nonnull
     @Override
-    public Scoreboard delete() {
+    public void delete() {
         net.minecraft.world.scores.Scoreboard scoreboard = new net.minecraft.world.scores.Scoreboard();
         ScoreboardObjective scoreboardObjective = scoreboard.a("",
                 IScoreboardCriteria.a,
@@ -110,8 +106,7 @@ public final class ScoreboardWrapper_v1_19_1_R1 extends Scoreboard {
         ReflectionUtils.setField(objective, "d", "board");
         ReflectionUtils.setField(objective, "g", 1);
 
-        HCore.sendPacket(super.player, objective);
-        ScoreboardHandler.getContent().remove(super.player.getUniqueId());
-        return this;
+        HCore.sendPacket(super.scoreboard.getPlayer(), objective);
+        ScoreboardHandler.getContent().remove(super.scoreboard.getPlayer().getUniqueId());
     }
 }

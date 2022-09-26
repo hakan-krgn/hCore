@@ -22,15 +22,9 @@ public interface ItemLine extends HologramLine {
      * @return Item line.
      */
     @Nonnull
-    static ItemLine create(@Nonnull Hologram hologram, @Nonnull ItemStack itemStack) {
-        Validate.notNull(hologram, "hologram cannot be null!");
-        Validate.notNull(itemStack, "item stack cannot be null!");
-
-        ItemLine line = ReflectionUtils.newInstance("com.hakan.core.hologram.line.item.ItemLine_%s",
-                hologram, hologram.getLocation());
-        line.setItem(itemStack);
-
-        return line;
+    static ItemLine create(@Nonnull Hologram hologram,
+                           @Nonnull ItemStack itemStack) {
+        return ItemLine.create(hologram, hologram.getLocation(), itemStack);
     }
 
     /**
@@ -42,13 +36,17 @@ public interface ItemLine extends HologramLine {
      * @return Item line.
      */
     @Nonnull
-    static ItemLine create(@Nonnull Hologram hologram, @Nonnull Location location, @Nonnull ItemStack itemStack) {
+    static ItemLine create(@Nonnull Hologram hologram,
+                           @Nonnull Location location,
+                           @Nonnull ItemStack itemStack) {
         Validate.notNull(hologram, "hologram cannot be null!");
         Validate.notNull(location, "location cannot be null!");
         Validate.notNull(itemStack, "item stack cannot be null!");
 
-        ItemLine line = ItemLine.create(hologram, itemStack);
+        ItemLine line = ReflectionUtils.newInstance("com.hakan.core.hologram.line.item.ItemLine_%s",
+                hologram, location);
         line.setLocation(location);
+        line.setItem(itemStack);
 
         return line;
     }

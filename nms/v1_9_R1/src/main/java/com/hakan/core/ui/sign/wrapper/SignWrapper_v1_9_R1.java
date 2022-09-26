@@ -1,9 +1,7 @@
 package com.hakan.core.ui.sign.wrapper;
 
 import com.hakan.core.HCore;
-import com.hakan.core.ui.GuiHandler;
 import com.hakan.core.ui.sign.SignGui;
-import com.hakan.core.ui.sign.type.SignType;
 import net.minecraft.server.v1_9_R1.BlockPosition;
 import net.minecraft.server.v1_9_R1.IChatBaseComponent;
 import net.minecraft.server.v1_9_R1.PacketPlayInUpdateSign;
@@ -15,20 +13,19 @@ import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_9_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_9_R1.block.CraftSign;
 import org.bukkit.craftbukkit.v1_9_R1.util.CraftMagicNumbers;
-import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 
 /**
  * {@inheritDoc}
  */
-public final class SignWrapper_v1_9_R1 extends SignGui {
+public final class SignWrapper_v1_9_R1 extends SignWrapper {
 
     /**
      * {@inheritDoc}
      */
-    public SignWrapper_v1_9_R1(@Nonnull Player player, @Nonnull SignType type, @Nonnull String... lines) {
-        super(player, type, lines);
+    private SignWrapper_v1_9_R1(@Nonnull SignGui signGui) {
+        super(signGui);
     }
 
     /**
@@ -36,39 +33,40 @@ public final class SignWrapper_v1_9_R1 extends SignGui {
      */
     @Override
     public void open() {
-        Location location = super.player.getLocation();
+        Location location = super.signGui.getPlayer().getLocation();
         BlockPosition blockPosition = new BlockPosition(location.getBlockX(), LOWEST_Y_AXIS + 1, location.getBlockZ());
 
-        PacketPlayOutBlockChange packet = new PacketPlayOutBlockChange(((CraftWorld) super.player.getWorld()).getHandle(), blockPosition);
-        packet.block = CraftMagicNumbers.getBlock(super.type.asMaterial()).getBlockData();
-        HCore.sendPacket(super.player, packet);
+        PacketPlayOutBlockChange packet = new PacketPlayOutBlockChange(((CraftWorld) super.signGui.getPlayer().getWorld()).getHandle(), blockPosition);
+        packet.block = CraftMagicNumbers.getBlock(super.signGui.getType().asMaterial()).getBlockData();
+        HCore.sendPacket(super.signGui.getPlayer(), packet);
 
-        IChatBaseComponent[] components = CraftSign.sanitizeLines(super.lines);
+        IChatBaseComponent[] components = CraftSign.sanitizeLines(super.signGui.getLines());
         TileEntitySign sign = new TileEntitySign();
         sign.a(new BlockPosition(blockPosition.getX(), blockPosition.getY(), blockPosition.getZ()));
         System.arraycopy(components, 0, sign.lines, 0, sign.lines.length);
-        HCore.sendPacket(super.player, sign.getUpdatePacket());
+        HCore.sendPacket(super.signGui.getPlayer(), sign.getUpdatePacket());
 
-        HCore.sendPacket(super.player, new PacketPlayOutOpenSignEditor(blockPosition));
-        GuiHandler.getContent().put(super.player.getUniqueId(), this);
+        HCore.sendPacket(super.signGui.getPlayer(), new PacketPlayOutOpenSignEditor(blockPosition));
     }
 
     /**
      * {@inheritDoc}
      */
+    @Nonnull
     @Override
-    public <T> void listen(@Nonnull T packet) {
+    public <T> String[] inputReceive(@Nonnull T packet) {
         PacketPlayInUpdateSign packetPlayInUpdateSign = (PacketPlayInUpdateSign) packet;
 
         BlockPosition position = packetPlayInUpdateSign.a();
-        Block block = super.player.getWorld().getBlockAt(position.getX(), position.getY(), position.getZ());
-        PacketPlayOutBlockChange packetPlayOutBlockChange = new PacketPlayOutBlockChange(((CraftWorld) super.player.getWorld()).getHandle(), position);
-        packetPlayOutBlockChange.block = CraftMagicNumbers.getBlock(block.getType()).getBlockData();
-        HCore.sendPacket(super.player, packetPlayOutBlockChange);
+        Block block = super.signGui.getPlayer().getWorld().getBlockAt(position.getX(), position.getY(), position.getZ());
+        PacketPlayOutBlockChange packetChange = new PacketPlayOutBlockChange(((CraftWorld) super.signGui.getPlayer().getWorld()).getHandle(), position);
+        packetChange.block = CraftMagicNumbers.getBlock(block.getType()).getBlockData();
+        HCore.sendPacket(super.signGui.getPlayer(), packetChange);
 
-        if (this.consumer != null)
-            this.consumer.accept(packetPlayInUpdateSign.b());
+        String[] b = packetPlayInUpdateSign.b();
+        String[] lines = new String[b.length];
+        System.arraycopy(b, 0, lines, 0, b.length);
 
-        GuiHandler.getContent().remove(super.player.getUniqueId());
+        return lines;
     }
 }

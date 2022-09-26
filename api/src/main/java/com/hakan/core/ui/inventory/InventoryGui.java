@@ -49,7 +49,11 @@ public class InventoryGui implements Gui {
      * @param type    Inventory type.
      * @param options Options.
      */
-    public InventoryGui(@Nonnull String id, @Nonnull String title, int size, @Nonnull InventoryType type, @Nonnull Set<Option> options) {
+    public InventoryGui(@Nonnull String id,
+                        @Nonnull String title,
+                        int size,
+                        @Nonnull InventoryType type,
+                        @Nonnull Set<Option> options) {
         this.id = id;
         this.title = title;
         this.options = options;
@@ -70,7 +74,10 @@ public class InventoryGui implements Gui {
      * @param size  Size.
      * @param type  Inventory type.
      */
-    public InventoryGui(@Nonnull String id, @Nonnull String title, int size, @Nonnull InventoryType type) {
+    public InventoryGui(@Nonnull String id,
+                        @Nonnull String title,
+                        int size,
+                        @Nonnull InventoryType type) {
         this(id, title, size, type, EnumSet.allOf(Option.class));
     }
 
@@ -428,7 +435,7 @@ public class InventoryGui implements Gui {
      *
      * @param player Player.
      */
-    public final void open(@Nonnull Player player) {
+    public final InventoryGui open(@Nonnull Player player) {
         InventoryGui inventoryGui = GuiHandler.findInventoryByPlayer(Validate.notNull(player, "player cannot be null!")).orElse(null);
 
         this.onOpen(player);
@@ -437,6 +444,8 @@ public class InventoryGui implements Gui {
             player.openInventory(this.inventory);
             GuiHandler.getContent().put(player.getUniqueId(), this);
         }
+
+        return this;
     }
 
     /**
@@ -445,7 +454,7 @@ public class InventoryGui implements Gui {
      *
      * @param player Player.
      */
-    public final void close(@Nonnull Player player) {
+    public final InventoryGui close(@Nonnull Player player) {
         Validate.notNull(player, "player cannot be null!");
 
         if (this.hasOption(Option.CLOSABLE)) {
@@ -455,6 +464,8 @@ public class InventoryGui implements Gui {
             player.closeInventory();
             this.removeOption(Option.CLOSABLE);
         }
+
+        return this;
     }
 
     /**
@@ -462,8 +473,9 @@ public class InventoryGui implements Gui {
      *
      * @param consumer Consumer.
      */
-    public final void whenOpened(@Nonnull Consumer<Player> consumer) {
+    public final InventoryGui whenOpened(@Nonnull Consumer<Player> consumer) {
         this.openConsumer = Validate.notNull(consumer, "consumer cannot be null!");
+        return this;
     }
 
     /**
@@ -471,8 +483,9 @@ public class InventoryGui implements Gui {
      *
      * @param consumer Consumer.
      */
-    public final void whenClosed(@Nonnull Consumer<Player> consumer) {
+    public final InventoryGui whenClosed(@Nonnull Consumer<Player> consumer) {
         this.closeConsumer = Validate.notNull(consumer, "consumer cannot be null!");
+        return this;
     }
 
     /**
@@ -498,10 +511,12 @@ public class InventoryGui implements Gui {
     }
 
 
+
     /**
      * Option enums for UI.
      */
     public enum Option {
+
         CLOSABLE,
         CANCEL_TOP_CLICK,
         CANCEL_DOWN_CLICK

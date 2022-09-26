@@ -282,10 +282,11 @@ public final class Renderer {
     /**
      * Deletes renderer.
      */
-    public void delete() {
+    public Renderer delete() {
         if (this.deleteConsumer != null)
             this.deleteConsumer.accept(this);
         this.deleted = true;
+        return this;
     }
 
     /**

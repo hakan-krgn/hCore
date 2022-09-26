@@ -207,18 +207,6 @@ public final class MessageHandler {
     }
 
     /**
-     * Deletes bossbar.
-     *
-     * @param bossBar Bossbar.
-     */
-    public static void deleteBossBar(@Nonnull BossBar bossBar) {
-        Validate.notNull(bossBar, "bossBar cannot be null!");
-
-        bossBars.remove(bossBar);
-        bossBar.removeAll();
-    }
-
-    /**
      * Creates bossbar.
      *
      * @param title Title.
