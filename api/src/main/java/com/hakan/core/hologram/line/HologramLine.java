@@ -27,7 +27,8 @@ public interface HologramLine {
      * @return Line.
      */
     @Nonnull
-    static HologramLine create(@Nonnull Hologram hologram, @Nullable Object object) {
+    static HologramLine create(@Nonnull Hologram hologram,
+                               @Nullable Object object) {
         if (object == null) {
             return EmptyLine.create(hologram);
         } else if (object instanceof ItemStack) {
@@ -49,7 +50,9 @@ public interface HologramLine {
      * @return Line.
      */
     @Nonnull
-    static HologramLine create(@Nonnull Hologram hologram, @Nonnull Location location, @Nullable Object object) {
+    static HologramLine create(@Nonnull Hologram hologram,
+                               @Nonnull Location location,
+                               @Nullable Object object) {
         Validate.notNull(hologram, "hologram cannot be null!");
         Validate.notNull(location, "location cannot be null!");
 

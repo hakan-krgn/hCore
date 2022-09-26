@@ -36,7 +36,8 @@ public final class EmptyLine implements HologramLine {
      * @param hologram Hologram of line.
      * @param location Location of line.
      */
-    private EmptyLine(@Nonnull Hologram hologram, @Nonnull Location location) {
+    private EmptyLine(@Nonnull Hologram hologram,
+                      @Nonnull Location location) {
         this.hologram = hologram;
         this.location = location;
     }

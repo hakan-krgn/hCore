@@ -1,9 +1,10 @@
 package com.hakan.core.ui.sign;
 
-import com.hakan.core.HCore;
-import com.hakan.core.protocol.ProtocolVersion;
 import com.hakan.core.ui.Gui;
+import com.hakan.core.ui.GuiHandler;
 import com.hakan.core.ui.sign.type.SignType;
+import com.hakan.core.ui.sign.wrapper.SignWrapper;
+import com.hakan.core.utils.ReflectionUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.entity.Player;
 
@@ -14,15 +15,13 @@ import java.util.function.Consumer;
  * SignGui class to manage
  * and show sign to player.
  */
-public abstract class SignGui implements Gui {
+public final class SignGui implements Gui {
 
-    protected static final int LOWEST_Y_AXIS = (HCore.getProtocolVersion().isNewerOrEqual(ProtocolVersion.v1_18_R1)) ? -64 : 0;
-
-
-    protected final Player player;
-    protected SignType type;
-    protected String[] lines;
-    protected Consumer<String[]> consumer;
+    private final Player player;
+    private final SignWrapper wrapper;
+    private SignType type;
+    private String[] lines;
+    private Consumer<String[]> consumer;
 
     /**
      * Creates new instance of this class.
@@ -31,10 +30,23 @@ public abstract class SignGui implements Gui {
      * @param type   Type of sign.
      * @param lines  Lines of sign.
      */
-    public SignGui(@Nonnull Player player, @Nonnull SignType type, @Nonnull String... lines) {
+    public SignGui(@Nonnull Player player,
+                   @Nonnull SignType type,
+                   @Nonnull String... lines) {
+        this.wrapper = ReflectionUtils.newInstance("com.hakan.core.ui.sign.wrapper.SignWrapper_%s", this);
         this.player = Validate.notNull(player, "player cannot be null!");
         this.type = Validate.notNull(type, "type cannot be null!");
         this.lines = Validate.notNull(lines, "lines cannot be null!");
+    }
+
+    /**
+     * Gets the player.
+     *
+     * @return Player.
+     */
+    @Nonnull
+    public Player getPlayer() {
+        return this.player;
     }
 
     /**
@@ -43,7 +55,7 @@ public abstract class SignGui implements Gui {
      * @return Type of sign.
      */
     @Nonnull
-    public final SignType getType() {
+    public SignType getType() {
         return this.type;
     }
 
@@ -54,7 +66,7 @@ public abstract class SignGui implements Gui {
      * @return This class.
      */
     @Nonnull
-    public final SignGui setType(@Nonnull SignType type) {
+    public SignGui setType(@Nonnull SignType type) {
         this.type = Validate.notNull(type, "type cannot be null!");
         return this;
     }
@@ -65,7 +77,7 @@ public abstract class SignGui implements Gui {
      * @return Lines of sign.
      */
     @Nonnull
-    public final String[] getLines() {
+    public String[] getLines() {
         return this.lines;
     }
 
@@ -76,7 +88,7 @@ public abstract class SignGui implements Gui {
      * @return This class.
      */
     @Nonnull
-    public final SignGui setLines(@Nonnull String[] lines) {
+    public SignGui setLines(@Nonnull String[] lines) {
         this.lines = Validate.notNull(lines, "lines cannot be null!");
         return this;
     }
@@ -88,23 +100,20 @@ public abstract class SignGui implements Gui {
      * @return This class.
      */
     @Nonnull
-    public final SignGui whenInputReceived(@Nonnull Consumer<String[]> consumer) {
+    public SignGui whenInputReceived(@Nonnull Consumer<String[]> consumer) {
         this.consumer = Validate.notNull(consumer, "complete consumer cannot be null!");
         return this;
     }
 
-
     /**
      * Opens the gui to player.
-     */
-    public abstract void open();
-
-    /**
-     * Listens player packet if
-     * packet is a sign packet.
      *
-     * @param <T>    Packet type.
-     * @param packet Packet.
+     * @return This class.
      */
-    public abstract <T> void listen(@Nonnull T packet);
+    @Nonnull
+    public SignGui open() {
+        this.wrapper.open();
+        GuiHandler.getContent().put(this.player.getUniqueId(), this);
+        return this;
+    }
 }

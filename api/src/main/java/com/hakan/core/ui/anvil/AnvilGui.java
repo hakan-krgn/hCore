@@ -2,6 +2,8 @@ package com.hakan.core.ui.anvil;
 
 import com.hakan.core.ui.Gui;
 import com.hakan.core.ui.GuiHandler;
+import com.hakan.core.ui.anvil.wrapper.AnvilWrapper;
+import com.hakan.core.utils.ReflectionUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -17,18 +19,19 @@ import java.util.function.Consumer;
  * handles Anvil Gui.
  */
 @SuppressWarnings({"UnusedReturnValue"})
-public abstract class AnvilGui implements Gui {
+public final class AnvilGui implements Gui {
 
-    protected final Player player;
-    protected final String title;
-    protected final String text;
-    protected final ItemStack leftItem;
-    protected final ItemStack rightItem;
+    private final Player player;
+    private final String title;
+    private final String text;
+    private final ItemStack leftItem;
+    private final ItemStack rightItem;
+    private final AnvilWrapper wrapper;
 
-    protected boolean closable;
-    protected Runnable openRunnable;
-    protected Runnable closeRunnable;
-    protected Consumer<String> inputConsumer;
+    private boolean closable;
+    private Runnable openRunnable;
+    private Runnable closeRunnable;
+    private Consumer<String> inputConsumer;
 
     /**
      * Constructor.
@@ -44,6 +47,7 @@ public abstract class AnvilGui implements Gui {
                     @Nonnull String text,
                     @Nonnull ItemStack leftItem,
                     @Nullable ItemStack rightItem) {
+        this.wrapper = ReflectionUtils.newInstance("com.hakan.core.ui.anvil.wrapper.AnvilWrapper_%s", this);
         this.player = Validate.notNull(player, "player cannot be null!");
         this.title = Validate.notNull(title, "title cannot be null!");
         this.text = Validate.notNull(text, "text cannot be null!");
@@ -59,12 +63,22 @@ public abstract class AnvilGui implements Gui {
     }
 
     /**
+     * Gets as bukkit inventory.
+     *
+     * @return Bukkit inventory.
+     */
+    @Nonnull
+    public Inventory toInventory() {
+        return this.wrapper.toInventory();
+    }
+
+    /**
      * Gets player.
      *
      * @return Player.
      */
     @Nonnull
-    public final Player getPlayer() {
+    public Player getPlayer() {
         return this.player;
     }
 
@@ -74,7 +88,7 @@ public abstract class AnvilGui implements Gui {
      * @return Title of Gui.
      */
     @Nonnull
-    public final String getTitle() {
+    public String getTitle() {
         return this.title;
     }
 
@@ -84,7 +98,7 @@ public abstract class AnvilGui implements Gui {
      * @return Text of input area.
      */
     @Nonnull
-    public final String getText() {
+    public String getText() {
         return this.text;
     }
 
@@ -94,7 +108,7 @@ public abstract class AnvilGui implements Gui {
      * @return Item stack at left side.
      */
     @Nonnull
-    public final ItemStack getLeftItem() {
+    public ItemStack getLeftItem() {
         return this.leftItem;
     }
 
@@ -104,7 +118,7 @@ public abstract class AnvilGui implements Gui {
      * @return Item stack at right side.
      */
     @Nullable
-    public final ItemStack getRightItem() {
+    public ItemStack getRightItem() {
         return this.rightItem;
     }
 
@@ -113,7 +127,7 @@ public abstract class AnvilGui implements Gui {
      *
      * @return If Gui is closable.
      */
-    public final boolean isClosable() {
+    public boolean isClosable() {
         return this.closable;
     }
 
@@ -124,7 +138,7 @@ public abstract class AnvilGui implements Gui {
      * @return This class.
      */
     @Nonnull
-    public final AnvilGui setClosable(boolean closable) {
+    public AnvilGui setClosable(boolean closable) {
         this.closable = closable;
         return this;
     }
@@ -136,20 +150,20 @@ public abstract class AnvilGui implements Gui {
      * @return This class.
      */
     @Nonnull
-    public final AnvilGui whenOpened(@Nonnull Runnable openRunnable) {
+    public AnvilGui whenOpened(@Nonnull Runnable openRunnable) {
         this.openRunnable = Validate.notNull(openRunnable, "open callback cannot be null!");
         return this;
     }
 
     /**
      * Runs when input is received.
-     * (When the player clicks the second slot on the Anvil Gui.)
+     * (When the player clicks the second slot on the anvil gui.)
      *
      * @param inputConsumer Callback.
      * @return This class.
      */
     @Nonnull
-    public final AnvilGui whenInputReceived(@Nonnull Consumer<String> inputConsumer) {
+    public AnvilGui whenInputReceived(@Nonnull Consumer<String> inputConsumer) {
         this.inputConsumer = Validate.notNull(inputConsumer, "input callback cannot be null!");
         return this;
     }
@@ -161,19 +175,54 @@ public abstract class AnvilGui implements Gui {
      * @return This class.
      */
     @Nonnull
-    public final AnvilGui whenClosed(@Nonnull Runnable closeRunnable) {
+    public AnvilGui whenClosed(@Nonnull Runnable closeRunnable) {
         this.closeRunnable = Validate.notNull(closeRunnable, "close callback cannot be null!");
         return this;
     }
 
     /**
-     * Opens Gui to player.
+     * Opens gui to player.
      *
      * @return Instance of AnvilGui.
      */
     @Nonnull
-    public final AnvilGui open() {
+    public AnvilGui open() {
         return this.open(true);
+    }
+
+    /**
+     * Opens gui to player and if runnableActivity
+     * is true, runs the open runnable.
+     *
+     * @param runnableActivity If true, runs whenOpened method.
+     * @return Instance of AnvilGui.
+     */
+    @Nonnull
+    public AnvilGui open(boolean runnableActivity) {
+        if (runnableActivity && this.openRunnable != null)
+            this.openRunnable.run();
+
+        this.wrapper.open();
+        GuiHandler.getContent().put(this.player.getUniqueId(), this);
+
+        return this;
+    }
+
+    /**
+     * Closes the Gui of player.
+     *
+     * @return Instance of AnvilGui.
+     */
+    @Nonnull
+    public AnvilGui close() {
+        if (this.closeRunnable != null)
+            this.closeRunnable.run();
+
+        this.closable = true;
+        this.wrapper.close();
+        GuiHandler.getContent().remove(this.player.getUniqueId());
+
+        return this;
     }
 
     /**
@@ -183,7 +232,7 @@ public abstract class AnvilGui implements Gui {
      */
     @Nonnull
     @Override
-    public final AnvilGui clone() {
+    public AnvilGui clone() {
         return GuiHandler.anvilBuilder(this.player)
                 .title(this.title)
                 .text(this.text)
@@ -195,30 +244,4 @@ public abstract class AnvilGui implements Gui {
                 .whenClosed(this.closeRunnable)
                 .build();
     }
-
-
-    /**
-     * Gets as bukkit inventory.
-     *
-     * @return Bukkit inventory.
-     */
-    @Nonnull
-    public abstract Inventory toInventory();
-
-    /**
-     * Opens Gui to player.
-     *
-     * @param runnableActivity If true, runs whenOpened method.
-     * @return Instance of AnvilGui.
-     */
-    @Nonnull
-    public abstract AnvilGui open(boolean runnableActivity);
-
-    /**
-     * Closes the Gui of player.
-     *
-     * @return Instance of AnvilGui.
-     */
-    @Nonnull
-    public abstract AnvilGui close();
 }

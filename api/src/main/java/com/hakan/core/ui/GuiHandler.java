@@ -3,15 +3,17 @@ package com.hakan.core.ui;
 import com.hakan.core.HCore;
 import com.hakan.core.packet.event.PacketEvent;
 import com.hakan.core.ui.anvil.AnvilGui;
-import com.hakan.core.ui.anvil.builder.AnvilGuiBuilder;
+import com.hakan.core.ui.anvil.builder.AnvilBuilder;
 import com.hakan.core.ui.anvil.listeners.AnvilClickListener;
 import com.hakan.core.ui.anvil.listeners.AnvilCloseListener;
 import com.hakan.core.ui.inventory.InventoryGui;
-import com.hakan.core.ui.inventory.builder.InventoryGuiBuilder;
+import com.hakan.core.ui.inventory.builder.InventoryBuilder;
 import com.hakan.core.ui.inventory.listeners.InventoryClickListener;
 import com.hakan.core.ui.inventory.listeners.InventoryCloseListener;
 import com.hakan.core.ui.sign.SignGui;
-import com.hakan.core.ui.sign.builder.SignGuiBuilder;
+import com.hakan.core.ui.sign.builder.SignBuilder;
+import com.hakan.core.ui.sign.wrapper.SignWrapper;
+import com.hakan.core.utils.ReflectionUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -26,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 /**
  * GuiHandler class to handle all GUIs
@@ -81,7 +84,15 @@ public final class GuiHandler {
                 .filter(event -> event.getType().equals(PacketEvent.Type.READ))
                 .filter(event -> event.getPacket().toString().contains("PacketPlayInUpdateSign"))
                 .consume(event -> GuiHandler.findSignByPlayer(event.getPlayer())
-                        .ifPresent(gui -> gui.listen(event.getPacket())));
+                        .ifPresent(gui -> {
+                            SignWrapper wrapper = ReflectionUtils.getField(gui, "wrapper");
+                            Consumer<String[]> consumer = ReflectionUtils.getField(gui, "consumer");
+
+                            if (wrapper != null && consumer != null)
+                                consumer.accept(wrapper.inputReceive(event.getPacket()));
+
+                            guiMap.remove(event.getPlayer().getUniqueId());
+                        }));
     }
 
 
@@ -255,11 +266,11 @@ public final class GuiHandler {
      * Creates builder with ID.
      *
      * @param id ID.
-     * @return InventoryGuiBuilder.
+     * @return InventoryBuilder.
      */
     @Nonnull
-    public static InventoryGuiBuilder inventoryBuilder(@Nonnull String id) {
-        return new InventoryGuiBuilder(id);
+    public static InventoryBuilder inventoryBuilder(@Nonnull String id) {
+        return new InventoryBuilder(id);
     }
 
 
@@ -344,11 +355,11 @@ public final class GuiHandler {
      * Creates sign builder.
      *
      * @param player Player.
-     * @return SignGuiBuilder.
+     * @return SignBuilder.
      */
     @Nonnull
-    public static SignGuiBuilder signBuilder(@Nonnull Player player) {
-        return new SignGuiBuilder(player);
+    public static SignBuilder signBuilder(@Nonnull Player player) {
+        return new SignBuilder(player);
     }
 
 
@@ -433,10 +444,10 @@ public final class GuiHandler {
      * Creates sign builder.
      *
      * @param player Player.
-     * @return SignGuiBuilder.
+     * @return SignBuilder.
      */
     @Nonnull
-    public static AnvilGuiBuilder anvilBuilder(@Nonnull Player player) {
-        return new AnvilGuiBuilder(player);
+    public static AnvilBuilder anvilBuilder(@Nonnull Player player) {
+        return new AnvilBuilder(player);
     }
 }

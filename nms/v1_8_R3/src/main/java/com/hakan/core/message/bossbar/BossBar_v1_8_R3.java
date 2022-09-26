@@ -146,6 +146,7 @@ public final class BossBar_v1_8_R3 implements BossBar {
      */
     @Override
     public void removeAll() {
+
     }
 
     /**
@@ -162,6 +163,7 @@ public final class BossBar_v1_8_R3 implements BossBar {
      */
     @Override
     public void setVisible(boolean visible) {
+
     }
 
     /**

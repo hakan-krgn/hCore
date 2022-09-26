@@ -434,8 +434,9 @@ public final class Npc {
      *
      * @param target Target.
      */
-    public void setTarget(@Nonnull LookTarget target) {
+    public Npc setTarget(@Nonnull LookTarget target) {
         this.target = Validate.notNull(target, "target type cannot be null!");
+        return this;
     }
 
     /**
@@ -443,9 +444,10 @@ public final class Npc {
      *
      * @param skin Skin.
      */
-    public void setSkin(@Nonnull Skin skin) {
+    public Npc setSkin(@Nonnull Skin skin) {
         this.skin = Validate.notNull(skin, "skin cannot be null!");
         this.entity.updateSkin(this.renderer.getShownPlayers());
+        return this;
     }
 
     /**
@@ -454,12 +456,13 @@ public final class Npc {
      * @param equipmentType Equipment type. Ex: HAND_ITEM, LEGGINGS,
      * @param itemStack     Item.
      */
-    public void setEquipment(@Nonnull EquipmentType equipmentType, @Nonnull ItemStack itemStack) {
+    public Npc setEquipment(@Nonnull EquipmentType equipmentType, @Nonnull ItemStack itemStack) {
         Validate.notNull(equipmentType, "equipment type cannot be null!");
         Validate.notNull(itemStack, "itemStack type cannot be null!");
 
         this.equipments.put(equipmentType, itemStack);
         this.entity.updateEquipments(this.renderer.getShownPlayers());
+        return this;
     }
 
     /**
@@ -467,12 +470,13 @@ public final class Npc {
      *
      * @param location Location.
      */
-    public void setLocation(@Nonnull Location location) {
+    public Npc setLocation(@Nonnull Location location) {
         Validate.notNull(location, "location cannot be null!");
 
         this.hologram.setLocation(location.clone().add(0, (this.hologram.getLines().size() * this.hologram.getLineDistance() / 2 + 2), 0));
         this.renderer.setLocation(location);
         this.entity.updateLocation(this.renderer.getShownPlayers());
+        return this;
     }
 
     /**
@@ -482,13 +486,14 @@ public final class Npc {
      * @param yaw   Yaw.
      * @param pitch Pitch.
      */
-    public void setHeadRotation(double yaw, double pitch) {
+    public Npc setHeadRotation(double yaw, double pitch) {
         Location location = this.getLocation();
         location.setYaw((float) yaw);
         location.setPitch((float) pitch);
 
         this.renderer.setLocation(location);
         this.entity.updateHeadRotation(this.renderer.getShownPlayers());
+        return this;
     }
 
     /**
@@ -496,9 +501,10 @@ public final class Npc {
      *
      * @param animation Animation.
      */
-    public void playAnimation(@Nonnull Animation animation) {
+    public Npc playAnimation(@Nonnull Animation animation) {
         Validate.notNull(animation, "animation cannot be null!");
         this.entity.playAnimation(this.renderer.getShownPlayers(), animation);
+        return this;
     }
 
     /**
@@ -507,9 +513,9 @@ public final class Npc {
      *
      * @param player Player.
      */
-    public void lookAt(@Nonnull Player player) {
+    public Npc lookAt(@Nonnull Player player) {
         Validate.notNull(player, "player cannot be null!");
-        this.lookAt(player.getEyeLocation());
+        return this.lookAt(player.getEyeLocation());
     }
 
     /**
@@ -517,13 +523,13 @@ public final class Npc {
      *
      * @param location Location to look.
      */
-    public void lookAt(@Nonnull Location location) {
+    public Npc lookAt(@Nonnull Location location) {
         Validate.notNull(location, "location cannot be null!");
         Validate.isTrue(location.getWorld() == null, "location world cannot be null!");
         Validate.isTrue(!location.getWorld().equals(this.getWorld()), "location and npc worlds must be equal!");
 
         double[] angles = NpcUtils.calculateVector(this.getLocation().add(0, 1.62, 0), location);
-        this.setHeadRotation(angles[0], angles[1]);
+        return this.setHeadRotation(angles[0], angles[1]);
     }
 
     /**
@@ -532,7 +538,7 @@ public final class Npc {
      * @param to    Destination location.
      * @param speed Speed.
      */
-    public void walk(@Nonnull Location to, double speed) {
+    public Npc walk(@Nonnull Location to, double speed) {
         Validate.notNull(to, "to location cannot be null!");
         Validate.isTrue(this.walking, "NPC is already walking!");
         Validate.isTrue(to.getWorld() == null, "to world cannot be null!");
@@ -540,6 +546,7 @@ public final class Npc {
 
         this.walking = true;
         this.entity.walk(speed, to, () -> this.walking = false);
+        return this;
     }
 
     /**
@@ -547,8 +554,9 @@ public final class Npc {
      *
      * @param players Player list.
      */
-    public void show(@Nonnull List<Player> players) {
+    public Npc show(@Nonnull List<Player> players) {
         this.entity.show(Validate.notNull(players, "players cannot be null!"));
+        return this;
     }
 
     /**
@@ -556,8 +564,9 @@ public final class Npc {
      *
      * @param players Player list.
      */
-    public void hide(@Nonnull List<Player> players) {
+    public Npc hide(@Nonnull List<Player> players) {
         this.entity.hide(Validate.notNull(players, "players cannot be null!"));
+        return this;
     }
 
     /**
@@ -574,10 +583,10 @@ public final class Npc {
         this.renderer.delete();
         this.dead = true;
         this.walking = false;
-        this.hide(this.renderer.getShownPlayers());
 
-        return this;
+        return this.hide(this.renderer.getShownPlayers());
     }
+
 
 
     /**
