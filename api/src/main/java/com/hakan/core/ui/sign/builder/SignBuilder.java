@@ -2,6 +2,7 @@ package com.hakan.core.ui.sign.builder;
 
 import com.hakan.core.ui.sign.SignGui;
 import com.hakan.core.ui.sign.type.SignType;
+import com.hakan.core.utils.ReflectionUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.entity.Player;
 
@@ -86,7 +87,8 @@ public final class SignBuilder {
      */
     @Nonnull
     public SignGui build() {
-        SignGui signGui = new SignGui(this.player, this.type, this.lines);
+        SignGui signGui = ReflectionUtils.newInstance("com.hakan.core.ui.sign.versions.SignGui_%s",
+                this.player, this.type, this.lines);
 
         if (this.consumer != null)
             signGui.whenInputReceived(this.consumer);

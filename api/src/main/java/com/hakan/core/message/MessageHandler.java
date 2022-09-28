@@ -1,12 +1,16 @@
 package com.hakan.core.message;
 
+import com.hakan.core.HCore;
 import com.hakan.core.message.actionbar.ActionBarWrapper;
-import com.hakan.core.message.bossbar.BarColor;
-import com.hakan.core.message.bossbar.BarFlag;
-import com.hakan.core.message.bossbar.BarStyle;
 import com.hakan.core.message.bossbar.BossBar;
+import com.hakan.core.message.bossbar.meta.BarColor;
+import com.hakan.core.message.bossbar.meta.BarFlag;
+import com.hakan.core.message.bossbar.meta.BarStyle;
+import com.hakan.core.message.bossbar.versions.BossBarEmpty;
+import com.hakan.core.message.bossbar.versions.BossBarImpl;
 import com.hakan.core.message.title.Title;
 import com.hakan.core.message.title.TitleWrapper;
+import com.hakan.core.protocol.ProtocolVersion;
 import com.hakan.core.utils.ReflectionUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.entity.Player;
@@ -259,11 +263,15 @@ public final class MessageHandler {
                                         @Nonnull BarColor color,
                                         @Nonnull BarStyle style,
                                         @Nonnull BarFlag... flags) {
-        BossBar bossBar = ReflectionUtils.newInstance("com.hakan.core.message.bossbar.BossBar_%s",
-                Validate.notNull(title, "title cannot be null!"),
-                Validate.notNull(color, "color cannot be null!"),
-                Validate.notNull(style, "style cannot be null!"),
-                Validate.notNull(flags, "flags cannot be null!"));
+        Validate.notNull(title, "title cannot be null!");
+        Validate.notNull(color, "color cannot be null!");
+        Validate.notNull(style, "style cannot be null!");
+        Validate.notNull(flags, "flags cannot be null!");
+
+        BossBar bossBar = HCore.getProtocolVersion().equals(ProtocolVersion.v1_8_R3) ?
+                new BossBarEmpty(title, color, style, flags) :
+                new BossBarImpl(title, color, style, flags);
+
         bossBars.add(bossBar);
         return bossBar;
     }

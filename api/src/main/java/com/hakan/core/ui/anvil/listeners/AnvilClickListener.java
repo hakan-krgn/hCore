@@ -10,7 +10,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
-import java.util.function.Consumer;
 
 /**
  * AnvilClickListener class.
@@ -47,11 +46,7 @@ public final class AnvilClickListener implements Listener {
 
                 if (event.getSlot() == 2) {
                     String input = clickedItem.getItemMeta().getDisplayName();
-                    gui.close();
-
-                    Consumer<String> inputConsumer = ReflectionUtils.getField(gui, "inputConsumer");
-                    if (inputConsumer != null)
-                        inputConsumer.accept(input);
+                    ReflectionUtils.invoke(gui, "onInputReceive", input);
                 }
             }
         });

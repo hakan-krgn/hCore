@@ -1,6 +1,7 @@
 package com.hakan.core.ui.anvil.builder;
 
 import com.hakan.core.ui.anvil.AnvilGui;
+import com.hakan.core.utils.ReflectionUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -156,7 +157,8 @@ public final class AnvilBuilder {
      */
     @Nonnull
     public AnvilGui build() {
-        AnvilGui anvil = new AnvilGui(this.player, this.title, this.text, this.leftItem, this.rightItem);
+        AnvilGui anvil = ReflectionUtils.newInstance("com.hakan.core.ui.anvil.versions.AnvilGui_%s",
+                this.player, this.title, this.text, this.leftItem, this.rightItem);
         anvil.setClosable(this.closable);
 
         if (this.openRunnable != null)

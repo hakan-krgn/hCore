@@ -1,6 +1,9 @@
 package com.hakan.core.message.bossbar;
 
 import com.hakan.core.message.MessageHandler;
+import com.hakan.core.message.bossbar.meta.BarColor;
+import com.hakan.core.message.bossbar.meta.BarFlag;
+import com.hakan.core.message.bossbar.meta.BarStyle;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
