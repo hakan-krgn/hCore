@@ -12,7 +12,6 @@ import com.hakan.core.ui.inventory.listeners.InventoryClickListener;
 import com.hakan.core.ui.inventory.listeners.InventoryCloseListener;
 import com.hakan.core.ui.sign.SignGui;
 import com.hakan.core.ui.sign.builder.SignBuilder;
-import com.hakan.core.ui.sign.wrapper.SignWrapper;
 import com.hakan.core.utils.ReflectionUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.Bukkit;
@@ -28,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 /**
  * GuiHandler class to handle all GUIs
@@ -84,15 +82,7 @@ public final class GuiHandler {
                 .filter(event -> event.getType().equals(PacketEvent.Type.READ))
                 .filter(event -> event.getPacket().toString().contains("PacketPlayInUpdateSign"))
                 .consume(event -> GuiHandler.findSignByPlayer(event.getPlayer())
-                        .ifPresent(gui -> {
-                            SignWrapper wrapper = ReflectionUtils.getField(gui, "wrapper");
-                            Consumer<String[]> consumer = ReflectionUtils.getField(gui, "consumer");
-
-                            if (wrapper != null && consumer != null)
-                                consumer.accept(wrapper.inputReceive(event.getPacket()));
-
-                            guiMap.remove(event.getPlayer().getUniqueId());
-                        }));
+                        .ifPresent(gui -> ReflectionUtils.invoke(gui, "receiveInput", event.getPacket())));
     }
 
 

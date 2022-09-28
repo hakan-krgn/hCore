@@ -36,6 +36,9 @@ public final class ReflectionUtils {
      */
     @Nonnull
     public static <T> T newInstance(@Nonnull String path, @Nonnull Object... objects) {
+        Validate.notNull(path, "path cannot be null!");
+        Validate.notNull(objects, "objects cannot be null!");
+
         Class<?>[] classes = new Class<?>[objects.length];
         for (int i = 0; i < objects.length; i++)
             classes[i] = objects[i].getClass();
@@ -51,9 +54,10 @@ public final class ReflectionUtils {
      * @return New instance of created class.
      */
     @Nonnull
-    public static <T> T newInstance(@Nonnull String path, Class<?>[] classes, @Nonnull Object[] objects) {
+    public static <T> T newInstance(@Nonnull String path, @Nonnull Class<?>[] classes, @Nonnull Object[] objects) {
         try {
             Validate.notNull(path, "path cannot be null!");
+            Validate.notNull(classes, "classes cannot be null!");
             Validate.notNull(objects, "objects cannot be null!");
 
             String updatedPath = path.replace("%s", HCore.getProtocolVersion().getTarget());

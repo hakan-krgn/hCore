@@ -26,13 +26,7 @@ public final class AnvilCloseListener implements Listener {
 
         GuiHandler.findAnvilByPlayer(player).ifPresent(gui -> {
             if (gui.isClosable()) {
-                HCore.syncScheduler().after(1).run(() -> {
-                    Runnable closeRunnable = ReflectionUtils.getField(gui, "closeRunnable");
-                    if (closeRunnable != null)
-                        closeRunnable.run();
-                });
-
-                GuiHandler.getContent().remove(player.getUniqueId());
+                HCore.syncScheduler().after(1).run(() -> ReflectionUtils.invoke(gui, "onClose", true));
                 player.updateInventory();
             } else {
                 HCore.syncScheduler().after(1).run(() -> gui.clone().open(false));

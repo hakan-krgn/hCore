@@ -1,10 +1,10 @@
 package com.hakan.core.ui.sign;
 
+import com.hakan.core.HCore;
+import com.hakan.core.protocol.ProtocolVersion;
 import com.hakan.core.ui.Gui;
 import com.hakan.core.ui.GuiHandler;
 import com.hakan.core.ui.sign.type.SignType;
-import com.hakan.core.ui.sign.wrapper.SignWrapper;
-import com.hakan.core.utils.ReflectionUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.entity.Player;
 
@@ -12,16 +12,20 @@ import javax.annotation.Nonnull;
 import java.util.function.Consumer;
 
 /**
- * SignGui class to manage
- * and show sign to player.
+ * SignGui is a class that
+ * handles nms methods of sign gui.
  */
-public final class SignGui implements Gui {
+public abstract class SignGui implements Gui {
 
-    private final Player player;
-    private final SignWrapper wrapper;
-    private SignType type;
-    private String[] lines;
-    private Consumer<String[]> consumer;
+    protected static final int LOWEST_Y_AXIS = (HCore.getProtocolVersion().isNewerOrEqual(ProtocolVersion.v1_18_R1)) ? -64 : 0;
+
+
+
+    protected final Player player;
+    protected SignType type;
+    protected String[] lines;
+    protected Runnable openRunnable;
+    protected Consumer<String[]> inputConsumer;
 
     /**
      * Creates new instance of this class.
@@ -33,7 +37,6 @@ public final class SignGui implements Gui {
     public SignGui(@Nonnull Player player,
                    @Nonnull SignType type,
                    @Nonnull String... lines) {
-        this.wrapper = ReflectionUtils.newInstance("com.hakan.core.ui.sign.wrapper.SignWrapper_%s", this);
         this.player = Validate.notNull(player, "player cannot be null!");
         this.type = Validate.notNull(type, "type cannot be null!");
         this.lines = Validate.notNull(lines, "lines cannot be null!");
@@ -45,7 +48,7 @@ public final class SignGui implements Gui {
      * @return Player.
      */
     @Nonnull
-    public Player getPlayer() {
+    public final Player getPlayer() {
         return this.player;
     }
 
@@ -55,7 +58,7 @@ public final class SignGui implements Gui {
      * @return Type of sign.
      */
     @Nonnull
-    public SignType getType() {
+    public final SignType getType() {
         return this.type;
     }
 
@@ -66,7 +69,7 @@ public final class SignGui implements Gui {
      * @return This class.
      */
     @Nonnull
-    public SignGui setType(@Nonnull SignType type) {
+    public final SignGui setType(@Nonnull SignType type) {
         this.type = Validate.notNull(type, "type cannot be null!");
         return this;
     }
@@ -77,7 +80,7 @@ public final class SignGui implements Gui {
      * @return Lines of sign.
      */
     @Nonnull
-    public String[] getLines() {
+    public final String[] getLines() {
         return this.lines;
     }
 
@@ -88,32 +91,87 @@ public final class SignGui implements Gui {
      * @return This class.
      */
     @Nonnull
-    public SignGui setLines(@Nonnull String[] lines) {
+    public final SignGui setLines(@Nonnull String[] lines) {
         this.lines = Validate.notNull(lines, "lines cannot be null!");
         return this;
     }
 
     /**
-     * Runs when sign close.
+     * Runnable will be triggered
+     * when sign open to player.
+     *
+     * @param runnable Callback.
+     * @return This class.
+     */
+    @Nonnull
+    public final SignGui whenOpened(@Nonnull Runnable runnable) {
+        this.openRunnable = Validate.notNull(runnable, "runnable cannot be null!");
+        return this;
+    }
+
+    /**
+     * Consumer will be triggered
+     * when sign receive an input.
      *
      * @param consumer Callback.
      * @return This class.
      */
     @Nonnull
-    public SignGui whenInputReceived(@Nonnull Consumer<String[]> consumer) {
-        this.consumer = Validate.notNull(consumer, "complete consumer cannot be null!");
+    public final SignGui whenInputReceived(@Nonnull Consumer<String[]> consumer) {
+        this.inputConsumer = Validate.notNull(consumer, "complete consumer cannot be null!");
         return this;
     }
 
     /**
-     * Opens the gui to player.
+     * This should be run when
+     * sign is opened.
      *
      * @return This class.
      */
     @Nonnull
-    public SignGui open() {
-        this.wrapper.open();
+    protected final SignGui onOpen() {
+        if (this.openRunnable != null)
+            this.openRunnable.run();
+
         GuiHandler.getContent().put(this.player.getUniqueId(), this);
         return this;
     }
+
+    /**
+     * This should be run when
+     * sign is closed or input
+     * received.
+     *
+     * @return This class.
+     */
+    @Nonnull
+    protected final SignGui onInputReceive(@Nonnull String[] lines) {
+        if (this.inputConsumer != null)
+            this.inputConsumer.accept(Validate.notNull(lines, "lines cannot be null!"));
+
+        GuiHandler.getContent().remove(this.player.getUniqueId());
+        return this;
+    }
+
+
+
+    /**
+     * Opens the sign gui
+     * to the player.
+     *
+     * @return This class.
+     */
+    @Nonnull
+    public abstract SignGui open();
+
+    /**
+     * Receives input from sign which
+     * is sent by nms to player.
+     *
+     * @param packet Packet.
+     * @param <T>    Type of packet.
+     * @return This class.
+     */
+    @Nonnull
+    protected abstract <T> SignGui receiveInput(@Nonnull T packet);
 }

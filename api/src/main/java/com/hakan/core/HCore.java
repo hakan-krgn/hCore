@@ -1,5 +1,8 @@
 package com.hakan.core;
 
+import com.hakan.core.border.Border;
+import com.hakan.core.border.BorderHandler;
+import com.hakan.core.border.builder.BorderBuilder;
 import com.hakan.core.command.HCommandHandler;
 import com.hakan.core.configuration.ConfigHandler;
 import com.hakan.core.configuration.containers.ConfigContainer;
@@ -11,10 +14,10 @@ import com.hakan.core.item.nbt.NbtManager;
 import com.hakan.core.item.skull.SkullBuilder;
 import com.hakan.core.listener.ListenerAdapter;
 import com.hakan.core.message.MessageHandler;
-import com.hakan.core.message.bossbar.BarColor;
-import com.hakan.core.message.bossbar.BarFlag;
-import com.hakan.core.message.bossbar.BarStyle;
 import com.hakan.core.message.bossbar.BossBar;
+import com.hakan.core.message.bossbar.meta.BarColor;
+import com.hakan.core.message.bossbar.meta.BarFlag;
+import com.hakan.core.message.bossbar.meta.BarStyle;
 import com.hakan.core.message.title.Title;
 import com.hakan.core.npc.Npc;
 import com.hakan.core.npc.NpcHandler;
@@ -38,9 +41,6 @@ import com.hakan.core.ui.sign.builder.SignBuilder;
 import com.hakan.core.utils.Serializer;
 import com.hakan.core.utils.Validate;
 import com.hakan.core.utils.hooks.Metrics;
-import com.hakan.core.worldborder.BorderHandler;
-import com.hakan.core.worldborder.border.Border;
-import com.hakan.core.worldborder.builder.BorderBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -412,7 +412,7 @@ public final class HCore {
      */
     @Nonnull
     public static SignBuilder signBuilder(@Nonnull Player player) {
-        return new SignBuilder(player);
+        return GuiHandler.signBuilder(player);
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.hakan.core.scoreboard;
 
 import com.hakan.core.HCore;
+import com.hakan.core.utils.ReflectionUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -177,7 +178,8 @@ public final class ScoreboardHandler {
         Validate.isTrue(has(uid), "scoreboard of player(" + uid + ") already exists!");
         Validate.isTrue(player == null, "player(" + uid + ") must be online!");
 
-        Scoreboard scoreboard = new Scoreboard(player, title);
+        Scoreboard scoreboard = ReflectionUtils.newInstance("com.hakan.core.scoreboard.versions.Scoreboard_%s",
+                player, title);
         scoreboards.put(player.getUniqueId(), scoreboard);
         return scoreboard;
     }
