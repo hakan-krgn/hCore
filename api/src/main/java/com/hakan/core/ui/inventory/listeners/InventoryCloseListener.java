@@ -3,7 +3,6 @@ package com.hakan.core.ui.inventory.listeners;
 import com.hakan.core.HCore;
 import com.hakan.core.ui.GuiHandler;
 import com.hakan.core.ui.inventory.InventoryGui;
-import com.hakan.core.utils.ReflectionUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,7 +27,8 @@ public final class InventoryCloseListener implements Listener {
 
         GuiHandler.findInventoryByPlayer(player).ifPresent(gui -> {
             if (gui.hasOption(InventoryGui.Option.CLOSABLE)) {
-                ReflectionUtils.invoke(gui, "onClose", player);
+                gui.onClose(player);
+
                 GuiHandler.getContent().remove(player.getUniqueId());
                 player.updateInventory();
             } else {

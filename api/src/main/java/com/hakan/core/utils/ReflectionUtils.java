@@ -23,7 +23,7 @@ public final class ReflectionUtils {
      */
     @Nonnull
     public static <T> T newInstance(@Nonnull String path) {
-        return newInstance(path, new Object[0]);
+        return newInstance(path, new Class[0], new Object[0]);
     }
 
     /**
@@ -35,26 +35,9 @@ public final class ReflectionUtils {
      * @return New instance of created class.
      */
     @Nonnull
-    public static <T> T newInstance(@Nonnull String path, @Nonnull Object... objects) {
-        Validate.notNull(path, "path cannot be null!");
-        Validate.notNull(objects, "objects cannot be null!");
-
-        Class<?>[] classes = new Class<?>[objects.length];
-        for (int i = 0; i < objects.length; i++)
-            classes[i] = objects[i].getClass();
-        return newInstance(path, classes, objects);
-    }
-
-    /**
-     * Creates new instance of given class.
-     *
-     * @param path    Path of class.
-     * @param objects Objects to be used in constructor.
-     * @param <T>     Type of class.
-     * @return New instance of created class.
-     */
-    @Nonnull
-    public static <T> T newInstance(@Nonnull String path, @Nonnull Class<?>[] classes, @Nonnull Object[] objects) {
+    public static <T> T newInstance(@Nonnull String path,
+                                    @Nonnull Class<?>[] classes,
+                                    @Nonnull Object[] objects) {
         try {
             Validate.notNull(path, "path cannot be null!");
             Validate.notNull(classes, "classes cannot be null!");
@@ -83,7 +66,8 @@ public final class ReflectionUtils {
      * @return Value of the given field.
      */
     @Nullable
-    public static <T> T getField(@Nonnull Object object, @Nonnull String fieldName) {
+    public static <T> T getField(@Nonnull Object object,
+                                 @Nonnull String fieldName) {
         try {
             Validate.notNull(object, "object cannot be null!");
             Validate.notNull(fieldName, "fieldName cannot be null!");
@@ -106,7 +90,9 @@ public final class ReflectionUtils {
      * @param value     Value.
      * @param <T>       Type.
      */
-    public static <T> void setField(@Nonnull Class<?> clazz, @Nonnull String fieldName, @Nonnull T value) {
+    public static <T> void setField(@Nonnull Class<?> clazz,
+                                    @Nonnull String fieldName,
+                                    @Nonnull T value) {
         try {
             Validate.notNull(clazz, "class cannot be null!");
             Validate.notNull(fieldName, "fieldName cannot be null!");
@@ -131,7 +117,9 @@ public final class ReflectionUtils {
      * @param value     Value.
      * @param <T>       Type.
      */
-    public static <T> void setField(@Nonnull Object object, @Nonnull String fieldName, @Nonnull T value) {
+    public static <T> void setField(@Nonnull Object object,
+                                    @Nonnull String fieldName,
+                                    @Nonnull T value) {
         try {
             Validate.notNull(object, "object cannot be null!");
             Validate.notNull(fieldName, "fieldName cannot be null!");
@@ -149,35 +137,18 @@ public final class ReflectionUtils {
     }
 
     /**
-     * Invokes static method.
+     * Invokes method.
      *
-     * @param clazz      Class.
+     * @param object     Object.
      * @param methodName Method name.
      * @param params     Params.
      * @param <T>        Type.
      */
     @Nullable
-    public static <T> T invoke(@Nonnull Class<?> clazz, @Nonnull String methodName, @Nonnull Object... params) {
-        try {
-            Validate.notNull(clazz, "clazz cannot be null!");
-            Validate.notNull(methodName, "method name cannot be null!");
-            Validate.notNull(params, "params cannot be null!");
-
-            Class<?>[] paramTypes = new Class<?>[params.length];
-            for (int i = 0; i < params.length; i++)
-                paramTypes[i] = params[i].getClass();
-
-            Method method = clazz.getDeclaredMethod(methodName, paramTypes);
-            boolean accessible = method.isAccessible();
-
-            method.setAccessible(true);
-            Object value = method.invoke(null, params);
-            method.setAccessible(accessible);
-
-            return (value != null) ? (T) value : null;
-        } catch (Exception e) {
-            throw new NullPointerException(e.getMessage());
-        }
+    public static <T> T invoke(@Nonnull Object object,
+                               @Nonnull String methodName,
+                               @Nonnull Object... params) {
+        return invoke(object.getClass(), object, methodName, params);
     }
 
     /**
@@ -189,43 +160,43 @@ public final class ReflectionUtils {
      * @param <T>        Type.
      */
     @Nullable
-    public static <T> T invoke(@Nonnull Object object, @Nonnull String methodName, @Nonnull Object... params) {
+    public static <T> T invoke(@Nonnull Class<?> clazz,
+                               @Nonnull Object object,
+                               @Nonnull String methodName,
+                               @Nonnull Object... params) {
+
+        Class<?>[] paramTypes = new Class<?>[params.length];
+        for (int i = 0; i < params.length; i++)
+            paramTypes[i] = params[i].getClass();
+        return invoke(clazz, object, methodName, paramTypes, params);
+    }
+
+    /**
+     * Invokes method.
+     *
+     * @param object     Object.
+     * @param methodName Method name.
+     * @param params     Params.
+     * @param <T>        Type.
+     */
+    @Nullable
+    public static <T> T invoke(@Nonnull Class<?> clazz,
+                               @Nonnull Object object,
+                               @Nonnull String methodName,
+                               @Nonnull Class<?>[] paramTypes,
+                               @Nonnull Object... params) {
         try {
+            Validate.notNull(clazz, "class cannot be null!");
             Validate.notNull(object, "object cannot be null!");
             Validate.notNull(methodName, "method name cannot be null!");
+            Validate.notNull(paramTypes, "param types cannot be null!");
             Validate.notNull(params, "params cannot be null!");
 
-            Class<?>[] paramTypes = new Class<?>[params.length];
-            for (int i = 0; i < params.length; i++)
-                paramTypes[i] = params[i].getClass();
-
-            Method method = object.getClass().getDeclaredMethod(methodName, paramTypes);
+            Method method = clazz.getDeclaredMethod(methodName, paramTypes);
             boolean accessible = method.isAccessible();
 
             method.setAccessible(true);
             Object value = method.invoke(object, params);
-            method.setAccessible(accessible);
-
-            return (value != null) ? (T) value : null;
-        } catch (Exception e) {
-            throw new NullPointerException(e.getMessage());
-        }
-    }
-
-    /**
-     * Invokes static method.
-     *
-     * @param method Method.
-     * @param <T>    Type.
-     */
-    public static <T> T invoke(@Nonnull Method method, @Nonnull Object... params) {
-        try {
-            Validate.notNull(method, "method cannot be null!");
-
-            boolean accessible = method.isAccessible();
-
-            method.setAccessible(true);
-            Object value = method.invoke(null, params);
             method.setAccessible(accessible);
 
             return (value != null) ? (T) value : null;
@@ -241,7 +212,9 @@ public final class ReflectionUtils {
      * @param method Method.
      * @param <T>    Type.
      */
-    public static <T> T invoke(@Nonnull Object object, @Nonnull Method method, @Nonnull Object... params) {
+    public static <T> T invoke(@Nonnull Object object,
+                               @Nonnull Method method,
+                               @Nonnull Object... params) {
         try {
             Validate.notNull(object, "object cannot be null!");
             Validate.notNull(method, "method cannot be null!");

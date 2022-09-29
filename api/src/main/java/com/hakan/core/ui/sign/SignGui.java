@@ -129,7 +129,7 @@ public abstract class SignGui implements Gui {
      * @return This class.
      */
     @Nonnull
-    protected final SignGui onOpen() {
+    public final SignGui onOpen() {
         if (this.openRunnable != null)
             this.openRunnable.run();
 
@@ -145,7 +145,7 @@ public abstract class SignGui implements Gui {
      * @return This class.
      */
     @Nonnull
-    protected final SignGui onInputReceive(@Nonnull String[] lines) {
+    public final SignGui onInputReceive(@Nonnull String[] lines) {
         if (this.inputConsumer != null)
             this.inputConsumer.accept(Validate.notNull(lines, "lines cannot be null!"));
 
@@ -173,5 +173,5 @@ public abstract class SignGui implements Gui {
      * @return This class.
      */
     @Nonnull
-    protected abstract <T> SignGui receiveInput(@Nonnull T packet);
+    public abstract <T> SignGui receiveInput(@Nonnull T packet);
 }

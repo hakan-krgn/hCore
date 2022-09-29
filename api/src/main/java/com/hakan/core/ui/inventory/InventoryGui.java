@@ -434,8 +434,10 @@ public class InventoryGui implements Gui {
      * to inventory map and triggers onOpen method.
      *
      * @param player Player.
+     * @return Instance of this class.
      */
-    public final InventoryGui open(@Nonnull Player player) {
+    @Nonnull
+    public final <T extends InventoryGui> T open(@Nonnull Player player) {
         InventoryGui inventoryGui = GuiHandler.findInventoryByPlayer(Validate.notNull(player, "player cannot be null!")).orElse(null);
 
         this.onOpen(player);
@@ -445,7 +447,7 @@ public class InventoryGui implements Gui {
             GuiHandler.getContent().put(player.getUniqueId(), this);
         }
 
-        return this;
+        return (T) this;
     }
 
     /**
@@ -453,8 +455,10 @@ public class InventoryGui implements Gui {
      * removes from inventory map and triggers onClose method.
      *
      * @param player Player.
+     * @return Instance of this class.
      */
-    public final InventoryGui close(@Nonnull Player player) {
+    @Nonnull
+    public final <T extends InventoryGui> T close(@Nonnull Player player) {
         Validate.notNull(player, "player cannot be null!");
 
         if (this.hasOption(Option.CLOSABLE)) {
@@ -465,27 +469,31 @@ public class InventoryGui implements Gui {
             this.removeOption(Option.CLOSABLE);
         }
 
-        return this;
+        return (T) this;
     }
 
     /**
      * Called when player opens the inventory.
      *
      * @param consumer Consumer.
+     * @return Instance of this class.
      */
-    public final InventoryGui whenOpened(@Nonnull Consumer<Player> consumer) {
+    @Nonnull
+    public final <T extends InventoryGui> T whenOpened(@Nonnull Consumer<Player> consumer) {
         this.openConsumer = Validate.notNull(consumer, "consumer cannot be null!");
-        return this;
+        return (T) this;
     }
 
     /**
      * Called when player closes the inventory.
      *
      * @param consumer Consumer.
+     * @return Instance of this class.
      */
-    public final InventoryGui whenClosed(@Nonnull Consumer<Player> consumer) {
+    @Nonnull
+    public final <T extends InventoryGui> T whenClosed(@Nonnull Consumer<Player> consumer) {
         this.closeConsumer = Validate.notNull(consumer, "consumer cannot be null!");
-        return this;
+        return (T) this;
     }
 
     /**
@@ -494,7 +502,7 @@ public class InventoryGui implements Gui {
      *
      * @param player Player.
      */
-    protected void onOpen(@Nonnull Player player) {
+    public void onOpen(@Nonnull Player player) {
         if (this.openConsumer != null)
             this.openConsumer.accept(player);
     }
@@ -505,7 +513,7 @@ public class InventoryGui implements Gui {
      *
      * @param player Player.
      */
-    protected void onClose(@Nonnull Player player) {
+    public void onClose(@Nonnull Player player) {
         if (this.closeConsumer != null)
             this.closeConsumer.accept(player);
     }

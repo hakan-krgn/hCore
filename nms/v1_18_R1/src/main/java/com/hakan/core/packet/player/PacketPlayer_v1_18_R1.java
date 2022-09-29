@@ -47,7 +47,7 @@ public final class PacketPlayer_v1_18_R1 extends PacketPlayer {
     @Override
     public void register() {
         try {
-            this.pipeline = this.connection.a.k.pipeline().addBefore("packet_handler", CHANNEL + super.player.getUniqueId(), new ChannelDuplexHandler() {
+            super.pipeline = this.connection.a.k.pipeline().addBefore("packet_handler", CHANNEL + super.player.getUniqueId(), new ChannelDuplexHandler() {
                 @Override
                 public void channelRead(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
                     PacketEvent packetEvent = new PacketEvent(player, msg, PacketEvent.Type.READ);
@@ -75,7 +75,7 @@ public final class PacketPlayer_v1_18_R1 extends PacketPlayer {
      */
     @Override
     public void unregister() {
-        if (this.pipeline != null && this.pipeline.get(CHANNEL) != null)
-            this.pipeline.remove(CHANNEL);
+        if (super.pipeline != null && super.pipeline.get(CHANNEL) != null)
+            super.pipeline.remove(CHANNEL);
     }
 }

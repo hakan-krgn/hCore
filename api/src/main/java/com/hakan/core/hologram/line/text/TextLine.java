@@ -43,7 +43,7 @@ public interface TextLine extends HologramLine {
         Validate.notNull(text, "text cannot be null!");
 
         TextLine line = ReflectionUtils.newInstance("com.hakan.core.hologram.line.text.TextLine_%s",
-                hologram, location);
+                new Class[]{Hologram.class, Location.class}, new Object[]{hologram, location});
         line.setLocation(location);
         line.setText(text);
 

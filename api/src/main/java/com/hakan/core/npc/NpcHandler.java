@@ -53,7 +53,7 @@ public final class NpcHandler {
                             Location npcLocation = npc.getLocation().add(0, 1.62, 0);
                             Location teleportLocation = NpcUtils.calculateVectorAsLocation(npcLocation, targetLocation);
 
-                            npc.getRenderer().setLocation(teleportLocation);
+                            npc.getRenderer().setLocation(teleportLocation.subtract(0, 1.62, 0));
                             npc.getEntity().updateHeadRotation(Collections.singletonList(player));
                         });
                     }

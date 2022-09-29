@@ -174,7 +174,7 @@ public abstract class AnvilGui implements Gui {
      * @return This class.
      */
     @Nonnull
-    protected final AnvilGui onOpen(boolean runnableActivity) {
+    public final AnvilGui onOpen(boolean runnableActivity) {
         if (runnableActivity && this.openRunnable != null)
             this.openRunnable.run();
 
@@ -190,7 +190,7 @@ public abstract class AnvilGui implements Gui {
      * @return This class.
      */
     @Nonnull
-    protected final AnvilGui onInputReceive(@Nonnull String input) {
+    public final AnvilGui onInputReceive(@Nonnull String input) {
         if (this.inputConsumer != null)
             this.inputConsumer.accept(Validate.notNull(input, "input cannot be null!"));
         return this;
@@ -204,7 +204,7 @@ public abstract class AnvilGui implements Gui {
      * @return This class.
      */
     @Nonnull
-    protected final AnvilGui onClose(boolean runnableActivity) {
+    public final AnvilGui onClose(boolean runnableActivity) {
         if (runnableActivity && this.closeRunnable != null)
             this.closeRunnable.run();
 

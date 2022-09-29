@@ -66,7 +66,7 @@ public final class SignGui_v1_16_R3 extends SignGui {
      */
     @Nonnull
     @Override
-    protected <T> SignGui receiveInput(@Nonnull T packet) {
+    public <T> SignGui receiveInput(@Nonnull T packet) {
         PacketPlayInUpdateSign packetPlayInUpdateSign = (PacketPlayInUpdateSign) packet;
 
         BlockPosition position = packetPlayInUpdateSign.b();

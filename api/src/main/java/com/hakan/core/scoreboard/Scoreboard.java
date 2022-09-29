@@ -126,7 +126,6 @@ public abstract class Scoreboard {
      */
     @Nonnull
     public final Scoreboard setLines(@Nonnull String... lines) {
-        Validate.isTrue(lines.length != 4, "lines length must be 4!");
         this.lines = Validate.notNull(lines, "lines cannot be null!");
         return this;
     }

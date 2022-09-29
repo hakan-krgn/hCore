@@ -179,7 +179,7 @@ public final class ScoreboardHandler {
         Validate.isTrue(player == null, "player(" + uid + ") must be online!");
 
         Scoreboard scoreboard = ReflectionUtils.newInstance("com.hakan.core.scoreboard.versions.Scoreboard_%s",
-                player, title);
+                new Class[]{Player.class, String.class}, new Object[]{player, title});
         scoreboards.put(player.getUniqueId(), scoreboard);
         return scoreboard;
     }
