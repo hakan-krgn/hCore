@@ -25,7 +25,8 @@ public final class NpcUtils {
     @Nonnull
     public static NpcEntity createEntity(@Nonnull Npc npc) {
         Validate.notNull(npc, "npc cannot be null!");
-        return ReflectionUtils.newInstance("com.hakan.core.npc.entity.NpcEntity_%s", npc);
+        return ReflectionUtils.newInstance("com.hakan.core.npc.entity.NpcEntity_%s",
+                new Class[]{Npc.class}, new Object[]{npc});
     }
 
     /**

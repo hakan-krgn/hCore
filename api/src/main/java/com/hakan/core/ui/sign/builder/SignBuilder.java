@@ -88,7 +88,8 @@ public final class SignBuilder {
     @Nonnull
     public SignGui build() {
         SignGui signGui = ReflectionUtils.newInstance("com.hakan.core.ui.sign.versions.SignGui_%s",
-                this.player, this.type, this.lines);
+                new Class[]{Player.class, SignType.class, String[].class},
+                new Object[]{this.player, this.type, this.lines});
 
         if (this.consumer != null)
             signGui.whenInputReceived(this.consumer);

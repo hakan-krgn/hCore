@@ -1,7 +1,6 @@
 package com.hakan.core.ui.anvil.listeners;
 
 import com.hakan.core.ui.GuiHandler;
-import com.hakan.core.utils.ReflectionUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -46,7 +45,7 @@ public final class AnvilClickListener implements Listener {
 
                 if (event.getSlot() == 2) {
                     String input = clickedItem.getItemMeta().getDisplayName();
-                    ReflectionUtils.invoke(gui, "onInputReceive", input);
+                    gui.onInputReceive(input);
                 }
             }
         });

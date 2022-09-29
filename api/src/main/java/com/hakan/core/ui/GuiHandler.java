@@ -12,7 +12,6 @@ import com.hakan.core.ui.inventory.listeners.InventoryClickListener;
 import com.hakan.core.ui.inventory.listeners.InventoryCloseListener;
 import com.hakan.core.ui.sign.SignGui;
 import com.hakan.core.ui.sign.builder.SignBuilder;
-import com.hakan.core.utils.ReflectionUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -82,7 +81,7 @@ public final class GuiHandler {
                 .filter(event -> event.getType().equals(PacketEvent.Type.READ))
                 .filter(event -> event.getPacket().toString().contains("PacketPlayInUpdateSign"))
                 .consume(event -> GuiHandler.findSignByPlayer(event.getPlayer())
-                        .ifPresent(gui -> ReflectionUtils.invoke(gui, "receiveInput", event.getPacket())));
+                        .ifPresent(gui -> gui.receiveInput(event.getPacket())));
     }
 
 
@@ -97,7 +96,7 @@ public final class GuiHandler {
      */
     @Nonnull
     public static Map<UUID, Gui> getContentSafe() {
-        return new HashMap<>(GuiHandler.guiMap);
+        return new HashMap<>(guiMap);
     }
 
     /**
@@ -107,7 +106,7 @@ public final class GuiHandler {
      */
     @Nonnull
     public static Map<UUID, Gui> getContent() {
-        return GuiHandler.guiMap;
+        return guiMap;
     }
 
     /**
@@ -117,7 +116,7 @@ public final class GuiHandler {
      */
     @Nonnull
     public static Collection<Gui> getValuesSafe() {
-        return new ArrayList<>(GuiHandler.guiMap.values());
+        return new ArrayList<>(guiMap.values());
     }
 
     /**
@@ -127,7 +126,7 @@ public final class GuiHandler {
      */
     @Nonnull
     public static Collection<Gui> getValues() {
-        return GuiHandler.guiMap.values();
+        return guiMap.values();
     }
 
     /**
@@ -160,7 +159,7 @@ public final class GuiHandler {
      */
     @Nonnull
     public static Optional<Gui> findByUID(@Nonnull UUID uid) {
-        return Optional.ofNullable(GuiHandler.guiMap.get(Validate.notNull(uid, "UID cannot be null!")));
+        return Optional.ofNullable(guiMap.get(Validate.notNull(uid, "UID cannot be null!")));
     }
 
     /**
@@ -187,7 +186,7 @@ public final class GuiHandler {
     @Nonnull
     public static Map<UUID, InventoryGui> getInventoryContentSafe() {
         Map<UUID, InventoryGui> map = new HashMap<>();
-        for (Map.Entry<UUID, Gui> entry : GuiHandler.guiMap.entrySet())
+        for (Map.Entry<UUID, Gui> entry : guiMap.entrySet())
             if (entry.getValue() instanceof InventoryGui)
                 map.put(entry.getKey(), (InventoryGui) entry.getValue());
         return map;
@@ -201,7 +200,7 @@ public final class GuiHandler {
     @Nonnull
     public static Collection<InventoryGui> getInventoryValuesSafe() {
         List<InventoryGui> map = new ArrayList<>();
-        for (Gui gui : GuiHandler.guiMap.values())
+        for (Gui gui : guiMap.values())
             if (gui instanceof InventoryGui)
                 map.add((InventoryGui) gui);
         return map;
@@ -237,7 +236,7 @@ public final class GuiHandler {
      */
     @Nonnull
     public static Optional<InventoryGui> findInventoryByUID(@Nonnull UUID uid) {
-        Gui gui = GuiHandler.guiMap.get(Validate.notNull(uid, "UID cannot be null!"));
+        Gui gui = guiMap.get(Validate.notNull(uid, "UID cannot be null!"));
         return (gui instanceof InventoryGui) ? Optional.of((InventoryGui) gui) : Optional.empty();
     }
 
@@ -276,7 +275,7 @@ public final class GuiHandler {
     @Nonnull
     public static Map<UUID, SignGui> getSignContentSafe() {
         Map<UUID, SignGui> map = new HashMap<>();
-        for (Map.Entry<UUID, Gui> entry : GuiHandler.guiMap.entrySet())
+        for (Map.Entry<UUID, Gui> entry : guiMap.entrySet())
             if (entry.getValue() instanceof SignGui)
                 map.put(entry.getKey(), (SignGui) entry.getValue());
         return map;
@@ -290,7 +289,7 @@ public final class GuiHandler {
     @Nonnull
     public static Collection<SignGui> getSignValuesSafe() {
         List<SignGui> map = new ArrayList<>();
-        for (Gui gui : GuiHandler.guiMap.values())
+        for (Gui gui : guiMap.values())
             if (gui instanceof SignGui)
                 map.add((SignGui) gui);
         return map;
@@ -326,7 +325,7 @@ public final class GuiHandler {
      */
     @Nonnull
     public static Optional<SignGui> findSignByUID(@Nonnull UUID uid) {
-        Gui gui = GuiHandler.guiMap.get(Validate.notNull(uid, "UID cannot be null!"));
+        Gui gui = guiMap.get(Validate.notNull(uid, "UID cannot be null!"));
         return (gui instanceof SignGui) ? Optional.of((SignGui) gui) : Optional.empty();
     }
 
@@ -365,7 +364,7 @@ public final class GuiHandler {
     @Nonnull
     public static Map<UUID, AnvilGui> getAnvilContentSafe() {
         Map<UUID, AnvilGui> map = new HashMap<>();
-        for (Map.Entry<UUID, Gui> entry : GuiHandler.guiMap.entrySet())
+        for (Map.Entry<UUID, Gui> entry : guiMap.entrySet())
             if (entry.getValue() instanceof AnvilGui)
                 map.put(entry.getKey(), (AnvilGui) entry.getValue());
         return map;
@@ -379,7 +378,7 @@ public final class GuiHandler {
     @Nonnull
     public static Collection<AnvilGui> getAnvilValuesSafe() {
         List<AnvilGui> map = new ArrayList<>();
-        for (Gui gui : GuiHandler.guiMap.values())
+        for (Gui gui : guiMap.values())
             if (gui instanceof AnvilGui)
                 map.add((AnvilGui) gui);
         return map;
@@ -415,7 +414,7 @@ public final class GuiHandler {
      */
     @Nonnull
     public static Optional<AnvilGui> findAnvilByUID(@Nonnull UUID uid) {
-        Gui gui = GuiHandler.guiMap.get(Validate.notNull(uid, "UID cannot be null!"));
+        Gui gui = guiMap.get(Validate.notNull(uid, "UID cannot be null!"));
         return (gui instanceof AnvilGui) ? Optional.of((AnvilGui) gui) : Optional.empty();
     }
 

@@ -1266,7 +1266,7 @@ public final class HCore {
      * @return World border builder.
      */
     @Nonnull
-    public static BorderBuilder buildBorder(@Nonnull Player viewer) {
+    public static BorderBuilder borderBuilder(@Nonnull Player viewer) {
         return BorderHandler.builder(viewer);
     }
 

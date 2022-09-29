@@ -73,7 +73,7 @@ public final class Scoreboard_v1_19_1_R1 extends Scoreboard {
             PacketPlayOutScoreboardTeam.b b = new PacketPlayOutScoreboardTeam.b(scoreboardTeam);
             ReflectionUtils.setField(b, "a", CraftChatMessage.fromStringOrNull("team_" + i));
             ReflectionUtils.setField(b, "b", CraftChatMessage.fromStringOrNull(ColorUtil.colored(line)));
-            ReflectionUtils.setField(b, "c", CraftChatMessage.fromStringOrNull(""));
+            ReflectionUtils.setField(b, "c", CraftChatMessage.fromStringOrNull(" "));
             ReflectionUtils.setField(b, "d", "always");
             ReflectionUtils.setField(b, "e", "always");
             ReflectionUtils.setField(b, "f", EnumChatFormat.v);

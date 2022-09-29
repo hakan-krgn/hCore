@@ -2,7 +2,6 @@ package com.hakan.core.ui.anvil.listeners;
 
 import com.hakan.core.HCore;
 import com.hakan.core.ui.GuiHandler;
-import com.hakan.core.utils.ReflectionUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -26,7 +25,7 @@ public final class AnvilCloseListener implements Listener {
 
         GuiHandler.findAnvilByPlayer(player).ifPresent(gui -> {
             if (gui.isClosable()) {
-                HCore.syncScheduler().after(1).run(() -> ReflectionUtils.invoke(gui, "onClose", true));
+                gui.onClose(true);
                 player.updateInventory();
             } else {
                 HCore.syncScheduler().after(1).run(() -> gui.clone().open(false));

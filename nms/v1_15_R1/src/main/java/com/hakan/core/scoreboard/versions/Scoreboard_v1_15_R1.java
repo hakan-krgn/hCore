@@ -62,7 +62,7 @@ public final class Scoreboard_v1_15_R1 extends Scoreboard {
             ReflectionUtils.setField(team, "a", "team_" + i);
             ReflectionUtils.setField(team, "b", CraftChatMessage.fromStringOrNull("team_" + i));
             ReflectionUtils.setField(team, "c", CraftChatMessage.fromStringOrNull(ColorUtil.colored(line)));
-            ReflectionUtils.setField(team, "d", CraftChatMessage.fromStringOrNull(""));
+            ReflectionUtils.setField(team, "d", CraftChatMessage.fromStringOrNull(" "));
             ReflectionUtils.setField(team, "e", "always");
             ReflectionUtils.setField(team, "f", "always");
             ReflectionUtils.setField(team, "g", EnumChatFormat.RESET);

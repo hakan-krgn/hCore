@@ -44,7 +44,7 @@ public interface ItemLine extends HologramLine {
         Validate.notNull(itemStack, "item stack cannot be null!");
 
         ItemLine line = ReflectionUtils.newInstance("com.hakan.core.hologram.line.item.ItemLine_%s",
-                hologram, location);
+                new Class[]{Hologram.class, Location.class}, new Object[]{hologram, location});
         line.setLocation(location);
         line.setItem(itemStack);
 

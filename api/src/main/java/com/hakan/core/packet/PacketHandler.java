@@ -106,7 +106,8 @@ public final class PacketHandler {
     public static void register(@Nonnull Player player) {
         Validate.notNull(player, "player cannot be null!");
 
-        PacketPlayer packetPlayer = ReflectionUtils.newInstance("com.hakan.core.packet.player.PacketPlayer_%s", player);
+        PacketPlayer packetPlayer = ReflectionUtils.newInstance("com.hakan.core.packet.player.PacketPlayer_%s",
+                new Class[]{Player.class}, new Object[]{player});
         packetPlayers.put(player, packetPlayer);
         packetPlayer.register();
     }

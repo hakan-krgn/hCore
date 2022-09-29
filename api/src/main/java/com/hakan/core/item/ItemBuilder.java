@@ -39,7 +39,8 @@ public class ItemBuilder {
         SkullBuilder.initialize();
 
         nbtManager = ReflectionUtils.newInstance("com.hakan.core.item.nbt.NbtManager_%s");
-        glowEnchantment = ReflectionUtils.newInstance("com.hakan.core.item.enchantment.EnchantmentGlow_%s", new Class[]{int.class}, new Object[]{152634});
+        glowEnchantment = ReflectionUtils.newInstance("com.hakan.core.item.enchantment.EnchantmentGlow_%s",
+                new Class[]{int.class}, new Object[]{152634});
 
         if (Arrays.asList(Enchantment.values()).contains(glowEnchantment))
             return;
@@ -553,7 +554,7 @@ public class ItemBuilder {
         if (meta != null) {
             if (this.unbreakable) {
                 if (HCore.getProtocolVersion().isOlder(ProtocolVersion.v1_11_R1)) {
-                    Object spigot = ReflectionUtils.invoke(ItemMeta.class, "spigot", meta);
+                    Object spigot = ReflectionUtils.invoke(meta, "spigot");
                     ReflectionUtils.invoke(Validate.notNull(spigot), "setUnbreakable", true);
                 } else {
                     meta.setUnbreakable(true);
