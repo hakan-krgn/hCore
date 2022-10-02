@@ -76,9 +76,9 @@ public abstract class ConfigContainer {
 
         switch (type) {
             case YAML:
-                return new YamlConfigContainer(path, resource, type, plugin);
+                return new YamlConfigContainer(path, resource, plugin);
             case JSON:
-                return new JsonConfigContainer(path, resource, type, plugin);
+                return new JsonConfigContainer(path, resource, plugin);
             default:
                 throw new IllegalArgumentException("unsupported config file type: " + type);
         }
