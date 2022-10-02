@@ -46,18 +46,7 @@ public class JsonConfigContainer extends ConfigContainer {
      */
     public JsonConfigContainer(@Nonnull String path,
                                @Nonnull Class<? extends JavaPlugin> plugin) {
-        super(path, plugin);
-        this.gson = new Gson();
-        this.jsonObject = JsonUtils.loadFromFile(super.path);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public JsonConfigContainer(@Nonnull String path,
-                               @Nonnull ConfigType type,
-                               @Nonnull Class<? extends JavaPlugin> plugin) {
-        super(path, type, plugin);
+        super(path, ConfigType.JSON, plugin);
         this.gson = new Gson();
         this.jsonObject = JsonUtils.loadFromFile(super.path);
     }
@@ -67,9 +56,8 @@ public class JsonConfigContainer extends ConfigContainer {
      */
     public JsonConfigContainer(@Nonnull String path,
                                @Nullable String resource,
-                               @Nonnull ConfigType type,
                                @Nonnull Class<? extends JavaPlugin> plugin) {
-        super(path, resource, type, plugin);
+        super(path, resource, ConfigType.JSON, plugin);
         this.gson = new Gson();
         this.jsonObject = JsonUtils.loadFromFile(super.path);
     }
