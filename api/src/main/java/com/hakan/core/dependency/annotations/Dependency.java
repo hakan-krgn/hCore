@@ -39,6 +39,15 @@ public @interface Dependency {
     String version();
 
     /**
+     * The path of the dependency
+     * that you want to download.
+     *
+     * @return The path.
+     */
+    @Nonnull
+    String savePath();
+
+    /**
      * The website of the dependency
      * that you want to download.
      *

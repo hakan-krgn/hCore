@@ -53,7 +53,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.io.File;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collection;
@@ -1418,22 +1417,10 @@ public final class HCore {
      * Loads the dependencies of
      * the class to given path.
      *
-     * @param object   The object.
-     * @param savePath The save path.
+     * @param object Instance of dependency class.
      */
-    public static void loadDependency(@Nonnull Object object, @Nonnull String savePath) {
-        DependencyHandler.load(object, savePath);
-    }
-
-    /**
-     * Loads the dependencies of
-     * the class to given path.
-     *
-     * @param object     The object.
-     * @param saveFolder The save folder.
-     */
-    public static void loadDependency(@Nonnull Object object, @Nonnull File saveFolder) {
-        DependencyHandler.load(object, saveFolder);
+    public static void loadDependencies(@Nonnull Object object) {
+        DependencyHandler.load(object);
     }
 
 
