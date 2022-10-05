@@ -6,7 +6,6 @@ import com.hakan.core.dependency.utils.DependencyUtils;
 import com.hakan.core.utils.Validate;
 
 import javax.annotation.Nonnull;
-import java.io.File;
 
 /**
  * DependencyHandler class to load
@@ -18,27 +17,10 @@ public final class DependencyHandler {
      * Loads the dependencies of
      * the class to given path.
      *
-     * @param object   The object.
-     * @param savePath The save path.
+     * @param object The object.
      */
-    public static void load(@Nonnull Object object,
-                            @Nonnull String savePath) {
+    public static void load(@Nonnull Object object) {
         Validate.notNull(object, "object cannot be null!");
-        Validate.notNull(savePath, "save path cannot be null!");
-        DependencyHandler.load(object, new File(savePath));
-    }
-
-    /**
-     * Loads the dependencies of
-     * the class to given path.
-     *
-     * @param object     The object.
-     * @param saveFolder The save folder.
-     */
-    public static void load(@Nonnull Object object,
-                            @Nonnull File saveFolder) {
-        Validate.notNull(object, "object cannot be null!");
-        Validate.notNull(saveFolder, "save folder cannot be null!");
 
 
         DependencyList dependencyList = object.getClass().getAnnotation(DependencyList.class);
@@ -47,11 +29,8 @@ public final class DependencyHandler {
         for (Dependency dependency : dependencyList.value()) {
             DependencyAttribute dependencyAttribute = new DependencyAttribute(dependency);
 
-            String dependencyUrl = dependencyAttribute.asUrl();
-            String dependencyPath = dependencyAttribute.asPath(saveFolder);
-
-            DependencyUtils.saveFile(dependencyUrl, dependencyPath);
-            DependencyUtils.loadJar(object.getClass(), dependencyPath);
+            DependencyUtils.downloadJars(dependencyAttribute);
+            DependencyUtils.loadJars(object.getClass(), dependencyAttribute);
         }
     }
 }
