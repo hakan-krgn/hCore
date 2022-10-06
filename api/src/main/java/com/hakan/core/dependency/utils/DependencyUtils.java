@@ -19,8 +19,11 @@ import java.net.URLClassLoader;
 import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.IntStream;
 
 /**
  * DependencyUtils class to save
@@ -40,6 +43,8 @@ public final class DependencyUtils {
 
         try {
             File saveFile = new File(attribute.asSavePath());
+            if (saveFile.exists()) return;
+
             URL website = new URL(attribute.asJarUrl());
             InputStream in = website.openStream();
 
@@ -115,30 +120,71 @@ public final class DependencyUtils {
         List<DependencyAttribute> attributes = new LinkedList<>();
 
         try {
-            URL website = new URL(attribute.asPomUrl());
-            URLConnection connection = website.openConnection();
+            URL webUrl = new URL(attribute.asPomUrl());
+            URLConnection connection = webUrl.openConnection();
             connection.addRequestProperty("User-Agent", "jar-agent");
             connection.connect();
 
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document doc = db.parse(connection.getInputStream());
-
             doc.getDocumentElement().normalize();
 
-            NodeList nodeList = doc.getElementsByTagName("dependency");
-            for (int itr = 0; itr < nodeList.getLength(); itr++) {
-                Node node = nodeList.item(itr);
+
+
+            Map<String, String> properties = new HashMap<>();
+            NodeList propertyList = doc.getElementsByTagName("properties");
+            for (int itr = 0; itr < propertyList.getLength(); itr++) {
+                Node node = propertyList.item(itr);
+                if (node.getNodeType() != Node.ELEMENT_NODE)
+                    continue;
+
+                Element element = (Element) node;
+                NodeList nodeList = element.getChildNodes();
+
+                IntStream.range(0, nodeList.getLength()).mapToObj(nodeList::item)
+                        .filter(_node -> _node.getNodeType() == Node.ELEMENT_NODE).map(_node -> (Element) _node)
+                        .forEach(_element -> properties.put(_element.getNodeName(), _element.getTextContent()
+                                .replace("[", "")
+                                .replace(",)", "")
+                        ));
+            }
+
+
+            NodeList dependencyList = doc.getElementsByTagName("dependency");
+            for (int itr = 0; itr < dependencyList.getLength(); itr++) {
+                Node node = dependencyList.item(itr);
 
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) node;
 
-                    attributes.add(new DependencyAttribute(
-                            element.getElementsByTagName("groupId").item(0).getTextContent(),
-                            element.getElementsByTagName("artifactId").item(0).getTextContent(),
-                            element.getElementsByTagName("version").item(0).getTextContent(),
-                            attribute.getWebsite(), attribute.getSavePath()
-                    ));
+                    String website = attribute.getWebsite();
+                    String savePath = attribute.getSavePath();
+                    String groupId = element.getElementsByTagName("groupId").item(0).getTextContent();
+                    String artifactId = element.getElementsByTagName("artifactId").item(0).getTextContent();
+                    String version = element.getElementsByTagName("version").item(0).getTextContent();
+
+                    if (element.getElementsByTagName("scope").item(0) != null) {
+                        String scope = element.getElementsByTagName("scope").item(0).getTextContent();
+                        if (scope.equalsIgnoreCase("provided"))
+                            continue;
+                        else if (scope.equalsIgnoreCase("system"))
+                            continue;
+                        else if (scope.equalsIgnoreCase("test"))
+                            continue;
+                    }
+
+                    for (Map.Entry<String, String> entry : properties.entrySet())
+                        if (groupId.contains("${" + entry.getKey() + "}"))
+                            groupId = groupId.replace("${" + entry.getKey() + "}", entry.getValue());
+                    for (Map.Entry<String, String> entry : properties.entrySet())
+                        if (artifactId.contains("${" + entry.getKey() + "}"))
+                            artifactId = artifactId.replace("${" + entry.getKey() + "}", entry.getValue());
+                    for (Map.Entry<String, String> entry : properties.entrySet())
+                        if (version.contains("${" + entry.getKey() + "}"))
+                            version = version.replace("${" + entry.getKey() + "}", entry.getValue());
+
+                    attributes.add(new DependencyAttribute(groupId, artifactId, version, website, savePath));
                 }
             }
         } catch (Exception e) {
