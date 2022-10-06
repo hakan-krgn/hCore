@@ -266,7 +266,8 @@ public final class Scheduler {
             this.endRunnable.run();
 
         this.runnable.cancel();
-        return schedulers.remove(this.runnable.getTaskId());
+        schedulers.remove(this);
+        return this;
     }
 
     /**
@@ -308,7 +309,7 @@ public final class Scheduler {
             public void run() {
                 for (Function<BukkitRunnable, Boolean> terminateFilter : terminateFilters)
                     if (terminateFilter.apply(this))
-                        this.cancel();
+                        Scheduler.this.cancel();
                 for (Function<BukkitRunnable, Boolean> freezeFilter : freezeFilters)
                     if (freezeFilter.apply(this))
                         return;
@@ -326,6 +327,9 @@ public final class Scheduler {
                     taskConsumer.accept(this, counter);
                     Scheduler.this.cancel();
                 }
+
+                if (Scheduler.this.isCancelled())
+                    return;
 
                 if (limiter != null && --limiter <= 0)
                     Scheduler.this.cancel();
