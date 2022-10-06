@@ -77,6 +77,7 @@ public class Skin {
     }
 
 
+
     private final String texture;
     private final String signature;
     private final String shortTexture;
