@@ -317,15 +317,11 @@ public final class Scheduler {
                     return;
 
                 if (start > end) {
-                    if (counter <= start && counter >= end)
-                        taskConsumer.accept(this, counter--);
-                    if (counter < end)
-                        Scheduler.this.cancel();
+                    if (counter <= start && counter >= end) taskConsumer.accept(this, counter--);
+                    if (counter < end) Scheduler.this.cancel();
                 } else if (start < end) {
-                    if (counter >= start && counter <= end)
-                        taskConsumer.accept(this, counter++);
-                    if (counter > end)
-                        Scheduler.this.cancel();
+                    if (counter >= start && counter <= end) taskConsumer.accept(this, counter++);
+                    if (counter > end) Scheduler.this.cancel();
                 } else {
                     taskConsumer.accept(this, counter);
                     Scheduler.this.cancel();
