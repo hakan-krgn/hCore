@@ -105,6 +105,7 @@ public final class HCore {
         Metrics.initialize(plugin);
 
         PacketHandler.initialize();
+        Scheduler.initialize();
         GuiHandler.initialize();
         NpcHandler.initialize();
         ItemBuilder.initialize();
