@@ -349,7 +349,9 @@ public final class Scheduler {
             }
         };
 
-        if (this.async) this.runnable.runTaskTimer(this.plugin, this.after, this.every);
+        if (!this.async && this.every == -1) this.runnable.runTaskLater(this.plugin, this.after);
+        else if (!this.async) this.runnable.runTaskTimer(this.plugin, this.after, this.every);
+        else if (this.every == -1) this.runnable.runTaskLaterAsynchronously(this.plugin, this.after);
         else this.runnable.runTaskTimerAsynchronously(this.plugin, this.after, this.every);
 
 
