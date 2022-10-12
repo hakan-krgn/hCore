@@ -23,8 +23,8 @@ import java.util.Set;
  * a plugin.yml file automatically
  * at compile time.
  */
+@SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedAnnotationTypes("com.hakan.core.plugin.Plugin")
-@SupportedSourceVersion(SourceVersion.RELEASE_18)
 public final class PluginProcessor extends AbstractProcessor {
 
     /**
