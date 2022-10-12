@@ -10,7 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 @Plugin(
         name = "hCore",
         authors = "Hakan",
-        version = "0.6.6",
+        version = "0.6.7",
         apiVersion = "1.13",
         website = "https://github.com/hakan-krgn/hCore",
         description = "hCore is a plugin that offers many useful features for spigot developers."
