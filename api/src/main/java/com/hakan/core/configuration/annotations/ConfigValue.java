@@ -21,5 +21,5 @@ public @interface ConfigValue {
      * @return Path of the value.
      */
     @Nonnull
-    String path();
+    String value();
 }

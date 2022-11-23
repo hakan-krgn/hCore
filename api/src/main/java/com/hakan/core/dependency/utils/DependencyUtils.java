@@ -23,7 +23,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.IntStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * DependencyUtils class to save
@@ -31,6 +32,8 @@ import java.util.stream.IntStream;
  * load it to classpath.
  */
 public final class DependencyUtils {
+
+    private static final Pattern PATTERN = Pattern.compile("(?=\\d)[\\w\\\\.-]+");
 
     /**
      * Downloads jar from
@@ -142,50 +145,57 @@ public final class DependencyUtils {
                 Element element = (Element) node;
                 NodeList nodeList = element.getChildNodes();
 
-                IntStream.range(0, nodeList.getLength()).mapToObj(nodeList::item)
-                        .filter(_node -> _node.getNodeType() == Node.ELEMENT_NODE).map(_node -> (Element) _node)
-                        .forEach(_element -> properties.put(_element.getNodeName(), _element.getTextContent()
-                                .replace("[", "")
-                                .replace(",)", "")
-                        ));
+                int bound = nodeList.getLength();
+                for (int i = 0; i < bound; i++) {
+                    Node _node = nodeList.item(i);
+                    if (_node.getNodeType() != Node.ELEMENT_NODE)
+                        continue;
+
+                    Element _element = (Element) _node;
+                    properties.put(_element.getNodeName(), _element.getTextContent());
+                }
             }
 
 
             NodeList dependencyList = doc.getElementsByTagName("dependency");
             for (int itr = 0; itr < dependencyList.getLength(); itr++) {
                 Node node = dependencyList.item(itr);
+                if (node.getNodeType() != Node.ELEMENT_NODE)
+                    continue;
 
-                if (node.getNodeType() == Node.ELEMENT_NODE) {
-                    Element element = (Element) node;
+                Element element = (Element) node;
 
-                    String website = attribute.getWebsite();
-                    String savePath = attribute.getSavePath();
-                    String groupId = element.getElementsByTagName("groupId").item(0).getTextContent();
-                    String artifactId = element.getElementsByTagName("artifactId").item(0).getTextContent();
-                    String version = element.getElementsByTagName("version").item(0).getTextContent();
+                String website = attribute.getWebsite();
+                String savePath = attribute.getSavePath();
+                String groupId = element.getElementsByTagName("groupId").item(0).getTextContent();
+                String artifactId = element.getElementsByTagName("artifactId").item(0).getTextContent();
+                String version = element.getElementsByTagName("version").item(0).getTextContent();
 
-                    if (element.getElementsByTagName("scope").item(0) != null) {
-                        String scope = element.getElementsByTagName("scope").item(0).getTextContent();
-                        if (scope.equalsIgnoreCase("provided"))
-                            continue;
-                        else if (scope.equalsIgnoreCase("system"))
-                            continue;
-                        else if (scope.equalsIgnoreCase("test"))
-                            continue;
-                    }
-
-                    for (Map.Entry<String, String> entry : properties.entrySet())
-                        if (groupId.contains("${" + entry.getKey() + "}"))
-                            groupId = groupId.replace("${" + entry.getKey() + "}", entry.getValue());
-                    for (Map.Entry<String, String> entry : properties.entrySet())
-                        if (artifactId.contains("${" + entry.getKey() + "}"))
-                            artifactId = artifactId.replace("${" + entry.getKey() + "}", entry.getValue());
-                    for (Map.Entry<String, String> entry : properties.entrySet())
-                        if (version.contains("${" + entry.getKey() + "}"))
-                            version = version.replace("${" + entry.getKey() + "}", entry.getValue());
-
-                    attributes.add(new DependencyAttribute(groupId, artifactId, version, website, savePath));
+                if (element.getElementsByTagName("scope").item(0) != null) {
+                    String scope = element.getElementsByTagName("scope").item(0).getTextContent();
+                    if (scope.equalsIgnoreCase("provided"))
+                        continue;
+                    else if (scope.equalsIgnoreCase("system"))
+                        continue;
+                    else if (scope.equalsIgnoreCase("test"))
+                        continue;
                 }
+
+                for (Map.Entry<String, String> entry : properties.entrySet())
+                    if (groupId.contains("${" + entry.getKey() + "}"))
+                        groupId = groupId.replace("${" + entry.getKey() + "}", entry.getValue());
+                for (Map.Entry<String, String> entry : properties.entrySet())
+                    if (artifactId.contains("${" + entry.getKey() + "}"))
+                        artifactId = artifactId.replace("${" + entry.getKey() + "}", entry.getValue());
+                for (Map.Entry<String, String> entry : properties.entrySet())
+                    if (version.contains("${" + entry.getKey() + "}"))
+                        version = version.replace("${" + entry.getKey() + "}", entry.getValue());
+
+
+                Matcher matcher = PATTERN.matcher(version);
+                if (matcher.find()) version = matcher.group();
+
+                attributes.add(new DependencyAttribute(groupId, artifactId, version, website, savePath));
             }
         } catch (Exception e) {
             e.printStackTrace();
