@@ -4,6 +4,7 @@ import com.hakan.core.utils.Validate;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.nbt.MojangsonParser;
 import net.minecraft.nbt.NBTTagCompound;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_18_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
@@ -24,6 +25,9 @@ public final class NbtManager_v1_18_R1 implements NbtManager {
         Validate.notNull(key, "key cannot be null");
         Validate.notNull(value, "value cannot be null");
 
+        if (itemStack.getType().equals(Material.AIR))
+            return itemStack;
+
         net.minecraft.world.item.ItemStack nmsCopy = CraftItemStack.asNMSCopy(itemStack);
         nmsCopy.t().a(key, value);
         return CraftItemStack.asBukkitCopy(nmsCopy);
@@ -38,8 +42,10 @@ public final class NbtManager_v1_18_R1 implements NbtManager {
         Validate.notNull(itemStack, "itemStack cannot be null");
         Validate.notNull(nbt, "nbt cannot be null");
 
-        net.minecraft.world.item.ItemStack nmsCopy = CraftItemStack.asNMSCopy(itemStack);
+        if (itemStack.getType().equals(Material.AIR))
+            return itemStack;
 
+        net.minecraft.world.item.ItemStack nmsCopy = CraftItemStack.asNMSCopy(itemStack);
         nmsCopy.t().a(this.parse(nbt));
         return CraftItemStack.asBukkitCopy(nmsCopy);
     }

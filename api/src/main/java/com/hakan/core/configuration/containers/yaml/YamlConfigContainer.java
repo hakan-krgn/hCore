@@ -151,7 +151,7 @@ public class YamlConfigContainer extends ConfigContainer {
 
                 ConfigValue configValue = field.getAnnotation(ConfigValue.class);
 
-                Object value = this.getValue(configValue.path());
+                Object value = this.getValue(configValue.value());
                 Object defaultValue = ReflectionUtils.getField(configClass, field.getName());
 
                 if (defaultValue != null && value != null) {
@@ -159,7 +159,7 @@ public class YamlConfigContainer extends ConfigContainer {
                 } else if (defaultValue == null && value != null) {
                     ReflectionUtils.setField(configClass, field.getName(), value);
                 } else if (defaultValue != null) {
-                    this.setValue(configValue.path(), defaultValue, false);
+                    this.setValue(configValue.value(), defaultValue, false);
                     save = true;
                 } else {
                     throw new IllegalArgumentException("config value cannot be null!");

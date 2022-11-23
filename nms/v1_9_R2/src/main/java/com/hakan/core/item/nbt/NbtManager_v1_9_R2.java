@@ -4,6 +4,7 @@ import com.hakan.core.utils.Validate;
 import net.minecraft.server.v1_9_R2.MojangsonParseException;
 import net.minecraft.server.v1_9_R2.MojangsonParser;
 import net.minecraft.server.v1_9_R2.NBTTagCompound;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_9_R2.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
@@ -26,7 +27,9 @@ public final class NbtManager_v1_9_R2 implements NbtManager {
 
         net.minecraft.server.v1_9_R2.ItemStack nmsCopy = CraftItemStack.asNMSCopy(itemStack);
 
-        if (!nmsCopy.hasTag())
+        if (itemStack.getType().equals(Material.AIR))
+            return itemStack;
+        else if (!nmsCopy.hasTag())
             nmsCopy.setTag(new NBTTagCompound());
 
         nmsCopy.getTag().setString(key, value);
@@ -44,7 +47,9 @@ public final class NbtManager_v1_9_R2 implements NbtManager {
 
         net.minecraft.server.v1_9_R2.ItemStack nmsCopy = CraftItemStack.asNMSCopy(itemStack);
 
-        if (!nmsCopy.hasTag())
+        if (itemStack.getType().equals(Material.AIR))
+            return itemStack;
+        else if (!nmsCopy.hasTag())
             nmsCopy.setTag(new NBTTagCompound());
 
         nmsCopy.getTag().a(this.parse(nbt));
