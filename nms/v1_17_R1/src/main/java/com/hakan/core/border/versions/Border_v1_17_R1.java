@@ -9,6 +9,7 @@ import com.hakan.core.utils.Validate;
 import net.minecraft.network.protocol.game.ClientboundInitializeBorderPacket;
 import net.minecraft.world.level.border.WorldBorder;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
@@ -42,6 +43,8 @@ public final class Border_v1_17_R1 implements Border {
         this.color = Validate.notNull(color, "border color cannot be null!");
 
         this.border = new WorldBorder();
+        this.border.world = ((CraftWorld) location.getWorld()).getHandle();
+
         this.setSize(size);
         this.setCenter(location);
         this.setWarningTime(warningTime);

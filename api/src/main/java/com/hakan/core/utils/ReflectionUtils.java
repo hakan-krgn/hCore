@@ -53,7 +53,8 @@ public final class ReflectionUtils {
 
             return instance;
         } catch (Exception e) {
-            throw new NullPointerException(e.getMessage());
+            e.printStackTrace();
+            return (T) classes[0];
         }
     }
 
@@ -78,7 +79,8 @@ public final class ReflectionUtils {
             field.setAccessible(false);
             return (value != null) ? (T) value : null;
         } catch (Exception e) {
-            throw new NullPointerException(e.getMessage());
+            e.printStackTrace();
+            return null;
         }
     }
 
@@ -105,7 +107,7 @@ public final class ReflectionUtils {
             field.set(null, value);
             field.setAccessible(accessible);
         } catch (Exception e) {
-            throw new NullPointerException(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -132,7 +134,7 @@ public final class ReflectionUtils {
             field.set(object, value);
             field.setAccessible(accessible);
         } catch (Exception e) {
-            throw new NullPointerException(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -201,7 +203,8 @@ public final class ReflectionUtils {
 
             return (value != null) ? (T) value : null;
         } catch (Exception e) {
-            throw new NullPointerException(e.getMessage());
+            e.printStackTrace();
+            return null;
         }
     }
 
@@ -227,7 +230,8 @@ public final class ReflectionUtils {
 
             return (value != null) ? (T) value : null;
         } catch (Exception e) {
-            throw new NullPointerException(e.getMessage());
+            e.printStackTrace();
+            return null;
         }
     }
 }

@@ -43,6 +43,8 @@ public final class Border_v1_13_R2 implements Border {
         this.color = Validate.notNull(color, "border color cannot be null!");
 
         this.border = new WorldBorder();
+        this.border.world = ((CraftWorld) location.getWorld()).getHandle();
+
         this.border.setSize(size);
         this.border.setWarningTime(warningTime);
         this.border.setDamageAmount(damageAmount);
