@@ -94,6 +94,13 @@ public interface HologramLine {
     void setLocation(@Nonnull Location location);
 
     /**
+     * Sets marker of line.
+     *
+     * @param marker Marker of line.
+     */
+    void setMarker(boolean marker);
+
+    /**
      * Show line to players.
      *
      * @param players Players who can see line.

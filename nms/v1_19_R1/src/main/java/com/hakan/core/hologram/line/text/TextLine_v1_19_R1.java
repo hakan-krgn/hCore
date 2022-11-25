@@ -124,6 +124,18 @@ public final class TextLine_v1_19_R1 implements TextLine {
      * {@inheritDoc}
      */
     @Override
+    public void setMarker(boolean marker) {
+        this.armorStand.t(marker);
+        this.click.t(marker);
+        HCore.sendPacket(this.hologram.getRenderer().getShownPlayers(),
+                new PacketPlayOutEntityMetadata(this.click.ae(), this.click.ai(), true),
+                new PacketPlayOutEntityMetadata(this.armorStand.ae(), this.armorStand.ai(), true));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void show(@Nonnull List<Player> players) {
         HCore.sendPacket(Validate.notNull(players, "players cannot be null!"),
                 new PacketPlayOutSpawnEntity(this.armorStand),

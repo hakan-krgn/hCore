@@ -5,6 +5,7 @@ import com.hakan.core.hologram.Hologram;
 import com.hakan.core.utils.Validate;
 import net.minecraft.server.v1_8_R3.EntityArmorStand;
 import net.minecraft.server.v1_8_R3.EntityItem;
+import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAttachEntity;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityMetadata;
@@ -113,6 +114,17 @@ public final class ItemLine_v1_8_R3 implements ItemLine {
 
         HCore.sendPacket(this.hologram.getRenderer().getShownPlayers(),
                 new PacketPlayOutEntityTeleport(this.armorStand));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setMarker(boolean marker) {
+        this.armorStand.getDataWatcher().watch(10, marker ? (byte) 16 : (byte) 0);
+        this.armorStand.b(new NBTTagCompound());
+        HCore.sendPacket(this.hologram.getRenderer().getShownPlayers(),
+                new PacketPlayOutEntityMetadata(this.armorStand.getId(), this.armorStand.getDataWatcher(), true));
     }
 
     /**

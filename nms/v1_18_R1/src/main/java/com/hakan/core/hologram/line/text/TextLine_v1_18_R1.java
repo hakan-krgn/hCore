@@ -48,7 +48,7 @@ public final class TextLine_v1_18_R1 implements TextLine {
         this.armorStand.persistentInvisibility = true; //set invisibility to true
         this.armorStand.b(5, true); //set invisibility to true
         this.armorStand.n(true); //set custom name visibility to true
-        this.armorStand.t(false); //set marker to true
+        this.armorStand.t(true); //set marker to true
         this.armorStand.r(false); //set arms to false
         this.armorStand.s(true); //set no base-plate to true
         this.armorStand.e(true); //set no gravity to true
@@ -118,6 +118,18 @@ public final class TextLine_v1_18_R1 implements TextLine {
         HCore.sendPacket(this.hologram.getRenderer().getShownPlayers(),
                 new PacketPlayOutEntityTeleport(this.armorStand),
                 new PacketPlayOutEntityTeleport(this.click));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setMarker(boolean marker) {
+        this.armorStand.t(marker);
+        this.click.t(marker);
+        HCore.sendPacket(this.hologram.getRenderer().getShownPlayers(),
+                new PacketPlayOutEntityMetadata(this.click.ae(), this.click.ai(), true),
+                new PacketPlayOutEntityMetadata(this.armorStand.ae(), this.armorStand.ai(), true));
     }
 
     /**

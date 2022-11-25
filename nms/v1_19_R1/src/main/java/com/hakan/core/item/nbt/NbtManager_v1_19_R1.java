@@ -60,6 +60,8 @@ public final class NbtManager_v1_19_R1 implements NbtManager {
         Validate.notNull(key, "key cannot be null");
 
         net.minecraft.world.item.ItemStack nmsCopy = CraftItemStack.asNMSCopy(itemStack);
+        if (nmsCopy == null)
+            return "{}";
 
         NBTTagCompound nbtTagCompound = nmsCopy.v();
         return nbtTagCompound.e(key) ? nbtTagCompound.l(key) : "{}";
@@ -74,6 +76,9 @@ public final class NbtManager_v1_19_R1 implements NbtManager {
         Validate.notNull(itemStack, "itemStack cannot be null");
 
         net.minecraft.world.item.ItemStack nmsCopy = CraftItemStack.asNMSCopy(itemStack);
+        if (nmsCopy == null)
+            return "{}";
+
         return nmsCopy.v().toString();
     }
 
