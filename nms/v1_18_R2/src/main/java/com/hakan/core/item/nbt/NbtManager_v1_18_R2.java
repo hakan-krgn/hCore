@@ -4,7 +4,6 @@ import com.hakan.core.utils.Validate;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.nbt.MojangsonParser;
 import net.minecraft.nbt.NBTTagCompound;
-import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_18_R2.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
@@ -27,7 +26,7 @@ public final class NbtManager_v1_18_R2 implements NbtManager {
 
         net.minecraft.world.item.ItemStack nmsCopy = CraftItemStack.asNMSCopy(itemStack);
 
-        if (itemStack.getType().equals(Material.AIR))
+        if (nmsCopy == null)
             return itemStack;
         else if (nmsCopy.t() == null)
             nmsCopy.c(new NBTTagCompound());
@@ -47,7 +46,7 @@ public final class NbtManager_v1_18_R2 implements NbtManager {
 
         net.minecraft.world.item.ItemStack nmsCopy = CraftItemStack.asNMSCopy(itemStack);
 
-        if (itemStack.getType().equals(Material.AIR))
+        if (nmsCopy == null)
             return itemStack;
         else if (nmsCopy.t() == null)
             nmsCopy.c(new NBTTagCompound());
@@ -67,7 +66,9 @@ public final class NbtManager_v1_18_R2 implements NbtManager {
 
         net.minecraft.world.item.ItemStack nmsCopy = CraftItemStack.asNMSCopy(itemStack);
 
-        if (nmsCopy.t() == null)
+        if (nmsCopy == null)
+            return "{}";
+        else if (nmsCopy.t() == null)
             nmsCopy.c(new NBTTagCompound());
 
         NBTTagCompound nbtTagCompound = nmsCopy.t();
@@ -84,7 +85,9 @@ public final class NbtManager_v1_18_R2 implements NbtManager {
 
         net.minecraft.world.item.ItemStack nmsCopy = CraftItemStack.asNMSCopy(itemStack);
 
-        if (nmsCopy.t() == null)
+        if (nmsCopy == null)
+            return "{}";
+        else if (nmsCopy.t() == null)
             nmsCopy.c(new NBTTagCompound());
 
         return nmsCopy.t().toString();

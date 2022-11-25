@@ -123,6 +123,21 @@ public final class TextLine_v1_8_R3 implements TextLine {
      * {@inheritDoc}
      */
     @Override
+    public void setMarker(boolean marker) {
+        this.armorStand.getDataWatcher().watch(10, marker ? (byte) 16 : (byte) 0);
+        this.armorStand.b(new NBTTagCompound());
+
+        this.click.getDataWatcher().watch(10, marker ? (byte) 16 : (byte) 0);
+        this.click.b(new NBTTagCompound());
+        HCore.sendPacket(this.hologram.getRenderer().getShownPlayers(),
+                new PacketPlayOutEntityMetadata(this.click.getId(), this.click.getDataWatcher(), true),
+                new PacketPlayOutEntityMetadata(this.armorStand.getId(), this.armorStand.getDataWatcher(), true));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void show(@Nonnull List<Player> players) {
         HCore.sendPacket(Validate.notNull(players, "players cannot be null!"),
                 new PacketPlayOutSpawnEntityLiving(this.armorStand),

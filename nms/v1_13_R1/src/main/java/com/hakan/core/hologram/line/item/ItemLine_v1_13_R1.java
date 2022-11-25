@@ -118,6 +118,16 @@ public final class ItemLine_v1_13_R1 implements ItemLine {
      * {@inheritDoc}
      */
     @Override
+    public void setMarker(boolean marker) {
+        this.armorStand.setMarker(marker);
+        HCore.sendPacket(this.hologram.getRenderer().getShownPlayers(),
+                new PacketPlayOutEntityMetadata(this.armorStand.getId(), this.armorStand.getDataWatcher(), true));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void show(@Nonnull List<Player> players) {
         if (this.nmsItem != null) {
             this.armorStand.passengers.add(this.nmsItem);

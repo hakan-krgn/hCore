@@ -82,6 +82,14 @@ public final class EmptyLine implements HologramLine {
      * {@inheritDoc}
      */
     @Override
+    public void setMarker(boolean marker) {
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void show(@Nonnull List<Player> players) {
 
     }
