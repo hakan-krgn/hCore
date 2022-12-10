@@ -72,7 +72,7 @@ public class Skin {
 
             return new Skin(texture, signature);
         } catch (Exception e) {
-            throw new RuntimeException("there is no skin for player " + playerName, e);
+            return STEVE;
         }
     }
 
