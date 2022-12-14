@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.hakan'
-version '0.6.9.6'
+version '0.6.9.7'
 sourceCompatibility = 1.8
 compileJava.options.encoding = 'UTF-8'
 
@@ -28,6 +28,7 @@ subprojects {
         maven { url 'https://jitpack.io' }
         maven { url 'https://libraries.minecraft.net/' }
         maven { url 'https://repo.codemc.org/repository/nms/' }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     }
 
     publishing {

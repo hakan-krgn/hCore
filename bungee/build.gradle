@@ -1,0 +1,4 @@
+dependencies {
+    implementation project(':bungee:api')
+    annotationProcessor project(':bungee:api')
+}
