@@ -1,0 +1,4 @@
+dependencies {
+    implementation project(':hCore-bungee:api')
+    annotationProcessor project(':hCore-bungee:api')
+}
