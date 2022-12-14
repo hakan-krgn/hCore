@@ -1,2 +1,0 @@
-task cleanup { doLast { delete 'build' } }
-tasks.build.finalizedBy cleanup
