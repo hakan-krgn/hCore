@@ -1,7 +1,0 @@
-sourceCompatibility = 17
-
-dependencies {
-    compileOnly 'com.mojang:authlib:3.2.28'
-    compileOnly 'org.spigotmc:spigot:1.18-R0.1-SNAPSHOT'
-    compileOnly project(':api')
-}
