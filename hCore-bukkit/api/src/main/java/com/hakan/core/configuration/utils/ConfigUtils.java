@@ -78,7 +78,7 @@ public final class ConfigUtils {
         File created = ConfigUtils.createFile(path);
         if (resource == null || resource.isEmpty()) return file;
 
-        try (InputStream inputStream = loader.getResourceAsStream("/" + resource);
+        try (InputStream inputStream = loader.getResourceAsStream(File.separator + resource);
              OutputStream outputStream = Files.newOutputStream(created.toPath())) {
             Validate.notNull(inputStream, "resource couldn't find(" + resource + ")!");
             Validate.notNull(outputStream, "output stream cannot be null!");

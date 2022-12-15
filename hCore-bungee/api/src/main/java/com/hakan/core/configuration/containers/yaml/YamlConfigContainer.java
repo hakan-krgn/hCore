@@ -24,18 +24,15 @@ import java.lang.reflect.Field;
 public class YamlConfigContainer extends ConfigContainer {
 
     private final File file;
+    private final ConfigurationProvider provider;
     private Configuration configuration;
 
     /**
      * {@inheritDoc}
      */
     public YamlConfigContainer() {
-        try {
-            this.file = new File(super.path);
-            this.configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(this.file);
-        } catch (IOException e) {
-            throw new RuntimeException("could not load configuration file!", e);
-        }
+        this.file = new File(super.path);
+        this.provider = ConfigurationProvider.getProvider(YamlConfiguration.class);
     }
 
     /**
@@ -43,12 +40,8 @@ public class YamlConfigContainer extends ConfigContainer {
      */
     public YamlConfigContainer(@Nonnull ConfigFile configFile) {
         super(configFile);
-        try {
-            this.file = new File(super.path);
-            this.configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(this.file);
-        } catch (IOException e) {
-            throw new RuntimeException("could not load configuration file!", e);
-        }
+        this.file = new File(super.path);
+        this.provider = ConfigurationProvider.getProvider(YamlConfiguration.class);
     }
 
     /**
@@ -57,12 +50,8 @@ public class YamlConfigContainer extends ConfigContainer {
     public YamlConfigContainer(@Nonnull String path,
                                @Nonnull Class<? extends Plugin> plugin) {
         super(path, ConfigType.YAML, plugin);
-        try {
-            this.file = new File(super.path);
-            this.configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(this.file);
-        } catch (IOException e) {
-            throw new RuntimeException("could not load configuration file!", e);
-        }
+        this.file = new File(super.path);
+        this.provider = ConfigurationProvider.getProvider(YamlConfiguration.class);
     }
 
     /**
@@ -72,12 +61,8 @@ public class YamlConfigContainer extends ConfigContainer {
                                @Nullable String resource,
                                @Nonnull Class<? extends Plugin> plugin) {
         super(path, resource, ConfigType.YAML, plugin);
-        try {
-            this.file = new File(super.path);
-            this.configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(this.file);
-        } catch (IOException e) {
-            throw new RuntimeException("could not load configuration file!", e);
-        }
+        this.file = new File(super.path);
+        this.provider = ConfigurationProvider.getProvider(YamlConfiguration.class);
     }
 
     /**
@@ -87,8 +72,7 @@ public class YamlConfigContainer extends ConfigContainer {
     @Override
     public final ConfigContainer save() {
         try {
-            ConfigurationProvider.getProvider(YamlConfiguration.class)
-                    .save(this.configuration, this.file);
+            this.provider.save(this.configuration, this.file);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -159,7 +143,7 @@ public class YamlConfigContainer extends ConfigContainer {
     public final ConfigContainer loadData(@Nonnull Object configClass) {
         try {
             Validate.notNull(configClass, "config class cannot be null!");
-            this.configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(this.file);
+            this.configuration = this.provider.load(this.file);
 
 
             boolean save = false;

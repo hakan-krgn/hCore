@@ -56,7 +56,7 @@ public final class ConfigHandler {
 
         ConfigUtils.createFile(container);
 
-        configurations.put(container.getPath(), container);
+        configurations.put(container.getPath(), container.loadData());
         return (T) container.loadData(container);
     }
 
