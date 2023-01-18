@@ -50,7 +50,7 @@ public final class SignGui_v1_19_R2 extends SignGui {
         IChatBaseComponent[] components = CraftSign.sanitizeLines(super.lines);
         TileEntitySign sign = new TileEntitySign(blockPosition, data);
         IntStream.range(0, super.lines.length).forEach(i -> sign.a(i, components[i]));
-        HCore.sendPacket(super.player, sign.c());
+        HCore.sendPacket(super.player, sign.f());
 
         HCore.sendPacket(super.player, new PacketPlayOutOpenSignEditor(blockPosition));
 
