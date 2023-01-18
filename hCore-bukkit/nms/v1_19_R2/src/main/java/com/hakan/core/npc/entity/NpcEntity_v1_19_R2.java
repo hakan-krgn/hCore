@@ -185,16 +185,17 @@ public final class NpcEntity_v1_19_R2 implements NpcEntity {
         Validate.notNull(players, "players cannot be null!");
 
         GameProfile gameProfile = this.nmsPlayer.fD();
-        DataWatcher dataWatcher = new DataWatcher(null);
+        DataWatcher dataWatcher = this.nmsPlayer.al();
         gameProfile.getProperties().get("textures").clear();
         gameProfile.getProperties().put("textures", new Property("textures", this.npc.getSkin().getTexture(), this.npc.getSkin().getSignature()));
-        dataWatcher.a(new DataWatcherObject<>(17, DataWatcherRegistry.a), (byte) 127);
+        dataWatcher.b(new DataWatcherObject<>(10, DataWatcherRegistry.b), 0);
+        dataWatcher.b(new DataWatcherObject<>(17, DataWatcherRegistry.a), (byte) 127);
 
         players.forEach(player -> this.scoreboard.g().add(player.getName()));
         HCore.sendPacket(players,
                 new ClientboundPlayerInfoUpdatePacket(ClientboundPlayerInfoUpdatePacket.a.a, this.nmsPlayer),
-                new PacketPlayOutNamedEntitySpawn(this.nmsPlayer),
                 new PacketPlayOutEntityMetadata(this.getID(), dataWatcher.c()),
+                new PacketPlayOutNamedEntitySpawn(this.nmsPlayer),
                 PacketPlayOutScoreboardTeam.a(this.scoreboard, true));
         HCore.asyncScheduler().after(5)
                 .run(() -> HCore.sendPacket(players, new ClientboundPlayerInfoUpdatePacket(ClientboundPlayerInfoUpdatePacket.a.e, this.nmsPlayer)));

@@ -23,6 +23,6 @@ public final class ActionBarWrapper_v1_19_R2 implements ActionBarWrapper {
         Validate.notNull(text, "text cannot be null!");
 
         IChatBaseComponent baseComponent = CraftChatMessage.fromStringOrNull(text);
-        HCore.sendPacket(player, new ClientboundSystemChatPacket(baseComponent, false));
+        HCore.sendPacket(player, new ClientboundSystemChatPacket(baseComponent, true));
     }
 }
