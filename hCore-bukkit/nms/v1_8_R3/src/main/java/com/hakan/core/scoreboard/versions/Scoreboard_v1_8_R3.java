@@ -53,7 +53,7 @@ public final class Scoreboard_v1_8_R3 extends Scoreboard {
             String line = super.getLine(i);
             if (line == null) continue;
 
-            String[] split = super.splitLine(i, line, 16, 16);
+            String[] split = super.splitLine(i, line);
             String prefix = ColorUtil.colored(split[0]);
             String middle = ColorUtil.colored(split[1]);
             String suffix = ColorUtil.colored(split[2]);

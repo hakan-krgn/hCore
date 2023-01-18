@@ -20,6 +20,7 @@ include 'hCore-bukkit:nms:v1_18_R1'
 include 'hCore-bukkit:nms:v1_18_R2'
 include 'hCore-bukkit:nms:v1_19_R1'
 include 'hCore-bukkit:nms:v1_19_1_R1'
+include 'hCore-bukkit:nms:v1_19_R2'
 
 include 'hCore-bungee'
 include 'hCore-bungee:api'
