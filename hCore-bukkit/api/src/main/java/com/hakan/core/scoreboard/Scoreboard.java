@@ -225,19 +225,18 @@ public abstract class Scoreboard {
      * for prefix, middle and suffix.
      *
      * @param text Text.
-     * @param len1 Length of prefix.
-     * @param len2 Length of suffix.
      * @return 3 parts.
      */
     @Nonnull
-    protected final String[] splitLine(int line, @Nonnull String text, int len1, int len2) {
+    protected final String[] splitLine(int line, @Nonnull String text) {
         Validate.notNull(text, "text cannot be null!");
+        Validate.isTrue(text.length() > 32, "text length must be smaller than or equal to 32! (" + text + ")");
 
         String color = (line >= 10) ? "§" + new String[]{"a", "b", "c", "d", "e", "f"}[line - 10] : "§" + line;
-        text += new String(new char[len1 + len2 - text.length()]).replace("\0", "‼");
+        text += new String(new char[32 - text.length()]).replace("\0", "‼");
 
-        String prefix = text.substring(0, len1);
-        String suffix = text.substring(len1, len1 + len2);
+        String prefix = text.substring(0, 16);
+        String suffix = text.substring(16, 32);
         String middle = color + ColorUtil.getLastColors(prefix);
 
         return new String[]{
