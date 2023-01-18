@@ -14,7 +14,7 @@ import javax.annotation.Nonnull;
 /**
  * {@inheritDoc}
  */
-public final class ParticleWrapper_v1_19_R1 implements ParticleWrapper {
+public final class ParticleWrapper_v1_19_R2 implements ParticleWrapper {
 
     /**
      * {@inheritDoc}

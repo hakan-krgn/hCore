@@ -12,7 +12,7 @@ import javax.annotation.Nonnull;
 /**
  * {@inheritDoc}
  */
-public final class ActionBarWrapper_v1_19_R1 implements ActionBarWrapper {
+public final class ActionBarWrapper_v1_19_R2 implements ActionBarWrapper {
 
     /**
      * {@inheritDoc}

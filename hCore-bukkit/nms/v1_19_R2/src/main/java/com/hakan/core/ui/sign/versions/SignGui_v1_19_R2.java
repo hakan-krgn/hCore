@@ -22,12 +22,12 @@ import java.util.stream.IntStream;
 /**
  * {@inheritDoc}
  */
-public final class SignGui_v1_19_R1 extends SignGui {
+public final class SignGui_v1_19_R2 extends SignGui {
 
     /**
      * {@inheritDoc}
      */
-    private SignGui_v1_19_R1(@Nonnull Player player,
+    private SignGui_v1_19_R2(@Nonnull Player player,
                              @Nonnull SignType type,
                              @Nonnull String... lines) {
         super(player, type, lines);

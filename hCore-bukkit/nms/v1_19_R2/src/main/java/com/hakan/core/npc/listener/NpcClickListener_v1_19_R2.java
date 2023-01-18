@@ -10,7 +10,7 @@ import javax.annotation.Nonnull;
 /**
  * {@inheritDoc}
  */
-public final class NpcClickListener_v1_19_R1 extends NpcClickListener {
+public final class NpcClickListener_v1_19_R2 extends NpcClickListener {
 
     /**
      * {@inheritDoc}

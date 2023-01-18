@@ -21,7 +21,7 @@ import java.util.function.Consumer;
  * PathfinderEntity is a
  * custom entity class.
  */
-public final class PathfinderEntity_v1_19_R1 {
+public final class PathfinderEntity_v1_19_R2 {
 
     /**
      * Creates a new PathfinderEntity
@@ -34,7 +34,7 @@ public final class PathfinderEntity_v1_19_R1 {
      * @param endRunnable  Runnable to run when entity is ended.
      * @return PathfinderEntity_v1_19_R1 instance.
      */
-    public static PathfinderEntity_v1_19_R1 create(@Nonnull Location start,
+    public static PathfinderEntity_v1_19_R2 create(@Nonnull Location start,
                                                    @Nonnull Location end,
                                                    double speed,
                                                    @Nonnull Consumer<EntityPig> walkRunnable,
@@ -43,7 +43,7 @@ public final class PathfinderEntity_v1_19_R1 {
         Validate.notNull(start.getWorld(), "start world cannot be null!");
 
         World world = ((CraftWorld) start.getWorld()).getHandle();
-        return new PathfinderEntity_v1_19_R1(world, start, end, speed, walkRunnable, endRunnable);
+        return new PathfinderEntity_v1_19_R2(world, start, end, speed, walkRunnable, endRunnable);
     }
 
 
@@ -60,7 +60,7 @@ public final class PathfinderEntity_v1_19_R1 {
      * @param walkRunnable Runnable to run when entity is walking.
      * @param endRunnable  Runnable to run when entity is ended.
      */
-    private PathfinderEntity_v1_19_R1(@Nonnull World world,
+    private PathfinderEntity_v1_19_R2(@Nonnull World world,
                                       @Nonnull Location start,
                                       @Nonnull Location end,
                                       double speed,
@@ -92,7 +92,7 @@ public final class PathfinderEntity_v1_19_R1 {
         HCore.sendPacket(new ArrayList<>(Bukkit.getOnlinePlayers()),
                 new PacketPlayOutEntityDestroy(this.pig.ah()));
 
-        this.pig.bS.a(2, new PathfinderGoal_v1_19_R1(this.pig, end, speed,
+        this.pig.bS.a(2, new PathfinderGoal_v1_19_R2(this.pig, end, speed,
                 () -> walkRunnable.accept(this.pig),
                 () -> {
                     listenerAdapter.unregister();

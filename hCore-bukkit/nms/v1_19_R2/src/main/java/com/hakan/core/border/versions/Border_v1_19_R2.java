@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * {@inheritDoc}
  */
-public final class Border_v1_19_R1 implements Border {
+public final class Border_v1_19_R2 implements Border {
 
     private final Player viewer;
     private final WorldBorder border;
@@ -35,7 +35,7 @@ public final class Border_v1_19_R1 implements Border {
     /**
      * {@inheritDoc}
      */
-    private Border_v1_19_R1(@Nonnull Player viewer,
+    private Border_v1_19_R2(@Nonnull Player viewer,
                             @Nonnull Location location,
                             @Nonnull BorderColor color,
                             double size,
