@@ -14,7 +14,7 @@ import javax.annotation.Nonnull;
 /**
  * {@inheritDoc}
  */
-public final class TitleWrapper_v1_19_R1 implements TitleWrapper {
+public final class TitleWrapper_v1_19_R2 implements TitleWrapper {
 
     /**
      * {@inheritDoc}

@@ -16,14 +16,14 @@ import javax.annotation.Nonnull;
 /**
  * {@inheritDoc}
  */
-public final class PacketPlayer_v1_19_R1 extends PacketPlayer {
+public final class PacketPlayer_v1_19_R2 extends PacketPlayer {
 
     private final PlayerConnection connection;
 
     /**
      * {@inheritDoc}
      */
-    public PacketPlayer_v1_19_R1(@Nonnull Player player) {
+    public PacketPlayer_v1_19_R2(@Nonnull Player player) {
         super(player);
         this.connection = ((CraftPlayer) player).getHandle().b;
     }

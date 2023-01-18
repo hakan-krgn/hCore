@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * {@inheritDoc}
  */
-public final class ItemLine_v1_19_R1 implements ItemLine {
+public final class ItemLine_v1_19_R2 implements ItemLine {
 
     private World world;
     private ItemStack item;
@@ -35,7 +35,7 @@ public final class ItemLine_v1_19_R1 implements ItemLine {
     /**
      * {@inheritDoc}
      */
-    private ItemLine_v1_19_R1(@Nonnull Hologram hologram, @Nonnull Location location) {
+    private ItemLine_v1_19_R2(@Nonnull Hologram hologram, @Nonnull Location location) {
         this.world = ((CraftWorld) Validate.notNull(location.getWorld())).getHandle();
         this.hologram = Validate.notNull(hologram, "hologram class cannot be null!");
         this.armorStand = new EntityArmorStand(this.world, location.getX(), location.getY(), location.getZ());

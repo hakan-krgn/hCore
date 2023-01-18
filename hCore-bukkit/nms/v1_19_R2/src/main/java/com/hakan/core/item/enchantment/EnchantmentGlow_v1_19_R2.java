@@ -10,14 +10,14 @@ import javax.annotation.Nonnull;
 /**
  * {@inheritDoc}
  */
-public final class EnchantmentGlow_v1_19_R1 extends Enchantment {
+public final class EnchantmentGlow_v1_19_R2 extends Enchantment {
 
     /**
      * Gets instance of this class
      *
      * @param id enchantment id
      */
-    private EnchantmentGlow_v1_19_R1(int id) {
+    private EnchantmentGlow_v1_19_R2(int id) {
         super(NamespacedKey.minecraft(id + ""));
     }
 

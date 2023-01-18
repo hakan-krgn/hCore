@@ -13,7 +13,7 @@ import javax.annotation.Nonnull;
 /**
  * {@inheritDoc}
  */
-public final class NbtManager_v1_19_R1 implements NbtManager {
+public final class NbtManager_v1_19_R2 implements NbtManager {
 
     /**
      * {@inheritDoc}

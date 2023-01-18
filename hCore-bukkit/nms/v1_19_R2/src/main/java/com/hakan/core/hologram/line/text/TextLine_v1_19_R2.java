@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * {@inheritDoc}
  */
-public final class TextLine_v1_19_R1 implements TextLine {
+public final class TextLine_v1_19_R2 implements TextLine {
 
     private String text;
     private final Hologram hologram;
@@ -30,7 +30,7 @@ public final class TextLine_v1_19_R1 implements TextLine {
     /**
      * {@inheritDoc}
      */
-    private TextLine_v1_19_R1(@Nonnull Hologram hologram, @Nonnull Location location) {
+    private TextLine_v1_19_R2(@Nonnull Hologram hologram, @Nonnull Location location) {
         World world = ((CraftWorld) Validate.notNull(location.getWorld())).getHandle();
         this.hologram = Validate.notNull(hologram, "hologram class cannot be null!");
         this.click = new EntityArmorStand(world, location.getX(), location.getY(), location.getZ());

@@ -13,7 +13,7 @@ import java.util.EnumSet;
 /**
  * PathfinderGoal is a targeter class.
  */
-public final class PathfinderGoal_v1_19_R1 extends PathfinderGoal {
+public final class PathfinderGoal_v1_19_R2 extends PathfinderGoal {
 
     private final EntityInsentient entity;
     private final Runnable endRunnable;
@@ -30,7 +30,7 @@ public final class PathfinderGoal_v1_19_R1 extends PathfinderGoal {
      * @param walkRunnable Runnable to run when entity is walking.
      * @param endRunnable  Runnable to run when entity is ended.
      */
-    public PathfinderGoal_v1_19_R1(@Nonnull EntityInsentient entity,
+    public PathfinderGoal_v1_19_R2(@Nonnull EntityInsentient entity,
                                    @Nonnull Location end,
                                    double speed,
                                    @Nonnull Runnable walkRunnable,

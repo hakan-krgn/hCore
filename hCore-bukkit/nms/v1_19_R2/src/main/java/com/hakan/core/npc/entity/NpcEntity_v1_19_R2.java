@@ -2,7 +2,7 @@ package com.hakan.core.npc.entity;
 
 import com.hakan.core.HCore;
 import com.hakan.core.npc.Npc;
-import com.hakan.core.npc.pathfinder.PathfinderEntity_v1_19_R1;
+import com.hakan.core.npc.pathfinder.PathfinderEntity_v1_19_R2;
 import com.hakan.core.skin.Skin;
 import com.hakan.core.utils.Validate;
 import com.mojang.authlib.GameProfile;
@@ -44,7 +44,7 @@ import java.util.UUID;
 /**
  * {@inheritDoc}
  */
-public final class NpcEntity_v1_19_R1 implements NpcEntity {
+public final class NpcEntity_v1_19_R2 implements NpcEntity {
 
     /**
      * Creates nms player.
@@ -82,7 +82,7 @@ public final class NpcEntity_v1_19_R1 implements NpcEntity {
     /**
      * {@inheritDoc}
      */
-    public NpcEntity_v1_19_R1(@Nonnull Npc npc) {
+    public NpcEntity_v1_19_R2(@Nonnull Npc npc) {
         this.npc = Validate.notNull(npc, "npc cannot be null!");
         this.nmsPlayer = createEntityPlayer(npc);
         this.scoreboard = new ScoreboardTeam(new Scoreboard(), npc.getID());
@@ -103,7 +103,7 @@ public final class NpcEntity_v1_19_R1 implements NpcEntity {
      */
     @Override
     public void walk(double speed, @Nonnull Location to, @Nonnull Runnable runnable) {
-        PathfinderEntity_v1_19_R1.create(this.npc.getLocation(), to, speed,
+        PathfinderEntity_v1_19_R2.create(this.npc.getLocation(), to, speed,
                 (custom) -> this.npc.setLocation(custom.getBukkitEntity().getLocation()),
                 (custom) -> {
                     custom.ah();

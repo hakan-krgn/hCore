@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 /**
  * {@inheritDoc}
  */
-public final class AnvilGui_v1_19_R1 extends AnvilGui {
+public final class AnvilGui_v1_19_R2 extends AnvilGui {
 
     private final EntityPlayer entityPlayer;
     private final AnvilContainer container;
@@ -32,7 +32,7 @@ public final class AnvilGui_v1_19_R1 extends AnvilGui {
     /**
      * {@inheritDoc}
      */
-    private AnvilGui_v1_19_R1(@Nonnull Player player,
+    private AnvilGui_v1_19_R2(@Nonnull Player player,
                               @Nonnull String title,
                               @Nonnull String text,
                               @Nonnull ItemStack leftItem,
