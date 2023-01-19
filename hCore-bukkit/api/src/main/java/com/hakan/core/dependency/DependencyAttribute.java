@@ -36,10 +36,11 @@ public final class DependencyAttribute {
     /**
      * Creates a new dependency attribute.
      *
-     * @param groupId    The groupId.
-     * @param artifactId The artifactId.
+     * @param groupId    The group id.
+     * @param artifactId The artifact id.
      * @param version    The version.
      * @param website    The website.
+     * @param savePath   The save path.
      */
     public DependencyAttribute(@Nonnull String groupId,
                                @Nonnull String artifactId,

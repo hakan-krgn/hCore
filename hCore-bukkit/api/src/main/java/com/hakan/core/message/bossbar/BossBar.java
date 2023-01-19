@@ -140,6 +140,8 @@ public interface BossBar {
 
     /**
      * Deletes bossbar.
+     *
+     * @return BossBar class.
      */
     default BossBar delete() {
         this.removeAll();
