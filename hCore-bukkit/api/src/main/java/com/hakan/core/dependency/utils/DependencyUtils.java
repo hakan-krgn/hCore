@@ -107,7 +107,6 @@ public final class DependencyUtils {
     }
 
 
-
     /**
      * Finds the dependencies from
      * the given main dependency and
@@ -115,6 +114,7 @@ public final class DependencyUtils {
      * in a linked list.
      *
      * @param attribute Main dependency attribute.
+     * @return List of the dependency attribute.
      */
     public static List<DependencyAttribute> findAttributes(@Nonnull DependencyAttribute attribute) {
         Validate.notNull(attribute, "attribute cannot be null!");
@@ -132,7 +132,6 @@ public final class DependencyUtils {
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document doc = db.parse(connection.getInputStream());
             doc.getDocumentElement().normalize();
-
 
 
             Map<String, String> properties = new HashMap<>();
