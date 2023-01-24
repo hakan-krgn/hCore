@@ -26,6 +26,9 @@ public final class Scheduler {
     public static void initialize() {
         HCore.asyncScheduler().every(1).run(() -> {
             for (Scheduler scheduler : new ArrayList<>(schedulers)) {
+                if (scheduler == null)
+                    continue;
+
                 if (scheduler.isCancelled()) {
                     if (scheduler.endRunnable != null)
                         scheduler.endRunnable.run();
