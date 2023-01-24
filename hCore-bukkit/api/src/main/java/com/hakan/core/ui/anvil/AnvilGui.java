@@ -233,7 +233,6 @@ public abstract class AnvilGui implements Gui {
     }
 
 
-
     /**
      * Gets as bukkit inventory.
      *
@@ -265,6 +264,7 @@ public abstract class AnvilGui implements Gui {
     /**
      * Opens anvil gui to player.
      *
+     * @param runnableActivity if it's true, open runnable will run.
      * @return Instance of AnvilGui.
      */
     public abstract AnvilGui open(boolean runnableActivity);
@@ -272,6 +272,7 @@ public abstract class AnvilGui implements Gui {
     /**
      * Closes the anvil gui of player.
      *
+     * @param runnableActivity if it's true, close runnable will run.
      * @return Instance of AnvilGui.
      */
     public abstract AnvilGui close(boolean runnableActivity);
