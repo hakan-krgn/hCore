@@ -5,6 +5,7 @@ import com.hakan.core.hologram.Hologram;
 import com.hakan.core.npc.action.NpcAction;
 import com.hakan.core.npc.entity.NpcEntity;
 import com.hakan.core.npc.utils.NpcUtils;
+import com.hakan.core.pathfinder.Pathfinder;
 import com.hakan.core.renderer.Renderer;
 import com.hakan.core.skin.Skin;
 import com.hakan.core.utils.Validate;
@@ -545,7 +546,23 @@ public final class Npc {
         Validate.isTrue(!to.getWorld().equals(this.getWorld()), "to and from worlds must be equal!");
 
         this.walking = true;
-        this.entity.walk(speed, to, () -> this.walking = false);
+
+        Pathfinder pathfinder = new Pathfinder(this.getLocation(), to);
+        Location[] locations = pathfinder.getPath(5);
+        locations[locations.length - 1] = to;
+
+        HCore.asyncScheduler()
+                .limit(locations.length - 1)
+                .terminateIf((task) -> !this.walking)
+                .every((long) (100 / speed), TimeUnit.MILLISECONDS)
+                .whenEnded(() -> this.walking = false)
+                .run((task, count) -> {
+                    Location location = locations[Math.toIntExact(count)];
+                    if (location == null) return;
+
+                    this.setLocation(location);
+                });
+
         return this;
     }
 
