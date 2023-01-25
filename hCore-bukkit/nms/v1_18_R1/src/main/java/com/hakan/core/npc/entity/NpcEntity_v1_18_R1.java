@@ -2,7 +2,6 @@ package com.hakan.core.npc.entity;
 
 import com.hakan.core.HCore;
 import com.hakan.core.npc.Npc;
-import com.hakan.core.npc.pathfinder.PathfinderEntity_v1_18_R1;
 import com.hakan.core.skin.Skin;
 import com.hakan.core.utils.Validate;
 import com.mojang.authlib.GameProfile;
@@ -96,20 +95,6 @@ public final class NpcEntity_v1_18_R1 implements NpcEntity {
     @Override
     public int getID() {
         return this.nmsPlayer.ae();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void walk(double speed, @Nonnull Location to, @Nonnull Runnable runnable) {
-        PathfinderEntity_v1_18_R1.create(this.npc.getLocation(), to, speed,
-                (custom) -> this.npc.setLocation(custom.getBukkitEntity().getLocation()),
-                (custom) -> {
-                    custom.ah();
-                    this.npc.setLocation(to);
-                    runnable.run();
-                });
     }
 
     /**
