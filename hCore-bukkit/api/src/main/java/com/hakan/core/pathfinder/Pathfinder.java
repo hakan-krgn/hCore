@@ -6,6 +6,13 @@ import org.bukkit.Material;
 
 import java.util.ArrayList;
 
+/**
+ * Pathfinder class to find a
+ * path between two locations.
+ *
+ * @author domisum, Hakan(modification)
+ * @website <a href="https://github.com/domisum/Pathfinding">https://github.com/domisum/Pathfinding</a>
+ */
 public class Pathfinder {
 
     private final Location startLocation;
@@ -22,6 +29,15 @@ public class Pathfinder {
     private final boolean canClimbLadders;
     private final double maxFallDistance;
 
+    /**
+     * Pathfinder constructor.
+     *
+     * @param start           Start location.
+     * @param end             End location.
+     * @param maxNodeTests    Maximum number of nodes to test.
+     * @param canClimbLadders Whether the pathfinder can climb ladders.
+     * @param maxFallDistance Maximum fall distance.
+     */
     public Pathfinder(Location start, Location end, int maxNodeTests, boolean canClimbLadders, double maxFallDistance) {
         this.endLocation = end;
         this.startLocation = start;
@@ -34,14 +50,32 @@ public class Pathfinder {
         this.maxFallDistance = maxFallDistance;
     }
 
+    /**
+     * Pathfinder constructor.
+     *
+     * @param start Start location.
+     * @param end   End location.
+     */
     public Pathfinder(Location start, Location end) {
         this(start, end, 1000, false, 1);
     }
 
+    /**
+     * Returns the paths.
+     *
+     * @return The paths.
+     */
     public Location[] getPath() {
         return getPath(1);
     }
 
+    /**
+     * Returns the paths.
+     *
+     * @param slice How much slices will
+     *              be between two block.
+     * @return The paths.
+     */
     public Location[] getPath(int slice) {
         if (!(this.canStandAt(this.startLocation) && this.canStandAt(this.endLocation)))
             return new Location[0];
@@ -105,6 +139,12 @@ public class Pathfinder {
         return lastLocations;
     }
 
+    /**
+     * Gets node from location.
+     *
+     * @param loc Location.
+     * @return Node.
+     */
     private Node getNode(Location loc) {
         Node test = new Node(loc, 0, null);
         for (Node n : this.checkedNodes)
@@ -114,15 +154,33 @@ public class Pathfinder {
     }
 
 
-
+    /**
+     * Returns whether the location is obstructed.
+     *
+     * @param loc Location.
+     * @return Whether the location is obstructed.
+     */
     private boolean isObstructed(Location loc) {
         return loc.getBlock().getType().isSolid();
     }
 
+    /**
+     * The location is standable.
+     *
+     * @param loc Location.
+     * @return Whether the location is obstructed.
+     */
     private boolean canStandAt(Location loc) {
         return !(isObstructed(loc) || isObstructed(loc.clone().add(0, 1, 0)) || !isObstructed(loc.clone().add(0, -1, 0)));
     }
 
+    /**
+     * Returns the distance between two locations.
+     *
+     * @param loc1 Location 1.
+     * @param loc2 Location 2.
+     * @return Distance.
+     */
     private double distanceTo(Location loc1, Location loc2) {
         if (loc1.getWorld() != loc2.getWorld())
             return Double.MAX_VALUE;
@@ -136,6 +194,9 @@ public class Pathfinder {
 
 
 
+    /**
+     * Node class.
+     */
     private class Node {
 
         public double id;
@@ -145,6 +206,13 @@ public class Pathfinder {
         private final Location location;
         private double estimatedExpenseLeft = -1;
 
+        /**
+         * Node constructor.
+         *
+         * @param loc     Location.
+         * @param expense Expense.
+         * @param origin  Origin node.
+         */
         public Node(Location loc, double expense, Node origin) {
             this.location = loc;
             this.origin = origin;
@@ -152,10 +220,20 @@ public class Pathfinder {
             this.id = loc.getBlockX() + 30000000d * loc.getBlockY() + 30000000d * 30000000d * loc.getBlockZ();
         }
 
+        /**
+         * Gets the location.
+         *
+         * @return The location.
+         */
         public Location getLocation() {
             return this.location;
         }
 
+        /**
+         * Gets the estimated final expense.
+         *
+         * @return The estimated final expense.
+         */
         public double getEstimatedFinalExpense() {
             if (this.estimatedExpenseLeft == -1)
                 this.estimatedExpenseLeft = distanceTo(this.location, endLocation);
@@ -163,6 +241,9 @@ public class Pathfinder {
             return this.expense + 1.5 * this.estimatedExpenseLeft;
         }
 
+        /**
+         * Gets the reachable locations.
+         */
         public void getReachableLocations() {
             for (int x = -1; x <= 1; x++) {
                 for (int z = -1; z <= 1; z++) {
@@ -208,6 +289,12 @@ public class Pathfinder {
             }
         }
 
+        /**
+         * Adds a node that can be reached from this node.
+         *
+         * @param locThere     Location of the node.
+         * @param expenseThere Expense of the node.
+         */
         public void reachNode(Location locThere, double expenseThere) {
             Node nt = getNode(locThere);
 
@@ -224,6 +311,13 @@ public class Pathfinder {
             }
         }
 
+        /**
+         * Adds a node that represents a fall.
+         *
+         * @param loc     Location of the fall.
+         * @param expense Expense of the fall.
+         * @return Node.
+         */
         public Node addFallNode(Location loc, double expense) {
             return new Node(loc, expense, this);
         }
