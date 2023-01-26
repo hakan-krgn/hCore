@@ -128,7 +128,7 @@ public final class TextLine_v1_19_R2 implements TextLine {
         this.armorStand.t(marker);
         this.click.t(marker);
         HCore.sendPacket(this.hologram.getRenderer().getShownPlayers(),
-                new PacketPlayOutEntityMetadata(this.click.ah(), this.armorStand.al().c()),
+                new PacketPlayOutEntityMetadata(this.click.ah(), this.click.al().c()),
                 new PacketPlayOutEntityMetadata(this.armorStand.ah(), this.armorStand.al().c()));
     }
 
@@ -143,7 +143,7 @@ public final class TextLine_v1_19_R2 implements TextLine {
                 new PacketPlayOutEntityTeleport(this.armorStand),
 
                 new PacketPlayOutSpawnEntity(this.click),
-                new PacketPlayOutEntityMetadata(this.click.ah(), this.armorStand.al().c()),
+                new PacketPlayOutEntityMetadata(this.click.ah(), this.click.al().c()),
                 new PacketPlayOutEntityTeleport(this.click));
     }
 
