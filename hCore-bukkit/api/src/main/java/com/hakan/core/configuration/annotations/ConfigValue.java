@@ -22,4 +22,12 @@ public @interface ConfigValue {
      */
     @Nonnull
     String value();
+
+    /**
+     * If the value is text, it will be
+     * colored if the settings is true.
+     *
+     * @return If the value is text, it will be colored.
+     */
+    boolean colored() default true;
 }

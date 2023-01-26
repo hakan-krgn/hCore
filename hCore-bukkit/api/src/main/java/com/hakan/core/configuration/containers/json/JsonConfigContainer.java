@@ -7,6 +7,7 @@ import com.hakan.core.configuration.annotations.ConfigFile;
 import com.hakan.core.configuration.annotations.ConfigValue;
 import com.hakan.core.configuration.containers.ConfigContainer;
 import com.hakan.core.configuration.utils.JsonUtils;
+import com.hakan.core.utils.ColorUtil;
 import com.hakan.core.utils.ReflectionUtils;
 import com.hakan.core.utils.Validate;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -149,6 +150,13 @@ public class JsonConfigContainer extends ConfigContainer {
                 Object value = this.getValue(configValue.value());
                 Object defaultValue = ReflectionUtils.getField(configClass, field.getName());
 
+                if (configValue.colored()) {
+                    if (value instanceof String)
+                        value = ColorUtil.colored(value.toString());
+                    if (defaultValue instanceof String)
+                        defaultValue = ColorUtil.colored(defaultValue.toString());
+                }
+
                 if (defaultValue != null && value != null) {
                     ReflectionUtils.setField(configClass, field.getName(), value);
                 } else if (defaultValue == null && value != null) {
@@ -157,7 +165,7 @@ public class JsonConfigContainer extends ConfigContainer {
                     this.setValue(configValue.value(), defaultValue, false);
                     save = true;
                 } else {
-                    throw new IllegalArgumentException("config value cannot be null!");
+                    throw new IllegalArgumentException("config value(" + configValue.value() + ") cannot be null!");
                 }
             }
 

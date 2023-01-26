@@ -69,7 +69,7 @@ public final class ItemLine_v1_19_R2 implements ItemLine {
         this.item = Validate.notNull(item, "item cannot be null!");
         this.nmsItem.a(CraftItemStack.asNMSCopy(this.item));
         HCore.sendPacket(this.hologram.getRenderer().getShownPlayers(),
-                new PacketPlayOutEntityMetadata(this.nmsItem.ah(), this.armorStand.al().c()));
+                new PacketPlayOutEntityMetadata(this.nmsItem.ah(), this.nmsItem.al().c()));
     }
 
     /**
@@ -140,7 +140,7 @@ public final class ItemLine_v1_19_R2 implements ItemLine {
                     new PacketPlayOutEntityDestroy(this.nmsItem.ah()),
                     new PacketPlayOutSpawnEntity(this.nmsItem),
                     new PacketPlayOutEntityTeleport(this.nmsItem),
-                    new PacketPlayOutEntityMetadata(this.nmsItem.ah(), this.armorStand.al().c()),
+                    new PacketPlayOutEntityMetadata(this.nmsItem.ah(), this.nmsItem.al().c()),
                     new PacketPlayOutMount(this.armorStand));
         }
     }
