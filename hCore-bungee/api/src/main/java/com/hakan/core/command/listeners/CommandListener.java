@@ -24,14 +24,14 @@ import java.util.Set;
 /**
  * {@inheritDoc}
  */
-public final class HCommandListener extends Command implements TabExecutor {
+public final class CommandListener extends Command implements TabExecutor {
 
     private final BaseCommandData baseCommandData;
 
     /**
      * {@inheritDoc}
      */
-    public HCommandListener(@Nonnull BaseCommandData baseCommandData) {
+    public CommandListener(@Nonnull BaseCommandData baseCommandData) {
         super(baseCommandData.getName(),
                 baseCommandData.getDescription(),
                 baseCommandData.getAliases());
