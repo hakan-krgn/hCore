@@ -3,7 +3,7 @@ package com.hakan.core;
 import com.hakan.core.border.Border;
 import com.hakan.core.border.BorderHandler;
 import com.hakan.core.border.builder.BorderBuilder;
-import com.hakan.core.command.HCommandHandler;
+import com.hakan.core.command.CommandHandler;
 import com.hakan.core.configuration.ConfigHandler;
 import com.hakan.core.configuration.containers.ConfigContainer;
 import com.hakan.core.dependency.DependencyHandler;
@@ -27,6 +27,7 @@ import com.hakan.core.packet.PacketHandler;
 import com.hakan.core.particle.Particle;
 import com.hakan.core.particle.ParticleHandler;
 import com.hakan.core.protocol.ProtocolVersion;
+import com.hakan.core.scanner.Scanner;
 import com.hakan.core.scheduler.Scheduler;
 import com.hakan.core.scoreboard.Scoreboard;
 import com.hakan.core.scoreboard.ScoreboardHandler;
@@ -99,6 +100,8 @@ public final class HCore {
      * @param plugin Instance of main class.
      */
     public static void initialize(@Nonnull JavaPlugin plugin) {
+        Scanner.initialize(plugin);
+
         if (INSTANCE != null) return;
 
         HCore.setInstance(plugin);
@@ -503,7 +506,7 @@ public final class HCore {
      * @param adapters List of command adapters.
      */
     public static void registerCommands(@Nonnull Object... adapters) {
-        HCommandHandler.register(adapters);
+        CommandHandler.register(adapters);
     }
 
 

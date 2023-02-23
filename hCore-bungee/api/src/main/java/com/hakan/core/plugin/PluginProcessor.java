@@ -89,9 +89,9 @@ public final class PluginProcessor extends AbstractProcessor {
                 if (data.containsKey("authors"))
                     writer.write("authors: [" + String.join(", ", (String[]) data.get("authors")) + "]\n");
                 if (data.containsKey("depend"))
-                    writer.write("depend: [" + String.join(", ", (String[]) data.get("depend")) + "]\n");
+                    writer.write("depends: [" + String.join(", ", (String[]) data.get("depend")) + "]\n");
                 if (data.containsKey("softdepend"))
-                    writer.write("softdepend: [" + String.join(", ", (String[]) data.get("softdepend")) + "]\n");
+                    writer.write("softDepends: [" + String.join(", ", (String[]) data.get("softdepend")) + "]\n");
                 if (data.containsKey("loadbefore"))
                     writer.write("loadbefore: [" + String.join(", ", (String[]) data.get("loadbefore")) + "]\n");
                 if (data.containsKey("libraries"))
