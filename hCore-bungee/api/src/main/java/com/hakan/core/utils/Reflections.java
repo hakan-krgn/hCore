@@ -60,7 +60,7 @@ public final class Reflections {
      * @return the instance.
      */
     @Nonnull
-    public <T extends Annotation> List<T> getInstancesByAnnotation(@Nonnull String scannedPackage,
+    public <T extends Annotation> List<?> getInstancesByAnnotation(@Nonnull String scannedPackage,
                                                                    @Nonnull Class<T> assignable) {
         Validate.notNull(assignable, "assignable cannot be null");
         Validate.notNull(scannedPackage, "scanned package cannot be null");
@@ -99,14 +99,14 @@ public final class Reflections {
      * @return the instance.
      */
     @Nonnull
-    public <T extends Annotation> List<Class<T>> getClassesByAnnotation(@Nonnull String scannedPackage,
+    public <T extends Annotation> List<Class<?>> getClassesByAnnotation(@Nonnull String scannedPackage,
                                                                         @Nonnull Class<T> assignable) {
         Validate.notNull(assignable, "assignable cannot be null");
         Validate.notNull(scannedPackage, "scanned package cannot be null");
 
         return this.getClasses(scannedPackage).stream()
                 .filter(clazz -> clazz.isAnnotationPresent(assignable))
-                .map(clazz -> (Class<T>) clazz)
+                .map(clazz -> (Class<?>) clazz)
                 .collect(Collectors.toList());
     }
 
