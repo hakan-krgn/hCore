@@ -23,14 +23,14 @@ import java.util.Set;
 /**
  * {@inheritDoc}
  */
-public final class HCommandListener extends BukkitCommand {
+public final class CommandListener extends BukkitCommand {
 
     private final BaseCommandData baseCommandData;
 
     /**
      * {@inheritDoc}
      */
-    public HCommandListener(@Nonnull BaseCommandData baseCommandData) {
+    public CommandListener(@Nonnull BaseCommandData baseCommandData) {
         super(baseCommandData.getName(),
                 baseCommandData.getDescription(),
                 baseCommandData.getUsage(),

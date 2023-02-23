@@ -15,12 +15,12 @@ import java.lang.reflect.Method;
  * HCommandHandler class to register
  * commands and sub commands to server.
  */
-public final class HCommandHandler {
+public final class CommandHandler {
 
     /**
      * Registers commands to server.
      *
-     * @param adapters List of command adapters.
+     * @param adapters List of com.hakan.core.command adapters.
      */
     public static void register(@Nonnull Object... adapters) {
         Validate.notNull(adapters, "adapters cannot be null!");
