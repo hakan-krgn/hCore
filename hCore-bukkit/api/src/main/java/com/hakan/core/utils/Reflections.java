@@ -3,6 +3,7 @@ package com.hakan.core.utils;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.lang.annotation.Annotation;
 import java.net.URISyntaxException;
@@ -168,14 +169,14 @@ public final class Reflections {
      * @param <T>   the type.
      * @return the instance.
      */
-    @Nonnull
+    @Nullable
     public <T> T newInstance(@Nonnull Class<T> clazz) {
         Validate.notNull(clazz, "class cannot be null");
 
         try {
             return clazz.getConstructor().newInstance();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return null;
         }
     }
 }
