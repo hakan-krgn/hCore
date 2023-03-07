@@ -5,7 +5,6 @@ import com.hakan.core.configuration.ConfigHandler;
 import com.hakan.core.configuration.containers.ConfigContainer;
 import com.hakan.core.dependency.DependencyHandler;
 import com.hakan.core.listener.ListenerAdapter;
-import com.hakan.core.scanner.Scanner;
 import com.hakan.core.scheduler.Scheduler;
 import com.hakan.core.spam.Spam;
 import com.hakan.core.utils.Serializer;
@@ -56,8 +55,6 @@ public final class HCore {
      * @param plugin Instance of main class.
      */
     public static void initialize(@Nonnull Plugin plugin) {
-        Scanner.initialize(plugin);
-
         if (INSTANCE != null) return;
 
         HCore.setInstance(plugin);
