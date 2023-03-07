@@ -32,10 +32,10 @@ public final class Scanner {
         String basePackage = scan.value();
 
         Reflections reflections = new Reflections(plugin);
-        reflections.getInstancesByAnnotation(basePackage, BaseCommand.class)
-                .forEach(CommandHandler::register);
         reflections.getInstancesByType(basePackage, Listener.class)
                 .forEach(HCore::registerListeners);
+        reflections.getInstancesByAnnotation(basePackage, BaseCommand.class)
+                .forEach(CommandHandler::register);
         reflections.getInstancesByAnnotation(basePackage, DependencyList.class)
                 .forEach(DependencyHandler::load);
     }
