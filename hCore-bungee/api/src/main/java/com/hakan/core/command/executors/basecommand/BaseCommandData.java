@@ -3,7 +3,7 @@ package com.hakan.core.command.executors.basecommand;
 import com.hakan.core.HCore;
 import com.hakan.core.command.executors.placeholder.PlaceholderData;
 import com.hakan.core.command.executors.subcommand.SubCommandData;
-import com.hakan.core.command.listeners.CommandListener;
+import com.hakan.core.command.listeners.HCommandListener;
 import com.hakan.core.command.utils.CommandUtils;
 import com.hakan.core.utils.Validate;
 
@@ -27,7 +27,7 @@ public final class BaseCommandData {
     private final String usage;
     private final String[] aliases;
     private final boolean tabComplete;
-    private final CommandListener listener;
+    private final HCommandListener listener;
     private final List<SubCommandData> subCommands;
     private final List<PlaceholderData> placeholders;
 
@@ -50,7 +50,7 @@ public final class BaseCommandData {
 
         this.subCommands = new LinkedList<>();
         this.placeholders = new ArrayList<>();
-        this.listener = new CommandListener(this);
+        this.listener = new HCommandListener(this);
     }
 
     /**
