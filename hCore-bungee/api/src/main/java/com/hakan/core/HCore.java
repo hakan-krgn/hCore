@@ -1,6 +1,6 @@
 package com.hakan.core;
 
-import com.hakan.core.command.CommandHandler;
+import com.hakan.core.command.HCommandHandler;
 import com.hakan.core.configuration.ConfigHandler;
 import com.hakan.core.configuration.containers.ConfigContainer;
 import com.hakan.core.dependency.DependencyHandler;
@@ -108,7 +108,7 @@ public final class HCore {
      * @param adapters List of command adapters.
      */
     public static void registerCommands(@Nonnull Object... adapters) {
-        CommandHandler.register(adapters);
+        HCommandHandler.register(adapters);
     }
 
 
