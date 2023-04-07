@@ -73,9 +73,9 @@ public final class CommandUtils {
     public static boolean hasPermission(@Nonnull CommandSender sender, @Nonnull String permission) {
         Validate.notNull(permission, "permission cannot be null!");
         return permission.equals("") ||
-                sender.isOp() ||
-                sender.hasPermission("*") ||
-                sender.hasPermission(permission) ||
-                sender instanceof ConsoleCommandSender;
+               sender.isOp() ||
+               sender.hasPermission("*") ||
+               sender.hasPermission(permission) ||
+               sender instanceof ConsoleCommandSender;
     }
 }

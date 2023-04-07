@@ -98,7 +98,7 @@ public final class Scheduler {
      */
     public boolean isCancelled() {
         return !Bukkit.getScheduler().isCurrentlyRunning(this.getTaskId()) &&
-                !Bukkit.getScheduler().isQueued(this.getTaskId());
+               !Bukkit.getScheduler().isQueued(this.getTaskId());
     }
 
     /**
