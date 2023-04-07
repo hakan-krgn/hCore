@@ -72,7 +72,7 @@ public final class CommandUtils {
     public static boolean hasPermission(@Nonnull CommandSender sender, @Nonnull String permission) {
         Validate.notNull(permission, "permission cannot be null!");
         return permission.equals("") ||
-                sender.hasPermission("*") ||
-                sender.hasPermission(permission);
+               sender.hasPermission("*") ||
+               sender.hasPermission(permission);
     }
 }
