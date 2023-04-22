@@ -4,7 +4,8 @@
 
 ## Little bit about hCore
 
-HCore is a simplified and multi-functional tool for spigot developers. There are dozens of features you can use. HCore is also completely open source code. hCore supports all mc versions from 1.8.x to 1.19.x.
+HCore is a simplified and multi-functional tool for spigot developers. There are dozens of features you can use. HCore
+is also completely open source code. hCore supports all mc versions from 1.8.x to 1.19.x.
 
 ## Developers
 
@@ -34,21 +35,29 @@ HCore is a simplified and multi-functional tool for spigot developers. There are
 
 ## Features
 
-- [`Annotation Commands`](https://hcore.gitbook.io/wiki/messaging/command-system) - Command system with annotations for registering commands
+- [`Annotation Commands`](https://hcore.gitbook.io/wiki/messaging/command-system) - Command system with annotations for
+  registering commands
 - [`NPCs`](https://hcore.gitbook.io/wiki/entities/npc) - NPC system for creating and managing client-side NPCs
-- [`Databases`](https://hcore.gitbook.io/wiki/others/database-management) - Database implementation system with multi-database support
+- [`Databases`](https://hcore.gitbook.io/wiki/others/database-management) - Database implementation system with
+  multi-database support
 - [`Holograms`](https://hcore.gitbook.io/wiki/entities/holograms) - Hologram system for creating and managing holograms
-- [`Scoreboards`](https://hcore.gitbook.io/wiki/messaging/scoreboards) - Scoreboard system for creating custom scoreboards
-- [`Messaging`](https://hcore.gitbook.io/wiki/messaging/messagings) - Message system to send title, action-bar or boss-bar to player
-- [`Packets`](https://hcore.gitbook.io/wiki/messaging/packets) - Packet system to listen to the packet and send it to players
-- [`Event Subscriber`](https://hcore.gitbook.io/wiki/others/event-subscriber) - Event subscribe system to register listeners without any class
+- [`Scoreboards`](https://hcore.gitbook.io/wiki/messaging/scoreboards) - Scoreboard system for creating custom
+  scoreboards
+- [`Messaging`](https://hcore.gitbook.io/wiki/messaging/messagings) - Message system to send title, action-bar or
+  boss-bar to player
+- [`Packets`](https://hcore.gitbook.io/wiki/messaging/packets) - Packet system to listen to the packet and send it to
+  players
+- [`Event Subscriber`](https://hcore.gitbook.io/wiki/others/event-subscriber) - Event subscribe system to register
+  listeners without any class
 - [`Particles`](https://hcore.gitbook.io/wiki/entities/particles) - Particle system to play particle effects for players
-- [`Renderers`](https://hcore.gitbook.io/wiki/entities/renderers) - Renderer system for rendering and sending the package to the closest players
+- [`Renderers`](https://hcore.gitbook.io/wiki/entities/renderers) - Renderer system for rendering and sending the
+  package to the closest players
 - [`Schedulers`](https://github.com/hakan-krgn/hCore/wiki/Scheduler) - Scheduler system to easily create new scheduler
 - [`Menus`](https://hcore.gitbook.io/wiki/others/inventories) - Menu system for creating custom inventories for players
 - [`Anvils`](https://github.com/hakan-krgn/hCore/wiki/Anvil) - Anvil system for receiving input from the player
 - [`Signs`](https://github.com/hakan-krgn/hCore/wiki/Sign) - Sign system for receiving input from the player
 - [`WorldBorders`](https://hcore.gitbook.io/wiki/others/world-borders) - WorldBorder system to display WorldBorder
 - [`ItemBuilder`](https://hcore.gitbook.io/wiki/others/itembuilder) - Using and creating custom items easily
-- [`Configurations`](https://hcore.gitbook.io/wiki/configs/configs) - YAML and JSON config system for creating and manage configs easily
+- [`Configurations`](https://hcore.gitbook.io/wiki/configs/configs) - YAML and JSON config system for creating and
+  manage configs easily
 - [`Spam`](https://hcore.gitbook.io/wiki/messaging/spam-system) - Spam system to check if the provided ID is spamming
