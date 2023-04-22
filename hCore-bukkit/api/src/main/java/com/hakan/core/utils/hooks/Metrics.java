@@ -81,10 +81,10 @@ public final class Metrics {
                     .options()
                     .header(
                             "bStats (https://bStats.org) collects some basic information for plugin authors, like how\n"
-                                    + "many people use their plugin and their total player count. It's recommended to keep bStats\n"
-                                    + "enabled, but if you're not comfortable with this, you can turn this setting off. There is no\n"
-                                    + "performance penalty associated with having metrics enabled, and data sent to bStats is fully\n"
-                                    + "anonymous.")
+                            + "many people use their plugin and their total player count. It's recommended to keep bStats\n"
+                            + "enabled, but if you're not comfortable with this, you can turn this setting off. There is no\n"
+                            + "performance penalty associated with having metrics enabled, and data sent to bStats is fully\n"
+                            + "anonymous.")
                     .copyDefaults(true);
             try {
                 config.save(configFile);
@@ -349,7 +349,7 @@ public final class Metrics {
         private void checkRelocation() {
             // You can use the property to disable the check in your test environment
             if (System.getProperty("bstats.relocatecheck") == null
-                    || !System.getProperty("bstats.relocatecheck").equals("false")) {
+                || !System.getProperty("bstats.relocatecheck").equals("false")) {
                 // Maven's Relocate is clever and changes strings, too. So we have to use this little
                 // "trick" ... :D
                 final String defaultPackage =
@@ -359,7 +359,7 @@ public final class Metrics {
                 // We want to make sure no one just copy & pastes the example and uses the wrong package
                 // names
                 if (MetricsBase.class.getPackage().getName().startsWith(defaultPackage)
-                        || MetricsBase.class.getPackage().getName().startsWith(examplePackage)) {
+                    || MetricsBase.class.getPackage().getName().startsWith(examplePackage)) {
                     throw new IllegalStateException("bStats Metrics class has not been relocated correctly!");
                 }
             }
