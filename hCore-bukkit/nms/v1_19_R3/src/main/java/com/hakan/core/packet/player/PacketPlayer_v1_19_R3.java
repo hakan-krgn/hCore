@@ -49,7 +49,7 @@ public final class PacketPlayer_v1_19_R3 extends PacketPlayer {
     @Override
     public void register() {
         try {
-            NetworkManager networkManager = ReflectionUtils.getField(this.connection, "connection");
+            NetworkManager networkManager = ReflectionUtils.getField(this.connection, "h");
             if (networkManager == null) return;
 
             super.pipeline = networkManager.m.pipeline().addBefore("packet_handler", CHANNEL + super.player.getUniqueId(), new ChannelDuplexHandler() {
