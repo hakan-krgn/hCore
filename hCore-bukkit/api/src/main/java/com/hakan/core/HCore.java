@@ -54,12 +54,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -105,7 +100,6 @@ public final class HCore {
         Metrics.initialize(plugin);
 
         PacketHandler.initialize();
-        Scheduler.initialize();
         GuiHandler.initialize();
         NpcHandler.initialize();
         ItemBuilder.initialize();

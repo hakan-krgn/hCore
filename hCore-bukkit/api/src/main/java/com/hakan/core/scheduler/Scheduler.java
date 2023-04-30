@@ -1,14 +1,10 @@
 package com.hakan.core.scheduler;
 
-import com.hakan.core.HCore;
 import com.hakan.core.utils.Validate;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import javax.annotation.Nonnull;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -21,32 +17,15 @@ import java.util.function.Function;
  */
 public final class Scheduler {
 
-    private static final List<Scheduler> schedulers = new LinkedList<>();
-
-    public static void initialize() {
-        HCore.asyncScheduler().every(1).run(() -> {
-            for (Scheduler scheduler : new ArrayList<>(schedulers)) {
-                if (scheduler == null)
-                    continue;
-
-                if (scheduler.isCancelled()) {
-                    if (scheduler.endRunnable != null)
-                        scheduler.endRunnable.run();
-                    schedulers.remove(scheduler);
-                }
-            }
-        });
-    }
-
-
-
     private final JavaPlugin plugin;
-    private final List<Function<BukkitRunnable, Boolean>> freezeFilters;
-    private final List<Function<BukkitRunnable, Boolean>> terminateFilters;
+    private final List<Function<SchedulerRunnable, Boolean>> freezeFilters;
+    private final List<Function<SchedulerRunnable, Boolean>> terminateFilters;
+
+    private Runnable endRunnable;
+    private Runnable startRunnable;
+    private SchedulerRunnable task;
 
     private boolean async;
-    private Runnable endRunnable;
-    private BukkitRunnable runnable;
 
     private long after;
     private long every;
@@ -67,14 +46,8 @@ public final class Scheduler {
         this.plugin = Validate.notNull(plugin, "plugin cannot be null!");
         this.async = async;
 
-        this.after = 0;
-        this.every = -1;
-
-        this.end = -1;
-        this.start = -1;
-        this.counter = 0;
-
-        this.limiter = -1;
+        this.after = this.counter = 0;
+        this.every = this.limiter = this.end = this.start = -1;
 
         this.freezeFilters = new LinkedList<>();
         this.terminateFilters = new LinkedList<>();
@@ -86,8 +59,8 @@ public final class Scheduler {
      *
      * @return Task id.
      */
-    public int getTaskId() {
-        return (this.runnable != null) ? this.runnable.getTaskId() : -1;
+    public int getId() {
+        return (this.task != null) ? this.task.getId() : -1;
     }
 
     /**
@@ -97,8 +70,7 @@ public final class Scheduler {
      * @return True if cancelled.
      */
     public boolean isCancelled() {
-        return !Bukkit.getScheduler().isCurrentlyRunning(this.getTaskId()) &&
-               !Bukkit.getScheduler().isQueued(this.getTaskId());
+        return (this.task != null) && this.task.isCancelled();
     }
 
     /**
@@ -228,7 +200,7 @@ public final class Scheduler {
      * @return This class.
      */
     @Nonnull
-    public Scheduler freezeIf(@Nonnull Function<BukkitRunnable, Boolean> freezeFilter) {
+    public Scheduler freezeIf(@Nonnull Function<SchedulerRunnable, Boolean> freezeFilter) {
         this.freezeFilters.add(Validate.notNull(freezeFilter, "freeze filter cannot be null!"));
         return this;
     }
@@ -242,8 +214,21 @@ public final class Scheduler {
      * @return This class.
      */
     @Nonnull
-    public Scheduler terminateIf(@Nonnull Function<BukkitRunnable, Boolean> terminateFilter) {
+    public Scheduler terminateIf(@Nonnull Function<SchedulerRunnable, Boolean> terminateFilter) {
         this.terminateFilters.add(Validate.notNull(terminateFilter, "terminate filter cannot be null!"));
+        return this;
+    }
+
+    /**
+     * Given runnable will be started
+     * when scheduler is started.
+     *
+     * @param runnable Runnable.
+     * @return This class.
+     */
+    @Nonnull
+    public Scheduler whenStarted(@Nonnull Runnable runnable) {
+        this.startRunnable = Validate.notNull(runnable, "end runnable cannot be null!");
         return this;
     }
 
@@ -261,25 +246,19 @@ public final class Scheduler {
     }
 
     /**
-     * Cancels the runnable
+     * Cancels the runnable.
      * if it's currently running.
      *
      * @return This class.
      */
     @Nonnull
     public synchronized Scheduler cancel() {
-        if (this.runnable == null)
-            return this;
-        if (this.endRunnable != null)
-            this.endRunnable.run();
-
-        this.runnable.cancel();
-        schedulers.remove(this);
+        if (this.task != null) this.task.cancel();
         return this;
     }
 
     /**
-     * Starts to scheduler.
+     * Starts the scheduler.
      *
      * @param runnable Callback.
      * @return This class.
@@ -291,74 +270,79 @@ public final class Scheduler {
     }
 
     /**
-     * Starts to scheduler.
+     * Starts the scheduler.
      *
      * @param consumer Callback.
      * @return This class.
      */
     @Nonnull
-    public synchronized Scheduler run(@Nonnull Consumer<BukkitRunnable> consumer) {
+    public synchronized Scheduler run(@Nonnull Consumer<SchedulerRunnable> consumer) {
         Validate.notNull(consumer, "consumer cannot be null!");
         return this.run((task, count) -> consumer.accept(task));
     }
 
     /**
-     * Starts to scheduler.
+     * Starts the scheduler.
      *
-     * @param taskConsumer Callback.
+     * @param consumer Callback.
      * @return This class.
      */
     @Nonnull
-    public synchronized Scheduler run(@Nonnull BiConsumer<BukkitRunnable, Long> taskConsumer) {
-        Validate.notNull(taskConsumer, "task consumer cannot be null!");
+    public synchronized Scheduler run(@Nonnull BiConsumer<SchedulerRunnable, Long> consumer) {
+        Validate.notNull(consumer, "consumer cannot be null!");
 
-        this.runnable = new BukkitRunnable() {
-            @Override
-            public void run() {
-                for (Function<BukkitRunnable, Boolean> freezeFilter : freezeFilters) {
-                    if (freezeFilter.apply(this)) {
-                        return;
-                    }
-                }
-                for (Function<BukkitRunnable, Boolean> terminateFilter : terminateFilters) {
-                    if (terminateFilter.apply(this)) {
-                        Scheduler.this.cancel();
-                        return;
-                    }
-                }
-
-
-                if (every == -1) {
-                    taskConsumer.accept(this, counter);
+        this.task = new SchedulerRunnable(this.plugin).whenProcessed(() -> {
+            for (Function<SchedulerRunnable, Boolean> freezeFilter : this.freezeFilters) {
+                if (freezeFilter.apply(this.task)) {
                     return;
-                } else if (limiter != -1 && limiter-- <= 0) {
-                    Scheduler.this.cancel();
-                    return;
-                }
-
-
-                if (start == -1 && end == -1) {
-                    taskConsumer.accept(this, counter++);
-                } else if (start == end) {
-                    taskConsumer.accept(this, counter++);
-                    Scheduler.this.cancel();
-                } else if (start < end) {
-                    if (counter >= start && counter <= end) taskConsumer.accept(this, counter++);
-                    if (counter > end) Scheduler.this.cancel();
-                } else {
-                    if (counter <= start && counter >= end) taskConsumer.accept(this, counter--);
-                    if (counter < end) Scheduler.this.cancel();
                 }
             }
-        };
+            for (Function<SchedulerRunnable, Boolean> terminateFilter : this.terminateFilters) {
+                if (terminateFilter.apply(this.task)) {
+                    this.task.cancel();
+                    return;
+                }
+            }
 
-        if (!this.async && this.every == -1) this.runnable.runTaskLater(this.plugin, this.after);
-        else if (!this.async) this.runnable.runTaskTimer(this.plugin, this.after, this.every);
-        else if (this.every == -1) this.runnable.runTaskLaterAsynchronously(this.plugin, this.after);
-        else this.runnable.runTaskTimerAsynchronously(this.plugin, this.after, this.every);
+
+            if (this.every == -1) {
+                consumer.accept(this.task, this.counter);
+                return;
+            } else if (this.limiter != -1 && this.limiter-- <= 0) {
+                this.task.cancel();
+                return;
+            }
 
 
-        schedulers.add(this);
+            if (this.start == -1 && this.end == -1) {
+                consumer.accept(this.task, this.counter++);
+            } else if (this.start == this.end) {
+                consumer.accept(this.task, this.counter++);
+                this.task.cancel();
+            } else if (this.start < this.end) {
+                if (this.counter >= this.start && this.counter <= this.end)
+                    consumer.accept(this.task, this.counter++);
+                if (this.counter > this.end)
+                    this.task.cancel();
+            } else {
+                if (this.counter <= this.start && this.counter >= this.end)
+                    consumer.accept(this.task, this.counter--);
+                if (this.counter < this.end)
+                    this.task.cancel();
+            }
+        }).whenStarted(() -> {
+            if (this.startRunnable != null)
+                this.startRunnable.run();
+        }).whenEnded(() -> {
+            if (this.endRunnable != null)
+                this.endRunnable.run();
+        });
+
+        if (!this.async && this.every == -1) this.task.runLater(this.after);
+        else if (!this.async) this.task.runTimer(this.after, this.every);
+        else if (this.every == -1) this.task.runAsyncLater(this.after);
+        else this.task.runAsyncTimer(this.after, this.every);
+
         return this;
     }
 }

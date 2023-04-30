@@ -2,7 +2,6 @@ package com.hakan.core.scheduler;
 
 import com.hakan.core.utils.Validate;
 import net.md_5.bungee.api.plugin.Plugin;
-import net.md_5.bungee.api.scheduler.ScheduledTask;
 
 import javax.annotation.Nonnull;
 import java.time.Duration;
@@ -19,13 +18,14 @@ import java.util.function.Function;
 public final class Scheduler {
 
     private final Plugin plugin;
-    private final Thread thread;
-    private final List<Function<ScheduledTask, Boolean>> freezeFilters;
-    private final List<Function<ScheduledTask, Boolean>> terminateFilters;
+    private final List<Function<SchedulerRunnable, Boolean>> freezeFilters;
+    private final List<Function<SchedulerRunnable, Boolean>> terminateFilters;
+
+    private Runnable endRunnable;
+    private Runnable startRunnable;
+    private SchedulerRunnable task;
 
     private boolean async;
-    private Runnable endRunnable;
-    private ScheduledTask runnable;
 
     private long after;
     private long every;
@@ -46,16 +46,9 @@ public final class Scheduler {
         this.plugin = Validate.notNull(plugin, "plugin cannot be null!");
         this.async = async;
 
-        this.after = 0;
-        this.every = -1;
+        this.after = this.counter = 0;
+        this.every = this.limiter = this.end = this.start = -1;
 
-        this.end = -1;
-        this.start = -1;
-        this.counter = 0;
-
-        this.limiter = -1;
-
-        this.thread = Thread.currentThread();
         this.freezeFilters = new LinkedList<>();
         this.terminateFilters = new LinkedList<>();
     }
@@ -66,8 +59,18 @@ public final class Scheduler {
      *
      * @return Task id.
      */
-    public int getTaskId() {
-        return (this.runnable != null) ? this.runnable.getId() : -1;
+    public int getId() {
+        return (this.task != null) ? this.task.getId() : -1;
+    }
+
+    /**
+     * Checks if scheduler is
+     * cancelled or not.
+     *
+     * @return True if cancelled.
+     */
+    public boolean isCancelled() {
+        return (this.task != null) && this.task.isCancelled();
     }
 
     /**
@@ -122,7 +125,7 @@ public final class Scheduler {
      */
     @Nonnull
     public Scheduler after(long after) {
-        this.after = Math.max(after * 50, 0);
+        this.after = Math.max(after, 0);
         return this;
     }
 
@@ -134,7 +137,7 @@ public final class Scheduler {
      */
     @Nonnull
     public Scheduler every(long every) {
-        this.every = Math.max(every * 50, -1);
+        this.every = Math.max(every, -1);
         return this;
     }
 
@@ -197,7 +200,7 @@ public final class Scheduler {
      * @return This class.
      */
     @Nonnull
-    public Scheduler freezeIf(@Nonnull Function<ScheduledTask, Boolean> freezeFilter) {
+    public Scheduler freezeIf(@Nonnull Function<SchedulerRunnable, Boolean> freezeFilter) {
         this.freezeFilters.add(Validate.notNull(freezeFilter, "freeze filter cannot be null!"));
         return this;
     }
@@ -211,8 +214,21 @@ public final class Scheduler {
      * @return This class.
      */
     @Nonnull
-    public Scheduler terminateIf(@Nonnull Function<ScheduledTask, Boolean> terminateFilter) {
+    public Scheduler terminateIf(@Nonnull Function<SchedulerRunnable, Boolean> terminateFilter) {
         this.terminateFilters.add(Validate.notNull(terminateFilter, "terminate filter cannot be null!"));
+        return this;
+    }
+
+    /**
+     * Given runnable will be started
+     * when scheduler is started.
+     *
+     * @param runnable Runnable.
+     * @return This class.
+     */
+    @Nonnull
+    public Scheduler whenStarted(@Nonnull Runnable runnable) {
+        this.startRunnable = Validate.notNull(runnable, "end runnable cannot be null!");
         return this;
     }
 
@@ -230,24 +246,19 @@ public final class Scheduler {
     }
 
     /**
-     * Cancels the runnable
+     * Cancels the runnable.
      * if it's currently running.
      *
      * @return This class.
      */
     @Nonnull
     public synchronized Scheduler cancel() {
-        if (this.runnable == null)
-            return this;
-        if (this.endRunnable != null)
-            this.endRunnable.run();
-
-        this.runnable.cancel();
+        if (this.task != null) this.task.cancel();
         return this;
     }
 
     /**
-     * Starts to scheduler.
+     * Starts the scheduler.
      *
      * @param runnable Callback.
      * @return This class.
@@ -259,69 +270,78 @@ public final class Scheduler {
     }
 
     /**
-     * Starts to scheduler.
+     * Starts the scheduler.
      *
      * @param consumer Callback.
      * @return This class.
      */
     @Nonnull
-    public synchronized Scheduler run(@Nonnull Consumer<ScheduledTask> consumer) {
+    public synchronized Scheduler run(@Nonnull Consumer<SchedulerRunnable> consumer) {
         Validate.notNull(consumer, "consumer cannot be null!");
         return this.run((task, count) -> consumer.accept(task));
     }
 
     /**
-     * Starts to scheduler.
+     * Starts the scheduler.
      *
-     * @param cons Callback.
+     * @param consumer Callback.
      * @return This class.
      */
     @Nonnull
-    public synchronized Scheduler run(@Nonnull BiConsumer<ScheduledTask, Long> cons) {
-        Validate.notNull(cons, "task consumer cannot be null!");
+    public synchronized Scheduler run(@Nonnull BiConsumer<SchedulerRunnable, Long> consumer) {
+        Validate.notNull(consumer, "consumer cannot be null!");
 
-        if (this.async && this.thread.equals(Thread.currentThread())) {
-            this.plugin.getProxy().getScheduler().runAsync(this.plugin, () -> this.run(cons));
-            return this;
-        }
-
-
-        this.runnable = this.plugin.getProxy().getScheduler().schedule(this.plugin, () -> {
-            for (Function<ScheduledTask, Boolean> freezeFilter : this.freezeFilters) {
-                if (freezeFilter.apply(this.runnable)) {
+        this.task = new SchedulerRunnable(this.plugin).whenProcessed(() -> {
+            for (Function<SchedulerRunnable, Boolean> freezeFilter : this.freezeFilters) {
+                if (freezeFilter.apply(this.task)) {
                     return;
                 }
             }
-            for (Function<ScheduledTask, Boolean> terminateFilter : this.terminateFilters) {
-                if (terminateFilter.apply(this.runnable)) {
-                    Scheduler.this.cancel();
+            for (Function<SchedulerRunnable, Boolean> terminateFilter : this.terminateFilters) {
+                if (terminateFilter.apply(this.task)) {
+                    this.task.cancel();
                     return;
                 }
             }
 
 
             if (this.every == -1) {
-                cons.accept(this.runnable, this.counter);
+                consumer.accept(this.task, this.counter);
                 return;
             } else if (this.limiter != -1 && this.limiter-- <= 0) {
-                Scheduler.this.cancel();
+                this.task.cancel();
                 return;
             }
 
 
             if (this.start == -1 && this.end == -1) {
-                cons.accept(this.runnable, this.counter++);
+                consumer.accept(this.task, this.counter++);
             } else if (this.start == this.end) {
-                cons.accept(this.runnable, this.counter++);
-                Scheduler.this.cancel();
+                consumer.accept(this.task, this.counter++);
+                this.task.cancel();
             } else if (this.start < this.end) {
-                if (this.counter > this.end) Scheduler.this.cancel();
-                if (this.counter >= this.start && this.counter <= this.end) cons.accept(this.runnable, this.counter++);
+                if (this.counter >= this.start && this.counter <= this.end)
+                    consumer.accept(this.task, this.counter++);
+                if (this.counter > this.end)
+                    this.task.cancel();
             } else {
-                if (this.counter < this.end) Scheduler.this.cancel();
-                if (this.counter <= this.start && this.counter >= this.end) cons.accept(this.runnable, this.counter--);
+                if (this.counter <= this.start && this.counter >= this.end)
+                    consumer.accept(this.task, this.counter--);
+                if (this.counter < this.end)
+                    this.task.cancel();
             }
-        }, this.after, this.every, TimeUnit.MILLISECONDS);
+        }).whenStarted(() -> {
+            if (this.startRunnable != null)
+                this.startRunnable.run();
+        }).whenEnded(() -> {
+            if (this.endRunnable != null)
+                this.endRunnable.run();
+        });
+
+        if (!this.async && this.every == -1) this.task.runLater(this.after);
+        else if (!this.async) this.task.runTimer(this.after, this.every);
+        else if (this.every == -1) this.task.runAsyncLater(this.after);
+        else this.task.runAsyncTimer(this.after, this.every);
 
         return this;
     }
