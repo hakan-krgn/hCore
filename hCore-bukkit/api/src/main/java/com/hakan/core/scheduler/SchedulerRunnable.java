@@ -42,6 +42,7 @@ public final class SchedulerRunnable extends BukkitRunnable {
      *
      * @return Cancelled.
      */
+    @Override
     public boolean isCancelled() {
         return super.isCancelled();
     }
