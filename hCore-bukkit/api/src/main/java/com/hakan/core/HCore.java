@@ -3,7 +3,7 @@ package com.hakan.core;
 import com.hakan.core.border.Border;
 import com.hakan.core.border.BorderHandler;
 import com.hakan.core.border.builder.BorderBuilder;
-import com.hakan.core.command.HCommandHandler;
+import com.hakan.core.command.CommandHandler;
 import com.hakan.core.configuration.ConfigHandler;
 import com.hakan.core.configuration.containers.ConfigContainer;
 import com.hakan.core.dependency.DependencyHandler;
@@ -54,7 +54,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.time.Duration;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -91,7 +96,7 @@ public final class HCore {
     /**
      * Initializes all APIs.
      *
-     * @param plugin Instance of main class.
+     * @param plugin Instance of the main class.
      */
     public static void initialize(@Nonnull JavaPlugin plugin) {
         if (INSTANCE != null) return;
@@ -116,8 +121,8 @@ public final class HCore {
      */
 
     /**
-     * Gets protocol version
-     * of current server.
+     * Gets the protocol version
+     * of the current server.
      *
      * @return Protocol version.
      */
@@ -497,7 +502,7 @@ public final class HCore {
      * @param adapters List of command adapters.
      */
     public static void registerCommands(@Nonnull Object... adapters) {
-        HCommandHandler.register(adapters);
+        CommandHandler.register(adapters);
     }
 
 

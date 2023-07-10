@@ -30,7 +30,7 @@ public @interface SubCommand {
     String permission() default "";
 
     /**
-     * Gets permission message of annotation.
+     * Gets the permission message of annotation.
      *
      * @return Permission message of annotation.
      */

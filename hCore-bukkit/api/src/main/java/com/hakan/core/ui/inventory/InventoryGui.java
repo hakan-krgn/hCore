@@ -31,9 +31,9 @@ import java.util.stream.IntStream;
 @SuppressWarnings({"unchecked"})
 public class InventoryGui implements Gui {
 
-    private final String id;
-    private final String title;
-    private final Inventory inventory;
+    protected final String id;
+    protected final String title;
+    protected final Inventory inventory;
     protected final Pagination pagination;
     private final Set<Option> options;
     private final Map<Integer, ClickableItem> items;
