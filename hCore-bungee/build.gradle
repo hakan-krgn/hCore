@@ -2,14 +2,3 @@ dependencies {
     implementation project(':hCore-bungee:api')
     annotationProcessor project(':hCore-bungee:api')
 }
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = project.group
-            version = project.version
-            artifactId = project.name
-            from components.java
-        }
-    }
-}
