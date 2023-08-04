@@ -29,7 +29,7 @@ public final class NbtManager_v1_20_R1 implements NbtManager {
             return itemStack;
 
         net.minecraft.world.item.ItemStack nmsCopy = CraftItemStack.asNMSCopy(itemStack);
-        nmsCopy.v().a(key, value);
+        nmsCopy.w().a(key, value);
         return CraftItemStack.asBukkitCopy(nmsCopy);
     }
 
@@ -46,7 +46,7 @@ public final class NbtManager_v1_20_R1 implements NbtManager {
             return itemStack;
 
         net.minecraft.world.item.ItemStack nmsCopy = CraftItemStack.asNMSCopy(itemStack);
-        nmsCopy.v().a(this.parse(nbt));
+        nmsCopy.w().a(this.parse(nbt));
         return CraftItemStack.asBukkitCopy(nmsCopy);
     }
 
@@ -63,7 +63,7 @@ public final class NbtManager_v1_20_R1 implements NbtManager {
         if (nmsCopy == null)
             return "{}";
 
-        NBTTagCompound nbtTagCompound = nmsCopy.v();
+        NBTTagCompound nbtTagCompound = nmsCopy.w();
         return nbtTagCompound.e(key) ? nbtTagCompound.l(key) : "{}";
     }
 
@@ -79,7 +79,7 @@ public final class NbtManager_v1_20_R1 implements NbtManager {
         if (nmsCopy == null)
             return "{}";
 
-        return nmsCopy.v().toString();
+        return nmsCopy.w().toString();
     }
 
     private NBTTagCompound parse(String nbt) {
