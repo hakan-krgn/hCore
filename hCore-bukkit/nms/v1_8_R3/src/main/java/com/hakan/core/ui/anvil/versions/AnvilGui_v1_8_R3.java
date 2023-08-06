@@ -52,8 +52,6 @@ public final class AnvilGui_v1_8_R3 extends AnvilGui {
 
     /**
      * {@inheritDoc}
-     *
-     * @return
      */
     @Override
     public AnvilGui open(boolean runnableActivity) {
@@ -74,8 +72,6 @@ public final class AnvilGui_v1_8_R3 extends AnvilGui {
 
     /**
      * {@inheritDoc}
-     *
-     * @return
      */
     @Override
     public AnvilGui close(boolean runnableActivity) {
