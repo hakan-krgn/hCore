@@ -34,8 +34,6 @@ public final class SignGui_v1_15_R1 extends SignGui {
 
     /**
      * {@inheritDoc}
-     *
-     * @return
      */
     @Nonnull
     @Override
@@ -60,8 +58,6 @@ public final class SignGui_v1_15_R1 extends SignGui {
 
     /**
      * {@inheritDoc}
-     *
-     * @return
      */
     @Nonnull
     @Override
