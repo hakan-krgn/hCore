@@ -8,16 +8,15 @@ import net.minecraft.network.chat.IChatBaseComponent;
 import net.minecraft.network.protocol.game.PacketPlayInUpdateSign;
 import net.minecraft.network.protocol.game.PacketPlayOutBlockChange;
 import net.minecraft.network.protocol.game.PacketPlayOutOpenSignEditor;
+import net.minecraft.world.level.block.entity.SignText;
 import net.minecraft.world.level.block.entity.TileEntitySign;
 import net.minecraft.world.level.block.state.IBlockData;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_20_R1.block.CraftSign;
 import org.bukkit.craftbukkit.v1_20_R1.util.CraftMagicNumbers;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
-import java.util.stream.IntStream;
 
 /**
  * {@inheritDoc}
@@ -47,9 +46,11 @@ public final class SignGui_v1_20_R1 extends SignGui {
 
         HCore.sendPacket(super.player, new PacketPlayOutBlockChange(blockPosition, data));
 
-        IChatBaseComponent[] components = CraftSign.sanitizeLines(super.lines);
-        TileEntitySign sign = new TileEntitySign(blockPosition, data);
-        IntStream.range(0, super.lines.length).forEach(i -> sign.g().a(i, components[i]));
+        TileEntitySign sign = new TileEntitySign(blockPosition, null);
+        SignText signText = sign.a(true);
+        for (int i = 0; i < lines.length; i++)
+            signText = signText.a(i, IChatBaseComponent.a(lines[i]));
+        sign.a(signText, true);
         HCore.sendPacket(super.player, sign.j());
 
         HCore.sendPacket(super.player, new PacketPlayOutOpenSignEditor(blockPosition, true));
