@@ -39,15 +39,15 @@ public final class SignGui_v1_20_R1 extends SignGui {
     @Override
     public SignGui open() {
         Location location = super.player.getLocation();
-        BlockPosition blockPosition = new BlockPosition(location.getBlockX(), LOWEST_Y_AXIS + 1, location.getBlockZ());
+        BlockPosition blockPosition = new BlockPosition(location.getBlockX(), location.getBlockY() + 3, location.getBlockZ());
         IBlockData data = CraftMagicNumbers.getBlock(super.type.asMaterial()).n();
 
         HCore.sendPacket(super.player, new PacketPlayOutBlockChange(blockPosition, data));
 
         TileEntitySign sign = new TileEntitySign(blockPosition, null);
         SignText signText = sign.a(true);
-        for (int i = 0; i < lines.length; i++)
-            signText = signText.a(i, IChatBaseComponent.a(lines[i]));
+        for (int i = 0; i < super.lines.length; i++)
+            signText = signText.a(i, IChatBaseComponent.a(super.lines[i]));
         sign.a(signText, true);
         HCore.sendPacket(super.player, sign.j());
 
