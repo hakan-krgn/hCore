@@ -50,8 +50,8 @@ import java.util.zip.GZIPOutputStream;
 
 public final class Metrics {
 
-    public static void initialize(JavaPlugin plugin) {
-        new Metrics(plugin, 14564);
+    public static Metrics initialize(JavaPlugin plugin) {
+        return new Metrics(plugin, 14564);
     }
 
 
@@ -112,6 +112,8 @@ public final class Metrics {
                         logErrors,
                         logSentData,
                         logResponseStatusText);
+
+        this.addCustomChart(new Metrics.SimplePie("plugin_counts", plugin::getName));
     }
 
     /**
