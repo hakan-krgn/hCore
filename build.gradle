@@ -4,13 +4,18 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
-allprojects {
+group 'com.hakan'
+version '0.7.1.5'
+sourceCompatibility = 8
+compileJava.options.encoding = 'UTF-8'
+
+subprojects {
     apply plugin: 'java'
     apply plugin: 'maven-publish'
     apply plugin: 'com.github.johnrengelman.shadow'
 
-    group 'com.hakan'
-    version '0.7.1.5'
+    group rootProject.group
+    version rootProject.version
     sourceCompatibility = 8
     compileJava.options.encoding = 'UTF-8'
 
@@ -62,9 +67,5 @@ allprojects {
 }
 
 tasks.jar {
-    enabled = false
-}
-
-tasks.shadowJar {
     enabled = false
 }
