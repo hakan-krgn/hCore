@@ -1,0 +1,47 @@
+name: 'Build'
+
+on:
+  pull_request:
+  push:
+    branches: [ 'master' ]
+
+permissions:
+  contents: 'read'
+
+jobs:
+  validate:
+    name: 'validate'
+    runs-on: 'ubuntu-latest'
+
+    steps:
+      - name: 'Checkout repository'
+        uses: 'actions/checkout@v3'
+
+      - name: 'Validate gradle wrapper'
+        uses: 'gradle/wrapper-validation-action@v1'
+
+  build:
+    name: 'build, test and publish'
+    runs-on: 'ubuntu-latest'
+
+    steps:
+      - name: 'Set up JDK 11'
+        uses: 'actions/setup-java@v3'
+        with:
+          java-version: 11
+          distribution: 'corretto'
+
+      - name: 'Checkout repository'
+        uses: 'actions/checkout@v3'
+
+      - name: 'Gradle permissions'
+        run: 'chmod +x gradlew'
+
+      - name: 'Test project'
+        run: './gradlew test'
+
+      - name: 'Clean and build project'
+        run: './gradlew clean build'
+
+      - name: 'Publish project'
+        run: './gradlew publishToMavenLocal'
