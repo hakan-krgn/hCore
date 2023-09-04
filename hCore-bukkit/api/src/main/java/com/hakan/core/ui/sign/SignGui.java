@@ -1,7 +1,5 @@
 package com.hakan.core.ui.sign;
 
-import com.hakan.core.HCore;
-import com.hakan.core.protocol.ProtocolVersion;
 import com.hakan.core.ui.Gui;
 import com.hakan.core.ui.GuiHandler;
 import com.hakan.core.ui.sign.type.SignType;
@@ -16,10 +14,6 @@ import java.util.function.Consumer;
  * handles nms methods of sign gui.
  */
 public abstract class SignGui implements Gui {
-
-    protected static final int LOWEST_Y_AXIS = (HCore.getProtocolVersion().isNewerOrEqual(ProtocolVersion.v1_18_R1)) ? -64 : 0;
-
-
 
     protected final Player player;
     protected SignType type;
