@@ -1,17 +1,11 @@
-[*.java]
-charset=utf-8
-end_of_line=lf
-indent_size=4
-indent_style=space
-insert_final_newline=true
-max_line_length=120
-tab_width=4
+root=true
 
-[{*.yml,*.yaml}]
+[*.{groovy,java,kt,xml}]
 charset=utf-8
+indent_size=4
 end_of_line=lf
-indent_size=2
 indent_style=space
-insert_final_newline=true
 max_line_length=120
-tab_width=2
+insert_final_newline=true
+ij_continuation_indent_size=8
+trim_trailing_whitespace=true
