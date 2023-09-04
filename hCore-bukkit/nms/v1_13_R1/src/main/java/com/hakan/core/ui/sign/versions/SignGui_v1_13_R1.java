@@ -38,8 +38,10 @@ public final class SignGui_v1_13_R1 extends SignGui {
     @Nonnull
     @Override
     public SignGui open() {
-        Location location = super.player.getLocation();
-        BlockPosition blockPosition = new BlockPosition(location.getBlockX(), LOWEST_Y_AXIS + 1, location.getBlockZ());
+        Location location = super.player.getEyeLocation();
+        location.clone().add(location.getDirection().multiply(-3));
+
+        BlockPosition blockPosition = new BlockPosition(location.getBlockX(), location.getBlockY(), location.getBlockZ());
 
         PacketPlayOutBlockChange packet = new PacketPlayOutBlockChange(((CraftWorld) super.player.getWorld()).getHandle(), blockPosition);
         packet.block = CraftMagicNumbers.getBlock(super.type.asMaterial()).getBlockData();

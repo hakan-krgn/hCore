@@ -38,8 +38,10 @@ public final class SignGui_v1_20_R1 extends SignGui {
     @Nonnull
     @Override
     public SignGui open() {
-        Location location = super.player.getLocation();
-        BlockPosition blockPosition = new BlockPosition(location.getBlockX(), location.getBlockY() + 3, location.getBlockZ());
+        Location location = super.player.getEyeLocation();
+        location.clone().add(location.getDirection().multiply(-3));
+
+        BlockPosition blockPosition = new BlockPosition(location.getBlockX(), location.getBlockY(), location.getBlockZ());
         IBlockData data = CraftMagicNumbers.getBlock(super.type.asMaterial()).n();
 
         HCore.sendPacket(super.player, new PacketPlayOutBlockChange(blockPosition, data));
