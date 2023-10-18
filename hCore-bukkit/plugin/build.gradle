@@ -1,0 +1,16 @@
+dependencies {
+    annotationProcessor project(':hCore-bukkit:api')
+
+    implementation project(':hCore-bukkit:api')
+    implementation project(':hCore-bukkit:core')
+
+    compileOnly 'org.spigotmc:spigot:1.16.4-R0.1-SNAPSHOT'
+}
+
+tasks.compileJava.dependsOn(
+        ':hCore-bukkit:api:jar',
+        ':hCore-bukkit:api:shadowJar',
+
+        ':hCore-bukkit:core:jar',
+        ':hCore-bukkit:core:shadowJar',
+)
