@@ -41,7 +41,7 @@ public final class PacketPlayer_v1_20_R2 extends PacketPlayer {
         if (!super.player.isOnline())
             return;
         for (Object packet : packets)
-            this.connection.a((Packet<?>) packet);
+            this.connection.b((Packet<?>) packet);
     }
 
     /**
