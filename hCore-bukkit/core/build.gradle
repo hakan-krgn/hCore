@@ -94,5 +94,5 @@ tasks.compileJava.dependsOn(
         ':hCore-bukkit:nms:v1_20_R1:shadowJar',
 
         ':hCore-bukkit:nms:v1_20_R2:jar',
-        ':hCore-bukkit:nms:v1_20_R2:shadowJar'
+        ':hCore-bukkit:nms:v1_20_R2:shadowJar',
 )

@@ -1,0 +1,16 @@
+dependencies {
+    annotationProcessor project(':hCore-bungee:api')
+
+    implementation project(':hCore-bungee:api')
+    implementation project(':hCore-bungee:core')
+
+    compileOnly 'net.md-5:bungeecord-api:1.19-R0.1-SNAPSHOT'
+}
+
+tasks.compileJava.dependsOn(
+        ':hCore-bungee:api:jar',
+        ':hCore-bungee:api:shadowJar',
+
+        ':hCore-bungee:core:jar',
+        ':hCore-bungee:core:shadowJar',
+)

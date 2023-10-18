@@ -5,5 +5,5 @@ dependencies {
 
 tasks.compileJava.dependsOn(
         ':hCore-bungee:api:jar',
-        ':hCore-bungee:api:shadowJar'
+        ':hCore-bungee:api:shadowJar',
 )
