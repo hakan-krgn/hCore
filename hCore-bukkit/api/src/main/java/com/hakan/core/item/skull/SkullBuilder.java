@@ -188,7 +188,8 @@ public class SkullBuilder extends ItemBuilder {
             }
 
             if (this.texture != null) {
-                GameProfile profile = new GameProfile(UUID.randomUUID(), null);
+                UUID uuid = UUID.randomUUID();
+                GameProfile profile = new GameProfile(uuid, uuid.toString());
                 profile.getProperties().put("textures", new Property("textures", this.texture));
                 ReflectionUtils.setField(skullMeta, "profile", profile);
             }
