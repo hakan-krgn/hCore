@@ -69,11 +69,26 @@ public final class ReflectionUtils {
     @Nullable
     public static <T> T getField(@Nonnull Object object,
                                  @Nonnull String fieldName) {
+        return getField(object, object.getClass(), fieldName);
+    }
+
+    /**
+     * Gets value of the given field.
+     *
+     * @param object    Object.
+     * @param fieldName Field name.
+     * @param <T>       Type of field.
+     * @return Value of the given field.
+     */
+    @Nullable
+    public static <T> T getField(@Nonnull Object object,
+                                 @Nonnull Class<?> clazz,
+                                 @Nonnull String fieldName) {
         try {
             Validate.notNull(object, "object cannot be null!");
             Validate.notNull(fieldName, "fieldName cannot be null!");
 
-            Field field = object.getClass().getDeclaredField(fieldName);
+            Field field = clazz.getDeclaredField(fieldName);
             field.setAccessible(true);
             Object value = field.get(object);
             field.setAccessible(false);
