@@ -10,6 +10,7 @@ import io.netty.channel.ChannelPromise;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.server.network.PlayerConnection;
+import net.minecraft.server.network.ServerCommonPacketListenerImpl;
 import org.bukkit.craftbukkit.v1_20_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
@@ -49,7 +50,8 @@ public final class PacketPlayer_v1_20_R2 extends PacketPlayer {
     @Override
     public void register() {
         try {
-            NetworkManager networkManager = ReflectionUtils.getField(this.connection, "h");
+            NetworkManager networkManager = ReflectionUtils.getField(
+                    this.connection, ServerCommonPacketListenerImpl.class, "c");
             if (networkManager == null) return;
 
             super.pipeline = networkManager.n.pipeline().addBefore("packet_handler", CHANNEL + super.player.getUniqueId(), new ChannelDuplexHandler() {
@@ -81,6 +83,6 @@ public final class PacketPlayer_v1_20_R2 extends PacketPlayer {
     @Override
     public void unregister() {
         if (super.pipeline != null && super.pipeline.get(CHANNEL) != null)
-            super.pipeline.remove(CHANNEL);
+            super.pipeline.remove(CHANNEL + super.player.getUniqueId());
     }
 }

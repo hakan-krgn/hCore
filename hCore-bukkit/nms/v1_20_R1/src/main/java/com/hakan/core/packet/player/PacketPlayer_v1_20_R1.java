@@ -81,6 +81,6 @@ public final class PacketPlayer_v1_20_R1 extends PacketPlayer {
     @Override
     public void unregister() {
         if (super.pipeline != null && super.pipeline.get(CHANNEL) != null)
-            super.pipeline.remove(CHANNEL);
+            super.pipeline.remove(CHANNEL + super.player.getUniqueId());
     }
 }
