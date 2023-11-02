@@ -5,7 +5,7 @@ import com.hakan.core.plugin.Plugin;
 @Plugin(
         name = "hCore",
         authors = "Hakan",
-        version = "0.7.2.5",
+        version = "0.7.2.6",
         description = "A plugin which contains hCore.",
         website = "https://github.com/hakan-krgn/hCore"
 )
