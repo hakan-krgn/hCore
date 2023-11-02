@@ -7,3 +7,14 @@ tasks.compileJava.dependsOn(
         ':hCore-bungee:api:jar',
         ':hCore-bungee:api:shadowJar',
 )
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'com.hakan.hcore'
+            artifactId = 'bungee-core'
+            version = project.version
+            from components.java
+        }
+    }
+}
