@@ -28,9 +28,13 @@ public final class NbtManager_v1_20_R2 implements NbtManager {
         if (itemStack.getType().equals(Material.AIR))
             return itemStack;
 
-        net.minecraft.world.item.ItemStack nmsCopy = CraftItemStack.asNMSCopy(itemStack);
-        nmsCopy.w().a(key, value);
-        return CraftItemStack.asBukkitCopy(nmsCopy);
+        try {
+            net.minecraft.world.item.ItemStack nmsCopy = CraftItemStack.asNMSCopy(itemStack);
+            nmsCopy.w().a(key, value);
+            return CraftItemStack.asBukkitCopy(nmsCopy);
+        } catch (Exception e) {
+            return itemStack;
+        }
     }
 
     /**
@@ -45,9 +49,13 @@ public final class NbtManager_v1_20_R2 implements NbtManager {
         if (itemStack.getType().equals(Material.AIR))
             return itemStack;
 
-        net.minecraft.world.item.ItemStack nmsCopy = CraftItemStack.asNMSCopy(itemStack);
-        nmsCopy.w().a(this.parse(nbt));
-        return CraftItemStack.asBukkitCopy(nmsCopy);
+        try {
+            net.minecraft.world.item.ItemStack nmsCopy = CraftItemStack.asNMSCopy(itemStack);
+            nmsCopy.w().a(this.parse(nbt));
+            return CraftItemStack.asBukkitCopy(nmsCopy);
+        } catch (Exception e) {
+            return itemStack;
+        }
     }
 
     /**
@@ -63,8 +71,12 @@ public final class NbtManager_v1_20_R2 implements NbtManager {
         if (nmsCopy == null)
             return "{}";
 
-        NBTTagCompound nbtTagCompound = nmsCopy.w();
-        return nbtTagCompound.e(key) ? nbtTagCompound.l(key) : "{}";
+        try {
+            NBTTagCompound nbtTagCompound = nmsCopy.w();
+            return nbtTagCompound.e(key) ? nbtTagCompound.l(key) : "{}";
+        } catch (Exception e) {
+            return "{}";
+        }
     }
 
     /**
@@ -79,7 +91,11 @@ public final class NbtManager_v1_20_R2 implements NbtManager {
         if (nmsCopy == null)
             return "{}";
 
-        return nmsCopy.w().toString();
+        try {
+            return nmsCopy.w().toString();
+        } catch (Exception e) {
+            return "{}";
+        }
     }
 
     private NBTTagCompound parse(String nbt) {
