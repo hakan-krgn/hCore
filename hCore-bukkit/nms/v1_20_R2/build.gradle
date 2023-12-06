@@ -2,7 +2,7 @@ sourceCompatibility = 17
 
 dependencies {
     compileOnly 'com.mojang:authlib:3.2.28'
-    compileOnly 'org.spigotmc:spigot:1.20.2-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot:1.20.3-R0.1-SNAPSHOT'
     compileOnly project(':hCore-bukkit:api')
 }
 
