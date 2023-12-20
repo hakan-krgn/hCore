@@ -42,11 +42,13 @@ public class ItemBuilder {
         glowEnchantment = ReflectionUtils.newInstance("com.hakan.core.item.enchantment.EnchantmentGlow_%s",
                 new Class[]{int.class}, new Object[]{152634});
 
-        if (Arrays.asList(Enchantment.values()).contains(glowEnchantment))
-            return;
+        if (ProtocolVersion.getCurrentVersion().isOlderOrEqual(ProtocolVersion.v1_20_R2)) {
+            if (Arrays.asList(Enchantment.values()).contains(glowEnchantment))
+                return;
 
-        ReflectionUtils.setField(Enchantment.class, "acceptingNew", true);
-        Enchantment.registerEnchantment(glowEnchantment);
+            ReflectionUtils.setField(Enchantment.class, "acceptingNew", true);
+            Enchantment.registerEnchantment(glowEnchantment);
+        }
     }
 
     /**
@@ -364,7 +366,7 @@ public class ItemBuilder {
      * @return If item stack has enchantment, returns true.
      */
     public boolean hasEnchants() {
-        return this.enchantments.size() > 0;
+        return !this.enchantments.isEmpty();
     }
 
     /**
