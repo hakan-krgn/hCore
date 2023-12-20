@@ -64,7 +64,7 @@ public final class AnvilGui_v1_20_R3 extends AnvilGui {
         if (super.rightItem != null)
             this.container.getBukkitView().setItem(1, super.rightItem);
 
-        HCore.sendPacket(this.player, new PacketPlayOutOpenWindow(this.nextContainerId, Containers.h,
+        HCore.sendPacket(this.player, new PacketPlayOutOpenWindow(this.nextContainerId, Containers.i,
                 CraftChatMessage.fromStringOrNull(super.title)));
         this.container.w.a(0);
         this.entityPlayer.a(this.container);
