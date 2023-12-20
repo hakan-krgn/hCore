@@ -24,6 +24,7 @@ dependencies {
     implementation project(':hCore-bukkit:nms:v1_19_R3')
     implementation project(':hCore-bukkit:nms:v1_20_R1')
     implementation project(':hCore-bukkit:nms:v1_20_R2')
+    implementation project(':hCore-bukkit:nms:v1_20_R3')
 }
 
 tasks.compileJava.dependsOn(
