@@ -57,10 +57,10 @@ public final class Scoreboard_v1_20_R3 extends Scoreboard {
         ReflectionUtils.setField(objective, "d", "board");
         ReflectionUtils.setField(objective, "e", CraftChatMessage.fromStringOrNull(super.title));
         ReflectionUtils.setField(objective, "f", IScoreboardCriteria.EnumScoreboardHealthDisplay.a);
-        ReflectionUtils.setField(objective, "g", this.mode);
+        ReflectionUtils.setField(objective, "h", this.mode);
 
         PacketPlayOutScoreboardDisplayObjective displayObjective = new PacketPlayOutScoreboardDisplayObjective(DisplaySlot.b, scoreboardObjective);
-        ReflectionUtils.setField(displayObjective, "a", 1);
+        ReflectionUtils.setField(displayObjective, "a", DisplaySlot.b);
         ReflectionUtils.setField(displayObjective, "b", "board");
 
         HCore.sendPacket(super.player, objective, displayObjective);
@@ -114,7 +114,7 @@ public final class Scoreboard_v1_20_R3 extends Scoreboard {
 
         PacketPlayOutScoreboardObjective objective = new PacketPlayOutScoreboardObjective(scoreboardObjective, 1);
         ReflectionUtils.setField(objective, "d", "board");
-        ReflectionUtils.setField(objective, "g", 1);
+        ReflectionUtils.setField(objective, "h", 1);
 
         HCore.sendPacket(super.player, objective);
         ScoreboardHandler.getContent().remove(super.player.getUniqueId());
