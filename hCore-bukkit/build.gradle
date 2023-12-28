@@ -27,6 +27,17 @@ dependencies {
     implementation project(':hCore-bukkit:nms:v1_20_R3')
 }
 
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = project.group
+            artifactId = project.name
+            version = project.version
+            from components.java
+        }
+    }
+}
+
 tasks.compileJava.dependsOn(
         ':hCore-bukkit:api:jar',
         ':hCore-bukkit:api:shadowJar',

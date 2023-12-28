@@ -1,3 +1,16 @@
+subprojects {
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                groupId = project.group
+                artifactId = project.name + '-bukkit'
+                version = project.version
+                from components.java
+            }
+        }
+    }
+}
+
 tasks.register('cleanup', Delete) {
     delete 'build'
 }

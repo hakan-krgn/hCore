@@ -1,3 +1,14 @@
 dependencies {
     compileOnly 'org.spigotmc:spigot:1.16.4-R0.1-SNAPSHOT'
 }
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = project.group
+            artifactId = project.name + '-bukkit'
+            version = project.version
+            from components.java
+        }
+    }
+}

@@ -3,7 +3,19 @@ dependencies {
     annotationProcessor project(':hCore-bungee:api')
 }
 
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = project.group
+            artifactId = project.name
+            version = project.version
+            from components.java
+        }
+    }
+}
+
 tasks.compileJava.dependsOn(
         ':hCore-bungee:api:jar',
         ':hCore-bungee:api:shadowJar',
 )
+
