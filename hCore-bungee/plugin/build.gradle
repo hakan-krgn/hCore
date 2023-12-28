@@ -13,3 +13,7 @@ tasks.compileJava.dependsOn(
         ':hCore-bungee:api:jar',
         ':hCore-bungee:api:shadowJar',
 )
+
+tasks.shadowJar {
+    archiveFileName.set("hCore-bungee-" + project.version + ".jar")
+}

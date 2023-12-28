@@ -13,3 +13,7 @@ tasks.compileJava.dependsOn(
         ':hCore-bukkit:api:jar',
         ':hCore-bukkit:api:shadowJar',
 )
+
+tasks.shadowJar {
+    archiveFileName.set("hCore-bukkit-" + project.version + ".jar")
+}
