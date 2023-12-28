@@ -33,6 +33,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_20_R3.CraftServer;
 import org.bukkit.craftbukkit.v1_20_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_20_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_20_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 
@@ -177,17 +178,26 @@ public final class NpcEntity_v1_20_R3 implements NpcEntity {
         dataWatcher.b(new DataWatcherObject<>(10, DataWatcherRegistry.b), 0);
         dataWatcher.b(new DataWatcherObject<>(17, DataWatcherRegistry.a), (byte) 127);
 
-        players.forEach(player -> this.scoreboard.g().add(player.getName()));
-        HCore.sendPacket(players,
-                new ClientboundPlayerInfoUpdatePacket(ClientboundPlayerInfoUpdatePacket.a.a, this.nmsPlayer),
-                new PacketPlayOutEntityMetadata(this.getID(), dataWatcher.c()),
-                new PacketPlayOutSpawnEntity(this.nmsPlayer),
-                PacketPlayOutScoreboardTeam.a(this.scoreboard, true));
-        HCore.asyncScheduler().after(5)
-                .run(() -> HCore.sendPacket(players, new ClientboundPlayerInfoUpdatePacket(ClientboundPlayerInfoUpdatePacket.a.e, this.nmsPlayer)));
+        players.forEach(player -> {
+            this.scoreboard.g().add(player.getName());
 
+            this.nmsPlayer.c = ((CraftPlayer) players.get(0)).getHandle().c;
+            HCore.sendPacket(player,
+                    new ClientboundPlayerInfoUpdatePacket(ClientboundPlayerInfoUpdatePacket.a.a, this.nmsPlayer),
+                    new PacketPlayOutEntityMetadata(this.getID(), dataWatcher.c()),
+                    new PacketPlayOutSpawnEntity(this.nmsPlayer),
+                    PacketPlayOutScoreboardTeam.a(this.scoreboard, true));
+            this.nmsPlayer.c = null;
+        });
+        HCore.asyncScheduler().after(5).run(() -> players.forEach(player -> {
+            this.nmsPlayer.c = ((CraftPlayer) players.get(0)).getHandle().c;
+            HCore.sendPacket(player, new ClientboundPlayerInfoUpdatePacket(
+                    ClientboundPlayerInfoUpdatePacket.a.e, this.nmsPlayer));
+            this.nmsPlayer.c = null;
+        }));
         HCore.asyncScheduler().after(2)
                 .run(() -> this.updateLocation(players));
+
         this.updateEquipments(players);
     }
 
