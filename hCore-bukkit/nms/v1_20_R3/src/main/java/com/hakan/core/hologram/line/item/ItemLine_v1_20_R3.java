@@ -109,7 +109,7 @@ public final class ItemLine_v1_20_R3 implements ItemLine {
 
         this.world = ((CraftWorld) Validate.notNull(location.getWorld())).getHandle();
         if (!this.world.equals(this.armorStand.dM())) ReflectionUtils.setField(this.armorStand, "t", this.world);
-        this.armorStand.a(location.getX(), location.getY() - 0.48, location.getZ(), location.getYaw(), location.getPitch());
+        this.armorStand.a(location.getX(), location.getY() - 1.4675, location.getZ(), location.getYaw(), location.getPitch());
 
         HCore.sendPacket(this.hologram.getRenderer().getShownPlayers(),
                 new PacketPlayOutEntityTeleport(this.armorStand));
