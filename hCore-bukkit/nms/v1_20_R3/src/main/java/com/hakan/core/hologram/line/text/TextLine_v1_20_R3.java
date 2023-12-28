@@ -113,8 +113,8 @@ public final class TextLine_v1_20_R3 implements TextLine {
         World world = ((CraftWorld) Validate.notNull(location.getWorld())).getHandle();
         if (!world.equals(this.click.dM())) ReflectionUtils.setField(this.click, "t", world);
         if (!world.equals(this.armorStand.dM())) ReflectionUtils.setField(this.armorStand, "t", world);
-        this.click.a(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
-        this.armorStand.a(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+        this.click.a(location.getX(), location.getY() - 0.9875, location.getZ(), location.getYaw(), location.getPitch());
+        this.armorStand.a(location.getX(), location.getY() - 0.9875, location.getZ(), location.getYaw(), location.getPitch());
 
         HCore.sendPacket(this.hologram.getRenderer().getShownPlayers(),
                 new PacketPlayOutEntityTeleport(this.armorStand),
