@@ -112,4 +112,12 @@ public final class EnchantmentGlow_v1_20_R3 extends Enchantment {
     public @Nonnull NamespacedKey getKey() {
         return NamespacedKey.minecraft(this.id + "");
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public @Nonnull String getTranslationKey() {
+        return "enchantment.minecraft." + this.id;
+    }
 }
