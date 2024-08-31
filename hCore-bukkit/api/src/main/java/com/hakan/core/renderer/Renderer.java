@@ -337,8 +337,11 @@ public final class Renderer {
             return this.viewers;
 
         Set<UUID> viewers = new HashSet<>();
-        this.location.getWorld().getPlayers()
-                .forEach(player -> viewers.add(player.getUniqueId()));
+        Bukkit.getOnlinePlayers()
+                .stream()
+                .filter(player -> player.getWorld().equals(this.location.getWorld()))
+                .map(Player::getUniqueId)
+                .forEach(viewers::add);
         return viewers;
     }
 
